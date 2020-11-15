@@ -53,7 +53,7 @@ Nella stessa cartella `/script/json/` c'è un programma scritto in python che si
 In ogni caso la formattazione di come sono inserite le informazioni nel file `table.json` sono riportate quà sotto:
 ```
 [
-	{
+    {
         "Sonarr": {
             "title": "Sword Art Online",
             "season": 3
