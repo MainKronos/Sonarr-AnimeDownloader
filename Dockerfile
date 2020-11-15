@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-MAINTAINER Kronos
+MAINTAINER MainKronos
 
 RUN mkdir /script
 RUN apt-get update -y
@@ -20,8 +20,8 @@ COPY requirements.txt /tmp/
 
 RUN pip3 install -r /tmp/requirements.txt
 
-## COPY config/json/* /script/json/
-## COPY config/main.py /script/
+COPY config/json/tableEditor.py /script/json/
+COPY config/main.py /script/
 
 # COPY cron_anime_downloader /etc/cron.d/cron_anime_downloader
 # RUN chmod 0644 /etc/cron.d/cron_anime_downloader
