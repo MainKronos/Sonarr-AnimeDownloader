@@ -16,9 +16,9 @@ docker run -d \
     -v /path/to/animeSeries:/tv \
     --env ANIME_PATH="/path/to/animeSeriesLocal" \
     --env SONARR_URL='http://{url}:{port}' \
-    --env API_KEY='{SonarrApi}' \
-    --env CHAT_ID={TelegramChatID} \
-    --env BOT_TOKEN='{TelegramBotToken}' \
+    --env API_KEY='1234567890abcdefghijklmn' \
+    --env CHAT_ID=123456789 \
+    --env BOT_TOKEN='729514965:AAGkCG09RWnRT-aGP_pNjXf5tk9KNnKSKnP' \
     --env TZ=Europe/Rome \
     mainkronos/anime_downloader
 
