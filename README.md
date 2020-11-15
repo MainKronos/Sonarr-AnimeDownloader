@@ -11,16 +11,16 @@ Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com
 
 ```
 docker run -d \
-	--name=AnimeDownloader \
-	-v /path/to/data:/script/json/ \
-	-v /path/to/animeSeries:/tv \
-	--env ANIME_PATH="/path/to/animeSeriesLocal" \
-	--env SONARR_URL='http://{url}:{port}' \
-	--env API_KEY='{SonarrApi}' \
-	--env CHAT_ID={TelegramChatID} \
-	--env BOT_TOKEN='{TelegramBotToken}' \
-	--env TZ=Europe/Rome \
-	mainkronos/anime_downloader
+    --name=AnimeDownloader \
+    -v /path/to/data:/script/json/ \
+    -v /path/to/animeSeries:/tv \
+    --env ANIME_PATH="/path/to/animeSeriesLocal" \
+    --env SONARR_URL='http://{url}:{port}' \
+    --env API_KEY='{SonarrApi}' \
+    --env CHAT_ID={TelegramChatID} \
+    --env BOT_TOKEN='{TelegramBotToken}' \
+    --env TZ=Europe/Rome \
+    mainkronos/anime_downloader
 
 ```
 
@@ -50,16 +50,16 @@ La vostra cartella `Anime` può avere un nome diverso, questa cartella sarebbe l
 ```
 tv
 └── Anime
-	├── myAnime1
-	│	├── S01E01.mp4
-	│	├── S01E02.mp4
-	│	...
-	├── myAnime2
-	│	├── S01E01.mp4
-	│	├── S01E02.mp4
-	│	...
-	...	
-			
+    ├── myAnime1
+    │   ├── S01E01.mp4
+    │   ├── S01E02.mp4
+    │   ...
+    ├── myAnime2
+    │   ├── S01E01.mp4
+    │   ├── S01E02.mp4
+    │   ...
+    ... 
+            
 ```
 
 ## Avvio
@@ -70,18 +70,18 @@ Nella stessa cartella `/script/json/` c'è un programma scritto in python che si
 In ogni caso la formattazione di come sono inserite le informazioni nel file `table.json` sono riportate quà sotto:
 ```
 [
-	{
-		"Sonarr": {
-			"title": "Sword Art Online",
-			"season": 3
-		},
-		"AnimeWorld": {
-			"title": [
-				"Sword Art Online 3: Alicization"
-			]
-		}
-	},
-	...
+    {
+        "Sonarr": {
+            "title": "Sword Art Online",
+            "season": 3
+        },
+        "AnimeWorld": {
+            "title": [
+                "Sword Art Online 3: Alicization"
+            ]
+        }
+    },
+    ...
 ]
 ```
 
@@ -101,8 +101,8 @@ TODO: da fare
 - [x] Creare una repository si GitHub
 - [x] Creare un'immagine Docker su Docker Hub
 - [ ] Fare una documentazione dettaglita
-	- [x] Spiegare come reperire l'api key di sonarr
-	- [ ] Spiegare come reperire la Chat Id di Telegram
-	- [ ] Spiegare come reperire il Token del Bot Telegram
-	- [ ] Spiegare come funziona il table.json
+    - [x] Spiegare come reperire l'api key di sonarr
+    - [ ] Spiegare come reperire la Chat Id di Telegram
+    - [ ] Spiegare come reperire il Token del Bot Telegram
+    - [ ] Spiegare come funziona il table.json
 - [ ] Spiegare come aggiungere più stagioni di AnimeWorld riferite a una di Sonarr 
