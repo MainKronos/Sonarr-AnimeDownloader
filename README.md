@@ -43,7 +43,7 @@ Parametro | Necessario | Funzione
 `--env TZ` | :heavy_check_mark: | Specifica un fuso orario, è necessario per il corretto funzionamento del Container
 
 ### ANIME_PATH e /tv
-Questa variabile serve per impostare la posizione della cartella degli anime anche quando la cartella ha un nome diverso per Sonarr.
+La variabile `ANIME_PATH` serve per impostare la posizione della cartella degli anime anche quando la cartella ha un nome diverso per Sonarr.
 Per esempio abbiamo che nel nostro Container la cartella degli anime si trovi in `/tv/Anime/` mentre nel container di sonarr la stessa cartella è stata definita nella posizione `/tv/SerieTV/Anime/`, è di vitale importanza per il corretto funzionamento del Container che la variabile d'ambiente ANIME_PATH venga impostata a `/tv/Anime/`.
 Nel caso in cui il parametro `-v /tv` sia diverso è necessario modificare anche la variabile ANIME_PATH, per esempio se il parametro è `-v /Serie/tv2/` allora la variabile ANIME_PATH sarà `/Serie/tv2/Anime/`.
 
