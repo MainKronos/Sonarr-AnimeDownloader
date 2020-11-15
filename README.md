@@ -40,7 +40,7 @@ Parametro | Necessario | Funzione
 ## **FAQ**
 
 ### Dove posso reperire la chiave api di sonarr?
-![Sonarr API KEY](/images/Sonarr_ApiKey.png)
+![Sonarr API KEY](/documentation/images/Sonarr_ApiKey.png)
 
 ### Dove posso reperire la Chat ID di telegram?
 TODO: da fare
