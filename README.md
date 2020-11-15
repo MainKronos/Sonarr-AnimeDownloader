@@ -35,7 +35,7 @@ Parametro | Necessario | Funzione
 `--name` | :heavy_multiplication_x: | Indica il nome del Container, può essere qualsiasi cosa
 `-v /tv` | :heavy_check_mark: | Posizione della libreria Anime su disco
 `-v /script/json/` | :heavy_check_mark: | Contiene file di configurazione
-`--env ANIME_PATH` | :heavy_check_mark: | Indica la posizione della cartella interna al Contaier di dove si trovano gli anime, vedi sotto per ulteriori informazioni
+`--env ANIME_PATH` | :heavy_check_mark: | Indica la posizione della cartella interna al Container di dove si trovano gli anime, vedi sotto per ulteriori informazioni
 `--env SONARR_URL` | :heavy_check_mark: | Url di Sonarr es. http://localhost:8989
 `--env API_KEY` | :heavy_check_mark: | Api key di sonarr, vedi sotto per ulteriori informazioni
 `--env CHAT_ID` | :heavy_multiplication_x: | Chat ID di telegram, vedi sotto per ulteriori informazioni
