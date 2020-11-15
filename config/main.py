@@ -80,7 +80,7 @@ def main():
 def job():
 	print("\n╭---------------------------------「{}」---------------------------------╮\n".format(time.strftime("%d %b %Y %H:%M:%S")))
 
-	if True:
+	try:
 		series = get_missing_episodes()
 		if len(series)!=0:
 			seriesFull = converting(series)
@@ -98,8 +98,6 @@ def job():
 					send_message(anime)
 		else:
 			print("\nNon c'è nessun episodio da cercare.\n")
-	try:
-		pass
 	except Exception as e:
 		print("🅴🆁🆁🅾🆁🅴: {}".format(e))
 	finally:
@@ -114,6 +112,12 @@ def getSeriesID(series):
 
 def converting(series):
 	json_location = "/script/json/table.json"
+
+	if not os.path.exists(json_location):
+		f = open(json_location, 'w')
+		f.write(json.dumps(list([]), indent=4))
+		f.close()
+
 	f = open(json_location, 'r')
 	table = json.loads(f.read())
 	f.close()
