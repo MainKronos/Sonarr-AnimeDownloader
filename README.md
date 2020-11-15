@@ -48,7 +48,7 @@ La vostra cartella `Anime` può avere un nome diverso, questa cartella sarebbe l
 ## Avvio
 Il programma, per funzionare, necessita di un file che si chiama `table.json`, si trova nella cartella `/script/json/` all'interno del Container. Questo file indica al programma a quale nome di AnimeWorld corrisponde il titolo della serie su Sonarr. Per esempio abbiamo che il titolo del nostro anime su AnimeWorld è `Sword Art Online 3: Alicization`, mentre su Sonarr è indicato come stagione 3 di `Sword Art Online`, quindi è necessario inserire queste informazioni su `table.json`.
 
-Nella stessa cartella `/script/json/` c'è un programma scritto in python che si chiama `tableEditor.py` che facilita l'inserimento di tali informazioni.
+Nella stessa cartella `/script/json/` c'è un programma scritto in python che si chiama `tableEditor.py` che facilita l'inserimento di tali informazioni, (in caso di eliminazioni accidentale il file può essere scaricato anche da [qui](/config/json/tableEditor.py)).
 
 In ogni caso la formattazione di come sono inserite le informazioni nel file `table.json` sono riportate quà sotto:
 ```
