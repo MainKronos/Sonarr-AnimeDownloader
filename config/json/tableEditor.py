@@ -1,9 +1,16 @@
 import json
+import os
 
 
 def main():
 
 	while True:
+
+		if not os.path.exists("table.json"):
+			f = open("table.json", 'w')
+			f.write(json.dumps(list([]), indent=4))
+			f.close()
+
 		f = open("table.json", 'r')
 		table = json.loads(f.read())
 		f.close()
