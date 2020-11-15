@@ -22,19 +22,19 @@ docker run -d \
 
 ## Parametri
 
-Le immagini del Docker Container vengono configurate utilizzando i parametri passati in fase di esecuzione (come quelli sopra). Questi parametri sono separati da due punti e indicano rispettivamente <esterno>:<interno> al Container. Ad esempio, -v /path/to/data:/script/json/ indica che la cartella nella posizione /path/to/data si trova in /script/json/ all'interno del Container, quindi tutto il contento di /path/to/data è anche in /script/json/ all'interno del Container.
+Le immagini del Docker Container vengono configurate utilizzando i parametri passati in fase di esecuzione (come quelli sopra). Questi parametri sono separati da due punti e indicano rispettivamente `<esterno>:<interno>` al Container. Ad esempio, `-v /path/to/data:/script/json/` indica che la cartella nella posizione `/path/to/data` si trova in `/script/json/` all'interno del Container, quindi tutto il contento di `/path/to/data è anche` in `/script/json/ all'interno del Container`.
 
-Parametro | Funzione
---------- | --------
---name | Indica il nome del Container, può essere qualsiasi cosa
--v /tv |
--v /script/json/ | Contiene file di configurazione
---env ANIME_PATH | Indica la posizione della cartella interna al Contaier di dove si trovano gli anime
---env SONARR_URL | Url di Sonarr es. http://localhost:8989
---env API_KEY | Api key di sonarr, vedi sotto per reperirla
---env CHAT_ID |
---env BOT_TOKEN |
---env TZ | Specifica un fuso orario, è **necessario** per il corretto funzionamento del Container
+Parametro | Necessario | Funzione
+--------- | ---------- | --------
+`--name` | :heavy_check_mark: | Indica il nome del Container, può essere qualsiasi cosa
+`-v /tv` | :heavy_check_mark: |
+`-v /script/json/` | :heavy_check_mark: | Contiene file di configurazione
+`--env ANIME_PATH` | :heavy_check_mark: | Indica la posizione della cartella interna al Contaier di dove si trovano gli anime
+`--env SONARR_URL` | :heavy_check_mark: | Url di Sonarr es. http://localhost:8989
+`--env API_KEY` | :heavy_check_mark: | Api key di sonarr, vedi sotto per ulteriori informazioni
+`--env CHAT_ID` | :heavy_multiplication_x: | Chat ID di telegram, vedi sotto per ulteriori informazioni
+`--env BOT_TOKEN` | :heavy_multiplication_x: | Token per il Bot di telegram, vedi sotto per ulteriori informazioni
+`--env TZ` | :heavy_check_mark: | Specifica un fuso orario, è necessario per il corretto funzionamento del Container
 
 ## Roadmap
 
