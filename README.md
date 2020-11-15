@@ -1,1 +1,1 @@
-# sonarr-AnimeDowloader
+# Sonarr-AnimeDowloader
