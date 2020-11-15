@@ -25,8 +25,8 @@ docker run -d \
 Le immagini del Docker Container vengono configurate utilizzando i parametri passati in fase di esecuzione (come quelli sopra). Questi parametri sono separati da due punti e indicano rispettivamente `<esterno>:<interno>` al Container. Ad esempio, `-v /path/to/data:/script/json/` indica che la cartella nella posizione `/path/to/data` si trova in `/script/json/` all'interno del Container, quindi tutto il contento di `/path/to/data è anche` in `/script/json/ all'interno del Container`.
 
 Parametro | Necessario | Funzione
---------- | ---------- | --------
-`--name` | :heavy_check_mark: | Indica il nome del Container, può essere qualsiasi cosa
+ :------: | :--------: | :-------
+`--name` | :heavy_multiplication_x: | Indica il nome del Container, può essere qualsiasi cosa
 `-v /tv` | :heavy_check_mark: |
 `-v /script/json/` | :heavy_check_mark: | Contiene file di configurazione
 `--env ANIME_PATH` | :heavy_check_mark: | Indica la posizione della cartella interna al Contaier di dove si trovano gli anime
