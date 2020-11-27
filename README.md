@@ -1,6 +1,6 @@
 # Sonarr-AnimeDownloader
 
-_Questa documentazione è in **Italiano** perchè ho presupposto che solo le persone che parlano italiano saranno interessate a questo repository (visto che gli anime che verrano scaricati sarranno con sottotitoli in Italiano)._
+_Questa documentazione è in **Italiano** perchè ho presupposto che solo le persone che conoscono l'italiano saranno interessate a questo repository (visto che gli anime che verrano scaricati sarranno con sottotitoli in Italiano)._
 
 Questo Docker Container funziona come un'estenzione di [Sonarr](https://sonarr.tv/); serve a scaricare in automatico tutti gli anime che non vengono condivisi tramite torrent.
 Il Container si interfaccia con Sonarr per avere informazini riguardante gli anime mancanti sull'hard-disk, viene poi fatta una ricerca se sono presenti sul sito [AnimeWorld](https://www.animeworld.tv/), e se ci sono li scarica e li posiziona nella cartella indicata da Sonarr.
