@@ -9,6 +9,15 @@ L'utilizzo di _**Sonarr**_ è necessario.
 
 Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com/linuxserver/docker-sonarr)
 
+### Supported Providers
+
+Gli episodi di AnimeWorld vengono caricati in altri siti, alcuni di loro (I più frequenti) sono supportati dal programma:
+
+1. [Streamtape](https://streamtape.com/)
+2. [YouTube](https://www.youtube.com/)
+3. [VVVVID](https://www.vvvvid.it/show/1396/akudama-drive&r)
+4. [AnimeWorld_Server](https://www.animeworld.tv/)
+
 ## Utilizzo
 
 ```
