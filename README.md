@@ -1,5 +1,7 @@
 # Sonarr-AnimeDownloader
 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+
 _Questa documentazione è in **Italiano** perchè ho presupposto che solo le persone che conoscono l'italiano saranno interessate a questo repository (visto che gli anime che verrano scaricati sarranno con sottotitoli in Italiano)._
 
 Questo Docker Container funziona come un'estenzione di [Sonarr](https://sonarr.tv/); serve a scaricare in automatico tutti gli anime che non vengono condivisi tramite torrent.
