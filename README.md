@@ -1,6 +1,6 @@
 # Sonarr-AnimeDownloader
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)   [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 _Questa documentazione è in **Italiano** perchè ho presupposto che solo le persone che conoscono l'italiano saranno interessate a questo repository (visto che gli anime che verrano scaricati sarranno con sottotitoli in Italiano)._
 
