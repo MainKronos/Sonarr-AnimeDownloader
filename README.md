@@ -76,9 +76,11 @@ tv
 ```
 
 ## Avvio
+
+### table.json
 Il programma, per funzionare, necessita di un file che si chiama `table.json`, si trova nella cartella `/script/json/` all'interno del Container. Questo file indica al programma a quale nome di AnimeWorld corrisponde il titolo della serie su Sonarr. Per esempio abbiamo che il titolo del nostro anime su AnimeWorld è `Sword Art Online 3: Alicization`, mentre su Sonarr è indicato come stagione 3 di `Sword Art Online`, tale informazione deve essere formattata (come mostrato qui sotto) e inserita nel file `table.json` in modo tale che il programma riesca a capire dove andare a cercare gli episodi su AnimeWorld.
 
-Nella stessa cartella `/script/json/` c'è un programma scritto in python che si chiama `tableEditor.py` che facilita l'inserimento di tali informazioni, (in caso di eliminazioni accidentale il file può essere scaricato anche da [qui](/config/json/tableEditor.py)).
+Nella stessa cartella `/script/json/` c'è un programma scritto in python che si chiama **`tableEditor.py`** che facilita l'inserimento di tali informazioni, (in caso di eliminazioni accidentale il file può essere scaricato anche da [qui](/config/json/tableEditor.py)).
 ```
 ...
 ├── script
@@ -89,9 +91,10 @@ Nella stessa cartella `/script/json/` c'è un programma scritto in python che si
 ...        
 ```
 
-In ogni caso la formattazione di come sono inserite le informazioni nel file `table.json` sono riportate quà sotto:
+In ogni caso la formattazione di come sono inserite le informazioni nel file `table.json` sono riportate quà sotto, sottoforma di esempio:
 ```
 [
+    ...
     {
         "Sonarr": {
             "title": "Sword Art Online",
@@ -106,6 +109,7 @@ In ogni caso la formattazione di come sono inserite le informazioni nel file `ta
     ...
 ]
 ```
+Ho caricato anche la **mia configurazione** che utilizzo io, può essere trovata [qui](/documentation/examples/table.json). Questa `table.json` può essere usata come _esempio_ o come _prorio database_ da aggiornare poi personalmente con i propri **Anime**. Ad ogni stagione ne caricherò una più aggiornata. 
 
 ## Problemi
 In caso di problemi o errori controllare prima di tutto i log del Container, di solito lì è indicato il problema; altrimenti segnalarlo su GitHub in questo repository sotto la sezione _Issues_.
