@@ -31,7 +31,7 @@ docker run -d \
     --env SONARR_URL='http://{url}:{port}' \
     --env API_KEY='1234567890abcdefghijklmn' \
     --env CHAT_ID=123456789 \
-    --env BOT_TOKEN='729514965:AAGkCG09RWnRT-aGP_pNjXf5tk9KNnKSKnP' \
+    --env BOT_TOKEN='129514965:AAGkCG09RWnRT-aGP_pNjXf5tk9KNnKSKnP' \
     --env TZ=Europe/Rome \
     mainkronos/anime_downloader
 
@@ -127,11 +127,17 @@ TODO: da fare
 
 ## Roadmap
 
-- [x] Creare una repository si GitHub
+- [x] Creare una repository su GitHub
 - [x] Creare un'immagine Docker su Docker Hub
 - [ ] Fare una documentazione dettaglita
-    - [x] Spiegare come reperire l'api key di sonarr
-    - [ ] Spiegare come reperire la Chat Id di Telegram
-    - [ ] Spiegare come reperire il Token del Bot Telegram
-    - [ ] Spiegare come funziona il table.json
-- [ ] Spiegare come aggiungere più stagioni di AnimeWorld riferite a una di Sonarr 
+    - [x] Spiegare come reperire l'`api key` di sonarr
+    - [ ] Spiegare l'utilità e il funzionamento di un bot di telegram
+        - [ ] Spiegare come reperire la `Chat Id` di Telegram
+        - [ ] Spiegare come reperire il `Token` del Bot Telegram
+    - [ ] Spiegare come funziona il `table.json`
+        - [x] Informazioni generali e funzionamento
+        - [x] Funzionamento e utilizzo di `tableEditor.py`
+        - [ ] Come collegare più stagioni di AnimeWorld riferite a una di Sonarr
+        - [x] Aggiungere un `table.json` di esempio
+    - [x] Spiegare l'utilizzo della variabile ambientale `ANIME_PATH`
+    - [x] Aggiungere i Providers supportati
