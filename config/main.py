@@ -217,110 +217,115 @@ def AnimeWorld(series):
 		### Get mp4_link ###
 		print("Ricerca mp4 link per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
 
-		if VVVVID in providers and '3' in episode_links: # id = 26
-			providerID = providers["VVVVID"]
-			episode_link = episode_links[providerID]
+		try:
+			if VVVVID in providers and '3' in episode_links: # id = 26
+				providerID = providers["VVVVID"]
+				episode_link = episode_links[providerID]
 
-			print("\nIl file si trova su {}".format("𝐕𝐕𝐕𝐕𝐈𝐃"))
+				print("\nIl file si trova su {}".format("𝐕𝐕𝐕𝐕𝐈𝐃"))
 
-			anime_id = episode_link.split("/")[-1]
-			external_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
+				anime_id = episode_link.split("/")[-1]
+				external_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
 
-			sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-			if sb_get.status_code == 200:
-				sb_get = requests.get(external_link, headers = HDR, cookies=cookies)
-				soupeddata = BeautifulSoup(sb_get.content, "html.parser")
+				sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
 				if sb_get.status_code == 200:
-					external = True
-					
-					raw = soupeddata.find("a", { "class" : "VVVVID-link" })
+					sb_get = requests.get(external_link, headers = HDR, cookies=cookies)
+					soupeddata = BeautifulSoup(sb_get.content, "html.parser")
+					if sb_get.status_code == 200:
+						external = True
+						
+						raw = soupeddata.find("a", { "class" : "VVVVID-link" })
 
-					mp4_link = raw.get("href")
+						mp4_link = raw.get("href")
+					else:
+						raise Exception(("Accesso negato alla pagina {}.".format(external_link)))
 				else:
-					raise Exception(("Accesso negato alla pagina {}.".format(external_link)))
-			else:
-				raise Exception("Accesso negato alla pagina {}.".format(episode_link))
+					raise Exception("Accesso negato alla pagina {}.".format(episode_link))
 
-		elif YouTube in providers and '4' in episode_links: # id = 25
-			providerID = providers["YouTube"]
-			episode_link = episode_links[providerID]
+			elif YouTube in providers and '4' in episode_links: # id = 25
+				providerID = providers["YouTube"]
+				episode_link = episode_links[providerID]
 
-			print("\nIl file si trova su {}".format("𝐘𝐨𝐮𝐓𝐮𝐛𝐞"))
+				print("\nIl file si trova su {}".format("𝐘𝐨𝐮𝐓𝐮𝐛𝐞"))
 
-			anime_id = episode_link.split("/")[-1]
-			external_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
+				anime_id = episode_link.split("/")[-1]
+				external_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
 
-			sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-			if sb_get.status_code == 200:
-				sb_get = requests.get(external_link, headers = HDR, cookies=cookies)
-				soupeddata = BeautifulSoup(sb_get.content, "html.parser")
+				sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
 				if sb_get.status_code == 200:
-					external = True
-					yutubelink_raw = re.findall("https://www.youtube.com/embed/...........", soupeddata.prettify())[0]
-					mp4_link = yutubelink_raw.replace("embed/", "watch?v=")
+					sb_get = requests.get(external_link, headers = HDR, cookies=cookies)
+					soupeddata = BeautifulSoup(sb_get.content, "html.parser")
+					if sb_get.status_code == 200:
+						external = True
+						yutubelink_raw = re.findall("https://www.youtube.com/embed/...........", soupeddata.prettify())[0]
+						mp4_link = yutubelink_raw.replace("embed/", "watch?v=")
 
+					else:
+						raise Exception("Accesso negato alla pagina {}.".format(external_link))
 				else:
-					raise Exception("Accesso negato alla pagina {}.".format(external_link))
-			else:
-				raise Exception("Accesso negato alla pagina {}.".format(episode_link))
+					raise Exception("Accesso negato alla pagina {}.".format(episode_link))
 
-		elif AnimeWorld_Server in providers and '9' in episode_links: # id = 15
-			providerID = providers["AnimeWorld Server"]
-			episode_link = episode_links[providerID]
+			elif AnimeWorld_Server in providers and '9' in episode_links: # id = 15
+				providerID = providers["AnimeWorld Server"]
+				episode_link = episode_links[providerID]
 
-			print("\nIl file si trova su {}".format("𝐀𝐧𝐢𝐦𝐞𝐖𝐨𝐫𝐥𝐝 𝐒𝐞𝐫𝐯𝐞𝐫"))
+				print("\nIl file si trova su {}".format("𝐀𝐧𝐢𝐦𝐞𝐖𝐨𝐫𝐥𝐝 𝐒𝐞𝐫𝐯𝐞𝐫"))
 
-			anime_id = episode_link.split("/")[-1]
-			video_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
-			
-
-			sb_get = requests.get(video_link, headers = HDR, cookies=cookies)
-			if sb_get.status_code == 200:
-				soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-				external = False
-				raw_ep = soupeddata.find("video", { "id" : "video-player" }).find("source", { "type" : "video/mp4" })
-				mp4_link = raw_ep.get("src")
-				# print(mp4_link)
+				anime_id = episode_link.split("/")[-1]
+				video_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
 				
-			else:
-				raise Exception("Accesso negato alla pagina {}.".format(episode_link))
 
-		elif Streamtape in providers and '8' in episode_links: # id = 39 
-			providerID = providers["Streamtape"]
-			episode_link = episode_links[providerID]
-
-			print("\nIl file si trova su {}".format("𝐒𝐭𝐫𝐞𝐚𝐦𝐭𝐚𝐩𝐞"))
-
-			sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-			if sb_get.status_code == 200:
-				soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-				external = False
-				site_link = soupeddata.find("div", { "id" : "external-downloads" }).find("a", { "class" : "btn-streamtape" }).get("href")
-
-				sb_get = requests.get(site_link, headers = HDR, cookies=cookies)
+				sb_get = requests.get(video_link, headers = HDR, cookies=cookies)
 				if sb_get.status_code == 200:
-
 					soupeddata = BeautifulSoup(sb_get.content, "html.parser")
 
-					mp4_link = "https://" + re.search(r"document\.getElementById\(\'videolink\'\);elem\[\'innerHTML\'\]=\'\/\/(streamtape\.com\/get_video\?id=.+&expires=.+&ip=.+&token=.+)\';", soupeddata.prettify()).group(1)
+					external = False
+					raw_ep = soupeddata.find("video", { "id" : "video-player" }).find("source", { "type" : "video/mp4" })
+					mp4_link = raw_ep.get("src")
+					# print(mp4_link)
+					
+				else:
+					raise Exception("Accesso negato alla pagina {}.".format(episode_link))
+
+			elif Streamtape in providers and '8' in episode_links: # id = 39 
+				providerID = providers["Streamtape"]
+				episode_link = episode_links[providerID]
+
+				print("\nIl file si trova su {}".format("𝐒𝐭𝐫𝐞𝐚𝐦𝐭𝐚𝐩𝐞"))
+
+				sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
+				if sb_get.status_code == 200:
+					soupeddata = BeautifulSoup(sb_get.content, "html.parser")
+
+					external = False
+					site_link = soupeddata.find("div", { "id" : "external-downloads" }).find("a", { "class" : "btn-streamtape" }).get("href")
+
+					sb_get = requests.get(site_link, headers = HDR, cookies=cookies)
+					if sb_get.status_code == 200:
+
+						soupeddata = BeautifulSoup(sb_get.content, "html.parser")
+
+						mp4_link = "https://" + re.search(r"document\.getElementById\(\'videolink\'\);elem\[\'innerHTML\'\]=\'\/\/(streamtape\.com\/get_video\?id=.+&expires=.+&ip=.+&token=.+)\';", soupeddata.prettify()).group(1)
+
+					else:
+						raise Exception("Accesso negato alla pagina {}.".format(site_link))
 
 				else:
-					raise Exception("Accesso negato alla pagina {}.".format(site_link))
+					raise Exception("Accesso negato alla pagina {}.".format(episode_link))
+
+
+			elif Beta_Server in providers: # id = 10
+				print("\nIl file si trova su {}".format("Beta Server"))
+
+				external = False
+				print("Il download da {} non è ancora disponibile.".format("𝐁𝐞𝐭𝐚 𝐒𝐞𝐫𝐯𝐞𝐫"))
 
 			else:
-				raise Exception("Accesso negato alla pagina {}.".format(episode_link))
+				print("Il download da {} non è ancora disponibile.".format("qualche parte"))
 
-
-		elif Beta_Server in providers: # id = 10
-			print("\nIl file si trova su {}".format("Beta Server"))
-
-			external = False
-			print("Il download da {} non è ancora disponibile.".format("𝐁𝐞𝐭𝐚 𝐒𝐞𝐫𝐯𝐞𝐫"))
-
-		else:
-			print("Il download da {} non è ancora disponibile.".format("qualche parte"))
+		except Exception as e:
+			print("🅴🆁🆁🅾🆁🅴: {}".format(e))
+			continue
 
 		if mp4_link != None:
 			info["link"]["url"] = mp4_link
