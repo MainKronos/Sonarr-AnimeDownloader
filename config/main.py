@@ -14,7 +14,7 @@ import sys
 
 cookies = {}
 # cookies = {'AWCookietest': 'cf18e136cadc69aaf3ee7ce302766ae3'}
-HDR = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36'}
+HDR = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'}
 
 ANIME_PATH = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
