@@ -21,9 +21,9 @@ Gli episodi di AnimeWorld vengono caricati in altri siti, alcuni di loro (I più
 4. [AnimeWorld_Server](https://www.animeworld.tv/)
 
 ## AGGIORNAMENTI IMPORTANTI
-**```diff
+```diff
 - WARNING - WARNING - WARNING - WARNING - WARNING - WARNING - WARNING - WARNING - WARNING - WARNING - WARNING -
-```**
+```
 La nuova versione `0.3.0` ha una diversa formattazione del file `table.json`, per convertire la vecchia versione in quella nuova basta solo avviare il file `tableEditor.py`.
 
 ## Utilizzo
