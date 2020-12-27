@@ -2,7 +2,9 @@
     {
         "Sonarr": {
             "title": "Adachi and Shimamura",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -13,7 +15,9 @@
     {
         "Sonarr": {
             "title": "Akudama Drive",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -24,7 +28,9 @@
     {
         "Sonarr": {
             "title": "Arte",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -35,7 +41,9 @@
     {
         "Sonarr": {
             "title": "Ascendance of a Bookworm",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -46,8 +54,23 @@
     },
     {
         "Sonarr": {
+            "title": "Attack on Titan",
+            "season": [
+                4
+            ]
+        },
+        "AnimeWorld": {
+            "title": [
+                "L'attacco dei Giganti 4"
+            ]
+        }
+    },
+    {
+        "Sonarr": {
             "title": "BNA: Brand New Animal",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -58,7 +81,9 @@
     {
         "Sonarr": {
             "title": "By the Grace of the Gods",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -69,7 +94,9 @@
     {
         "Sonarr": {
             "title": "Danganronpa: The Animation",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -80,7 +107,9 @@
     {
         "Sonarr": {
             "title": "Deca-Dence",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -91,7 +120,9 @@
     {
         "Sonarr": {
             "title": "Fire Force",
-            "season": 2
+            "season": [
+                2
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -102,7 +133,9 @@
     {
         "Sonarr": {
             "title": "Fruits Basket (2019)",
-            "season": 2
+            "season": [
+                2
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -113,7 +146,9 @@
     {
         "Sonarr": {
             "title": "Gleipnir",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -124,7 +159,9 @@
     {
         "Sonarr": {
             "title": "Higurashi: When They Cry \u2013 GOU",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -135,7 +172,9 @@
     {
         "Sonarr": {
             "title": "I'm standing on 1,000,000 lives",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -146,7 +185,9 @@
     {
         "Sonarr": {
             "title": "Is It Wrong to Try to Pick Up Girls in a Dungeon?",
-            "season": 3
+            "season": [
+                3
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -157,7 +198,9 @@
     {
         "Sonarr": {
             "title": "Kaguya-sama: Love is War",
-            "season": 2
+            "season": [
+                2
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -168,7 +211,9 @@
     {
         "Sonarr": {
             "title": "Kakushigoto",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -179,7 +224,9 @@
     {
         "Sonarr": {
             "title": "Kingdom (2012)",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -190,7 +237,9 @@
     {
         "Sonarr": {
             "title": "Kuma Kuma Kuma Bear",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -201,7 +250,9 @@
     {
         "Sonarr": {
             "title": "Legend of the Galactic Heroes: Die Neue These",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -212,7 +263,9 @@
     {
         "Sonarr": {
             "title": "Moriarty the Patriot",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -223,7 +276,9 @@
     {
         "Sonarr": {
             "title": "My Mental Choices Are Completely Interfering With My School Romantic Comedy",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -234,7 +289,9 @@
     {
         "Sonarr": {
             "title": "My Next Life as a Villainess: All Routes Lead to Doom!",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -245,7 +302,9 @@
     {
         "Sonarr": {
             "title": "My Teen Romantic Comedy SNAFU",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -256,7 +315,9 @@
     {
         "Sonarr": {
             "title": "My Teen Romantic Comedy SNAFU",
-            "season": 2
+            "season": [
+                2
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -267,7 +328,9 @@
     {
         "Sonarr": {
             "title": "My Teen Romantic Comedy SNAFU",
-            "season": 3
+            "season": [
+                3
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -277,8 +340,24 @@
     },
     {
         "Sonarr": {
+            "title": "One Piece",
+            "season": [
+                16,
+                21
+            ]
+        },
+        "AnimeWorld": {
+            "title": [
+                "One Piece"
+            ]
+        }
+    },
+    {
+        "Sonarr": {
             "title": "Onyx Equinox",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -289,7 +368,9 @@
     {
         "Sonarr": {
             "title": "Penguindrum",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -300,7 +381,9 @@
     {
         "Sonarr": {
             "title": "Plunderer",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -311,7 +394,9 @@
     {
         "Sonarr": {
             "title": "Radiant",
-            "season": 2
+            "season": [
+                2
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -322,7 +407,9 @@
     {
         "Sonarr": {
             "title": "Re:ZERO -Starting Life in Another World-",
-            "season": 2
+            "season": [
+                2
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -333,7 +420,9 @@
     {
         "Sonarr": {
             "title": "Rent-a-Girlfriend",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -344,7 +433,9 @@
     {
         "Sonarr": {
             "title": "Rental Girlfriend",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -355,7 +446,9 @@
     {
         "Sonarr": {
             "title": "SING \"YESTERDAY\" FOR ME",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -366,7 +459,9 @@
     {
         "Sonarr": {
             "title": "Sword Art Online",
-            "season": 4
+            "season": [
+                4
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -378,7 +473,9 @@
     {
         "Sonarr": {
             "title": "Talentless Nana",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -389,7 +486,9 @@
     {
         "Sonarr": {
             "title": "The 8th Son? Are You Kidding Me?",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -400,7 +499,9 @@
     {
         "Sonarr": {
             "title": "The Day I Became a God",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -411,7 +512,9 @@
     {
         "Sonarr": {
             "title": "The Irregular at Magic High School",
-            "season": 2
+            "season": [
+                2
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -422,7 +525,9 @@
     {
         "Sonarr": {
             "title": "The Millionaire Detective - Balance: UNLIMITED",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -433,7 +538,9 @@
     {
         "Sonarr": {
             "title": "The Misfit of Demon King Academy",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -444,7 +551,9 @@
     {
         "Sonarr": {
             "title": "Tonikawa: Over the Moon for You",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -455,7 +564,9 @@
     {
         "Sonarr": {
             "title": "Tower of God",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -466,7 +577,9 @@
     {
         "Sonarr": {
             "title": "Uzaki-chan Wants to Hang Out!",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -477,7 +590,9 @@
     {
         "Sonarr": {
             "title": "Wandering Witch: The Journey of Elaina",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [
@@ -488,7 +603,9 @@
     {
         "Sonarr": {
             "title": "Wave, Listen to Me!",
-            "season": 1
+            "season": [
+                1
+            ]
         },
         "AnimeWorld": {
             "title": [

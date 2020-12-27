@@ -20,6 +20,11 @@ Gli episodi di AnimeWorld vengono caricati in altri siti, alcuni di loro (I più
 3. [Streamtape](https://streamtape.com/)
 4. [AnimeWorld_Server](https://www.animeworld.tv/)
 
+## WARNING
+```diff 
+- La nuova versione 0.3.0 ha una diversa formattazione del file 'table.json', per convertire la vecchia versione in quella nuova basta solo avviare il file 'tableEditor.py'.
+```
+
 ## Utilizzo
 
 ```
@@ -98,7 +103,9 @@ In ogni caso la formattazione di come sono inserite le informazioni nel file `ta
     {
         "Sonarr": {
             "title": "Sword Art Online",
-            "season": 3
+            "season": [
+                3
+            ]
         },
         "AnimeWorld": {
             "title": [
