@@ -223,7 +223,7 @@ def get_mp4_link(info, episode_links, providers):
 		print("\nIl file si trova su {}".format("𝐕𝐕𝐕𝐕𝐈𝐃"))
 
 		anime_id = episode_link.split("/")[-1]
-		external_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
+		external_link = "https://www.animeworld.tv/api/episode/serverPlayerAW?id={}".format(anime_id)
 
 		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
 		if sb_get.status_code == 200:
@@ -247,7 +247,7 @@ def get_mp4_link(info, episode_links, providers):
 		print("\nIl file si trova su {}".format("𝐘𝐨𝐮𝐓𝐮𝐛𝐞"))
 
 		anime_id = episode_link.split("/")[-1]
-		external_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
+		external_link = "https://www.animeworld.tv/api/episode/serverPlayerAW?id={}".format(anime_id)
 
 		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
 		if sb_get.status_code == 200:
@@ -443,6 +443,10 @@ def move_file(series):
 
 		source = os.path.join(currentPath, file)
 		destination = os.path.join(destinationPath, file)
+
+		if not os.path.exists(destinationPath):
+			os.makedirs(destinationPath)
+
 		shutil.move(source, destination)
 		print("✔️ File {} spostato.".format(file))
 
