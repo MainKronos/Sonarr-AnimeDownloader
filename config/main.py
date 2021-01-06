@@ -98,7 +98,6 @@ def job():
 					send_message(anime)
 		else:
 			print("\nNon c'è nessun episodio da cercare.\n")
-	
 	except Exception as e:
 		print("🅴🆁🆁🅾🆁🅴: {}".format(e))
 	finally:
@@ -271,7 +270,7 @@ def get_mp4_link(info, episode_links, providers):
 		print("\nIl file si trova su {}".format("𝐀𝐧𝐢𝐦𝐞𝐖𝐨𝐫𝐥𝐝 𝐒𝐞𝐫𝐯𝐞𝐫"))
 
 		anime_id = episode_link.split("/")[-1]
-		video_link = "https://www.animeworld.tv/api/episode/serverPlayer?id={}".format(anime_id)
+		video_link = "https://www.animeworld.tv/api/episode/serverPlayerAW?id={}".format(anime_id)
 		
 
 		sb_get = requests.get(video_link, headers = HDR, cookies=cookies)

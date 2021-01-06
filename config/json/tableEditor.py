@@ -44,7 +44,7 @@ def main():
 			newBlock = {
 				"Sonarr": {
 					"title": SonarrTitle,
-					"season": season
+					"season": [season]
 				},
 				"AnimeWorld": {
 					"title": [AnimeWorldTitle]
