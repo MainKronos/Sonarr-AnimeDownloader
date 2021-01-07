@@ -304,7 +304,8 @@ def get_mp4_link(info, episode_links, providers):
 
 				soupeddata = BeautifulSoup(sb_get.content, "html.parser")
 
-				mp4_link = "https://" + re.search(r"document\.getElementById\(\'videolink\'\);elem\[\'innerHTML\'\]=\'\/\/(streamtape\.com\/get_video\?id=.+&expires=.+&ip=.+&token=.+)\';", soupeddata.prettify()).group(1)
+				mp4_link = "https://" + re.search(r"document\.getElementById\(\'vid\'\+\'eolink\'\)\.innerHTML = \"\/\/(.+)\'\;", soupeddata.prettify()).group(1)
+				mp4_link = mp4_link.replace(" ", "").replace("+", "").replace("\'", "").replace("\"", "")
 
 			else:
 				raise Exception("Accesso negato alla pagina {}.".format(site_link))
