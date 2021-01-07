@@ -192,10 +192,10 @@ Aggiungere il titolo Ascendance of a Bookworm 2 alla lista? (y/n): y
     - [ ] Spiegare l'utilità e il funzionamento di un bot di telegram
         - [ ] Spiegare come reperire la `Chat Id` di Telegram
         - [ ] Spiegare come reperire il `Token` del Bot Telegram
-    - [ ] Spiegare come funziona il `table.json`
+    - [x] Spiegare come funziona il `table.json`
         - [x] Informazioni generali e funzionamento
         - [x] Funzionamento e utilizzo di `tableEditor.py`
-        - [ ] Come collegare più stagioni di AnimeWorld riferite a una di Sonarr
+        - [x] Come collegare più stagioni di AnimeWorld riferite a una di Sonarr
         - [x] Aggiungere un `table.json` di esempio
     - [x] Spiegare l'utilizzo della variabile ambientale `ANIME_PATH`
     - [x] Aggiungere i Providers supportati
