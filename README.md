@@ -136,6 +136,53 @@ TODO: da fare
 ### Dove posso reperire il Token per il Bot di telegram?
 TODO: da fare
 
+### Una stagione di Sonarr comprende due stagioni su AnimeWorld
+![Esempio](/documentation/images/AnimeWold_2serie.png)
+
+Per riuscire a dire al programma che una stagione di Sonarr sono due di AnimeWold basta aggiunge all'Array del titolo di AnimeWold per quella stagione di Sonarr anche il titolo di AnimeWold della seconda stagione.
+
+Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sarebbe:
+```
+[    
+    ...
+    {
+        "Sonarr": {
+            "title": "Ascendance of a Bookworm",
+            "season": [
+                1
+            ]
+        },
+        "AnimeWorld": {
+            "title": [
+                "Ascendance of a Bookworm",
+                "Ascendance of a Bookworm 2"
+            ]
+        }
+    },
+    ...
+]
+```
+
+Si può fare più comodamente anche con il `tableEditor.py` basta inserire:
+
+```
+Inserire titolo anime di Sonarr: Ascendance of a Bookworm
+Inserire la stagione dell'anime Ascendance of a Bookworm: 1
+Inserire titolo anime di AnimeWorld: Ascendance of a Bookworm
+L'anime Ascendance of a Bookworm (stagione 1) è stato aggiunto correttamente.
+
+---------------------------------------------
+
+Inserire titolo anime di Sonarr: Ascendance of a Bookworm
+Inserire la stagione dell'anime Ascendance of a Bookworm: 1
+Inserire titolo anime di AnimeWorld: Ascendance of a Bookworm 2
+L'anime Ascendance of a Bookworm (stagione 1) è gia presente, e corrisponde a ['Ascendance of a Bookworm']
+Aggiungere il titolo Ascendance of a Bookworm 2 alla lista? (y/n): y
+
+---------------------------------------------
+```
+
+
 ## Roadmap
 
 - [x] Creare una repository su GitHub
