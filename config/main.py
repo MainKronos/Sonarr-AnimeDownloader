@@ -183,8 +183,8 @@ def get_episode_links(info, anime_link):
 						   # {nome         : id}
 
 			absAlert = False  # Stampa un avviso se viene usata la numerazione assoluta degli episodi
-
 			for idProvider in providers.values():
+
 				# print(idProvider)
 				epBox = soupeddata.find("div", { "class" : "server", "data-name": str(idProvider)})
 				# ep_links = epBox.find_all("a", { "data-toggle" : "tooltip" })
@@ -193,7 +193,7 @@ def get_episode_links(info, anime_link):
 				R_Episodio = info["episode"]
 
 				if n < len(anime_link)-1: # nel caso in qui 2 stagioni animeWorld corrispondono ad una di Sonarr
-					max_eps += len(ep_links)
+					max_eps = len(ep_links)
 				else: # Le due condizione non possono stare insieme
 					
 					if len(ep_links) > info["maxEpisode"]: 
@@ -202,6 +202,7 @@ def get_episode_links(info, anime_link):
 
 				for x in ep_links:
 					# print(max_eps, int(x.get_text()), max_eps + int(x.get_text()))
+
 					if (int(x.get_text()) == R_Episodio and n == 0) or ((max_eps + int(x.get_text())) == R_Episodio and n != 0):
 						episode_links[idProvider] = "https://www.animeworld.tv" + x.get("href")
 						break
@@ -223,7 +224,7 @@ def get_mp4_link(info, episode_links, providers):
 		print("\nIl file si trova su {}".format("𝐕𝐕𝐕𝐕𝐈𝐃"))
 
 		anime_id = episode_link.split("/")[-1]
-		external_link = "https://www.animeworld.tv/api/episode/serverPlayerAW?id={}".format(anime_id)
+		external_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
 
 		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
 		if sb_get.status_code == 200:
@@ -247,7 +248,7 @@ def get_mp4_link(info, episode_links, providers):
 		print("\nIl file si trova su {}".format("𝐘𝐨𝐮𝐓𝐮𝐛𝐞"))
 
 		anime_id = episode_link.split("/")[-1]
-		external_link = "https://www.animeworld.tv/api/episode/serverPlayerAW?id={}".format(anime_id)
+		external_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
 
 		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
 		if sb_get.status_code == 200:
@@ -270,7 +271,7 @@ def get_mp4_link(info, episode_links, providers):
 		print("\nIl file si trova su {}".format("𝐀𝐧𝐢𝐦𝐞𝐖𝐨𝐫𝐥𝐝 𝐒𝐞𝐫𝐯𝐞𝐫"))
 
 		anime_id = episode_link.split("/")[-1]
-		video_link = "https://www.animeworld.tv/api/episode/serverPlayerAW?id={}".format(anime_id)
+		video_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
 		
 
 		sb_get = requests.get(video_link, headers = HDR, cookies=cookies)
