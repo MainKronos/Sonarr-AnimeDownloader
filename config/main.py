@@ -280,7 +280,8 @@ def get_mp4_link(info, episode_links, providers):
 
 			external = False
 			raw_ep = soupeddata.find("video", { "id" : "video-player" }).find("source", { "type" : "video/mp4" })
-			mp4_link = raw_ep.get("src")
+			mp4_link = raw_ep.get("src").replace("work", "server7")
+			info["HDR"]["Referer"] = mp4_link.replace("https://server7.streamingaw.online/", "https://server7.streamingaw.online/download-file.php?id=")
 			# print(mp4_link)
 			
 		else:
@@ -417,16 +418,21 @@ def dowload_file(series):
 				ydl.download([info["link"]["url"]])
 		else:
 			# normal download
-			r = requests.get(info["link"]["url"], stream = True)
-			# download started 
-			with open(episode+'.mp4', 'wb') as f:
-				total_length = int(r.headers.get('content-length'))
-				for chunk in r.iter_content(chunk_size = 1024*1024):
-					if chunk: 
-						f.write(chunk)
-						f.flush()
+			r = requests.get(info["link"]["url"], headers = info["HDR"], stream = True)
+
+			if r.status_code == 200:
+				# download started 
+				with open(episode+'.mp4', 'wb') as f:
+					total_length = int(r.headers.get('content-length'))
+					for chunk in r.iter_content(chunk_size = 1024*1024):
+						if chunk: 
+							f.write(chunk)
+							f.flush()
+				print("✔️ Dowload Completato.")
+			else:
+				print(f"Impossibile scaricare {episode}.")
+				continue
 	else:
-		print("✔️ Dowload Completato.")
 		return serieEdit
 
 def move_file(series):
@@ -437,7 +443,7 @@ def move_file(series):
 		elif os.path.isfile(file+'.mkv'):
 			file = file + '.mkv'
 		else:
-			raise
+			continue
 
 		destinationPath = info["path"]
 		currentPath = os.getcwd()
@@ -478,6 +484,7 @@ def get_missing_episodes():
 		info["path"] = os.path.join(ANIME_PATH, serie["series"]["path"].split("/")[-1])
 		info["link"] = {}
 		info["fileName"] = ""
+		info["HDR"] = dict(HDR)
 
 		series.append(info)
 
