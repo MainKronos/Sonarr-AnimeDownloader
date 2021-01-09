@@ -167,6 +167,7 @@ def get_anime_link(info):
 
 def get_episode_links(info, anime_link):
 	episode_links = {}
+	providers = {}
 	print("Ricerca episode link per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
 	max_eps = 0
 	for n in range(len(anime_link)):
@@ -175,9 +176,14 @@ def get_episode_links(info, anime_link):
 			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
 
 
+			if soupeddata.find("img", {"id": "unavailable"}) != None:
+				print(f"La stagione {str(info['season'])} della serie {info['SonarrTitle']} non è ancora disponibile")
+				continue
+
+
 			### providers ###
 			providerName = soupeddata.find("span", { "class" : "tabs" }).find_all("span", { "class" : "tab" })
-			providers = {}
+			# providers = {}
 			for name in providerName:
 				providers[name.get_text()] = name["data-name"]
 						   # {nome         : id}
