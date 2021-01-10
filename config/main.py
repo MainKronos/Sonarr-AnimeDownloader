@@ -286,8 +286,8 @@ def get_mp4_link(info, episode_links, providers):
 
 			external = False
 			raw_ep = soupeddata.find("video", { "id" : "video-player" }).find("source", { "type" : "video/mp4" })
-			mp4_link = raw_ep.get("src").replace("work", "server7")
-			info["HDR"]["Referer"] = mp4_link.replace("https://server7.streamingaw.online/", "https://server7.streamingaw.online/download-file.php?id=")
+			mp4_link = raw_ep.get("src")
+			info["HDR"]["Referer"] = video_link
 			# print(mp4_link)
 			
 		else:
