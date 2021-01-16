@@ -1,5 +1,2 @@
-requests>=2.23.0
-beautifulsoup4>=4.8.2
-youtube_dl>=2020.3.6
-clint>=0.5.1
+animeworld
 schedule>=0.6.0

@@ -1,20 +1,12 @@
 #!/usr/bin/python3
 
-import requests
-from bs4 import BeautifulSoup
+import animeworld as aw
 import os
-import youtube_dl
 import re
 import json
-import shutil
 import schedule
 import time
-from clint.textui import progress
 import sys
-
-cookies = {}
-# cookies = {'AWCookietest': 'cf18e136cadc69aaf3ee7ce302766ae3'}
-HDR = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'}
 
 ANIME_PATH = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
@@ -115,7 +107,7 @@ def converting(series):
 
 	if not os.path.exists(json_location):
 		f = open(json_location, 'w')
-		f.write(json.dumps(list([]), indent=4))
+		f.write(json.dumps(list([]), indent='\t'))
 		f.close()
 
 	f = open(json_location, 'r')
@@ -123,15 +115,11 @@ def converting(series):
 	f.close()
 	seriesNew = [] 
 
-	for info in series:
+	for anime in series:
 		for row in table:
-			if row["Sonarr"]["title"] == info["SonarrTitle"]:
-				if(not isinstance(row["Sonarr"]["season"], list)):
-					raise Exception("Il database è formattato nel vecchio formato, per convertirlo basta solo avviare 'tableEditor.py'")
-
-				if(info["season"] in row["Sonarr"]["season"]):
-					info["AnimeWorldTitle"] = row["AnimeWorld"]["title"]
-					seriesNew.append(info)
+			if row["title"] == info["SonarrTitle"]:
+				if str(info["season"]) is in row["seasons"].keys():
+					info["AnimeWorldLinks"] = list(row["seasons"][str(info["season"])])
 					break
 		else:
 			print("La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(info["season"], info["SonarrTitle"]))
@@ -141,238 +129,22 @@ def converting(series):
 
 ### AnimeWorld #############################################################################################################
 
-def get_anime_link(info):
-	anime_link = []
-	print("Ricerca anime link per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
-	for n in range(len(info["AnimeWorldTitle"])):
-		search = "https://www.animeworld.tv/search?keyword={}".format(info["AnimeWorldTitle"][n].replace(" ", "%20"))
-		sb_get = requests.get(search, headers = HDR, cookies=cookies)
-
-		if sb_get.status_code == 200:
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-			page_result = soupeddata.find("div", { "class" : "film-list" }).find_all("a", { "class" : "name" })
-
-			for x in page_result:
-				if x.get_text() == info["AnimeWorldTitle"][n]:
-					link = "https://www.animeworld.tv" + x.get("href")
-					anime_link.append(link)
-					break
-			else:
-				print("L'anime {} non è stato trovato su AnimeWorld.".format(info["AnimeWorldTitle"][n]))
-		else:
-			print("Accesso negato alla pagina {}.".format(search))
-
-	return anime_link
-
-def get_episode_links(info, anime_link):
-	episode_links = {}
-	providers = {}
-	print("Ricerca episode link per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
-	max_eps = 0
-	for n in range(len(anime_link)):
-		sb_get = requests.get(anime_link[n], headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-
-			if soupeddata.find("img", {"id": "unavailable"}) != None:
-				print(f"La stagione {str(info['season'])} della serie {info['SonarrTitle']} non è ancora disponibile")
-				continue
-
-
-			### providers ###
-			providerName = soupeddata.find("span", { "class" : "tabs" }).find_all("span", { "class" : "tab" })
-			# providers = {}
-			for name in providerName:
-				providers[name.get_text()] = name["data-name"]
-						   # {nome         : id}
-
-			absAlert = False  # Stampa un avviso se viene usata la numerazione assoluta degli episodi
-			for idProvider in providers.values():
-
-				# print(idProvider)
-				epBox = soupeddata.find("div", { "class" : "server", "data-name": str(idProvider)})
-				# ep_links = epBox.find_all("a", { "data-toggle" : "tooltip" })
-				ep_links = epBox.find_all("a")
-
-				R_Episodio = info["episode"]
-
-				if n < len(anime_link)-1: # nel caso in qui 2 stagioni animeWorld corrispondono ad una di Sonarr
-					max_eps = len(ep_links)
-				else: # Le due condizione non possono stare insieme
-					
-					if len(ep_links) > info["maxEpisode"]: 
-						R_Episodio = info["absEpisode"]  # Se il numero degli episodi è maggiore a quello previsto allora usa il numero assoluto
-						absAlert = True
-
-				for x in ep_links:
-					# print(max_eps, int(x.get_text()), max_eps + int(x.get_text()))
-
-					if (int(x.get_text()) == R_Episodio and n == 0) or ((max_eps + int(x.get_text())) == R_Episodio and n != 0):
-						episode_links[idProvider] = "https://www.animeworld.tv" + x.get("href")
-						break
-
-			if(absAlert): 
-				print("Attenzione!!! Il programma sta usando la numerazione assoluta degli episodi, il risultato potrebbe non corrispondere.")
-
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(anime_link[n]))
-
-	return episode_links, providers
-
-def get_mp4_link(info, episode_links, providers):
-	print("Ricerca mp4 link per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
-	if VVVVID in providers and '3' in episode_links: # id = 26
-		providerID = providers["VVVVID"]
-		episode_link = episode_links[providerID]
-
-		print("\nIl file si trova su {}".format("𝐕𝐕𝐕𝐕𝐈𝐃"))
-
-		anime_id = episode_link.split("/")[-1]
-		external_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
-
-		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			sb_get = requests.get(external_link, headers = HDR, cookies=cookies)
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-			if sb_get.status_code == 200:
-				external = True
-				
-				raw = soupeddata.find("a", { "class" : "VVVVID-link" })
-
-				mp4_link = raw.get("href")
-			else:
-				raise Exception(("Accesso negato alla pagina {}.".format(external_link)))
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(episode_link))
-
-	elif YouTube in providers and '4' in episode_links: # id = 25
-		providerID = providers["YouTube"]
-		episode_link = episode_links[providerID]
-
-		print("\nIl file si trova su {}".format("𝐘𝐨𝐮𝐓𝐮𝐛𝐞"))
-
-		anime_id = episode_link.split("/")[-1]
-		external_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
-
-		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			sb_get = requests.get(external_link, headers = HDR, cookies=cookies)
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-			if sb_get.status_code == 200:
-				external = True
-				yutubelink_raw = re.findall("https://www.youtube.com/embed/...........", soupeddata.prettify())[0]
-				mp4_link = yutubelink_raw.replace("embed/", "watch?v=")
-
-			else:
-				raise Exception("Accesso negato alla pagina {}.".format(external_link))
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(episode_link))
-
-	elif AnimeWorld_Server in providers and '9' in episode_links: # id = 15
-		providerID = providers["AnimeWorld Server"]
-		episode_link = episode_links[providerID]
-
-		print("\nIl file si trova su {}".format("𝐀𝐧𝐢𝐦𝐞𝐖𝐨𝐫𝐥𝐝 𝐒𝐞𝐫𝐯𝐞𝐫"))
-
-		anime_id = episode_link.split("/")[-1]
-		video_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
-		
-
-		sb_get = requests.get(video_link, headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-			external = False
-			raw_ep = soupeddata.find("video", { "id" : "video-player" }).find("source", { "type" : "video/mp4" })
-			mp4_link = raw_ep.get("src")
-			info["HDR"]["Referer"] = video_link
-			# print(mp4_link)
-			
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(episode_link))
-
-	elif Streamtape in providers and '8' in episode_links: # id = 39 
-		providerID = providers["Streamtape"]
-		episode_link = episode_links[providerID]
-
-		print("\nIl file si trova su {}".format("𝐒𝐭𝐫𝐞𝐚𝐦𝐭𝐚𝐩𝐞"))
-
-		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-			external = False
-			site_link = soupeddata.find("div", { "id" : "external-downloads" }).find("a", { "class" : "btn-streamtape" }).get("href")
-
-			sb_get = requests.get(site_link, headers = HDR, cookies=cookies)
-			if sb_get.status_code == 200:
-
-				soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-				mp4_link = "https://" + re.search(r"document\.getElementById\(\'vid\'\+\'eolink\'\)\.innerHTML = \"\/\/(.+)\'\;", soupeddata.prettify()).group(1)
-				mp4_link = mp4_link.replace(" ", "").replace("+", "").replace("\'", "").replace("\"", "")
-
-			else:
-				raise Exception("Accesso negato alla pagina {}.".format(site_link))
-
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(episode_link))
-
-
-	elif Beta_Server in providers: # id = 10
-		print("\nIl file si trova su {}".format("Beta Server"))
-
-		external = False
-		print("Il download da {} non è ancora disponibile.".format("𝐁𝐞𝐭𝐚 𝐒𝐞𝐫𝐯𝐞𝐫"))
-
-	else:
-		print("Il download da {} non è ancora disponibile.".format("qualche parte"))
-
-	return mp4_link, external
-
 def AnimeWorld(series):
 	seriesNew = []
 	for info in series:
 		print("\n", divider)
 
-		# anime_link = []
-		# episode_links = {}
-		# mp4_link = None
-		# external = False
+		print("Ricerca anime {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
 
-		# providers = {}
 
-		### Get anime_link ##################################################################################
-		anime_link = get_anime_link(info)
-		
-		if len(anime_link) == 0:
-			print(divider, "\n")
-			continue
 
-		### Get episode_links ##################################################################################
-		episode_links, providers = get_episode_links(info, anime_link)
 
-		if len(episode_links) == 0:
-			print("L'episodio {} dell'anime {} non è ancora uscito.".format(str(info["episode"]), info["SonarrTitle"]))
-			info = None
-			print(divider, "\n")
-			continue
 
-		### Get mp4_link ##################################################################################
-		try:
-			mp4_link, external= get_mp4_link(info, episode_links, providers)
-		except Exception as e:
-			print("🅴🆁🆁🅾🆁🅴: {}".format(e))
-			continue
 
-		if mp4_link != None:
-			info["link"]["url"] = mp4_link
-			info["link"]["external"] = external
-			seriesNew.append(info)
-		else:
-			print("Non è stato trovato nessun link per il download dell'episodio {} dell'anime {} (season {})".format(str(info["episode"]), info["SonarrTitle"], str(info["season"])))
+
+
+
+
 		
 		print(divider, "\n")
 ##############
@@ -381,65 +153,6 @@ def AnimeWorld(series):
 def dowload_file(series):
 	print("\n◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢𝔻𝕆𝕎𝕃𝕆𝔸𝔻 𝔼ℙ𝕀𝕊𝕆𝔻𝕀◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥\n")
 	print("⏳ Inizio download di {} episodi".format(len(series)))
-	serieEdit = []
-	for info in series:
-		episode = "{nome} - S{season}E{episode}".format(nome=info["SonarrTitle"], season=str(info["season"]), episode=str(info["episode"]))
-		episode = episode.replace(":", " ")
-		episode = episode.replace("\\", " ")
-		episode = episode.replace("/", " ")
-		episode = episode.replace("?", " ")
-		episode = episode.replace('"', " ")
-		episode = episode.replace("<", " ")
-		episode = episode.replace(">", " ")
-		episode = episode.replace("|", " ")
-		episode = episode.replace("*", " ")
-		episode = episode.replace("…", " ")
-		episode = episode.replace("’", " ")
-		info["fileName"] = episode
-		serieEdit.append(info)
-		print("Episodio {} in download...".format(episode))
-		if info["link"]["external"]:
-			# youtube-dl
-			class MyLogger(object):
-				def debug(self, msg):
-					pass
-
-				def warning(self, msg):
-					pass
-
-				def error(self, msg):
-					print(msg)
-
-			def my_hook(d):
-				if d['status'] == 'finished':
-					print('Dowload Completato.')
-
-			ydl_opts = {
-				# 'format': '22/best[height<=720]',
-				'outtmpl': episode+'.%(ext)s',
-				'logger': MyLogger(),
-				'progress_hooks': [my_hook],
-			}
-			with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-				ydl.download([info["link"]["url"]])
-		else:
-			# normal download
-			r = requests.get(info["link"]["url"], headers = info["HDR"], stream = True)
-
-			if r.status_code == 200:
-				# download started 
-				with open(episode+'.mp4', 'wb') as f:
-					total_length = int(r.headers.get('content-length'))
-					for chunk in r.iter_content(chunk_size = 1024*1024):
-						if chunk: 
-							f.write(chunk)
-							f.flush()
-				print("✔️ Dowload Completato.")
-			else:
-				print(f"Impossibile scaricare {episode}.")
-				continue
-	else:
-		return serieEdit
 
 def move_file(series):
 	for info in series:
@@ -481,16 +194,13 @@ def get_missing_episodes():
 		info = {}
 		info["seriesId"] = serie["seriesId"]
 		info["SonarrTitle"] = serie["series"]["title"]
-		info["AnimeWorldTitle"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
+		info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
 		info["season"] = int(serie["seasonNumber"])
 		info["episode"] = int(serie["episodeNumber"])
-		info["absEpisode"] = int(serie["absoluteEpisodeNumber"])  # il numero assoluto dell'episodio
-		info["maxEpisode"] = getMaxEpisode(serieId=info["seriesId"], season=info["season"])
+		# info["absEpisode"] = int(serie["absoluteEpisodeNumber"])  # il numero assoluto dell'episodio
+		# info["maxEpisode"] = getMaxEpisode(serieId=info["seriesId"], season=info["season"])
 		info["episodeTitle"] = serie["title"]
 		info["path"] = os.path.join(ANIME_PATH, serie["series"]["path"].split("/")[-1])
-		info["link"] = {}
-		info["fileName"] = ""
-		info["HDR"] = dict(HDR)
 
 		series.append(info)
 
