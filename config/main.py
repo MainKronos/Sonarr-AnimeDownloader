@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import animeworld as aw
+import requests
 import os
 import re
 import json
@@ -25,19 +26,16 @@ AnimeWorld_Server = "AnimeWorld Server"
 #####
 
 
-start = """
-┌----------------------------------{}----------------------------------┐
-|                 _                  _____                _                 _            |
-|     /\\         (_)                |  __ \\              | |               | |           |
-|    /  \\   _ __  _ _ __ ___   ___  | |  | | _____      _| | ___   __ _  __| | ___ _ __  |
-|   / /\\ \\ | '_ \\| | '_ ` _ \\ / _ \\ | |  | |/ _ \\ \\ /\\ / / |/ _ \\ / _` |/ _` |/ _ \\ '__| |
-|  / ____ \\| | | | | | | | | |  __/ | |__| | (_) \\ V  V /| | (_) | (_| | (_| |  __/ |    |
-| /_/    \\_\\_| |_|_|_| |_| |_|\\___| |_____/ \\___/ \\_/\\_/ |_|\\___/ \\__,_|\\__,_|\\___|_|    |
-|                                                                                        |
-└----------------------------------------------------------------------------------------┘
-""".format(time.strftime("%d %b %Y %H:%M:%S"))
-
-divider = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+start = f"┌------------------------------------{time.strftime('%d %b %Y %H:%M:%S')}------------------------------------┐" + r"""
+|                 _                _____                      _                 _            |
+|     /\         (_)              |  __ \                    | |               | |           |
+|    /  \   _ __  _ _ __ ___   ___| |  | | _____      ___ __ | | ___   __ _  __| | ___ _ __  |
+|   / /\ \ | '_ \| | '_ ` _ \ / _ \ |  | |/ _ \ \ /\ / / '_ \| |/ _ \ / _` |/ _` |/ _ \ '__| |
+|  / ____ \| | | | | | | | | |  __/ |__| | (_) \ V  V /| | | | | (_) | (_| | (_| |  __/ |    |
+| /_/    \_\_| |_|_|_| |_| |_|\___|_____/ \___/ \_/\_/ |_| |_|_|\___/ \__,_|\__,_|\___|_|    |
+|                                                                                            |
+└--------------------------------------------------------------------------------------------┘
+""".format()
 
 
 def main():
@@ -70,31 +68,58 @@ def main():
 		schedule.every(SCHEDULE_MINUTES).minutes.do(job)	
 
 def job():
-	print("\n╭---------------------------------「{}」---------------------------------╮\n".format(time.strftime("%d %b %Y %H:%M:%S")))
+	divider = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+	
+	print("\n╭-----------------------------------「{}」-----------------------------------╮\n".format(time.strftime("%d %b %Y %H:%M:%S")))
 
-	try:
-		series = get_missing_episodes()
-		if len(series)!=0:
-			seriesFull = converting(series)
-			anime = AnimeWorld(seriesFull)
-			if len(anime)!=0:
-				animeUp = dowload_file(anime)
-				move_file(animeUp)
-				seriesIds = getSeriesID(animeUp)
+	raw_series = get_missing_episodes()
+	if len(raw_series)!=0:
+		series = converting(raw_series)
 
-				RescanSeries(seriesIds)
-				time.sleep(10*len(seriesIds))
-				RenameSeries(seriesIds)
+		for info in series:
+			print("\n", divider)
 
-				if CHAT_ID != None and BOT_TOKEN != None:
-					send_message(anime)
-		else:
-			print("\nNon c'è nessun episodio da cercare.\n")
-	except Exception as e:
-		print("🅴🆁🆁🅾🆁🅴: {}".format(e))
-	finally:
-		nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
-		print("\n╰---------------------------------「{}」---------------------------------╯\n".format(nextStart))
+			try:
+				print("🔎 Ricerca anime {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
+				anime = aw.Anime(link=info["AnimeWorldLinks"][0])
+
+				print("🔎 Ricerca degli episodi per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
+				episodi = anime.getEpisodes()
+
+				print("⏳ Download episodio 𝐒{}𝐄{}.".format(str(info["season"]), str(info["episode"])))
+				title = info["episodeTitle"]
+				for ep in episodi:
+					if ep.number == str(info["episode"]):
+						fileLink = ep.links[0]
+						title = fileLink.sanitize(title)
+						if fileLink.download(title): 
+							print("✔️ Dowload Completato.")
+
+				print("⏳ Spostamento episodio 𝐒{}𝐄{}.".format(str(info["season"]), str(info["episode"])))
+				if move_file(title, info["path"]): 
+					print("✔️ Episodio spostato.".format(file))
+
+				print("⏳ Ricaricando la serie {}.".format(info["season"]))
+				RescanSerie(info["seriesId"])
+
+				print("⏳ Rinominamento episodio 𝐒{}𝐄{}.".format(str(info["season"]), str(info["episode"])))
+				RenameSerie(info["seriesId"])
+
+				if CHAT_ID != None or BOT_TOKEN != None:
+					print("📧 Inviando il messaggio via telegram.")
+					send_message(info)
+
+			except Exception as ex:
+				print(f"🅴🆁🆁🅾🆁🅴: {ex}")
+			finally:
+				print(divider, "\n")
+
+	else:
+		print("\nNon c'è nessun episodio da cercare.\n")
+
+	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
+	print("\n╰-----------------------------------「{}」-----------------------------------╯\n".format(nextStart))
+
 
 def getSeriesID(series):
 	ids = []
@@ -106,76 +131,51 @@ def converting(series):
 	json_location = "/script/json/table.json"
 
 	if not os.path.exists(json_location):
-		f = open(json_location, 'w')
-		f.write(json.dumps(list([]), indent='\t'))
-		f.close()
+		raise Exception("Il file table.json non esiste.")
 
 	f = open(json_location, 'r')
 	table = json.loads(f.read())
 	f.close()
-	seriesNew = [] 
+
+	res = []
 
 	for anime in series:
 		for row in table:
-			if row["title"] == info["SonarrTitle"]:
-				if str(info["season"]) is in row["seasons"].keys():
-					info["AnimeWorldLinks"] = list(row["seasons"][str(info["season"])])
+			if row["title"] == anime["SonarrTitle"]:
+				if str(anime["season"]) in row["seasons"].keys():
+					anime["AnimeWorldLinks"] = list(row["seasons"][str(anime["season"])])
+					res.append(anime)
 					break
 		else:
-			print("La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(info["season"], info["SonarrTitle"]))
 
+			print("La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(anime["season"], anime["SonarrTitle"]))
 
-	return seriesNew
+	return res
 
 ### AnimeWorld #############################################################################################################
 
-def AnimeWorld(series):
-	seriesNew = []
-	for info in series:
-		print("\n", divider)
 
-		print("Ricerca anime {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
+def move_file(title, path):
+	
+	file = title
+	if os.path.isfile(file+'.mp4'):
+		file = file + '.mp4'
+	elif os.path.isfile(file+'.mkv'):
+		file = file + '.mkv'
+	else:
+		return False
 
+	destinationPath = path
+	currentPath = os.getcwd()
 
+	source = os.path.join(currentPath, file)
+	destination = os.path.join(destinationPath, file)
 
+	if not os.path.exists(destinationPath):
+		os.makedirs(destinationPath)
 
-
-
-
-
-
-
-		
-		print(divider, "\n")
-##############
-	return seriesNew
-
-def dowload_file(series):
-	print("\n◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢𝔻𝕆𝕎𝕃𝕆𝔸𝔻 𝔼ℙ𝕀𝕊𝕆𝔻𝕀◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥\n")
-	print("⏳ Inizio download di {} episodi".format(len(series)))
-
-def move_file(series):
-	for info in series:
-		file = info["fileName"]
-		if os.path.isfile(file+'.mp4'):
-			file = file + '.mp4'
-		elif os.path.isfile(file+'.mkv'):
-			file = file + '.mkv'
-		else:
-			continue
-
-		destinationPath = info["path"]
-		currentPath = os.getcwd()
-		print("⏳ Spostamento {}.".format(file))
-
-		source = os.path.join(currentPath, file)
-		destination = os.path.join(destinationPath, file)
-
-		if not os.path.exists(destinationPath):
-			os.makedirs(destinationPath)
-
-		shutil.move(source, destination)
-		print("✔️ File {} spostato.".format(file))
+	shutil.move(source, destination)
+	return True
 
 #### Sonarr ############################################################################################################
 
@@ -215,37 +215,31 @@ def getMaxEpisode(serieId, season):
 		if stagione["seasonNumber"] == season:
 			return stagione["statistics"]["totalEpisodeCount"]
 
-def RescanSeries(seriesIds):
-	print("RescanSeries start...")
-	for seriesId in seriesIds:
-		endpoint = "command"
-		url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-		data = {
-			"name": "RescanSeries",
-			"seriesId": seriesId
-		}
-		requests.post(url, json=data)
+def RescanSerie(seriesId):
+	endpoint = "command"
+	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	data = {
+		"name": "RescanSeries",
+		"seriesId": seriesId
+	}
+	requests.post(url, json=data)
 
-def RenameSeries(seriesIds):
-	print("RenameSeries start...")
-	seriesId = 87
-	time.sleep(60)
+def RenameSerie(seriesId):
 	endpoint = "command"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	data = {
 		"name": "RenameSeries",
-		"seriesIds": seriesIds
+		"seriesId": seriesId
 	}
 	requests.post(url, json=data)
 
 #### Telegram ###########################################################################################################
 
-def send_message(series):
-	for info in series:
-		text = "*Episode Dowloaded*\n{title} - {season}x{episode} - {episodeTitle}".format(title=info["SonarrTitle"], season=str(info["season"]), episode=str(info["episode"]), episodeTitle=info["episodeTitle"])
+def send_message(info):
+	text = "*Episode Dowloaded*\n{title} - {season}x{episode} - {episodeTitle}".format(title=info["SonarrTitle"], season=str(info["season"]), episode=str(info["episode"]), episodeTitle=info["episodeTitle"])
 
-		url ="https://api.telegram.org/bot{}/sendMessage?text={}&chat_id={}&parse_mode=Markdown".format(BOT_TOKEN, text, CHAT_ID)
-		requests.get(url)
+	url ="https://api.telegram.org/bot{}/sendMessage?text={}&chat_id={}&parse_mode=Markdown".format(BOT_TOKEN, text, CHAT_ID)
+	requests.get(url)
 
 if __name__ == '__main__':
 	main()
