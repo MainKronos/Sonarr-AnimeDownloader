@@ -7,7 +7,7 @@ import re
 import json
 import schedule
 import time
-import sys
+import shutil
 
 ANIME_PATH = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
@@ -97,12 +97,12 @@ def job():
 
 				print("⏳ Spostamento episodio 𝐒{}𝐄{}.".format(str(info["season"]), str(info["episode"])))
 				if move_file(title, info["path"]): 
-					print("✔️ Episodio spostato.".format(file))
+					print("✔️ Episodio spostato.")
 
-				print("⏳ Ricaricando la serie {}.".format(info["season"]))
+				print("⏳ Ricaricando la serie {}.".format(info["SonarrTitle"]))
 				RescanSerie(info["seriesId"])
 
-				print("⏳ Rinominamento episodio 𝐒{}𝐄{}.".format(str(info["season"]), str(info["episode"])))
+				print("⏳ Rinominando l'episodio.".)
 				RenameSerie(info["seriesId"])
 
 				if CHAT_ID != None or BOT_TOKEN != None:
@@ -148,7 +148,7 @@ def converting(series):
 					break
 		else:
 
-			print("La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(anime["season"], anime["SonarrTitle"]))
+			print("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(anime["season"], anime["SonarrTitle"]))
 
 	return res
 
