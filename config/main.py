@@ -80,27 +80,30 @@ def job():
 			print("\n", divider)
 
 			try:
-				print("🔎 Ricerca anime {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
-				anime = aw.Anime(link=info["AnimeWorldLinks"][0])
+				print("🔎 Ricerca anime {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
 
-				print("🔎 Ricerca degli episodi per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
-				episodi = anime.getEpisodes()
+				print("🔎 Ricerca degli episodi per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
+				episodi = fixEps(epsArr)
 
-				print("⏳ Download episodio 𝐒{}𝐄{}.".format(str(info["season"]), str(info["episode"])))
-				title = info["episodeTitle"]
+				print("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
+				title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["episode"]}'
 				for ep in episodi:
 					if ep.number == str(info["episode"]):
 						fileLink = ep.links[0]
-						title = fileLink.sanitize(title)
+						title = fileLink.sanitize(title) # Sanitizza il titolo
 						if fileLink.download(title): 
 							print("✔️ Dowload Completato.")
 
-				print("⏳ Spostamento episodio 𝐒{}𝐄{}.".format(str(info["season"]), str(info["episode"])))
+				print("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["episode"], info["path"]))
 				if move_file(title, info["path"]): 
 					print("✔️ Episodio spostato.")
 
 				print("⏳ Ricaricando la serie {}.".format(info["SonarrTitle"]))
 				RescanSerie(info["seriesId"])
+
+				time.sleep(1)
 
 				print("⏳ Rinominando l'episodio.")
 				RenameSerie(info["seriesId"])
@@ -120,12 +123,18 @@ def job():
 	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
 	print("\n╰-----------------------------------「{}」-----------------------------------╯\n".format(nextStart))
 
+def fixEps(epsArr): # accorpa 2 serie di animeworld
+	up = 0 # numero da aggiungere per rendere consecutivi gli episodi di varie stagioni
+	ret = []
 
-def getSeriesID(series):
-	ids = []
-	for info in series:
-		ids.append(info["seriesId"])
-	return ids
+	for eps in epsArr:
+		for ep in eps:
+			ep.number = str(int(ep.number) + up)
+			ret.append(ep)
+		up += int(eps[-1].number)
+
+	return ret
+
 
 def converting(series):
 	json_location = "/script/json/table.json"
@@ -151,9 +160,6 @@ def converting(series):
 			print("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(anime["season"], anime["SonarrTitle"]))
 
 	return res
-
-### AnimeWorld #############################################################################################################
-
 
 def move_file(title, path):
 	
