@@ -87,30 +87,40 @@ def job():
 				epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
 				episodi = fixEps(epsArr)
 
-				print("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
-				title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["episode"]}'
-				for ep in episodi:
+				print("⚙️ Verifica se l'episodio {} è disponibile.".format(info["episode"]))
+				ep = None
+				for episodio in episodi:
+					if episodio.number == str(info["episode"]):
+						ep = episodio
+						print("✔️ L'episodio è disponibile.")
+						break
+				else:
+					print("✖️ L'episodio NON è ancora uscito.")
+
+				if ep != None: # Se l'episodio è disponibile
+					print("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
+					title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["episode"]}'
 					if ep.number == str(info["episode"]):
 						fileLink = ep.links[0]
 						title = fileLink.sanitize(title) # Sanitizza il titolo
 						if fileLink.download(title): 
 							print("✔️ Dowload Completato.")
 
-				print("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["episode"], info["path"]))
-				if move_file(title, info["path"]): 
-					print("✔️ Episodio spostato.")
+					print("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["episode"], info["path"]))
+					if move_file(title, info["path"]): 
+						print("✔️ Episodio spostato.")
 
-				print("⏳ Ricaricando la serie {}.".format(info["SonarrTitle"]))
-				RescanSerie(info["seriesId"])
+					print("⏳ Ricaricando la serie {}.".format(info["SonarrTitle"]))
+					RescanSerie(info["seriesId"])
 
-				time.sleep(1)
+					time.sleep(1)
 
-				print("⏳ Rinominando l'episodio.")
-				RenameSerie(info["seriesId"])
+					print("⏳ Rinominando l'episodio.")
+					RenameSerie(info["seriesId"])
 
-				if CHAT_ID != None or BOT_TOKEN != None:
-					print("📧 Inviando il messaggio via telegram.")
-					send_message(info)
+					if CHAT_ID != None or BOT_TOKEN != None:
+						print("✉️ Inviando il messaggio via telegram.")
+						send_message(info)
 
 			except Exception as ex:
 				print(f"🅴🆁🆁🅾🆁🅴: {ex}")
