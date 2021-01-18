@@ -102,7 +102,7 @@ def job():
 				print("⏳ Ricaricando la serie {}.".format(info["SonarrTitle"]))
 				RescanSerie(info["seriesId"])
 
-				print("⏳ Rinominando l'episodio.".)
+				print("⏳ Rinominando l'episodio.")
 				RenameSerie(info["seriesId"])
 
 				if CHAT_ID != None or BOT_TOKEN != None:
