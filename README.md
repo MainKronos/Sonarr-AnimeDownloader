@@ -1,3 +1,4 @@
+
 ![wallpaper](/documentation/images/wallpaper.jpg)
 # Sonarr-AnimeDownloader
 
@@ -9,7 +10,6 @@ Questo Docker Container funziona come un'estenzione di [Sonarr](https://sonarr.t
 Il Container si interfaccia con Sonarr per avere informazini riguardante gli anime mancanti sull'hard-disk, viene poi fatta una ricerca se sono presenti sul sito [AnimeWorld](https://www.animeworld.tv/), e se ci sono li scarica e li posiziona nella cartella indicata da Sonarr.
 
 L'utilizzo di _**Sonarr**_ è necessario.
-
 Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com/linuxserver/docker-sonarr)
 
 ### Supported Providers
@@ -22,9 +22,16 @@ Gli episodi di AnimeWorld vengono caricati in altri siti, alcuni di loro (I più
 4. [AnimeWorld_Server](https://www.animeworld.tv/)
 
 ## AGGIORNAMENTI IMPORTANTI
-```diff
-- WARNING - WARNING - WARNING - 
-```
+## versione `1.0.0`
+* Il **`table.json`** è completamente differente quindi **và riscritto da zero**.
+* Il **`table.json`** non usa più il nome degli anime di **AnimeWorld** ma il link della loro **pagina web**.
+* Il **`tableEditor.py`** **non** è più necessario (ma è sempre presente).
+* È stata aggiunta una **pagina web** per un inserimento più 'user friendly' di anime al **`table.json`**, si trova alla porta **`5000`**.
+* Aggiunto il supporto alla libreria **`animeworld`** per mantenere stabile l'intero progetto.
+* Aggiunta la gestione dell'eccezione **`DeprecatedLibrary(Exception)`**, sorge quando il sito AnimeWorld varia e quindi è necessaria una manutenzione per rimappare il sito.
+* Modificato il **log** del container, sono state aggiunte **più informazioni** e abbellimenti con le **Emoji**.
+* È stata modificata la gestione dei **Download** degli episodi, adesso vengono scaricati in maniera **sequenziale** e non più tutti insieme come prima.
+## versione `0.3.0`
 **La nuova versione `0.3.0` ha una diversa formattazione del file `table.json`, per convertire la vecchia versione in quella nuova basta solo avviare il nuovo file `tableEditor.py`.**
 
 Adesso è possibile aggiungere più stagioni di Sonarr riferite ad una di AnimeWorld (Funziona solo se la numerazione assoluta degli episodi di Sonarr combacia con quella di AnimeWorld).
@@ -36,6 +43,7 @@ docker run -d \
     --name=AnimeDownloader \
     -v /path/to/data:/script/json/ \
     -v /path/to/animeSeries:/tv \
+    -p {port}:5000 \
     --env ANIME_PATH="/path/to/animeSeriesLocal" \
     --env SONARR_URL='http://{url}:{port}' \
     --env API_KEY='1234567890abcdefghijklmn' \
@@ -55,6 +63,7 @@ Parametro | Necessario | Funzione
 `--name` | :heavy_multiplication_x: | Indica il nome del Container, può essere qualsiasi cosa
 `-v /tv` | :heavy_check_mark: | Posizione della libreria Anime su disco
 `-v /script/json/` | :heavy_check_mark: | Contiene file di configurazione
+`-p {port}:5000` | :heavy_check_mark: | La porta per la pagina web
 `--env ANIME_PATH` | :heavy_check_mark: | Indica la posizione della cartella interna al Container di dove si trovano gli anime, vedi sotto per ulteriori informazioni
 `--env SONARR_URL` | :heavy_check_mark: | Url di Sonarr es. http://localhost:8989
 `--env API_KEY` | :heavy_check_mark: | Api key di sonarr, vedi sotto per ulteriori informazioni
@@ -90,12 +99,17 @@ tv
 Il programma, per funzionare, necessita di un file che si chiama `table.json`, si trova nella cartella `/script/json/` all'interno del Container. Questo file indica al programma a quale nome di AnimeWorld corrisponde il titolo della serie su Sonarr. Per esempio abbiamo che il titolo del nostro anime su AnimeWorld è `Sword Art Online 3: Alicization`, mentre su Sonarr è indicato come stagione 3 di `Sword Art Online`, tale informazione deve essere formattata (come mostrato qui sotto) e inserita nel file `table.json` in modo tale che il programma riesca a capire dove andare a cercare gli episodi su AnimeWorld.
 
 Nella stessa cartella `/script/json/` c'è un programma scritto in python che si chiama **`tableEditor.py`** che facilita l'inserimento di tali informazioni, (in caso di eliminazioni accidentale il file può essere scaricato anche da [qui](/config/json/tableEditor.py)). Questo script deve essere nella **stessa** cartella di `table.json` altimenti non funzionerà correttamente.
+
+**È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
 ```
 ...
 ├── script
-│   ├── main.py
+│   ├── app    ### Pagina Web
+│   │   ├── ...
+│   │  ...
+│   ├── main.py    ### Programma principale
 │   └── json
-│       ├── table.json
+│       ├── table.json    ### Tabella di conversione
 │       └── tableEditor.py
 ...        
 ```
@@ -105,16 +119,14 @@ In ogni caso la formattazione di come sono inserite le informazioni nel file `ta
 [
     ...
     {
-        "Sonarr": {
-            "title": "Sword Art Online",
-            "season": [
-                3
-            ]
-        },
-        "AnimeWorld": {
-            "title": [
-                "Sword Art Online 3: Alicization"
-            ]
+        "title": "Sword Art Online",
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/sword-art-online.N0onT"
+            ],
+            "2": [
+                "https://www.animeworld.tv/play/sword-art-online-2._NcG6"
+            ]     
         }
     },
     ...
@@ -139,23 +151,18 @@ TODO: da fare
 ### Una stagione di Sonarr comprende due stagioni su AnimeWorld
 ![Esempio](/documentation/images/AnimeWold_2serie.png)
 
-Per riuscire a dire al programma che una stagione di Sonarr sono due di AnimeWold basta aggiunge all'Array del titolo di AnimeWold per quella stagione di Sonarr anche il titolo di AnimeWold della seconda stagione.
+Per riuscire a dire al programma che una stagione di Sonarr sono due di AnimeWold basta aggiunge all'Array dei link di AnimeWold per quella stagione di Sonarr anche il link di AnimeWold della seconda stagione.
 
 Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sarebbe:
 ```
 [    
     ...
     {
-        "Sonarr": {
-            "title": "Ascendance of a Bookworm",
-            "season": [
-                1
-            ]
-        },
-        "AnimeWorld": {
-            "title": [
-                "Ascendance of a Bookworm",
-                "Ascendance of a Bookworm 2"
+        "title": "Ascendance of a Bookworm",
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/ascendance-of-a-bookworm.paCPb",
+                "https://www.animeworld.tv/play/ascendance-of-a-bookworm-2.Q0Rrm"
             ]
         }
     },
@@ -163,24 +170,8 @@ Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sareb
 ]
 ```
 
-Si può fare più comodamente anche con il `tableEditor.py` basta inserire:
-
-```
-Inserire titolo anime di Sonarr: Ascendance of a Bookworm
-Inserire la stagione dell'anime Ascendance of a Bookworm: 1
-Inserire titolo anime di AnimeWorld: Ascendance of a Bookworm
-L'anime Ascendance of a Bookworm (stagione 1) è stato aggiunto correttamente.
-
----------------------------------------------
-
-Inserire titolo anime di Sonarr: Ascendance of a Bookworm
-Inserire la stagione dell'anime Ascendance of a Bookworm: 1
-Inserire titolo anime di AnimeWorld: Ascendance of a Bookworm 2
-L'anime Ascendance of a Bookworm (stagione 1) è gia presente, e corrisponde a ['Ascendance of a Bookworm']
-Aggiungere il titolo Ascendance of a Bookworm 2 alla lista? (y/n): y
-
----------------------------------------------
-```
+**È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
+Per aggiungere un campo, in questo caso un nuovo link all'array, e sufficiente reinserire tutti i campi (come se si stesse riaggiungendo di nuovo lo stesso anime) e nel campo link inserire **soltanto** il secondo/terzo/ecc. link. 
 
 
 ## Roadmap
