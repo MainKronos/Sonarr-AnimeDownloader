@@ -21,7 +21,6 @@ def index():
 			"season": request.form['season'],
 			"link": request.form['link']
 		}
-		print(res, flush=True)
 		writeData(data)
 		return redirect(url_for('index'))
 	else:
