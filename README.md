@@ -102,6 +102,7 @@ Il programma, per funzionare, necessita di un file che si chiama `table.json`, s
 ![Tabella Di Conversione](/documentation/images/tabella_di_conversione.png)
 
 Nella stessa cartella `/script/json/` c'è un programma scritto in python che si chiama **`tableEditor.py`** che facilita l'inserimento di tali informazioni, (in caso di eliminazioni accidentale il file può essere scaricato anche da [qui](/config/json/tableEditor.py)). Questo script deve essere nella **stessa** cartella di `table.json` altimenti non funzionerà correttamente.
+**Dalla prossima versione il file non sarà più supportato.**
 ```
 ...
 ├── script
