@@ -1,2 +1,3 @@
-animeworld
+animeworld>=1.2.1
 schedule>=0.6.0
+flask
