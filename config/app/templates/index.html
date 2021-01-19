@@ -19,18 +19,28 @@
         <title>Tabella Di Conversione</title>
     </head>
     <body>
+
         <!-- Header -->
         <nav class="nav-extended dark">
             <div class="nav-wrapper">
                 <a href="#!" class="brand-logo center dark">Tabella Di Conversione</a>
             </div>
             <div class="nav-content">
-                <a class="btn-floating btn-large halfway-fab waves-effect waves-light modal-trigger dark" href="#append_anime_modal">
+                <span class="nav-title hide-on-med-and-up"></span>
+                <a id="menu" class="btn btn-floating waves-effect waves-light btn-large halfway-fab modal-trigger dark" href="#append_anime_modal">
                     <i class="material-icons">add</i>
                 </a>
             </div>
         </nav>
+<!-- <a id="menu" class="waves-effect waves-light btn btn-floating" ><i class="material-icons">menu</i></a> -->
 
+        <!-- Tap Target Structure -->
+                <div class="tap-target" data-target="menu">
+                    <div class="tap-target-content">
+                        <h5>Aggiungi un Anime</h5>
+                        <p>Premi questo pulsante per mappare un Anime</p>
+                    </div>
+                </div>
 
 
         <!-- Modal Structure -->
@@ -39,13 +49,13 @@
                 <div class="modal-content">
                     <div class="row">
                         <div class="input-field col s6">
-                            <i class="material-icons prefix">movie</i>
+                            <i class="material-icons prefix dark">movie</i>
                             <input placeholder="Sword Art Online" id="title" name="title" type="text" class="validate" maxlength="300" autocomplete="off" required>
                             <label for="title">Nome Anime</label>
                             <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
                         </div>
                         <div class="input-field col s6">
-                            <i class="material-icons prefix">turned_in</i>
+                            <i class="material-icons prefix dark">turned_in</i>
                             <input placeholder="1" id="season" name="season" type="text" class="validate" pattern="[0-9]+" autocomplete="off" required>
                             <label for="season">Stagione</label>
                             <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
@@ -53,7 +63,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <i class="material-icons prefix">link</i>
+                            <i class="material-icons prefix dark">link</i>
                             <input placeholder="https://www.animeworld.tv/play/sword-art-online.N0onT" id="link" name="link" type="text" class="validate" pattern="https:\/\/www\.animeworld\.tv\/play\/.+" autocomplete="off" required>
                             <label for="link">Link</label>
                             <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
@@ -61,11 +71,12 @@
                     </div>
                     
                 </div>
-                <div class="modal-footer">
-                    <!-- <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a> -->
-                    <button class="btn waves-effect waves-light dark" type="submit">Submit
-                        <i class="material-icons right">send</i>
-                    </button>
+                <div class="modal-footer row">
+                    <div class="col s12 right-align">
+                        <button class="btn waves-effect waves-light dark" type="submit">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -108,6 +119,8 @@
                 </ul> 
             </div>
         </div>
+
+
         <!--JavaScript at end of body for optimized loading-->
         <script type="text/javascript" src="static/js/materialize.min.js"></script>
         <script type="text/javascript" src="static/js/my.js"></script>

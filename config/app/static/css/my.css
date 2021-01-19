@@ -3,6 +3,11 @@
 html {
 	color: rgba(255,255,255,0.9);
 	background-color: #121212 !important;
+	overflow-x: hidden;
+}
+
+body{
+	height: 100vh ;
 }
 
 /*.dark{
@@ -64,10 +69,37 @@ nav.dark{
 	color: rgba(255,255,255,0.5);
 }
 
-.dark.helper-text{
-	color: rgba(255,255,255,0.5);
+input::placeholder, .dark.helper-text{
+	color: rgba(255,255,255,0.4);
 }
 
 input{
-	color: rgba(255,255,255,0.6);
+	color: rgba(255,255,255,0.8);
+}
+
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+ color: #9FA8DA !important;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+	border-bottom: 1px solid #9FA8DA !important;
+	box-shadow: 0 1px 0 0 #9FA8DA !important;
+}
+
+.dark.material-icons.prefix.active{
+	color: #9FA8DA !important;
+}
+
+/*#########################*/
+
+.tap-target{
+	background-color: #9FA8DA !important;
+	overflow: hidden !important;
+}
+
+.tap-target-wave::before, .tap-target-wave::after {
+	background-color: #2c2c2c !important;
 }
