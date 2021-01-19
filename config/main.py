@@ -1,20 +1,15 @@
 #!/usr/bin/python3
 
+import animeworld as aw
 import requests
-from bs4 import BeautifulSoup
 import os
-import youtube_dl
 import re
 import json
-import shutil
 import schedule
 import time
-from clint.textui import progress
-import sys
-
-cookies = {}
-# cookies = {'AWCookietest': 'cf18e136cadc69aaf3ee7ce302766ae3'}
-HDR = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'}
+import shutil
+import threading
+from app import app
 
 ANIME_PATH = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
@@ -33,19 +28,16 @@ AnimeWorld_Server = "AnimeWorld Server"
 #####
 
 
-start = """
-┌----------------------------------{}----------------------------------┐
-|                 _                  _____                _                 _            |
-|     /\\         (_)                |  __ \\              | |               | |           |
-|    /  \\   _ __  _ _ __ ___   ___  | |  | | _____      _| | ___   __ _  __| | ___ _ __  |
-|   / /\\ \\ | '_ \\| | '_ ` _ \\ / _ \\ | |  | |/ _ \\ \\ /\\ / / |/ _ \\ / _` |/ _` |/ _ \\ '__| |
-|  / ____ \\| | | | | | | | | |  __/ | |__| | (_) \\ V  V /| | (_) | (_| | (_| |  __/ |    |
-| /_/    \\_\\_| |_|_|_| |_| |_|\\___| |_____/ \\___/ \\_/\\_/ |_|\\___/ \\__,_|\\__,_|\\___|_|    |
-|                                                                                        |
-└----------------------------------------------------------------------------------------┘
-""".format(time.strftime("%d %b %Y %H:%M:%S"))
-
-divider = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+start = f"┌------------------------------------{time.strftime('%d %b %Y %H:%M:%S')}------------------------------------┐" + r"""
+|                 _                _____                      _                 _            |
+|     /\         (_)              |  __ \                    | |               | |           |
+|    /  \   _ __  _ _ __ ___   ___| |  | | _____      ___ __ | | ___   __ _  __| | ___ _ __  |
+|   / /\ \ | '_ \| | '_ ` _ \ / _ \ |  | |/ _ \ \ /\ / / '_ \| |/ _ \ / _` |/ _` |/ _ \ '__| |
+|  / ____ \| | | | | | | | | |  __/ |__| | (_) \ V  V /| | | | | (_) | (_| | (_| |  __/ |    |
+| /_/    \_\_| |_|_|_| |_| |_|\___|_____/ \___/ \_/\_/ |_| |_|_|\___/ \__,_|\__,_|\___|_|    |
+|                                                                                            |
+└--------------------------------------------------------------------------------------------┘
+""".format()
 
 
 def main():
@@ -74,395 +66,148 @@ def main():
 
 	if ANIME_PATH != None or SONARR_URL != None or API_KEY !=None:
 		print("\n☑️ Le variabili d'ambiente sono state inserite correttamente.\n")
+
+		print("\nAVVIO SERVER")
+		job_thread = threading.Thread(target=server)
+		job_thread.start()
+
+		time.sleep(1)
 		job() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
-		schedule.every(SCHEDULE_MINUTES).minutes.do(job)	
+		schedule.every(SCHEDULE_MINUTES).minutes.do(run_threaded, job)
+
+def server():
+	app.run(debug=False, host='0.0.0.0')		
+
+def run_threaded(job_func):
+	job_thread = threading.Thread(target=job_func)
+	job_thread.start()
+	
 
 def job():
-	print("\n╭---------------------------------「{}」---------------------------------╮\n".format(time.strftime("%d %b %Y %H:%M:%S")))
+	divider = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+	
+	print("\n╭-----------------------------------「{}」-----------------------------------╮\n".format(time.strftime("%d %b %Y %H:%M:%S")))
 
-	try:
-		series = get_missing_episodes()
-		if len(series)!=0:
-			seriesFull = converting(series)
-			anime = AnimeWorld(seriesFull)
-			if len(anime)!=0:
-				animeUp = dowload_file(anime)
-				move_file(animeUp)
-				seriesIds = getSeriesID(animeUp)
+	raw_series = get_missing_episodes()
+	if len(raw_series)!=0:
+		series = converting(raw_series)
 
-				RescanSeries(seriesIds)
-				time.sleep(10*len(seriesIds))
-				RenameSeries(seriesIds)
+		for info in series:
+			print("\n", divider)
 
-				if CHAT_ID != None and BOT_TOKEN != None:
-					send_message(anime)
-		else:
-			print("\nNon c'è nessun episodio da cercare.\n")
-	except Exception as e:
-		print("🅴🆁🆁🅾🆁🅴: {}".format(e))
-	finally:
-		nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
-		print("\n╰---------------------------------「{}」---------------------------------╯\n".format(nextStart))
+			try:
+				print("🔎 Ricerca anime {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
 
-def getSeriesID(series):
-	ids = []
-	for info in series:
-		ids.append(info["seriesId"])
-	return ids
+				print("🔎 Ricerca degli episodi per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
+				episodi = fixEps(epsArr)
+
+				print("⚙️ Verifica se l'episodio {} è disponibile.".format(info["episode"]))
+				ep = None
+				for episodio in episodi:
+					if episodio.number == str(info["episode"]):
+						ep = episodio
+						print("✔️ L'episodio è disponibile.")
+						break
+				else:
+					print("✖️ L'episodio NON è ancora uscito.")
+
+				if ep != None: # Se l'episodio è disponibile
+					print("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
+					title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["episode"]}'
+					if ep.number == str(info["episode"]):
+						fileLink = ep.links[0]
+						title = fileLink.sanitize(title) # Sanitizza il titolo
+						if fileLink.download(title): 
+							print("✔️ Dowload Completato.")
+
+					print("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["episode"], info["path"]))
+					if move_file(title, info["path"]): 
+						print("✔️ Episodio spostato.")
+
+					print("⏳ Ricaricando la serie {}.".format(info["SonarrTitle"]))
+					RescanSerie(info["seriesId"])
+
+					time.sleep(1)
+
+					print("⏳ Rinominando l'episodio.")
+					RenameSerie(info["seriesId"])
+
+					if CHAT_ID != None or BOT_TOKEN != None:
+						print("✉️ Inviando il messaggio via telegram.")
+						send_message(info)
+
+			except Exception as ex:
+				print(f"🅴🆁🆁🅾🆁🅴: {ex}")
+			finally:
+				print(divider, "\n")
+
+	else:
+		print("\nNon c'è nessun episodio da cercare.\n")
+
+	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
+	print("\n╰-----------------------------------「{}」-----------------------------------╯\n".format(nextStart))
+
+def fixEps(epsArr): # accorpa 2 serie di animeworld
+	up = 0 # numero da aggiungere per rendere consecutivi gli episodi di varie stagioni
+	ret = []
+
+	for eps in epsArr:
+		for ep in eps:
+			ep.number = str(int(ep.number) + up)
+			ret.append(ep)
+		up += int(eps[-1].number)
+
+	return ret
+
 
 def converting(series):
 	json_location = "/script/json/table.json"
 
 	if not os.path.exists(json_location):
-		f = open(json_location, 'w')
-		f.write(json.dumps(list([]), indent=4))
-		f.close()
+		raise Exception("Il file table.json non esiste.")
 
 	f = open(json_location, 'r')
 	table = json.loads(f.read())
 	f.close()
-	seriesNew = [] 
 
-	for info in series:
+	res = []
+
+	for anime in series:
 		for row in table:
-			if row["Sonarr"]["title"] == info["SonarrTitle"]:
-				if(not isinstance(row["Sonarr"]["season"], list)):
-					raise Exception("Il database è formattato nel vecchio formato, per convertirlo basta solo avviare 'tableEditor.py'")
-
-				if(info["season"] in row["Sonarr"]["season"]):
-					info["AnimeWorldTitle"] = row["AnimeWorld"]["title"]
-					seriesNew.append(info)
+			if row["title"] == anime["SonarrTitle"]:
+				if str(anime["season"]) in row["seasons"].keys():
+					anime["AnimeWorldLinks"] = list(row["seasons"][str(anime["season"])])
+					res.append(anime)
 					break
 		else:
-			print("La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(info["season"], info["SonarrTitle"]))
 
+			print("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(anime["season"], anime["SonarrTitle"]))
 
-	return seriesNew
+	return res
 
-### AnimeWorld #############################################################################################################
-
-def get_anime_link(info):
-	anime_link = []
-	print("Ricerca anime link per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
-	for n in range(len(info["AnimeWorldTitle"])):
-		search = "https://www.animeworld.tv/search?keyword={}".format(info["AnimeWorldTitle"][n].replace(" ", "%20"))
-		sb_get = requests.get(search, headers = HDR, cookies=cookies)
-
-		if sb_get.status_code == 200:
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-			page_result = soupeddata.find("div", { "class" : "film-list" }).find_all("a", { "class" : "name" })
-
-			for x in page_result:
-				if x.get_text() == info["AnimeWorldTitle"][n]:
-					link = "https://www.animeworld.tv" + x.get("href")
-					anime_link.append(link)
-					break
-			else:
-				print("L'anime {} non è stato trovato su AnimeWorld.".format(info["AnimeWorldTitle"][n]))
-		else:
-			print("Accesso negato alla pagina {}.".format(search))
-
-	return anime_link
-
-def get_episode_links(info, anime_link):
-	episode_links = {}
-	providers = {}
-	print("Ricerca episode link per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
-	max_eps = 0
-	for n in range(len(anime_link)):
-		sb_get = requests.get(anime_link[n], headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-
-			if soupeddata.find("img", {"id": "unavailable"}) != None:
-				print(f"La stagione {str(info['season'])} della serie {info['SonarrTitle']} non è ancora disponibile")
-				continue
-
-
-			### providers ###
-			providerName = soupeddata.find("span", { "class" : "tabs" }).find_all("span", { "class" : "tab" })
-			# providers = {}
-			for name in providerName:
-				providers[name.get_text()] = name["data-name"]
-						   # {nome         : id}
-
-			absAlert = False  # Stampa un avviso se viene usata la numerazione assoluta degli episodi
-			for idProvider in providers.values():
-
-				# print(idProvider)
-				epBox = soupeddata.find("div", { "class" : "server", "data-name": str(idProvider)})
-				# ep_links = epBox.find_all("a", { "data-toggle" : "tooltip" })
-				ep_links = epBox.find_all("a")
-
-				R_Episodio = info["episode"]
-
-				if n < len(anime_link)-1: # nel caso in qui 2 stagioni animeWorld corrispondono ad una di Sonarr
-					max_eps = len(ep_links)
-				else: # Le due condizione non possono stare insieme
-					
-					if len(ep_links) > info["maxEpisode"]: 
-						R_Episodio = info["absEpisode"]  # Se il numero degli episodi è maggiore a quello previsto allora usa il numero assoluto
-						absAlert = True
-
-				for x in ep_links:
-					# print(max_eps, int(x.get_text()), max_eps + int(x.get_text()))
-
-					if (int(x.get_text()) == R_Episodio and n == 0) or ((max_eps + int(x.get_text())) == R_Episodio and n != 0):
-						episode_links[idProvider] = "https://www.animeworld.tv" + x.get("href")
-						break
-
-			if(absAlert): 
-				print("Attenzione!!! Il programma sta usando la numerazione assoluta degli episodi, il risultato potrebbe non corrispondere.")
-
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(anime_link[n]))
-
-	return episode_links, providers
-
-def get_mp4_link(info, episode_links, providers):
-	print("Ricerca mp4 link per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], str(info["season"]), str(info["episode"])))
-	if VVVVID in providers and '3' in episode_links: # id = 26
-		providerID = providers["VVVVID"]
-		episode_link = episode_links[providerID]
-
-		print("\nIl file si trova su {}".format("𝐕𝐕𝐕𝐕𝐈𝐃"))
-
-		anime_id = episode_link.split("/")[-1]
-		external_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
-
-		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			sb_get = requests.get(external_link, headers = HDR, cookies=cookies)
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-			if sb_get.status_code == 200:
-				external = True
-				
-				raw = soupeddata.find("a", { "class" : "VVVVID-link" })
-
-				mp4_link = raw.get("href")
-			else:
-				raise Exception(("Accesso negato alla pagina {}.".format(external_link)))
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(episode_link))
-
-	elif YouTube in providers and '4' in episode_links: # id = 25
-		providerID = providers["YouTube"]
-		episode_link = episode_links[providerID]
-
-		print("\nIl file si trova su {}".format("𝐘𝐨𝐮𝐓𝐮𝐛𝐞"))
-
-		anime_id = episode_link.split("/")[-1]
-		external_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
-
-		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			sb_get = requests.get(external_link, headers = HDR, cookies=cookies)
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-			if sb_get.status_code == 200:
-				external = True
-				yutubelink_raw = re.findall("https://www.youtube.com/embed/...........", soupeddata.prettify())[0]
-				mp4_link = yutubelink_raw.replace("embed/", "watch?v=")
-
-			else:
-				raise Exception("Accesso negato alla pagina {}.".format(external_link))
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(episode_link))
-
-	elif AnimeWorld_Server in providers and '9' in episode_links: # id = 15
-		providerID = providers["AnimeWorld Server"]
-		episode_link = episode_links[providerID]
-
-		print("\nIl file si trova su {}".format("𝐀𝐧𝐢𝐦𝐞𝐖𝐨𝐫𝐥𝐝 𝐒𝐞𝐫𝐯𝐞𝐫"))
-
-		anime_id = episode_link.split("/")[-1]
-		video_link = "https://www.animeworld.tv/api/episode/ugly/serverPlayerAnimeWorld?id={}".format(anime_id)
-		
-
-		sb_get = requests.get(video_link, headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-			external = False
-			raw_ep = soupeddata.find("video", { "id" : "video-player" }).find("source", { "type" : "video/mp4" })
-			mp4_link = raw_ep.get("src")
-			info["HDR"]["Referer"] = video_link
-			# print(mp4_link)
-			
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(episode_link))
-
-	elif Streamtape in providers and '8' in episode_links: # id = 39 
-		providerID = providers["Streamtape"]
-		episode_link = episode_links[providerID]
-
-		print("\nIl file si trova su {}".format("𝐒𝐭𝐫𝐞𝐚𝐦𝐭𝐚𝐩𝐞"))
-
-		sb_get = requests.get(episode_link, headers = HDR, cookies=cookies)
-		if sb_get.status_code == 200:
-			soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-			external = False
-			site_link = soupeddata.find("div", { "id" : "external-downloads" }).find("a", { "class" : "btn-streamtape" }).get("href")
-
-			sb_get = requests.get(site_link, headers = HDR, cookies=cookies)
-			if sb_get.status_code == 200:
-
-				soupeddata = BeautifulSoup(sb_get.content, "html.parser")
-
-				mp4_link = "https://" + re.search(r"document\.getElementById\(\'vid\'\+\'eolink\'\)\.innerHTML = \"\/\/(.+)\'\;", soupeddata.prettify()).group(1)
-				mp4_link = mp4_link.replace(" ", "").replace("+", "").replace("\'", "").replace("\"", "")
-
-			else:
-				raise Exception("Accesso negato alla pagina {}.".format(site_link))
-
-		else:
-			raise Exception("Accesso negato alla pagina {}.".format(episode_link))
-
-
-	elif Beta_Server in providers: # id = 10
-		print("\nIl file si trova su {}".format("Beta Server"))
-
-		external = False
-		print("Il download da {} non è ancora disponibile.".format("𝐁𝐞𝐭𝐚 𝐒𝐞𝐫𝐯𝐞𝐫"))
-
+def move_file(title, path):
+	
+	file = title
+	if os.path.isfile(file+'.mp4'):
+		file = file + '.mp4'
+	elif os.path.isfile(file+'.mkv'):
+		file = file + '.mkv'
 	else:
-		print("Il download da {} non è ancora disponibile.".format("qualche parte"))
+		return False
 
-	return mp4_link, external
+	destinationPath = path
+	currentPath = os.getcwd()
 
-def AnimeWorld(series):
-	seriesNew = []
-	for info in series:
-		print("\n", divider)
+	source = os.path.join(currentPath, file)
+	destination = os.path.join(destinationPath, file)
 
-		# anime_link = []
-		# episode_links = {}
-		# mp4_link = None
-		# external = False
+	if not os.path.exists(destinationPath):
+		os.makedirs(destinationPath)
 
-		# providers = {}
-
-		### Get anime_link ##################################################################################
-		anime_link = get_anime_link(info)
-		
-		if len(anime_link) == 0:
-			print(divider, "\n")
-			continue
-
-		### Get episode_links ##################################################################################
-		episode_links, providers = get_episode_links(info, anime_link)
-
-		if len(episode_links) == 0:
-			print("L'episodio {} dell'anime {} non è ancora uscito.".format(str(info["episode"]), info["SonarrTitle"]))
-			info = None
-			print(divider, "\n")
-			continue
-
-		### Get mp4_link ##################################################################################
-		try:
-			mp4_link, external= get_mp4_link(info, episode_links, providers)
-		except Exception as e:
-			print("🅴🆁🆁🅾🆁🅴: {}".format(e))
-			continue
-
-		if mp4_link != None:
-			info["link"]["url"] = mp4_link
-			info["link"]["external"] = external
-			seriesNew.append(info)
-		else:
-			print("Non è stato trovato nessun link per il download dell'episodio {} dell'anime {} (season {})".format(str(info["episode"]), info["SonarrTitle"], str(info["season"])))
-		
-		print(divider, "\n")
-##############
-	return seriesNew
-
-def dowload_file(series):
-	print("\n◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢𝔻𝕆𝕎𝕃𝕆𝔸𝔻 𝔼ℙ𝕀𝕊𝕆𝔻𝕀◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥\n")
-	print("⏳ Inizio download di {} episodi".format(len(series)))
-	serieEdit = []
-	for info in series:
-		episode = "{nome} - S{season}E{episode}".format(nome=info["SonarrTitle"], season=str(info["season"]), episode=str(info["episode"]))
-		episode = episode.replace(":", " ")
-		episode = episode.replace("\\", " ")
-		episode = episode.replace("/", " ")
-		episode = episode.replace("?", " ")
-		episode = episode.replace('"', " ")
-		episode = episode.replace("<", " ")
-		episode = episode.replace(">", " ")
-		episode = episode.replace("|", " ")
-		episode = episode.replace("*", " ")
-		episode = episode.replace("…", " ")
-		episode = episode.replace("’", " ")
-		info["fileName"] = episode
-		serieEdit.append(info)
-		print("Episodio {} in download...".format(episode))
-		if info["link"]["external"]:
-			# youtube-dl
-			class MyLogger(object):
-				def debug(self, msg):
-					pass
-
-				def warning(self, msg):
-					pass
-
-				def error(self, msg):
-					print(msg)
-
-			def my_hook(d):
-				if d['status'] == 'finished':
-					print('Dowload Completato.')
-
-			ydl_opts = {
-				# 'format': '22/best[height<=720]',
-				'outtmpl': episode+'.%(ext)s',
-				'logger': MyLogger(),
-				'progress_hooks': [my_hook],
-			}
-			with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-				ydl.download([info["link"]["url"]])
-		else:
-			# normal download
-			r = requests.get(info["link"]["url"], headers = info["HDR"], stream = True)
-
-			if r.status_code == 200:
-				# download started 
-				with open(episode+'.mp4', 'wb') as f:
-					total_length = int(r.headers.get('content-length'))
-					for chunk in r.iter_content(chunk_size = 1024*1024):
-						if chunk: 
-							f.write(chunk)
-							f.flush()
-				print("✔️ Dowload Completato.")
-			else:
-				print(f"Impossibile scaricare {episode}.")
-				continue
-	else:
-		return serieEdit
-
-def move_file(series):
-	for info in series:
-		file = info["fileName"]
-		if os.path.isfile(file+'.mp4'):
-			file = file + '.mp4'
-		elif os.path.isfile(file+'.mkv'):
-			file = file + '.mkv'
-		else:
-			continue
-
-		destinationPath = info["path"]
-		currentPath = os.getcwd()
-		print("⏳ Spostamento {}.".format(file))
-
-		source = os.path.join(currentPath, file)
-		destination = os.path.join(destinationPath, file)
-
-		if not os.path.exists(destinationPath):
-			os.makedirs(destinationPath)
-
-		shutil.move(source, destination)
-		print("✔️ File {} spostato.".format(file))
+	shutil.move(source, destination)
+	return True
 
 #### Sonarr ############################################################################################################
 
@@ -481,16 +226,13 @@ def get_missing_episodes():
 		info = {}
 		info["seriesId"] = serie["seriesId"]
 		info["SonarrTitle"] = serie["series"]["title"]
-		info["AnimeWorldTitle"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
+		info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
 		info["season"] = int(serie["seasonNumber"])
 		info["episode"] = int(serie["episodeNumber"])
-		info["absEpisode"] = int(serie["absoluteEpisodeNumber"])  # il numero assoluto dell'episodio
-		info["maxEpisode"] = getMaxEpisode(serieId=info["seriesId"], season=info["season"])
+		# info["absEpisode"] = int(serie["absoluteEpisodeNumber"])  # il numero assoluto dell'episodio
+		# info["maxEpisode"] = getMaxEpisode(serieId=info["seriesId"], season=info["season"])
 		info["episodeTitle"] = serie["title"]
 		info["path"] = os.path.join(ANIME_PATH, serie["series"]["path"].split("/")[-1])
-		info["link"] = {}
-		info["fileName"] = ""
-		info["HDR"] = dict(HDR)
 
 		series.append(info)
 
@@ -505,37 +247,31 @@ def getMaxEpisode(serieId, season):
 		if stagione["seasonNumber"] == season:
 			return stagione["statistics"]["totalEpisodeCount"]
 
-def RescanSeries(seriesIds):
-	print("RescanSeries start...")
-	for seriesId in seriesIds:
-		endpoint = "command"
-		url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-		data = {
-			"name": "RescanSeries",
-			"seriesId": seriesId
-		}
-		requests.post(url, json=data)
+def RescanSerie(seriesId):
+	endpoint = "command"
+	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	data = {
+		"name": "RescanSeries",
+		"seriesId": seriesId
+	}
+	requests.post(url, json=data)
 
-def RenameSeries(seriesIds):
-	print("RenameSeries start...")
-	seriesId = 87
-	time.sleep(60)
+def RenameSerie(seriesId):
 	endpoint = "command"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	data = {
 		"name": "RenameSeries",
-		"seriesIds": seriesIds
+		"seriesId": seriesId
 	}
 	requests.post(url, json=data)
 
 #### Telegram ###########################################################################################################
 
-def send_message(series):
-	for info in series:
-		text = "*Episode Dowloaded*\n{title} - {season}x{episode} - {episodeTitle}".format(title=info["SonarrTitle"], season=str(info["season"]), episode=str(info["episode"]), episodeTitle=info["episodeTitle"])
+def send_message(info):
+	text = "*Episode Dowloaded*\n{title} - {season}x{episode} - {episodeTitle}".format(title=info["SonarrTitle"], season=str(info["season"]), episode=str(info["episode"]), episodeTitle=info["episodeTitle"])
 
-		url ="https://api.telegram.org/bot{}/sendMessage?text={}&chat_id={}&parse_mode=Markdown".format(BOT_TOKEN, text, CHAT_ID)
-		requests.get(url)
+	url ="https://api.telegram.org/bot{}/sendMessage?text={}&chat_id={}&parse_mode=Markdown".format(BOT_TOKEN, text, CHAT_ID)
+	requests.get(url)
 
 if __name__ == '__main__':
 	main()

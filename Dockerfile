@@ -20,13 +20,9 @@ COPY requirements.txt /tmp/
 
 RUN pip3 install -r /tmp/requirements.txt
 
-COPY config/json/tableEditor.py /script/json/
+COPY config/json/* /script/json/
 COPY config/main.py /script/
-
-# COPY cron_anime_downloader /etc/cron.d/cron_anime_downloader
-# RUN chmod 0644 /etc/cron.d/cron_anime_downloader
-# RUN crontab /etc/cron.d/cron_anime_downloader
-# RUN touch /var/log/cron.log
+COPY config/app/. /script/app/
 
 RUN locale-gen it_IT.UTF-8
 ENV LANG it_IT.UTF-8

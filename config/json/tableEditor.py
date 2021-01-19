@@ -4,57 +4,40 @@ import os
 
 def main():
 
-	fixData()
+	if not os.path.exists("table.json"):
+		f = open("table.json", 'w')
+		f.write(json.dumps(list([]), indent=4))
+		f.close()
 
 	while True:
-
-		if not os.path.exists("table.json"):
-			f = open("table.json", 'w')
-			f.write(json.dumps(list([]), indent=4))
-			f.close()
 
 		f = open("table.json", 'r')
 		table = json.loads(f.read())
 		f.close()
 
 		SonarrTitle = input("Inserire titolo anime di Sonarr: ")
-		season = int(input("Inserire la stagione dell'anime {}: ".format(SonarrTitle)))
-		AnimeWorldTitle = input("Inserire titolo anime di AnimeWorld: ")
+		season = input("Inserire la stagione dell'anime {}: ".format(SonarrTitle))
+		AnimeWorldlink = input("Inserire il link della serie di AnimeWorld: ")
 
-		for row in range(len(table)):
-			if table[row]["Sonarr"]["title"] == SonarrTitle and season in table[row]["Sonarr"]["season"]:
-				print("L'anime {} (stagione {}) è gia presente, e corrisponde a {}".format(SonarrTitle, season, table[row]["AnimeWorld"]["title"]))
-				yn = input(f"Aggiungere il titolo {AnimeWorldTitle} alla lista? (y/n): ")
-				if yn == 'y':
-					table[row]["AnimeWorld"]["title"].append(AnimeWorldTitle)
-					break
+		for anime in table:
+			if SonarrTitle == anime["title"]: # Se esiste già l'anime nella tabella
+
+				if season in anime["seasons"]: # Se esiste già la stagione
+					anime["seasons"][season].append(AnimeWorldlink) # aggiunge un'altro link
+					print(f"\n-> È stata aggiunto un altro link per la stagione {season} della serie {SonarrTitle}.")
 				else:
-					break
+					anime["seasons"][season] = [AnimeWorldlink] # inizializza una nuova stagione
+					print(f"\n-> È stata aggiunta la stagione {season} per la serie {SonarrTitle}.")
 
-			if table[row]["Sonarr"]["title"] == SonarrTitle and AnimeWorldTitle in table[row]["AnimeWorld"]["title"]:
-				print("L'anime {} corrispondente a {} (AnimeWorld) è gia presente".format(SonarrTitle, table[row]["AnimeWorld"]["title"]))
-				yn = input(f"Aggiungere la sagione {season} alla lista? (y/n): ")
-				if yn == 'y':
-					table[row]["Sonarr"]["season"].append(season)
-					break
-				else:
-					break
+				break
+		else: # se non è stato trovato nessun anime
+			table.append({
+				"title": SonarrTitle,
+				"seasons": {season: [AnimeWorldlink]}
+			})
+			print(f"\n-> È stata aggiunta la serie {SonarrTitle}.")
 
-		else:
-			newBlock = {
-				"Sonarr": {
-					"title": SonarrTitle,
-					"season": [season]
-				},
-				"AnimeWorld": {
-					"title": [AnimeWorldTitle]
-				}
-			}
-
-			table.append(newBlock)
-			print("L'anime {} (stagione {}) è stato aggiunto correttamente.".format(SonarrTitle, season))
-
-		table.sort(key=myOrder)
+		table.sort(key=myOrder) # Riordina la tabella in ordine alfabetico
 
 		f = open("table.json", 'w')
 		f.write(json.dumps(table, indent=4))
@@ -64,20 +47,7 @@ def main():
 		print("\n---------------------------------------------\n")
 
 def myOrder(serieInfo):
-	return serieInfo["Sonarr"]["title"]
-
-def fixData():
-	f = open("table.json", 'r')
-	table = json.loads(f.read())
-	f.close()
-
-	for row in table:
-		if not isinstance(row["Sonarr"]["season"], list):
-			row["Sonarr"]["season"] = [row["Sonarr"]["season"]]
-
-	f = open("table.json", 'w')
-	f.write(json.dumps(table, indent=4))
-	f.close()
+	return serieInfo["title"]
 
 if __name__ == '__main__':
 	main()
