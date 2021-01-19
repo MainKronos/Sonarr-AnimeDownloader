@@ -25,7 +25,7 @@ Gli episodi di AnimeWorld vengono caricati in altri siti, alcuni di loro (I più
 ## versione `1.0.0`
 * Il **`table.json`** è completamente differente quindi **và riscritto da zero**.
 * Il **`table.json`** non usa più il nome degli anime di **AnimeWorld** ma il link della loro **pagina web**.
-* Il **`tableEditor.py`** **non** è più necessario (ma è sempre presente).
+* Il **`tableEditor.py`** **non** è più necessario (ma è sempre presente e non verrà più supportato).
 * È stata aggiunta una **pagina web** per un inserimento più 'user friendly' di anime al **`table.json`**, si trova alla porta **`5000`**.
 * Aggiunto il supporto alla libreria **`animeworld`** per mantenere stabile l'intero progetto.
 * Aggiunta la gestione dell'eccezione **`DeprecatedLibrary(Exception)`**, sorge quando il sito AnimeWorld varia e quindi è necessaria una manutenzione per rimappare il sito.
