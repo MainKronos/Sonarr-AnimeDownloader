@@ -1,8 +1,130 @@
 [
     {
-        "title": "The Promised Neverland",
         "seasons": {
-            "1": ["https://www.animeworld.tv/play/the-promised-neverland-2.HPGKr"]
-        }
+            "4": [
+                "https://www.animeworld.tv/play/lattacco-dei-giganti-4.OH0AI"
+            ]
+        },
+        "title": "Attack on Titan"
+    },
+    {
+        "seasons": {
+            "2": [
+                "https://www.animeworld.tv/play/beastars-2.Jdlq8"
+            ]
+        },
+        "title": "Beastars"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/jaku-chara-tomozaki-kun.RDPHq"
+            ]
+        },
+        "title": "Bottom-Tier Character Tomozaki"
+    },
+    {
+        "seasons": {
+            "2": [
+                "https://www.animeworld.tv/play/cells-at-work-2.pE6uS"
+            ]
+        },
+        "title": "Cells at Work!"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/cells-at-work-code-black.w4Eor"
+            ]
+        },
+        "title": "Cells at Work! Code Black"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/higurashi-no-naku-koro-ni-2020.DoJuQ"
+            ]
+        },
+        "title": "Higurashi: When They Cry \u2013 GOU"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/horimiya.Mse3-"
+            ]
+        },
+        "title": "Horimiya"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/kemono-jihen.xb1V1"
+            ]
+        },
+        "title": "Kemono Jihen"
+    },
+    {
+        "seasons": {
+            "3": [
+                "https://www.animeworld.tv/play/log-horizon-3.GGizW"
+            ]
+        },
+        "title": "Log Horizon"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/mushoku-tensei-isekai-ittara-honki-dasu.FwbNc"
+            ]
+        },
+        "title": "Mushoku Tensei: Jobless Reincarnation"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/otherside-picnic.RcFjZ"
+            ]
+        },
+        "title": "Otherside Picnic"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/kaifuku-jutsushi-no-yarinaoshi.ol0ZN"
+            ]
+        },
+        "title": "Redo Of Healer"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/tatoeba-last-dungeon-mae-no-mura-no-shounen-ga-joban-no-machi-de-kurasu-youna-monogatari.EqCF-"
+            ]
+        },
+        "title": "Suppose a Kid From the Last Dungeon Boonies Moved to a Starter Town?"
+    },
+    {
+        "seasons": {
+            "2": [
+                "https://www.animeworld.tv/play/tensei-shitara-slime-datta-ken-2.jregU"
+            ]
+        },
+        "title": "That Time I Got Reincarnated as a Slime"
+    },
+    {
+        "seasons": {
+            "2": [
+                "https://www.animeworld.tv/play/the-promised-neverland-2.HPGKr"
+            ]
+        },
+        "title": "The Promised Neverland"
+    },
+    {
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/wonder-egg-priority.8k2by"
+            ]
+        },
+        "title": "Wonder Egg Priority"
     }
 ]
