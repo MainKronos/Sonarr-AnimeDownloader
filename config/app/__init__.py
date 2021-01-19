@@ -1,3 +1,4 @@
+import re
 import json
 from flask import *
 app = Flask(__name__)
@@ -5,6 +6,11 @@ app = Flask(__name__)
 import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
+
+@app.template_filter()
+def msgSafe(msg):
+	msg = re.sub(r"[^a-zA-Z]", "", msg)
+	return msg
 
 @app.route('/favicon.ico') 
 def favicon(): 
