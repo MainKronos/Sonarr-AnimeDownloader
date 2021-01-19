@@ -8,6 +8,8 @@ import json
 import schedule
 import time
 import shutil
+import threading
+from app import app
 
 ANIME_PATH = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
@@ -64,8 +66,17 @@ def main():
 
 	if ANIME_PATH != None or SONARR_URL != None or API_KEY !=None:
 		print("\n☑️ Le variabili d'ambiente sono state inserite correttamente.\n")
+
 		job() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
-		schedule.every(SCHEDULE_MINUTES).minutes.do(job)	
+		schedule.every(SCHEDULE_MINUTES).minutes.do(run_threaded, job)
+
+		print("\nAVVIO SERVER")
+		app.run(debug=False, host='0.0.0.0')
+
+def run_threaded(job_func):
+    job_thread = threading.Thread(target=job_func)
+    job_thread.start()
+	
 
 def job():
 	divider = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "

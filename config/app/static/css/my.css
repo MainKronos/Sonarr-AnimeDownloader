@@ -1,0 +1,73 @@
+/*#9FA8DA*/
+
+html {
+	color: rgba(255,255,255,0.9);
+	background-color: #121212 !important;
+}
+
+/*.dark{
+	background-color: rgba(0,0,0,0);
+	border-color: rgba(0,0,0,0);
+}*/
+
+.dark.collapsible-body, .dark.collapsible-header{
+	background-color: #242424 !important;
+	border-color: #121212 !important;
+	color: rgba(255,255,255,0.5) !important;
+}
+
+.indicator{
+	background-color: rgba(255,255,255,0.1) !important;
+}
+
+.active{
+	background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.dark.tabs, .dark.collection-item{
+	background-color: rgba(0,0,0,0) !important;
+	border-color: rgba(0,0,0,0) !important;
+	color: rgba(255,255,255,0.5) !important;
+}
+
+.tabs a{
+	color: #9FA8DA !important;
+	border-color: rgba(0,0,0,0) !important;
+}
+
+.dark.collection-item:hover{
+	color: #9FA8DA !important;
+}
+
+.dark.tabs a:hover{
+	background-color: rgba(159, 168, 218, 0.2) !important;
+}
+
+/*#################################*/
+nav.dark{
+	background-color: #212121 !important;
+}
+
+.dark.brand-logo{
+	color: rgba(255,255,255,0.8) !important;
+}
+
+.dark.btn-floating, .dark.btn{
+	background-color: #9FA8DA !important;
+}
+
+/*##########################*/
+
+.dark .modal-content, .dark .modal-footer, .modal {
+	background-color: #2c2c2c !important;
+	border-color: #2c2c2c !important;
+	color: rgba(255,255,255,0.5);
+}
+
+.dark.helper-text{
+	color: rgba(255,255,255,0.5);
+}
+
+input{
+	color: rgba(255,255,255,0.6);
+}

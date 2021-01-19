@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="static/css/materialize.css"  media="screen,projection"/>
+
+        <link type="text/css" rel="stylesheet" href="static/css/my.css" media="screen,projection"/>
+        
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <title>Tabella Di Conversione</title>
+    </head>
+    <body>
+        <!-- Header -->
+        <nav class="nav-extended dark">
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo center dark">Tabella Di Conversione</a>
+            </div>
+            <div class="nav-content">
+                <a class="btn-floating btn-large halfway-fab waves-effect waves-light modal-trigger dark" href="#append_anime_modal">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>
+        </nav>
+
+
+
+        <!-- Modal Structure -->
+        <div id="append_anime_modal" class="modal dark">
+            <form class="col s12" method="post" action="/">
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">movie</i>
+                            <input placeholder="Sword Art Online" id="title" name="title" type="text" class="validate" maxlength="50" autocomplete="off" required>
+                            <label for="title">Nome Anime</label>
+                            <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
+                        </div>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">turned_in</i>
+                            <input placeholder="1" id="season" name="season" type="text" class="validate" pattern="[0-9]+" autocomplete="off" required>
+                            <label for="season">Stagione</label>
+                            <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">link</i>
+                            <input placeholder="https://www.animeworld.tv/play/sword-art-online.N0onT" id="link" name="link" type="text" class="validate" pattern="https:\/\/www\.animeworld\.tv\/play\/.+" autocomplete="off" required>
+                            <label for="link">Link</label>
+                            <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <!-- <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a> -->
+                    <button class="btn waves-effect waves-light dark" type="submit">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+
+        <div class="container">
+            <div class="section">
+                <br>
+            </div>
+            <div class="section">
+                <ul class="collapsible popout">
+                    {% for info in infos %}
+                    <li>
+                        <div class="collapsible-header dark"><i class="material-icons">movie</i>{{ info.title }}</div>
+                        <div class="collapsible-body dark">
+                            <ul class="tabs dark">
+                                {% for stagione in info.seasons %}
+
+                                <li class="tab"><a href="#{{ stagione }}_{{ info.title | replace(' ', '_') }}">{{ stagione }}</a></li>
+
+                                {% endfor %}
+                            </ul>
+                            {% for stagione in info.seasons %}
+                            <div id="{{ stagione }}_{{ info.title | replace(' ', '_') }}">
+                                <div class="collection dark">
+                                    {% for link in info.seasons[stagione] %}
+
+                                    <!-- <li class="collection-item">Alvin</li> -->
+                                    <a href="{{ link }}" class="collection-item dark">{{ link }}</a>
+
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul> 
+            </div>
+        </div>
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="static/js/materialize.min.js"></script>
+        <script type="text/javascript" src="static/js/my.js"></script>
+    </body>
+</html>
