@@ -33,10 +33,10 @@ Gli episodi di AnimeWorld vengono caricati in altri siti, alcuni di loro (I più
 * Aggiunta la gestione dell'eccezione **`DeprecatedLibrary(Exception)`**, sorge quando il sito AnimeWorld varia e quindi è necessaria una manutenzione per rimappare il sito.
 * Modificato il **log** del container, sono state aggiunte **più informazioni** e abbellimenti con le **Emoji**.
 * È stata modificata la gestione dei **Download** degli episodi, adesso vengono scaricati in maniera **sequenziale** e non più tutti insieme come prima.
-## versione `0.3.0`
+<!-- ## versione `0.3.0`
 **La nuova versione `0.3.0` ha una diversa formattazione del file `table.json`, per convertire la vecchia versione in quella nuova basta solo avviare il nuovo file `tableEditor.py`.**
 
-Adesso è possibile aggiungere più stagioni di Sonarr riferite ad una di AnimeWorld (Funziona solo se la numerazione assoluta degli episodi di Sonarr combacia con quella di AnimeWorld).
+Adesso è possibile aggiungere più stagioni di Sonarr riferite ad una di AnimeWorld (Funziona solo se la numerazione assoluta degli episodi di Sonarr combacia con quella di AnimeWorld). -->
 
 ## Utilizzo
 
