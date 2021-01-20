@@ -3,12 +3,15 @@
 html {
 	color: rgba(255,255,255,0.9);
 	background-color: #121212 !important;
-	
 }
 
 body{
 	height: 100vh;
+}
+
+.mainpage{
 	overflow-x: hidden;
+	position: relative
 }
 
 /*.dark{
@@ -98,13 +101,14 @@ input{
 
 .tap-target{
 	background-color: #9FA8DA !important;
-	overflow: hidden !important;
 }
 
-.tap-target-wrapper{
-	position: absolute !important;
-	top: -336px !important;
-	right: -348px !important;
+@media only screen and (min-width: 600px) {
+	.tap-target-wrapper{
+		position: absolute !important;
+		top: -336px !important;
+		right: -348px !important;
+	}
 }
 
 .tap-target-wave::before, .tap-target-wave::after {
