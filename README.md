@@ -2,9 +2,9 @@
 ![wallpaper](/documentation/images/wallpaper.jpg)
 # Sonarr-AnimeDownloader
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)   [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)   
+<!-- [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)   [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)    -->
 
-[![Docker](https://img.shields.io/docker/image-size/mainkronos/anime_downloader?color=9fa8da&style=for-the-badge)](https://hub.docker.com/repository/docker/mainkronos/anime_downloader)   [![issues](https://img.shields.io/github/issues/MainKronos/Sonarr-AnimeDownloader?color=a5d6a7&style=for-the-badge)](../../issues)   [![license](https://img.shields.io/github/license/MainKronos/Sonarr-AnimeDownloader?color=ffcc80&style=for-the-badge)](/LICENSE)   [![Stars](https://img.shields.io/github/stars/MainKronos/Sonarr-AnimeDownloader?color=fff59d&style=for-the-badge)](../../stargazers)
+[![Version](https://img.shields.io/github/v/release/MainKronos/Sonarr-AnimeDownloader?color=90caf9&style=for-the-badge)](../../releases)    [![Docker](https://img.shields.io/docker/image-size/mainkronos/anime_downloader?color=9fa8da&style=for-the-badge)](https://hub.docker.com/repository/docker/mainkronos/anime_downloader)   [![Issues](https://img.shields.io/github/issues/MainKronos/Sonarr-AnimeDownloader?color=a5d6a7&style=for-the-badge)](../../issues)   [![License](https://img.shields.io/github/license/MainKronos/Sonarr-AnimeDownloader?color=ffcc80&style=for-the-badge)](/LICENSE)   [![Stars](https://img.shields.io/github/stars/MainKronos/Sonarr-AnimeDownloader?color=fff59d&style=for-the-badge)](../../stargazers)
 
 _This documentation is in **Italian** because this program downloads anime with subtitles in Italian only._
 
