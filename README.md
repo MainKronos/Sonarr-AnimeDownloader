@@ -2,7 +2,7 @@
 ![wallpaper](/documentation/images/wallpaper.jpg)
 # Sonarr-AnimeDownloader
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)   [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)   [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)   [![Docker](https://img.shields.io/docker/image-size/mainkronos/anime_downloader?color=9fa8da&style=for-the-badge)](https://hub.docker.com/repository/docker/mainkronos/anime_downloader)   [![issues](https://img.shields.io/github/issues/MainKronos/Sonarr-AnimeDownloader?style=for-the-badge)](/issues)
 
 _This documentation is in **Italian** because this program downloads anime with subtitles in Italian only._
 
