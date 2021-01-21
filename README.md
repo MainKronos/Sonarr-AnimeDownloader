@@ -16,14 +16,7 @@ Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com
 
 Il progetto utilizza la libreria `animeworld`, l'ho dovuta rendere **privata** perchè gli sviluppatori di [AnimeWorld](https://www.animeworld.tv/) non volevano che fosse pubblica. Se volete l'accesso scrivete [qui](../../issues/6)
 
-### Supported Providers
-
-Gli episodi di AnimeWorld vengono caricati in altri siti, alcuni di loro (I più frequenti) sono supportati dal programma:
-
-1. [YouTube](https://www.youtube.com/)
-2. [VVVVID](https://www.vvvvid.it/show/1396/akudama-drive&r)
-3. [Streamtape](https://streamtape.com/)
-4. [AnimeWorld_Server](https://www.animeworld.tv/)
+![Presentazione](/documentation/images/Presentazione.gif)
 
 ## AGGIORNAMENTI IMPORTANTI
 ## versione `1.0.0`
