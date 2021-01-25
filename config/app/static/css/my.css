@@ -6,12 +6,14 @@ html {
 }
 
 body{
-	height: 100vh;
+	/*overflow-x: hidden;*/
+	/*height: 100vh;*/
 }
 
 .mainpage{
 	overflow-x: hidden;
-	position: relative
+	position: relative;
+	height: 100vh;
 }
 
 /*.dark{
@@ -23,7 +25,48 @@ body{
 	background-color: #242424 !important;
 	border-color: #121212 !important;
 	color: rgba(255,255,255,0.5) !important;
+	position: relative;
 }
+
+/*### DELETE BUTTON ######*/
+
+.header-anime{
+	position: relative;
+}
+
+.btn-floating-delete i{
+	width: inherit !important;
+	margin-right: 0;
+	line-height: 30px;
+	color: rgba(255,255,255,0.5) !important;
+}
+
+.btn-floating-delete:hover i{
+	color: #9FA8DA !important;
+}
+
+button.btn-floating-delete{
+	background-color: #242424 !important;
+	border-radius: 10%;
+	width: 30px;
+	height: 30px;
+	box-shadow: 0 0 10px 0px #121212;
+	border: none;
+	display: inline-block;
+	padding: 0;
+	cursor: pointer;
+}
+
+.delete-btn{
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translate(40%, -50%);
+	display: block;
+	margin: 0;
+}
+
+/*######################*/
 
 .indicator{
 	background-color: rgba(255,255,255,0.1) !important;
@@ -63,6 +106,15 @@ nav.dark{
 
 .dark.btn-floating, .dark.btn{
 	background-color: #9FA8DA !important;
+}
+
+.dark.info{
+	background-color: rgba(0,0,0,0) !important;
+	margin: 6px;
+}
+
+.dark.info i{
+	color: rgba(255,255,255,0.8) !important
 }
 
 /*##########################*/

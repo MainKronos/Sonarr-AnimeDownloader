@@ -5,7 +5,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <!--Import materialize.css-->
-        <link type="text/css" rel="stylesheet" href="static/css/materialize.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="static/css/materialize.min.css"  media="screen,projection"/>
 
         <link type="text/css" rel="stylesheet" href="static/css/my.css" media="screen,projection"/>
         
@@ -24,6 +24,9 @@
             <nav class="nav-extended dark">
                 <div class="nav-wrapper">
                     <a href="#!" class="brand-logo center dark">Tabella Di Conversione</a>
+                    <a class="btn-floating waves-effect waves-light btn-small modal-trigger dark left info" href="#info">
+                        <i class="material-icons">info</i>
+                    </a>
                 </div>
                 <div class="nav-content">
                     <span class="nav-title hide-on-med-and-up"></span>
@@ -32,7 +35,6 @@
                     </a>
                 </div>
             </nav>
-    <!-- <a id="menu" class="waves-effect waves-light btn btn-floating" ><i class="material-icons">menu</i></a> -->
 
             <!-- Tap Target Structure -->
             <div class="tap-target" data-target="menu">
@@ -42,10 +44,32 @@
                 </div>
             </div>
 
+            <!-- Modal Structure -->
+            <div id="info" class="modal dark">
+                <div class="modal-content">
+                    <h4>Variabili d'Ambiente</h4>
+                    <br>
+                    <table>
+                        <thead>
+                        </thead>
+                        <tbody>
+                            {% for var in env %}
+                            <tr>
+                                <td>{{ var }}</td>
+                                <td>{{ env[var] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a class="modal-close btn waves-effect waves-light dark">Close</a>
+                </div>
+            </div>
 
             <!-- Modal Structure -->
             <div id="append_anime_modal" class="modal dark">
-                <form class="col s12" method="post" action="/">
+                <form class="col s12" method="post" action="/append_anime">
                     <div class="modal-content">
                         <div class="row">
                             <div class="input-field col s6">
@@ -90,8 +114,17 @@
                 <div class="section">
                     <ul class="collapsible popout">
                         {% for info in infos %}
-                        <li>
-                            <div class="collapsible-header dark"><i class="material-icons">movie</i>{{ info.title }}</div>
+                        <li class='blocco_anime'>
+                            <div class='header-anime'>
+                                <div class="collapsible-header dark">
+                                    <i class="material-icons">movie</i>{{ info.title }}
+                                </div>
+                                <form class="delete-btn" method="post" action="/delete_anime">
+                                    <button class="btn-floating-delete dark" onclick="return confirm('Sei sicuro di voler rimuovere \'{{ info.title }}\'?')" type="submit" name="delete_anime" value="{{ info.title }}">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </form>
+                            </div>
                             <div class="collapsible-body dark">
                                 <ul class="tabs dark">
                                     {% for stagione in info.seasons %}

@@ -1,5 +1,6 @@
 import re
 import json
+import os
 from flask import *
 app = Flask(__name__)
 
@@ -16,40 +17,61 @@ def msgSafe(msg):
 def favicon(): 
     return redirect(url_for('static', filename='favicon.ico'), code=302)
 
-@app.route('/index', methods=['GET', 'POST'])
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/append_anime', methods=['POST']) # Per aggiungere un anime
+def append_anime():
+	res = request.form
+	data = {
+		"title": request.form['title'],
+		"season": request.form['season'],
+		"link": request.form['link']
+	}
+	appendAnime(data)
+	return redirect(url_for('index'))
+
+@app.route('/delete_anime', methods=['POST']) # Per aggiungere un anime
+def delete_anime():
+	res = request.form
+	# print(res, flush=True)
+	deleteAnime(res['delete_anime'])
+
+	return redirect(url_for('index'))
+
+@app.route('/index')
+@app.route('/')
 def index():
 
-	if request.method == 'POST':
-		res = request.form
-		data = {
-			"title": request.form['title'],
-			"season": request.form['season'],
-			"link": request.form['link']
-		}
-		writeData(data)
-		return redirect(url_for('index'))
-	else:
-		anime = readData()
-		return render_template('index.html', infos=anime)
+	anime = readData()
+	env = getmyenv()
+	return render_template('index.html', infos=anime, env=env)
 
 
 
-#######
+####### DATA
 
 def readData():
 	with open('json/table.json' , 'r') as f:
 		return json.loads(f.read())
 
-def writeData(data):
+def writeData(table):
+	f = open("json/table.json", 'w')
+	f.write(json.dumps(table, indent=4))
+	f.close()
+	return table
+
+def deleteAnime(title):
+
+	table = readData()
+
+	for anime in table:
+		if anime["title"] == title:
+			table.remove(anime)
+			break
+
+	writeData(table)
+
+def appendAnime(data):
 	def myOrder(serieInfo):
 		return serieInfo["title"]
-
-	# data = {
-	# 	"title":"",
-	# 	"season": "",
-	# 	"link": ""
-	# }
 
 	table = readData()
 
@@ -71,9 +93,19 @@ def writeData(data):
 		})
 		# print(f"\n-> È stata aggiunta la serie {SonarrTitle}.")
 
-	table.sort(key=myOrder) # Riordina la tabella in ordine alfabetico
+	table.sort(key=myOrder)
+	writeData(table)
 
-	f = open("json/table.json", 'w')
-	f.write(json.dumps(table, indent=4))
-	f.close()
-	return table
+
+### getenv
+
+def getmyenv():
+	env = {}
+
+	env["ANIME_PATH"] = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
+	env["SONARR_URL"] = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
+	env["API_KEY"] = os.getenv('API_KEY') # Chiave api di sonarr
+	env["CHAT_ID"] = os.getenv('CHAT_ID') # telegramm
+	env["BOT_TOKEN"] = os.getenv('BOT_TOKEN') # telegramm
+
+	return env

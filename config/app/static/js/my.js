@@ -25,8 +25,18 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.TapTarget.init(elems, {
 
     });
-    var elem = document.querySelector('.tap-target');
-    var instance = M.TapTarget.getInstance(elem);
-    instance.open()
-    setTimeout(function(){ instance.close();  instance.destroy();}, 3000);
+
+
+    var lista = document.querySelectorAll('.blocco_anime');
+    if (lista.length == 0){
+        var elem = document.querySelector('.tap-target');
+        var instance = M.TapTarget.getInstance(elem);
+        instance.open()
+        setTimeout(function(){ instance.close();  instance.destroy();}, 3000);
+    }
 });
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     var elems = document.querySelectorAll('.fixed-action-btn');
+//     var instances = M.FloatingActionButton.init(elems, {});
+//   });
