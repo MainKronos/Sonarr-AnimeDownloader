@@ -19,14 +19,6 @@ BOT_TOKEN = os.getenv('BOT_TOKEN') # telegramm
 
 SCHEDULE_MINUTES = 30
 
-###### supported provider
-Streamtape = "Streamtape"
-YouTube = "YouTube"
-Beta_Server = "Beta Server"
-VVVVID = "VVVVID"
-AnimeWorld_Server = "AnimeWorld Server"
-#####
-
 
 start = f"┌------------------------------------{time.strftime('%d %b %Y %H:%M:%S')}------------------------------------┐" + r"""
 |                 _                _____                      _                 _            |
@@ -138,8 +130,14 @@ def job():
 						print("✉️ Inviando il messaggio via telegram.")
 						send_message(info)
 
-			except Exception as ex:
-				print(f"🅴🆁🆁🅾🆁🅴: {ex}")
+			except aw.AnimeNotAvailable as info:
+				print(f"⚠️ {info}")
+			except aw.ServerNotSupported as warning:
+				print(f"🆆🅰🆁🅽🅸🅽🅶: {warning}")
+			except aw.DeprecatedLibrary as dev:
+				print(f"🅰🅻🅴🆁🆃: {dev}")
+			except Exception as error:
+				print(f"🅴🆁🆁🅾🆁: {error}")
 			finally:
 				print(divider, "\n")
 
@@ -149,7 +147,7 @@ def job():
 	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
 	print("\n╰-----------------------------------「{}」-----------------------------------╯\n".format(nextStart))
 
-def fixEps(epsArr): # accorpa 2 serie di animeworld
+def fixEps(epsArr): # accorpa 2 o più serie di animeworld
 	up = 0 # numero da aggiungere per rendere consecutivi gli episodi di varie stagioni
 	ret = []
 
@@ -183,7 +181,7 @@ def converting(series):
 					break
 		else:
 
-			print("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella tabella per le conversioni.".format(anime["season"], anime["SonarrTitle"]))
+			print("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
 
 	return res
 
@@ -229,8 +227,6 @@ def get_missing_episodes():
 		info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
 		info["season"] = int(serie["seasonNumber"])
 		info["episode"] = int(serie["episodeNumber"])
-		# info["absEpisode"] = int(serie["absoluteEpisodeNumber"])  # il numero assoluto dell'episodio
-		# info["maxEpisode"] = getMaxEpisode(serieId=info["seriesId"], season=info["season"])
 		info["episodeTitle"] = serie["title"]
 		info["path"] = os.path.join(ANIME_PATH, serie["series"]["path"].split("/")[-1])
 
