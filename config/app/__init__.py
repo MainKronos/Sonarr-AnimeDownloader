@@ -102,7 +102,6 @@ def appendAnime(data):
 def getmyenv():
 	env = {}
 
-	env["ANIME_PATH"] = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 	env["SONARR_URL"] = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
 	env["API_KEY"] = os.getenv('API_KEY') # Chiave api di sonarr
 	env["CHAT_ID"] = os.getenv('CHAT_ID') # telegramm
