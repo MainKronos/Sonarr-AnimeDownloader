@@ -126,7 +126,7 @@ TODO: da fare
 TODO: da fare
 
 ### Ho aggiornato alla nuova versione del container e adesso non funziona più nulla.
-Alcune volte faccio modifiche importanti al programma, se riscontrate questo tipo di problema per favore controllate il [changelog](releases).
+Alcune volte faccio modifiche importanti al programma, se riscontrate questo tipo di problema per favore controllate il [changelog](../releases).
 
 ### Una stagione di Sonarr comprende due stagioni su AnimeWorld
 ![Esempio](/documentation/images/AnimeWold_2serie.png)
