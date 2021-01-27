@@ -18,21 +18,6 @@ Il progetto utilizza la libreria `animeworld`, l'ho dovuta rendere **privata** p
 
 ![Presentazione](/documentation/images/Presentazione.gif)
 
-## AGGIORNAMENTI IMPORTANTI
-## versione `1.0.0`
-* Il **`table.json`** è completamente differente quindi **và riscritto da zero**.
-* Il **`table.json`** non usa più il nome degli anime di **AnimeWorld** ma il link della loro **pagina web**.
-* Il **`tableEditor.py`** **non** è più necessario (ma è sempre presente e non verrà più supportato).
-* È stata aggiunta una **pagina web** per un inserimento più 'user friendly' di anime al **`table.json`**, si trova alla porta **`5000`**.
-* Aggiunto il supporto alla libreria **`animeworld`** per mantenere stabile l'intero progetto.
-* Aggiunta la gestione dell'eccezione **`DeprecatedLibrary(Exception)`**, sorge quando il sito AnimeWorld varia e quindi è necessaria una manutenzione per rimappare il sito.
-* Modificato il **log** del container, sono state aggiunte **più informazioni** e abbellimenti con le **Emoji**.
-* È stata modificata la gestione dei **Download** degli episodi, adesso vengono scaricati in maniera **sequenziale** e non più tutti insieme come prima.
-<!-- ## versione `0.3.0`
-**La nuova versione `0.3.0` ha una diversa formattazione del file `table.json`, per convertire la vecchia versione in quella nuova basta solo avviare il nuovo file `tableEditor.py`.**
-
-Adesso è possibile aggiungere più stagioni di Sonarr riferite ad una di AnimeWorld (Funziona solo se la numerazione assoluta degli episodi di Sonarr combacia con quella di AnimeWorld). -->
-
 ## Utilizzo
 
 ```
@@ -41,7 +26,6 @@ docker run -d \
     -v /path/to/data:/script/json/ \
     -v /path/to/animeSeries:/tv \
     -p {port}:5000 \
-    --env ANIME_PATH="/path/to/animeSeriesLocal" \
     --env SONARR_URL='http://{url}:{port}' \
     --env API_KEY='1234567890abcdefghijklmn' \
     --env CHAT_ID=123456789 \
@@ -58,36 +42,30 @@ Le immagini del Docker Container vengono configurate utilizzando i parametri pas
 Parametro | Necessario | Funzione
  :---: | :---: | :---
 `--name` | :heavy_multiplication_x: | Indica il nome del Container, può essere qualsiasi cosa
-`-v /tv` | :heavy_check_mark: | Posizione della libreria Anime su disco
+`-v /tv` | :heavy_check_mark: | Posizione della libreria Anime su disco, vedi sotto per ulteriori informazioni
 `-v /script/json/` | :heavy_check_mark: | Contiene file di configurazione
 `-p {port}:5000` | :heavy_check_mark: | La porta per la pagina web
-`--env ANIME_PATH` | :heavy_check_mark: | Indica la posizione della cartella interna al Container di dove si trovano gli anime, vedi sotto per ulteriori informazioni
 `--env SONARR_URL` | :heavy_check_mark: | Url di Sonarr es. http://localhost:8989
 `--env API_KEY` | :heavy_check_mark: | Api key di sonarr, vedi sotto per ulteriori informazioni
 `--env CHAT_ID` | :heavy_multiplication_x: | Chat ID di telegram, vedi sotto per ulteriori informazioni
 `--env BOT_TOKEN` | :heavy_multiplication_x: | Token per il Bot di telegram, vedi sotto per ulteriori informazioni
 `--env TZ` | :heavy_check_mark: | Specifica un fuso orario, è necessario per il corretto funzionamento del Container
 
-### ANIME_PATH e /tv
-La variabile `ANIME_PATH` serve per impostare la posizione della cartella degli anime anche quando la cartella ha un nome diverso per Sonarr.
-Per esempio abbiamo che nel nostro Container la cartella degli anime si trovi in `/tv/Anime/` mentre nel container di sonarr la stessa cartella è stata definita nella posizione `/tv/SerieTV/Anime/`, è di vitale importanza per il corretto funzionamento del Container che la variabile d'ambiente ANIME_PATH venga impostata a `/tv/Anime/`.
-Nel caso in cui il parametro `-v /tv` sia diverso è necessario modificare anche la variabile ANIME_PATH, per esempio se il parametro è `-v /Serie/tv2/` allora la variabile ANIME_PATH sarà `/Serie/tv2/Anime/`.
-
-La vostra cartella `Anime` può avere un nome diverso, questa cartella sarebbe la directory principale che contiene tutte le cartelle degli anime. Per esempio l'episodio 1 di un anime che si chiama `myAnime1` si troverà `/tv/Anime/myAnime1/S01E01.mp4`
-
+### /tv
+È importante, per il corretto funzionamento del container, che il volume legato alla directory `/tv` sia identico a quello usato per la configurazione di **Sonarr**.
+Esempio
 ```
-tv
-└── Anime
-    ├── myAnime1
-    │   ├── S01E01.mp4
-    │   ├── S01E02.mp4
-    │   ...
-    ├── myAnime2
-    │   ├── S01E01.mp4
-    │   ├── S01E02.mp4
-    │   ...
-    ... 
-            
+docker run -d \
+  --name=sonarr \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Europe/London \
+  -p 8989:8989 \
+  -v /path/to/data:/config \
+  -v /path/to/tvseries:/tv \ <--------------------------------------------- IMPORTANTE
+  -v /path/to/downloadclient-downloads:/downloads \
+  --restart unless-stopped \
+  ghcr.io/linuxserver/sonarr
 ```
 
 ## Avvio
@@ -146,6 +124,9 @@ TODO: da fare
 
 ### Dove posso reperire il Token per il Bot di telegram?
 TODO: da fare
+
+### Ho aggiornato alla nuova versione del container e adesso non funziona più nulla.
+Alcune volte faccio modifiche importanti al programma, se riscontrate questo tipo di problema per favore controllate il [changelog](releases).
 
 ### Una stagione di Sonarr comprende due stagioni su AnimeWorld
 ![Esempio](/documentation/images/AnimeWold_2serie.png)
