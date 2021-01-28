@@ -83,14 +83,14 @@ def job():
 			print("\n", divider)
 
 			try:
-				print("🔎 Ricerca anime {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				print("🔎 Ricerca anime '{}'.".format(info["SonarrTitle"]))
 				anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
 
-				print("🔎 Ricerca degli episodi per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				print("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
 				epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
 				episodi = fixEps(epsArr)
 
-				print("⚙️ Verifica se l'episodio {} è disponibile.".format(info["episode"]))
+				print("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["episode"]))
 				ep = None
 				for episodio in episodi:
 					if episodio.number == str(info["episode"]):
@@ -113,7 +113,7 @@ def job():
 					if move_file(title, info["path"]): 
 						print("✔️ Episodio spostato.")
 
-					print("⏳ Ricaricando la serie {}.".format(info["SonarrTitle"]))
+					print("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
 					RescanSerie(info["seriesId"])
 
 					time.sleep(1)
@@ -198,7 +198,7 @@ def move_file(title, path):
 
 	if not os.path.exists(destinationPath):
 		os.makedirs(destinationPath)
-		print(f"⚠️ La cartella {destinationPath} è stata creata")
+		print(f"⚠️ La cartella {destinationPath} è stata creata.")
 
 	shutil.move(source, destination)
 	return True
