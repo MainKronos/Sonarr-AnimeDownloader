@@ -151,22 +151,4 @@ Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sareb
 ```
 
 **È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
-Per aggiungere un campo, in questo caso un nuovo link all'array, e sufficiente reinserire tutti i campi (come se si stesse riaggiungendo di nuovo lo stesso anime) e nel campo link inserire **soltanto** il secondo/terzo/ecc. link. 
-
-
-## Roadmap
-
-- [x] Creare una repository su GitHub
-- [x] Creare un'immagine Docker su Docker Hub
-- [ ] Fare una documentazione dettaglita
-    - [x] Spiegare come reperire l'`api key` di sonarr
-    - [ ] Spiegare l'utilità e il funzionamento di un bot di telegram
-        - [ ] Spiegare come reperire la `Chat Id` di Telegram
-        - [ ] Spiegare come reperire il `Token` del Bot Telegram
-    - [x] Spiegare come funziona il `table.json`
-        - [x] Informazioni generali e funzionamento
-        - [x] Funzionamento e utilizzo di `tableEditor.py`
-        - [x] Come collegare più stagioni di AnimeWorld riferite a una di Sonarr
-        - [x] Aggiungere un `table.json` di esempio
-    - [x] Spiegare l'utilizzo della variabile ambientale `ANIME_PATH`
-    - [x] Aggiungere i Providers supportati
+Per aggiungere un campo, in questo caso un nuovo link all'array, e sufficiente reinserire tutti i campi (come se si stesse riaggiungendo di nuovo lo stesso anime) e nel campo link inserire **soltanto** il secondo/terzo/ecc. link.
