@@ -29,11 +29,5 @@ ENV LANG it_IT.UTF-8
 ENV LANGUAGE it_IT:en
 ENV LC_ALL it_IT.UTF-8
 
-ENV ANIME_PATH ""
-ENV SONARR_URL ""
-ENV API_KEY ""
-ENV CHAT_ID ""
-ENV BOT_TOKEN ""
-
 # CMD ["cron", "-f"]
 CMD ["python3","-u","/script/main.py"]

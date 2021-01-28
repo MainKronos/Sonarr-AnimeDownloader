@@ -11,7 +11,6 @@ import shutil
 import threading
 from app import app
 
-ANIME_PATH = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
 API_KEY = os.getenv('API_KEY') # Chiave api di sonarr
 CHAT_ID = os.getenv('CHAT_ID') # telegramm
@@ -35,10 +34,6 @@ start = f"┌------------------------------------{time.strftime('%d %b %Y %H:%M:
 def main():
 	print(start)
 
-	if ANIME_PATH == None:
-		print("✖️ Variabile d'ambinete '𝘼𝙉𝙄𝙈𝙀_𝙋𝘼𝙏𝙃' non inserita.")
-	else:
-		print("✔ 𝘼𝙉𝙄𝙈𝙀_𝙋𝘼𝙏𝙃: {}".format(ANIME_PATH))
 	if SONARR_URL == None:
 		print("✖️ Variabile d'ambinete '𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇' non inserita.")
 	else:
@@ -56,7 +51,7 @@ def main():
 	else:
 		print("✔ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {}".format(BOT_TOKEN))
 
-	if ANIME_PATH != None or SONARR_URL != None or API_KEY !=None:
+	if SONARR_URL != None and API_KEY !=None:
 		print("\n☑️ Le variabili d'ambiente sono state inserite correttamente.\n")
 
 		print("\nAVVIO SERVER")
@@ -88,14 +83,14 @@ def job():
 			print("\n", divider)
 
 			try:
-				print("🔎 Ricerca anime {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				print("🔎 Ricerca anime '{}'.".format(info["SonarrTitle"]))
 				anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
 
-				print("🔎 Ricerca degli episodi per {} 𝐒{}𝐄{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				print("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
 				epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
 				episodi = fixEps(epsArr)
 
-				print("⚙️ Verifica se l'episodio {} è disponibile.".format(info["episode"]))
+				print("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["episode"]))
 				ep = None
 				for episodio in episodi:
 					if episodio.number == str(info["episode"]):
@@ -118,7 +113,7 @@ def job():
 					if move_file(title, info["path"]): 
 						print("✔️ Episodio spostato.")
 
-					print("⏳ Ricaricando la serie {}.".format(info["SonarrTitle"]))
+					print("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
 					RescanSerie(info["seriesId"])
 
 					time.sleep(1)
@@ -203,6 +198,7 @@ def move_file(title, path):
 
 	if not os.path.exists(destinationPath):
 		os.makedirs(destinationPath)
+		print(f"⚠️ La cartella {destinationPath} è stata creata.")
 
 	shutil.move(source, destination)
 	return True
@@ -228,7 +224,7 @@ def get_missing_episodes():
 		info["season"] = int(serie["seasonNumber"])
 		info["episode"] = int(serie["episodeNumber"])
 		info["episodeTitle"] = serie["title"]
-		info["path"] = os.path.join(ANIME_PATH, serie["series"]["path"].split("/")[-1])
+		info["path"] = serie["series"]["path"]
 
 		series.append(info)
 
@@ -274,3 +270,5 @@ if __name__ == '__main__':
 	while True:
 		schedule.run_pending()
 		time.sleep(1)
+
+### ERRORI ####################################
