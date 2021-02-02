@@ -16,19 +16,28 @@ API_KEY = os.getenv('API_KEY') # Chiave api di sonarr
 CHAT_ID = os.getenv('CHAT_ID') # telegramm
 BOT_TOKEN = os.getenv('BOT_TOKEN') # telegramm
 
-SCHEDULE_MINUTES = 30
+SCHEDULE_MINUTES = 30 # Ripetizione
+
+WARNC='\033[93m' #GIALLO
+ALERTC='\033[91m' # ROSSO
+ERRORC='\033[4;3;91m' # ROSSO
+TITLEC='\033[1;94m' # BLU
+SEPARC='\033[90m' # GRIGIO
+DIVIDC='\033[1;90m' # GRIGIO
+OKC='\033[92m' # VERDE
+NC='\033[0m' # Ripristino
 
 
-start = f"┌------------------------------------{time.strftime('%d %b %Y %H:%M:%S')}------------------------------------┐" + r"""
-|                 _                _____                      _                 _            |
-|     /\         (_)              |  __ \                    | |               | |           |
-|    /  \   _ __  _ _ __ ___   ___| |  | | _____      ___ __ | | ___   __ _  __| | ___ _ __  |
-|   / /\ \ | '_ \| | '_ ` _ \ / _ \ |  | |/ _ \ \ /\ / / '_ \| |/ _ \ / _` |/ _` |/ _ \ '__| |
-|  / ____ \| | | | | | | | | |  __/ |__| | (_) \ V  V /| | | | | (_) | (_| | (_| |  __/ |    |
-| /_/    \_\_| |_|_|_| |_| |_|\___|_____/ \___/ \_/\_/ |_| |_|_|\___/ \__,_|\__,_|\___|_|    |
-|                                                                                            |
-└--------------------------------------------------------------------------------------------┘
-""".format()
+start = r"""{color}┌------------------------------------{time}------------------------------------┐
+{color}|                 _                _____                      _                 _            |
+{color}|     /\         (_)              |  __ \                    | |               | |           |
+{color}|    /  \   _ __  _ _ __ ___   ___| |  | | _____      ___ __ | | ___   __ _  __| | ___ _ __  |
+{color}|   / /\ \ | '_ \| | '_ ` _ \ / _ \ |  | |/ _ \ \ /\ / / '_ \| |/ _ \ / _` |/ _` |/ _ \ '__| |
+{color}|  / ____ \| | | | | | | | | |  __/ |__| | (_) \ V  V /| | | | | (_) | (_| | (_| |  __/ |    |
+{color}| /_/    \_\_| |_|_|_| |_| |_|\___|_____/ \___/ \_/\_/ |_| |_|_|\___/ \__,_|\__,_|\___|_|    |
+{color}|                                                                                            |
+{color}└--------------------------------------------------------------------------------------------┘{nc}
+""".format(time=time.strftime('%d %b %Y %H:%M:%S'), color=TITLEC, nc=NC)
 
 
 def main():
@@ -52,7 +61,7 @@ def main():
 		print("✔ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {}".format(BOT_TOKEN))
 
 	if SONARR_URL != None and API_KEY !=None:
-		print("\n☑️ Le variabili d'ambiente sono state inserite correttamente.\n")
+		print(f"\n{OKC}☑️ Le variabili d'ambiente sono state inserite correttamente.{NC}\n")
 
 		print("\nAVVIO SERVER")
 		job_thread = threading.Thread(target=server)
@@ -71,9 +80,9 @@ def run_threaded(job_func):
 	
 
 def job():
-	divider = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+	divider = f"{DIVIDC}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - {NC}"
 	
-	print("\n╭-----------------------------------「{}」-----------------------------------╮\n".format(time.strftime("%d %b %Y %H:%M:%S")))
+	print("\n{color}╭-----------------------------------「{time}」-----------------------------------╮{nc}\n".format(time=time.strftime("%d %b %Y %H:%M:%S"), color=SEPARC, nc=NC))
 
 	raw_series = get_missing_episodes()
 	if len(raw_series)!=0:
@@ -128,11 +137,11 @@ def job():
 			except aw.AnimeNotAvailable as info:
 				print(f"⚠️ {info}")
 			except aw.ServerNotSupported as warning:
-				print(f"🆆🅰🆁🅽🅸🅽🅶: {warning}")
+				print(f"{WARNC}🆆🅰🆁🅽🅸🅽🅶: {warning}{NC}")
 			except aw.DeprecatedLibrary as dev:
-				print(f"🅰🅻🅴🆁🆃: {dev}")
+				print(f"{ALERTC}🅰🅻🅴🆁🆃: {dev}{NC}")
 			except Exception as error:
-				print(f"🅴🆁🆁🅾🆁: {error}")
+				print(f"{ERRORC}🅴🆁🆁🅾🆁: {error}{NC}")
 			finally:
 				print(divider, "\n")
 
@@ -140,7 +149,7 @@ def job():
 		print("\nNon c'è nessun episodio da cercare.\n")
 
 	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
-	print("\n╰-----------------------------------「{}」-----------------------------------╯\n".format(nextStart))
+	print("\n{color}╰-----------------------------------「{time}」-----------------------------------╯{nc}\n".format(time=nextStart, color=SEPARC, nc=NC))
 
 def fixEps(epsArr): # accorpa 2 o più serie di animeworld
 	up = 0 # numero da aggiungere per rendere consecutivi gli episodi di varie stagioni
