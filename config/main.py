@@ -220,27 +220,33 @@ def move_file(title, path):
 #### Sonarr ############################################################################################################
 
 def get_missing_episodes():
-	endpoint = "wanted/missing"
-	res = requests.get("{}/api/{}?apikey={}&sortKey=airDateUtc".format(SONARR_URL, endpoint, API_KEY))
-	result = res.json()
-
-	# f = open("res.json", 'w')
-	# f.write(json.dumps(result, indent=4))
-	# f.close()
-
 	series = []
+	endpoint = "wanted/missing"
+	page = 0
 
-	for serie in result["records"]:
-		info = {}
-		info["seriesId"] = serie["seriesId"]
-		info["SonarrTitle"] = serie["series"]["title"]
-		info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
-		info["season"] = int(serie["seasonNumber"])
-		info["episode"] = int(serie["episodeNumber"])
-		info["episodeTitle"] = serie["title"]
-		info["path"] = serie["series"]["path"]
+	while True:
+		page += 1
+		res = requests.get("{}/api/{}?apikey={}&sortKey=airDateUtc&page={}".format(SONARR_URL, endpoint, API_KEY, page))
+		result = res.json()
 
-		series.append(info)
+		# f = open("res.json", 'w')
+		# f.write(json.dumps(result, indent=4))
+		# f.close()
+
+		if len(result["records"]) == 0: 
+			break
+
+		for serie in result["records"]:
+			info = {}
+			info["seriesId"] = serie["seriesId"]
+			info["SonarrTitle"] = serie["series"]["title"]
+			info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
+			info["season"] = int(serie["seasonNumber"])
+			info["episode"] = int(serie["episodeNumber"])
+			info["episodeTitle"] = serie["title"]
+			info["path"] = serie["series"]["path"]
+
+			series.append(info)
 
 	return series
 
