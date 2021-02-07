@@ -68,6 +68,7 @@ def main():
 		job_thread.start()
 
 		time.sleep(1)
+
 		job() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
 		schedule.every(SCHEDULE_MINUTES).minutes.do(run_threaded, job)
 
@@ -199,11 +200,15 @@ def move_file(title, path):
 	else:
 		return False
 
-	destinationPath = path
+	# destinationPath = os.fspath(path)
+	path = path.replace('\\', '/')
+	destinationPath = re.sub(r"\w:", "", path)
 	currentPath = os.getcwd()
 
 	source = os.path.join(currentPath, file)
 	destination = os.path.join(destinationPath, file)
+
+	print(destinationPath)
 
 	if not os.path.exists(destinationPath):
 		os.makedirs(destinationPath)
