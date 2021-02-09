@@ -116,39 +116,5 @@ In caso di problemi o errori controllare prima di tutto i log del Container, di 
 
 ## FAQ
 
-### Dove posso reperire la chiave api di sonarr?
-![Sonarr API KEY](/documentation/images/Sonarr_ApiKey.png)
+Le _*frequently asked questions*_ si trovano [qui]().
 
-### Dove posso reperire la Chat ID di telegram?
-TODO: da fare
-
-### Dove posso reperire il Token per il Bot di telegram?
-TODO: da fare
-
-### Ho aggiornato alla nuova versione del container e adesso non funziona più nulla.
-Alcune volte faccio modifiche importanti al programma, se riscontrate questo tipo di problema per favore controllate il [changelog](../../releases).
-
-### Una stagione di Sonarr comprende due stagioni su AnimeWorld
-![Esempio](/documentation/images/AnimeWold_2serie.png)
-
-Per riuscire a dire al programma che una stagione di Sonarr sono due di AnimeWold basta aggiunge all'Array dei link di AnimeWold per quella stagione di Sonarr anche il link di AnimeWold della seconda stagione.
-
-Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sarebbe:
-```
-[    
-    ...
-    {
-        "title": "Ascendance of a Bookworm",
-        "seasons": {
-            "1": [
-                "https://www.animeworld.tv/play/ascendance-of-a-bookworm.paCPb",
-                "https://www.animeworld.tv/play/ascendance-of-a-bookworm-2.Q0Rrm"
-            ]
-        }
-    },
-    ...
-]
-```
-
-**È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
-Per aggiungere un campo, in questo caso un nuovo link all'array, e sufficiente reinserire tutti i campi (come se si stesse riaggiungendo di nuovo lo stesso anime) e nel campo link inserire **soltanto** il secondo/terzo/ecc. link.
