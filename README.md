@@ -16,6 +16,8 @@ Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com
 
 Il progetto utilizza la libreria `animeworld`, l'ho dovuta rendere **privata** perchè gli sviluppatori di [AnimeWorld](https://www.animeworld.tv/) non volevano che fosse pubblica. Se volete l'accesso scrivete [qui](../../issues/6)
 
+Le **FAQ** si trovano [qui](FAQ.md)
+
 ![Presentazione](/documentation/images/Presentazione.gif)
 
 ## Utilizzo
@@ -115,6 +117,5 @@ Ho caricato anche la **mia configurazione** che utilizzo, può essere trovata [q
 In caso di problemi o errori controllare prima di tutto i log del Container, di solito lì è indicato il problema; altrimenti segnalarlo su GitHub in questo repository sotto la sezione _Issues_.
 
 ## FAQ
-
 Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
 
