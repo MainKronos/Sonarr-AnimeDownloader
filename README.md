@@ -116,5 +116,5 @@ In caso di problemi o errori controllare prima di tutto i log del Container, di 
 
 ## FAQ
 
-Le _*frequently asked questions*_ si trovano [qui]().
+Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
 
