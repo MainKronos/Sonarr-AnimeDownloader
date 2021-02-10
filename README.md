@@ -115,7 +115,7 @@ La struttura interna del Container è così strutturata:
 In caso di problemi o errori controllare prima di tutto i log del Container, di solito lì è indicato il problema; altrimenti segnalarlo su GitHub in questo repository sotto la sezione _Issues_.
 
 ### **Importante**
-Se visualizzate questo dipo di errore:
+Se visualizzate questo tipo di errore:
 ```
 🅰🅻🅴🆁🆃: Il sito è cambiato, di conseguenza la libreria è DEPRECATA.
 ```
