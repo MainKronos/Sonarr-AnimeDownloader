@@ -273,7 +273,7 @@ def RenameSerie(seriesId):
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	data = {
 		"name": "RenameSeries",
-		"seriesId": seriesId
+		"seriesIds": [seriesId]
 	}
 	requests.post(url, json=data)
 
