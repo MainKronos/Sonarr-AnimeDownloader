@@ -78,21 +78,6 @@ Il programma, per funzionare, necessita di un file che si chiama `table.json`, s
 **È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
 ![Tabella Di Conversione](/documentation/images/tabella_di_conversione.gif)
 
-Nella stessa cartella `/script/json/` c'è un programma scritto in python che si chiama **`tableEditor.py`** che facilita l'inserimento di tali informazioni, (in caso di eliminazioni accidentale il file può essere scaricato anche da [qui](/config/json/tableEditor.py)). Questo script deve essere nella **stessa** cartella di `table.json` altimenti non funzionerà correttamente.
-**Dalla prossima versione il file non sarà più supportato.**
-```
-...
-├── script
-│   ├── app    ### Pagina Web
-│   │   ├── ...
-│   │  ...
-│   ├── main.py    ### Programma principale
-│   └── json
-│       ├── table.json    ### Tabella di conversione
-│       └── tableEditor.py
-...        
-```
-
 In ogni caso la formattazione di come sono inserite le informazioni nel file `table.json` sono riportate quà sotto, sottoforma di esempio:
 ```
 [
@@ -112,6 +97,19 @@ In ogni caso la formattazione di come sono inserite le informazioni nel file `ta
 ]
 ```
 Ho caricato anche la **mia configurazione** che utilizzo, può essere trovata [qui](/documentation/examples/table.json). Questa `table.json` può essere usata come _esempio_ o come _prorio database_ da aggiornare poi personalmente con i propri **Anime**. Ad ogni stagione ne caricherò una più aggiornata. 
+
+La struttura interna del Container è così strutturata:
+```
+...
+├── script
+│   ├── app    ### Pagina Web
+│   │   ├── ...
+│   │  ...
+│   ├── main.py    ### Programma principale
+│   └── json
+│       └── table.json    ### Tabella di conversione
+...        
+```
 
 ## Problemi
 In caso di problemi o errori controllare prima di tutto i log del Container, di solito lì è indicato il problema; altrimenti segnalarlo su GitHub in questo repository sotto la sezione _Issues_.
