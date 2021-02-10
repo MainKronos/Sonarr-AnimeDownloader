@@ -114,6 +114,13 @@ La struttura interna del Container è così strutturata:
 ## Problemi
 In caso di problemi o errori controllare prima di tutto i log del Container, di solito lì è indicato il problema; altrimenti segnalarlo su GitHub in questo repository sotto la sezione _Issues_.
 
+### **Importante**
+Se visualizzate questo dipo di errore:
+```
+🅰🅻🅴🆁🆃: Il sito è cambiato, di conseguenza la libreria è DEPRECATA.
+```
+Segnalatelo il prima possibile sotto la sezione _Issues_, in modo tale che possa risolverlo al più presto.
+
 ## FAQ
 Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
 
