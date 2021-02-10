@@ -43,24 +43,24 @@ start = r"""{color}┌------------------------------------{time}----------------
 def main():
 	print(start)
 
-	if SONARR_URL == None:
+	if SONARR_URL is None:
 		print("✖️ Variabile d'ambinete '𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇' non inserita.")
 	else:
 		print("✔ 𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇: {}".format(SONARR_URL))
-	if API_KEY == None:
+	if API_KEY is None:
 		print("✖️ Variabile d'ambinete '𝘼𝙋𝙄_𝙆𝙀𝙔' non inserita.")
 	else:
 		print("✔ 𝘼𝙋𝙄_𝙆𝙀𝙔: {}".format(API_KEY))
-	if CHAT_ID == None:
+	if CHAT_ID is None:
 		print("✖️ Variabile d'ambinete '𝘾𝙃𝘼𝙏_𝙄𝘿' non inserita.")
 	else:
 		print("✔ 𝘾𝙃𝘼𝙏_𝙄𝘿: {}".format(CHAT_ID))
-	if BOT_TOKEN == None:
+	if BOT_TOKEN is None:
 		print("✖️ Variabile d'ambinete '𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉' non inserita.")
 	else:
 		print("✔ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {}".format(BOT_TOKEN))
 
-	if SONARR_URL != None and API_KEY !=None:
+	if None not in (SONARR_URL, API_KEY):
 		print(f"\n{OKC}☑️ Le variabili d'ambiente sono state inserite correttamente.{NC}\n")
 
 		print("\nAVVIO SERVER")
@@ -110,7 +110,7 @@ def job():
 				else:
 					print("✖️ L'episodio NON è ancora uscito.")
 
-				if ep != None: # Se l'episodio è disponibile
+				if ep is not None: # Se l'episodio è disponibile
 					print("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
 					title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["episode"]}'
 					if ep.number == str(info["episode"]):
@@ -131,7 +131,7 @@ def job():
 					print("⏳ Rinominando l'episodio.")
 					RenameSerie(info["seriesId"])
 
-					if CHAT_ID != None or BOT_TOKEN != None:
+					if None not in (CHAT_ID, BOT_TOKEN):
 						print("✉️ Inviando il messaggio via telegram.")
 						send_message(info)
 
