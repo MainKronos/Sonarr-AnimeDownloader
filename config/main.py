@@ -27,7 +27,6 @@ DIVIDC='\033[1;90m' # GRIGIO
 OKC='\033[92m' # VERDE
 NC='\033[0m' # Ripristino
 
-
 start = r"""{color}┌------------------------------------{time}------------------------------------┐
 {color}|                 _                _____                      _                 _            |
 {color}|     /\         (_)              |  __ \                    | |               | |           |
@@ -124,12 +123,13 @@ def job():
 						print("✔️ Episodio spostato.")
 
 					print("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
-					RescanSerie(info["seriesId"])
+					RescanSerie(info["IDs"]["seriesId"])
 
-					time.sleep(1)
+					time.sleep(2)
 
 					print("⏳ Rinominando l'episodio.")
-					RenameSerie(info["seriesId"])
+					epFileId = GetEpisodeFileID(info["IDs"]["epId"])
+					RenameEpisode(info["IDs"]["seriesId"], epFileId)
 
 					if CHAT_ID != None or BOT_TOKEN != None:
 						print("✉️ Inviando il messaggio via telegram.")
@@ -208,8 +208,6 @@ def move_file(title, path):
 	source = os.path.join(currentPath, file)
 	destination = os.path.join(destinationPath, file)
 
-	print(destinationPath)
-
 	if not os.path.exists(destinationPath):
 		os.makedirs(destinationPath)
 		print(f"⚠️ La cartella {destinationPath} è stata creata.")
@@ -238,6 +236,10 @@ def get_missing_episodes():
 
 		for serie in result["records"]:
 			info = {}
+			info["IDs"] = {
+				"seriesId": serie["seriesId"],
+				"epId": serie["id"]
+			}
 			info["seriesId"] = serie["seriesId"]
 			info["SonarrTitle"] = serie["series"]["title"]
 			info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
@@ -249,15 +251,6 @@ def get_missing_episodes():
 			series.append(info)
 
 	return series
-
-def getMaxEpisode(serieId, season):
-	endpoint = f"series/{serieId}"
-	res = requests.get("{}/api/{}?apikey={}&sortKey=airDateUtc".format(SONARR_URL, endpoint, API_KEY))
-	result = res.json()
-
-	for stagione in result["seasons"]:
-		if stagione["seasonNumber"] == season:
-			return stagione["statistics"]["totalEpisodeCount"]
 
 def RescanSerie(seriesId):
 	endpoint = "command"
@@ -276,6 +269,34 @@ def RenameSerie(seriesId):
 		"seriesId": seriesId
 	}
 	requests.post(url, json=data)
+
+def GetEpisode(epId):
+	endpoint = f"episode/{epId}"
+	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	return requests.get(url)
+
+def GetEpisodeFile(epFileId):
+	endpoint = f"episodefile/{epFileId}"
+	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	return requests.get(url)
+
+def RenameEpisode(seriesId, epFileId):
+	endpoint = "command"
+	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	data = {
+		"name": "RenameFiles",
+		"seriesId": seriesId,
+		"files": [epFileId]
+	}
+	return requests.post(url, json=data)
+
+### UTILS
+
+def GetEpisodeFileID(epId): # Converte l'epId in epFileId
+	data = GetEpisode(epId).json()
+	return data["episodeFile"]["id"]
+
+
 
 #### Telegram ###########################################################################################################
 
