@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="static/css/materialize.min.css"  media="screen,projection"/>
+
+        <link type="text/css" rel="stylesheet" href="static/css/my.css" media="screen,projection"/>
+        
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="Tabella Di Conversione">
+        <meta name="author" content="MainKronos">
+
+        <title>Tabella Di Conversione</title>
+    </head>
+    <body>
+        <div class="mainpage">
+            <!-- Header -->
+            <nav class="nav-extended dark">
+                <div class="nav-wrapper">
+                    <a href="index" class="brand-logo center dark">Settings</a>
+                </div>
+                <div class="nav-content">
+                    <span class="nav-title hide-on-med-and-up"></span>
+                </div>
+            </nav>
+
+            <div class="container">
+                <div class="section">
+                    <br>
+                </div>
+                <div class="section">
+                    <div class="row">
+                        <div class="col s12">
+                            <form class="card dark-back" method="post" action="/settings_update">
+                                <div class="card-content row">
+
+                                    <div class="col s6 m4">
+                                        <div class="card dark" method="post" action="/settings_update">
+                                            <div class="card-content">
+                                                <span class="card-title">Livello del Log</span>
+                                                <p>
+                                                    <label for="DEBUG">
+                                                        <input class="with-gap" id="DEBUG" value="DEBUG" name="LogLevel" type="radio" {% if settings.LogLevel == 'DEBUG' %}checked{%endif%}/>
+                                                        <span>DEBUG</span>
+                                                    </label>
+                                                </p>
+                                                <p>
+                                                    <label for="INFO">
+                                                        <input class="with-gap" id="INFO" value="INFO" name="LogLevel" type="radio" {% if settings.LogLevel == 'INFO' %}checked{%endif%}/>
+                                                        <span>INFO</span>
+                                                    </label>
+                                                </p>
+                                                <p>
+                                                    <label for="WARNING">
+                                                        <input class="with-gap" id="WARNING" value="WARNING" name="LogLevel" type="radio" {% if settings.LogLevel == 'WARNING' %}checked{%endif%}/>
+                                                        <span>WARNING</span>
+                                                    </label>
+                                                </p>
+                                                <p>
+                                                    <label for="ERROR">
+                                                        <input class="with-gap" id="ERROR" value="ERROR" name="LogLevel" type="radio" {% if settings.LogLevel == 'ERROR' %}checked{%endif%}/>
+                                                        <span>ERROR</span>
+                                                    </label>
+                                                </p>
+                                                <p>
+                                                    <label for="CRITICAL">
+                                                        <input class="with-gap" id="CRITICAL" value="CRITICAL" name="LogLevel" type="radio" {% if settings.LogLevel == 'CRITICAL' %}checked{%endif%}/>
+                                                        <span>CRITICAL</span>
+                                                    </label>
+                                                </p>
+
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col s6 m4">
+                                        <div class="card dark" method="post" action="/settings_update">
+                                            <div class="card-content">
+                                                <span class="card-title">Rinomina Episodi</span>
+                                                <div class="switch">
+                                                    <label for="RenameEp">
+                                                        Off
+                                                        <input id='RenameEp' name='RenameEp' type="checkbox" value='True' {% if settings.RenameEp %}checked{%endif%}>
+                                                        <span class="lever"></span>
+                                                        On
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="card-action">
+                                    <button class="btn waves-effect waves-light dark" type="submit">Save
+                                            <i class="material-icons right">save</i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- <form class="col s12" method="post" action="/settings_update">
+                        <div class="modal-content">
+                            <h4>Settings</h4>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <select>
+                                        <option value="" disabled selected>Seleziona il livello</option>
+                                        <option value="DEBUG">DEBUG</option>
+                                        <option value="INFO">INFO</option>
+                                        <option value="WARNING">WARNING</option>
+                                        <option value="ERROR">ERROR</option>
+                                        <option value="CRITICAL">CRITICAL</option>
+                                    </select>
+                                    <label>Livello del Log</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    {{ settings.LogLevel }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer row">
+                            <div class="col s12 right-align">
+                                <button class="btn waves-effect waves-light dark" type="submit">Save
+                                    <i class="material-icons right">save</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form> -->
+                </div>
+            </div>
+        </div>
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="static/js/materialize.min.js"></script>
+        <script type="text/javascript" src="static/js/my.js"></script>
+    </body>
+</html>
