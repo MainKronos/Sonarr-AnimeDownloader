@@ -186,3 +186,17 @@ input{
   background-color: #2c2c2c;
   /*-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);*/
 }
+
+/* SETTINGS  */
+
+.dark.card{
+	background-color: #242424 !important;
+	border-color: #121212 !important;
+	color: rgba(255,255,255,0.5) !important;
+}
+
+.dark-back.card{
+	background-color: #212121 !important;
+	border-color: #121212 !important;
+	color: rgba(255,255,255,0.5) !important;
+}

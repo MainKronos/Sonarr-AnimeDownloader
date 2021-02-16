@@ -9,7 +9,8 @@ import schedule
 import time
 import shutil
 import threading
-from app import app
+import logging.config
+from app import app, ReadSettings
 
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
 API_KEY = os.getenv('API_KEY') # Chiave api di sonarr
@@ -27,6 +28,8 @@ DIVIDC='\033[1;90m' # GRIGIO
 OKC='\033[92m' # VERDE
 NC='\033[0m' # Ripristino
 
+SETTINGS = ReadSettings()
+
 start = r"""{color}┌------------------------------------{time}------------------------------------┐
 {color}|                 _                _____                      _                 _            |
 {color}|     /\         (_)              |  __ \                    | |               | |           |
@@ -40,26 +43,27 @@ start = r"""{color}┌------------------------------------{time}----------------
 
 
 def main():
+	LoadLog()
 	print(start)
 
-	if SONARR_URL == None:
+	if SONARR_URL is None:
 		print("✖️ Variabile d'ambinete '𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇' non inserita.")
 	else:
 		print("✔ 𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇: {}".format(SONARR_URL))
-	if API_KEY == None:
+	if API_KEY is None:
 		print("✖️ Variabile d'ambinete '𝘼𝙋𝙄_𝙆𝙀𝙔' non inserita.")
 	else:
 		print("✔ 𝘼𝙋𝙄_𝙆𝙀𝙔: {}".format(API_KEY))
-	if CHAT_ID == None:
+	if CHAT_ID is None:
 		print("✖️ Variabile d'ambinete '𝘾𝙃𝘼𝙏_𝙄𝘿' non inserita.")
 	else:
 		print("✔ 𝘾𝙃𝘼𝙏_𝙄𝘿: {}".format(CHAT_ID))
-	if BOT_TOKEN == None:
+	if BOT_TOKEN is None:
 		print("✖️ Variabile d'ambinete '𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉' non inserita.")
 	else:
 		print("✔ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {}".format(BOT_TOKEN))
 
-	if SONARR_URL != None and API_KEY !=None:
+	if None not in (SONARR_URL, API_KEY):
 		print(f"\n{OKC}☑️ Le variabili d'ambiente sono state inserite correttamente.{NC}\n")
 
 		print("\nAVVIO SERVER")
@@ -109,7 +113,7 @@ def job():
 				else:
 					print("✖️ L'episodio NON è ancora uscito.")
 
-				if ep != None: # Se l'episodio è disponibile
+				if ep is not None: # Se l'episodio è disponibile
 					print("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
 					title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["episode"]}'
 					if ep.number == str(info["episode"]):
@@ -125,29 +129,31 @@ def job():
 					print("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
 					RescanSerie(info["IDs"]["seriesId"])
 
-					time.sleep(2)
 
-					print("⏳ Rinominando l'episodio.")
-					epFileId = GetEpisodeFileID(info["IDs"]["epId"])
-					RenameEpisode(info["IDs"]["seriesId"], epFileId)
+					if SETTINGS["RenameEp"]:
+						time.sleep(2)
 
-					if CHAT_ID != None or BOT_TOKEN != None:
+						print("⏳ Rinominando l'episodio.")
+						epFileId = GetEpisodeFileID(info["IDs"]["epId"])
+						RenameEpisode(info["IDs"]["seriesId"], epFileId)
+
+					if None not in (CHAT_ID, BOT_TOKEN):
 						print("✉️ Inviando il messaggio via telegram.")
 						send_message(info)
 
 			except aw.AnimeNotAvailable as info:
-				print(f"⚠️ {info}")
+				logging.warning(f"⚠️ {info}")
 			except aw.ServerNotSupported as warning:
-				print(f"{WARNC}🆆🅰🆁🅽🅸🅽🅶: {warning}{NC}")
+				logging.error(f"{WARNC}🆆🅰🆁🅽🅸🅽🅶: {warning}{NC}")
 			except aw.DeprecatedLibrary as dev:
-				print(f"{ALERTC}🅰🅻🅴🆁🆃: {dev}{NC}")
+				logging.critical(f"{ALERTC}🅰🅻🅴🆁🆃: {dev}{NC}")
 			except Exception as error:
-				print(f"{ERRORC}🅴🆁🆁🅾🆁: {error}{NC}")
+				logging.exception(f"{ERRORC}🅴🆁🆁🅾🆁: {error}{NC}")
 			finally:
 				print(divider, "\n")
 
 	else:
-		print("\nNon c'è nessun episodio da cercare.\n")
+		logging.info("\nNon c'è nessun episodio da cercare.\n")
 
 	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
 	print("\n{color}╰-----------------------------------「{time}」-----------------------------------╯{nc}\n".format(time=nextStart, color=SEPARC, nc=NC))
@@ -186,7 +192,7 @@ def converting(series):
 					break
 		else:
 
-			print("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
+			logging.debug("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
 
 	return res
 
@@ -210,7 +216,7 @@ def move_file(title, path):
 
 	if not os.path.exists(destinationPath):
 		os.makedirs(destinationPath)
-		print(f"⚠️ La cartella {destinationPath} è stata creata.")
+		logging.warning(f"⚠️ La cartella {destinationPath} è stata creata.")
 
 	shutil.move(source, destination)
 	return True
@@ -266,7 +272,7 @@ def RenameSerie(seriesId):
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	data = {
 		"name": "RenameSeries",
-		"seriesId": seriesId
+		"seriesIds": [seriesId]
 	}
 	requests.post(url, json=data)
 
@@ -296,6 +302,16 @@ def GetEpisodeFileID(epId): # Converte l'epId in epFileId
 	data = GetEpisode(epId).json()
 	return data["episodeFile"]["id"]
 
+### LOG
+
+def LoadLog():
+	logging.basicConfig(format='%(message)s')
+	logging.config.dictConfig({ 'version': 1, 'disable_existing_loggers': True, })
+	SetLog()
+
+def SetLog():
+	LogLevel = SETTINGS["LogLevel"]
+	logging.getLogger().setLevel(LogLevel)
 
 
 #### Telegram ###########################################################################################################

@@ -1,7 +1,9 @@
+from configparser import ConfigParser
 import re
 import json
 import os
 from flask import *
+import sys
 app = Flask(__name__)
 
 import logging
@@ -35,6 +37,24 @@ def delete_anime():
 	deleteAnime(res['delete_anime'])
 
 	return redirect(url_for('index'))
+
+@app.route('/settings')
+def settings():
+	setts = ReadSettings()
+	return render_template('settings.html', settings=setts)
+
+@app.route('/settings_update', methods=['POST'])
+def settings_update():
+	res = request.form
+	settings = {
+		"LogLevel": request.form.get("LogLevel"),
+		"RenameEp": False if request.form.get("RenameEp") is None else True
+	}
+
+	WriteSettings(settings)
+	# print(request.form.get("RenameEp"), file=sys.stderr)
+	# print(res, file=sys.stderr)
+	return redirect(url_for('settings'))
 
 @app.route('/index')
 @app.route('/')
@@ -102,9 +122,49 @@ def appendAnime(data):
 def getmyenv():
 	env = {}
 
+	env["ANIME_PATH"] = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 	env["SONARR_URL"] = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
 	env["API_KEY"] = os.getenv('API_KEY') # Chiave api di sonarr
 	env["CHAT_ID"] = os.getenv('CHAT_ID') # telegramm
 	env["BOT_TOKEN"] = os.getenv('BOT_TOKEN') # telegramm
 
 	return env
+
+
+### Setting 
+
+def ReadSettings():
+
+	data = {
+		"LogLevel":"DEBUG",
+		"RenameEp":True
+	}
+
+	json_location = "json/settings.json"
+	updateFix = False
+
+	settings = {}
+
+	if os.path.exists(json_location):
+		with open(json_location, 'r') as f:
+			settings = json.loads(f.read())
+
+		for info in data:
+			if info not in settings:
+				settings[info] = data[info]
+				updateFix = True
+	else:
+		settings = data
+		updateFix = True
+
+	if updateFix:
+		with open(json_location, 'w') as f:
+			f.write(json.dumps(settings, indent='\t'))
+	
+	return settings
+
+
+def WriteSettings(settings):
+	json_location = "json/settings.json"
+	with open(json_location, 'w') as f:
+			f.write(json.dumps(settings, indent='\t'))
