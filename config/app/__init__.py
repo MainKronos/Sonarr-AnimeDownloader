@@ -17,11 +17,10 @@ def msgSafe(msg):
 
 @app.route('/favicon.ico') 
 def favicon(): 
-    return redirect(url_for('static', filename='favicon.ico'), code=302)
+	return redirect(url_for('static', filename='favicon.ico'), code=302)
 
 @app.route('/append_anime', methods=['POST']) # Per aggiungere un anime
 def append_anime():
-	res = request.form
 	data = {
 		"title": request.form['title'],
 		"season": request.form['season'],

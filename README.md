@@ -4,7 +4,7 @@
 
 <!-- [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)   [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)    -->
 
-[![Version](https://img.shields.io/github/v/release/MainKronos/Sonarr-AnimeDownloader?color=90caf9&style=for-the-badge)](../../releases)    [![Docker](https://img.shields.io/docker/image-size/mainkronos/anime_downloader?color=9fa8da&style=for-the-badge)](https://hub.docker.com/repository/docker/mainkronos/anime_downloader)   [![Issues](https://img.shields.io/github/issues/MainKronos/Sonarr-AnimeDownloader?color=a5d6a7&style=for-the-badge)](../../issues)   [![License](https://img.shields.io/github/license/MainKronos/Sonarr-AnimeDownloader?color=ffcc80&style=for-the-badge)](/LICENSE)   [![Stars](https://img.shields.io/github/stars/MainKronos/Sonarr-AnimeDownloader?color=fff59d&style=for-the-badge)](../../stargazers)
+[![Version](https://img.shields.io/github/v/release/MainKronos/Sonarr-AnimeDownloader?color=90caf9&style=for-the-badge)](../../releases)    [![Docker](https://img.shields.io/docker/image-size/mainkronos/anime_downloader?color=9fa8da&style=for-the-badge)](https://hub.docker.com/repository/docker/mainkronos/anime_downloader)   [![Pull](https://img.shields.io/docker/pulls/mainkronos/anime_downloader?style=for-the-badge)](https://hub.docker.com/repository/docker/mainkronos/anime_downloader)  [![Issues](https://img.shields.io/github/issues/MainKronos/Sonarr-AnimeDownloader?color=a5d6a7&style=for-the-badge)](../../issues)   [![License](https://img.shields.io/github/license/MainKronos/Sonarr-AnimeDownloader?color=ffcc80&style=for-the-badge)](/LICENSE)   [![Stars](https://img.shields.io/github/stars/MainKronos/Sonarr-AnimeDownloader?color=fff59d&style=for-the-badge)](../../stargazers)
 
 _This documentation is in **Italian** because this program downloads anime with subtitles in Italian only._
 
@@ -15,6 +15,8 @@ L'utilizzo di _**Sonarr**_ è necessario.
 Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com/linuxserver/docker-sonarr)
 
 Il progetto utilizza la libreria `animeworld`, l'ho dovuta rendere **privata** perchè gli sviluppatori di [AnimeWorld](https://www.animeworld.tv/) non volevano che fosse pubblica. Se volete l'accesso scrivete [qui](../../issues/6)
+
+Le **FAQ** si trovano [qui](FAQ.md)
 
 ![Presentazione](/documentation/images/Presentazione.gif)
 
@@ -76,21 +78,6 @@ Il programma, per funzionare, necessita di un file che si chiama `table.json`, s
 **È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
 ![Tabella Di Conversione](/documentation/images/tabella_di_conversione.gif)
 
-Nella stessa cartella `/script/json/` c'è un programma scritto in python che si chiama **`tableEditor.py`** che facilita l'inserimento di tali informazioni, (in caso di eliminazioni accidentale il file può essere scaricato anche da [qui](/config/json/tableEditor.py)). Questo script deve essere nella **stessa** cartella di `table.json` altimenti non funzionerà correttamente.
-**Dalla prossima versione il file non sarà più supportato.**
-```
-...
-├── script
-│   ├── app    ### Pagina Web
-│   │   ├── ...
-│   │  ...
-│   ├── main.py    ### Programma principale
-│   └── json
-│       ├── table.json    ### Tabella di conversione
-│       └── tableEditor.py
-...        
-```
-
 In ogni caso la formattazione di come sono inserite le informazioni nel file `table.json` sono riportate quà sotto, sottoforma di esempio:
 ```
 [
@@ -111,44 +98,29 @@ In ogni caso la formattazione di come sono inserite le informazioni nel file `ta
 ```
 Ho caricato anche la **mia configurazione** che utilizzo, può essere trovata [qui](/documentation/examples/table.json). Questa `table.json` può essere usata come _esempio_ o come _prorio database_ da aggiornare poi personalmente con i propri **Anime**. Ad ogni stagione ne caricherò una più aggiornata. 
 
+La struttura interna del Container è così strutturata:
+```
+...
+├── script
+│   ├── app    ### Pagina Web
+│   │   ├── ...
+│   │  ...
+│   ├── main.py    ### Programma principale
+│   └── json
+│       └── table.json    ### Tabella di conversione
+...        
+```
+
 ## Problemi
 In caso di problemi o errori controllare prima di tutto i log del Container, di solito lì è indicato il problema; altrimenti segnalarlo su GitHub in questo repository sotto la sezione _Issues_.
 
+### **Importante**
+Se visualizzate questo tipo di errore:
+```
+🅰🅻🅴🆁🆃: Il sito è cambiato, di conseguenza la libreria è DEPRECATA.
+```
+Segnalatelo il prima possibile sotto la sezione _Issues_, in modo tale che possa risolverlo al più presto.
+
 ## FAQ
+Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
 
-### Dove posso reperire la chiave api di sonarr?
-![Sonarr API KEY](/documentation/images/Sonarr_ApiKey.png)
-
-### Dove posso reperire la Chat ID di telegram?
-TODO: da fare
-
-### Dove posso reperire il Token per il Bot di telegram?
-TODO: da fare
-
-### Ho aggiornato alla nuova versione del container e adesso non funziona più nulla.
-Alcune volte faccio modifiche importanti al programma, se riscontrate questo tipo di problema per favore controllate il [changelog](../../releases).
-
-### Una stagione di Sonarr comprende due stagioni su AnimeWorld
-![Esempio](/documentation/images/AnimeWold_2serie.png)
-
-Per riuscire a dire al programma che una stagione di Sonarr sono due di AnimeWold basta aggiunge all'Array dei link di AnimeWold per quella stagione di Sonarr anche il link di AnimeWold della seconda stagione.
-
-Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sarebbe:
-```
-[    
-    ...
-    {
-        "title": "Ascendance of a Bookworm",
-        "seasons": {
-            "1": [
-                "https://www.animeworld.tv/play/ascendance-of-a-bookworm.paCPb",
-                "https://www.animeworld.tv/play/ascendance-of-a-bookworm-2.Q0Rrm"
-            ]
-        }
-    },
-    ...
-]
-```
-
-**È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
-Per aggiungere un campo, in questo caso un nuovo link all'array, e sufficiente reinserire tutti i campi (come se si stesse riaggiungendo di nuovo lo stesso anime) e nel campo link inserire **soltanto** il secondo/terzo/ecc. link.

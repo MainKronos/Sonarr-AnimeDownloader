@@ -8,10 +8,10 @@ assignees: ''
 ---
 
 ### Informazioni generali
-* **`Nome Anime`**: 
-* **`Stagione`**: 
-* **`Episodio`**: 
-* **`Link di AnimeWorld`**: 
+* **Nome Anime**: 
+* **Stagione**: 
+* **Episodio**: 
+* **Link di AnimeWorld**: 
 
 ### Livello di Errore:
 - [ ] `🆆🅰🆁🅽🅸🅽🅶`
