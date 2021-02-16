@@ -107,9 +107,16 @@ La struttura interna del Container è così strutturata:
 │   │  ...
 │   ├── main.py    ### Programma principale
 │   └── json
+│       ├── settings.json    ### Impostazioni
 │       └── table.json    ### Tabella di conversione
 ...        
 ```
+
+## Settings
+
+![Settings](/documentation/images/settings.png)
+
+Le impostazioni si trovano in `http://localhost:5000/settings`
 
 ## Problemi
 In caso di problemi o errori controllare prima di tutto i log del Container, di solito lì è indicato il problema; altrimenti segnalarlo su GitHub in questo repository sotto la sezione _Issues_.
