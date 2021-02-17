@@ -1,1 +1,2 @@
 *.html linguist-detectable=false
+config/app/static/css/materialize.min.css linguist-vendored=false
