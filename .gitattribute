@@ -1,4 +1,0 @@
-*.css linguist-vendored=false
-*.js linguist-vendored=false
-*.py linguist-vendored=true
-*.html linguist-vendored=false
