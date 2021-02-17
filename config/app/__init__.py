@@ -6,9 +6,9 @@ from flask import *
 import sys
 app = Flask(__name__)
 
-# import logging
-# log = logging.getLogger('werkzeug')
-# log.setLevel(logging.ERROR)
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 @app.template_filter()
 def msgSafe(msg):
