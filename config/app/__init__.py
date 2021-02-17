@@ -6,9 +6,9 @@ from flask import *
 import sys
 app = Flask(__name__)
 
-import logging
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+# import logging
+# log = logging.getLogger('werkzeug')
+# log.setLevel(logging.ERROR)
 
 @app.template_filter()
 def msgSafe(msg):
@@ -17,10 +17,11 @@ def msgSafe(msg):
 
 @app.route('/favicon.ico') 
 def favicon(): 
-	return redirect(url_for('static', filename='favicon.ico'), code=302)
+    return redirect(url_for('static', filename='favicon.ico'), code=302)
 
 @app.route('/append_anime', methods=['POST']) # Per aggiungere un anime
 def append_anime():
+	res = request.form
 	data = {
 		"title": request.form['title'],
 		"season": request.form['season'],
@@ -47,7 +48,8 @@ def settings_update():
 	res = request.form
 	settings = {
 		"LogLevel": request.form.get("LogLevel"),
-		"RenameEp": False if request.form.get("RenameEp") is None else True
+		"RenameEp": False if request.form.get("RenameEp") is None or request.form.get("MoveEp") is None else True,
+		"MoveEp": False if request.form.get("MoveEp") is None else True,
 	}
 
 	WriteSettings(settings)
@@ -136,7 +138,8 @@ def ReadSettings():
 
 	data = {
 		"LogLevel":"DEBUG",
-		"RenameEp":True
+		"RenameEp":True,
+		"MoveEp":True
 	}
 
 	json_location = "json/settings.json"

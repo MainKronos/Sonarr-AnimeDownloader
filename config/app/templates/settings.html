@@ -94,6 +94,21 @@
                                             </div>
                                         </div>
                                     </div>
+                                     <div class="col s6 m4">
+                                        <div class="card dark" method="post" action="/settings_update">
+                                            <div class="card-content">
+                                                <span class="card-title">Sposta Episodi</span>
+                                                <div class="switch">
+                                                    <label for="MoveEp">
+                                                        Off
+                                                        <input id='MoveEp' name='MoveEp' type="checkbox" value='True' {% if settings.MoveEp %}checked{%endif%}>
+                                                        <span class="lever"></span>
+                                                        On
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                                 <div class="card-action">

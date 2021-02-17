@@ -44,29 +44,29 @@ start = r"""{color}┌------------------------------------{time}----------------
 
 def main():
 	LoadLog()
-	print(start)
+	logging.warning(start)
 
 	if SONARR_URL is None:
-		print("✖️ Variabile d'ambinete '𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇' non inserita.")
+		logging.warning("✖️ Variabile d'ambinete '𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇' non inserita.")
 	else:
-		print("✔ 𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇: {}".format(SONARR_URL))
+		logging.info("✔ 𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇: {}".format(SONARR_URL))
 	if API_KEY is None:
-		print("✖️ Variabile d'ambinete '𝘼𝙋𝙄_𝙆𝙀𝙔' non inserita.")
+		logging.warning("✖️ Variabile d'ambinete '𝘼𝙋𝙄_𝙆𝙀𝙔' non inserita.")
 	else:
-		print("✔ 𝘼𝙋𝙄_𝙆𝙀𝙔: {}".format(API_KEY))
+		logging.info("✔ 𝘼𝙋𝙄_𝙆𝙀𝙔: {}".format(API_KEY))
 	if CHAT_ID is None:
-		print("✖️ Variabile d'ambinete '𝘾𝙃𝘼𝙏_𝙄𝘿' non inserita.")
+		logging.debug("✖️ Variabile d'ambinete '𝘾𝙃𝘼𝙏_𝙄𝘿' non inserita.")
 	else:
-		print("✔ 𝘾𝙃𝘼𝙏_𝙄𝘿: {}".format(CHAT_ID))
+		logging.info("✔ 𝘾𝙃𝘼𝙏_𝙄𝘿: {}".format(CHAT_ID))
 	if BOT_TOKEN is None:
-		print("✖️ Variabile d'ambinete '𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉' non inserita.")
+		logging.debug("✖️ Variabile d'ambinete '𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉' non inserita.")
 	else:
-		print("✔ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {}".format(BOT_TOKEN))
+		logging.info("✔ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {}".format(BOT_TOKEN))
 
 	if None not in (SONARR_URL, API_KEY):
-		print(f"\n{OKC}☑️ Le variabili d'ambiente sono state inserite correttamente.{NC}\n")
+		logging.info(f"\n{OKC}☑️ Le variabili d'ambiente sono state inserite correttamente.{NC}\n")
 
-		print("\nAVVIO SERVER")
+		logging.info("\nAVVIO SERVER")
 		job_thread = threading.Thread(target=server)
 		job_thread.start()
 
@@ -86,60 +86,60 @@ def run_threaded(job_func):
 def job():
 	divider = f"{DIVIDC}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - {NC}"
 	
-	print("\n{color}╭-----------------------------------「{time}」-----------------------------------╮{nc}\n".format(time=time.strftime("%d %b %Y %H:%M:%S"), color=SEPARC, nc=NC))
+	logging.warning("\n{color}╭-----------------------------------「{time}」-----------------------------------╮{nc}\n".format(time=time.strftime("%d %b %Y %H:%M:%S"), color=SEPARC, nc=NC))
 
 	raw_series = get_missing_episodes()
 	if len(raw_series)!=0:
 		series = converting(raw_series)
 
 		for info in series:
-			print("\n", divider)
+			logging.warning(f"\n{divider}")
 
 			try:
-				print("🔎 Ricerca anime '{}'.".format(info["SonarrTitle"]))
+				logging.warning("🔎 Ricerca anime '{}' per l'episodio S{}E{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
 				anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
 
-				print("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
+				logging.info("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
 				epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
 				episodi = fixEps(epsArr)
 
-				print("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["episode"]))
+				logging.info("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["episode"]))
 				ep = None
 				for episodio in episodi:
 					if episodio.number == str(info["episode"]):
 						ep = episodio
-						print("✔️ L'episodio è disponibile.")
+						logging.info("✔️ L'episodio è disponibile.")
 						break
 				else:
-					print("✖️ L'episodio NON è ancora uscito.")
+					logging.info("✖️ L'episodio NON è ancora uscito.")
 
 				if ep is not None: # Se l'episodio è disponibile
-					print("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
+					logging.warning("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
 					title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["episode"]}'
 					if ep.number == str(info["episode"]):
 						fileLink = ep.links[0]
 						title = fileLink.sanitize(title) # Sanitizza il titolo
 						if fileLink.download(title): 
-							print("✔️ Dowload Completato.")
+							logging.info("✔️ Dowload Completato.")
 
-					print("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["episode"], info["path"]))
-					if move_file(title, info["path"]): 
-						print("✔️ Episodio spostato.")
+					if SETTINGS["MoveEp"]:
+						logging.info("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["episode"], info["path"]))
+						if move_file(title, info["path"]): 
+							logging.info("✔️ Episodio spostato.")
 
-					print("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
-					RescanSerie(info["IDs"]["seriesId"])
+						logging.info("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
+						RescanSerie(info["IDs"]["seriesId"])
 
+						if SETTINGS["RenameEp"]:
+							time.sleep(2)
 
-					if SETTINGS["RenameEp"]:
-						time.sleep(2)
+							logging.info("⏳ Rinominando l'episodio.")
+							epFileId = GetEpisodeFileID(info["IDs"]["epId"])
+							RenameEpisode(info["IDs"]["seriesId"], epFileId)
 
-						print("⏳ Rinominando l'episodio.")
-						epFileId = GetEpisodeFileID(info["IDs"]["epId"])
-						RenameEpisode(info["IDs"]["seriesId"], epFileId)
-
-					if None not in (CHAT_ID, BOT_TOKEN):
-						print("✉️ Inviando il messaggio via telegram.")
-						send_message(info)
+						if None not in (CHAT_ID, BOT_TOKEN):
+							logging.info("✉️ Inviando il messaggio via telegram.")
+							send_message(info)
 
 			except aw.AnimeNotAvailable as info:
 				logging.warning(f"⚠️ {info}")
@@ -150,13 +150,13 @@ def job():
 			except Exception as error:
 				logging.exception(f"{ERRORC}🅴🆁🆁🅾🆁: {error}{NC}")
 			finally:
-				print(divider, "\n")
+				logging.warning(f"\n{divider}")
 
 	else:
 		logging.info("\nNon c'è nessun episodio da cercare.\n")
 
 	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
-	print("\n{color}╰-----------------------------------「{time}」-----------------------------------╯{nc}\n".format(time=nextStart, color=SEPARC, nc=NC))
+	logging.warning("\n{color}╰-----------------------------------「{time}」-----------------------------------╯{nc}\n".format(time=nextStart, color=SEPARC, nc=NC))
 
 def fixEps(epsArr): # accorpa 2 o più serie di animeworld
 	up = 0 # numero da aggiungere per rendere consecutivi gli episodi di varie stagioni
