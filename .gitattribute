@@ -1,0 +1,4 @@
+*.css linguist-detectable=false
+*.js linguist-detectable=false
+*.py linguist-detectable=true
+*.html linguist-detectable=true
