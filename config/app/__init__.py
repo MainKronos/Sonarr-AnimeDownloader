@@ -41,7 +41,8 @@ def delete_anime():
 @app.route('/settings')
 def settings():
 	setts = ReadSettings()
-	return render_template('settings.html', settings=setts)
+	env = getmyenv()
+	return render_template('settings.html', settings=setts, env=env)
 
 @app.route('/settings_update', methods=['POST'])
 def settings_update():
@@ -62,8 +63,7 @@ def settings_update():
 def index():
 
 	anime = readData()
-	env = getmyenv()
-	return render_template('index.html', infos=anime, env=env)
+	return render_template('index.html', infos=anime)
 
 
 
@@ -123,7 +123,6 @@ def appendAnime(data):
 def getmyenv():
 	env = {}
 
-	env["ANIME_PATH"] = os.getenv('ANIME_PATH') # cartella dove si trovano gli anime
 	env["SONARR_URL"] = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
 	env["API_KEY"] = os.getenv('API_KEY') # Chiave api di sonarr
 	env["CHAT_ID"] = os.getenv('CHAT_ID') # telegramm

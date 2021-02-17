@@ -201,6 +201,10 @@ input{
 	color: rgba(255,255,255,0.5) !important;
 }
 
+.card .card-image img{
+	max-height: 84px !important;
+	object-fit: cover;
+}
 
 [type="radio"]:checked+span:after, 
 [type="radio"].with-gap:checked+span:before, 
@@ -217,4 +221,8 @@ input{
 .switch label input[type=checkbox]:checked+.lever:after,
 .switch label .lever:after{
 	background-color: #8f97c4 !important;
+}
+
+.switch label .lever:before{
+	background-color: rgba(159, 168, 218, 0.2) !important;
 }

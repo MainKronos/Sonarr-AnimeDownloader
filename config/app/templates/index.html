@@ -24,8 +24,8 @@
             <nav class="nav-extended dark">
                 <div class="nav-wrapper">
                     <a href="#!" class="brand-logo center dark">Tabella Di Conversione</a>
-                    <a class="btn-floating waves-effect waves-light btn-small modal-trigger dark left info" href="#info">
-                        <i class="material-icons">info</i>
+                    <a class="btn-floating waves-effect waves-light btn-small dark left info" href="/settings">
+                        <i class="material-icons">settings</i>
                     </a>
                 </div>
                 <div class="nav-content">
@@ -41,29 +41,6 @@
                 <div class="tap-target-content">
                     <h5>Aggiungi un Anime</h5>
                     <p>Premi questo pulsante per mappare un Anime</p>
-                </div>
-            </div>
-
-            <!-- Modal Structure -->
-            <div id="info" class="modal dark">
-                <div class="modal-content">
-                    <h4>Variabili d'Ambiente</h4>
-                    <br>
-                    <table>
-                        <thead>
-                        </thead>
-                        <tbody>
-                            {% for var in env %}
-                            <tr>
-                                <td>{{ var }}</td>
-                                <td>{{ env[var] }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <a class="modal-close btn waves-effect waves-light dark">Close</a>
                 </div>
             </div>
 
