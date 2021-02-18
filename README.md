@@ -18,6 +18,8 @@ Il progetto utilizza la libreria `animeworld`, l'ho dovuta rendere **privata** p
 
 Le **FAQ** si trovano [qui](FAQ.md)
 
+_pssss... se apprezzate il mio lavoro mettete una stella al progetto 👍_
+
 ![Presentazione](/documentation/images/Presentazione.gif)
 
 ## Utilizzo
