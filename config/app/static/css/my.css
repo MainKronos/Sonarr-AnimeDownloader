@@ -226,3 +226,29 @@ input{
 .switch label .lever:before{
 	background-color: rgba(159, 168, 218, 0.2) !important;
 }
+
+input[type=range]{
+	border: 1px solid rgba(0,0,0,0.1) !important;
+	position: relative;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    margin: 15px 0;
+    padding: 0;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    background-color: #8f97c4;
+}
+input[type=range]::-moz-range-thumb {
+background-color: #8f97c4;
+}
+input[type=range]::-ms-thumb {
+background-color: #8f97c4;
+}
+
+/***** These are to edit the thumb and the text inside the thumb *****/
+input[type=range] + .thumb {
+background-color: #9FA8DA !important;
+}

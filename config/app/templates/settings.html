@@ -110,11 +110,21 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col s12 m6 l4">
+                                            <div class="card dark">
+                                                <div class="card-content">
+                                                    <span class="card-title">Intervallo Scan</span>
+                                                    <p class="range-field">
+                                                        <input type="range" id="ScanDalay" name='ScanDalay' min="30" max="1440" value='{{ settings.ScanDalay }}' />
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-action">
-                                    <button class="btn waves-effect waves-light dark" type="submit">Save
-                                            <i class="material-icons right">save</i>
+                                    <button class="btn waves-effect waves-light dark" type="submit" onclick="return alert('Le modifiche saranno effettive al prossimo riavvio.')">Save
+                                        <i class="material-icons right">save</i>
                                     </button>
                                 </div>
                             </form>

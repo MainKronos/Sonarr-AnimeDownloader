@@ -30,7 +30,7 @@ def append_anime():
 	appendAnime(data)
 	return redirect(url_for('index'))
 
-@app.route('/delete_anime', methods=['POST']) # Per aggiungere un anime
+@app.route('/delete_anime', methods=['POST']) # Per cancellare un anime
 def delete_anime():
 	res = request.form
 	# print(res, flush=True)
@@ -51,6 +51,7 @@ def settings_update():
 		"LogLevel": request.form.get("LogLevel"),
 		"RenameEp": False if request.form.get("RenameEp") is None or request.form.get("MoveEp") is None else True,
 		"MoveEp": False if request.form.get("MoveEp") is None else True,
+		"ScanDalay": int(request.form.get("ScanDalay"))
 	}
 
 	WriteSettings(settings)
@@ -138,7 +139,8 @@ def ReadSettings():
 	data = {
 		"LogLevel":"DEBUG",
 		"RenameEp":True,
-		"MoveEp":True
+		"MoveEp":True,
+		"ScanDalay": 30
 	}
 
 	json_location = "json/settings.json"
