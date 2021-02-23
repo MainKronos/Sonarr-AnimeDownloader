@@ -12,12 +12,14 @@ import threading
 import logging.config
 from app import app, ReadSettings
 
+SETTINGS = ReadSettings()
+
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
 API_KEY = os.getenv('API_KEY') # Chiave api di sonarr
 CHAT_ID = os.getenv('CHAT_ID') # telegramm
 BOT_TOKEN = os.getenv('BOT_TOKEN') # telegramm
 
-SCHEDULE_MINUTES = 30 # Ripetizione
+SCHEDULE_MINUTES = SETTINGS["ScanDalay"] # Ripetizione
 
 WARNC='\033[93m' #GIALLO
 ALERTC='\033[91m' # ROSSO
@@ -28,7 +30,6 @@ DIVIDC='\033[1;90m' # GRIGIO
 OKC='\033[92m' # VERDE
 NC='\033[0m' # Ripristino
 
-SETTINGS = ReadSettings()
 
 start = r"""{color}┌------------------------------------{time}------------------------------------┐
 {color}|                 _                _____                      _                 _            |
@@ -65,6 +66,8 @@ def main():
 
 	if None not in (SONARR_URL, API_KEY):
 		logging.info(f"\n{OKC}☑️ Le variabili d'ambiente sono state inserite correttamente.{NC}\n")
+
+		logging.info(f"\n⚙️ Intervallo Scan: {SCHEDULE_MINUTES} minuti\n")
 
 		logging.info("\nAVVIO SERVER")
 		job_thread = threading.Thread(target=server)
@@ -164,8 +167,22 @@ def fixEps(epsArr): # accorpa 2 o più serie di animeworld
 
 	for eps in epsArr:
 		for ep in eps:
-			ep.number = str(int(ep.number) + up)
-			ret.append(ep)
+			if re.search(r'^\d+$', ep.number) is not None: # Episodio intero
+				ep.number = str(int(ep.number) + up)
+				ret.append(ep)
+
+			if re.search(r'^\d+\.\d+$', ep.number) is not None: # Episodio fratto
+				continue # lo salta perchè sicuramente uno speciale
+
+			if re.search(r'^\d+-\d+$', ep.number) is not None: # Episodio Doppio
+				ep1 = ep   # Duplica l'episodio da sitemare la gestione.....
+				ep2 = ep   # Non mi piace 
+
+				ep1.number = str(int(ep.number.split('-')[0]) + up)
+				ep2.number = str(int(ep.number.split('-')[1]) + up)
+
+				ret.extend([ep1, ep2])
+			
 		up += int(eps[-1].number)
 
 	return ret
@@ -327,5 +344,8 @@ if __name__ == '__main__':
 	while True:
 		schedule.run_pending()
 		time.sleep(1)
+
+### FLASK #######################
+
 
 ### ERRORI ####################################
