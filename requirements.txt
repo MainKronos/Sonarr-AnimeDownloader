@@ -1,3 +1,3 @@
-animeworld>=1.3.4
+animeworld>=1.3.5
 schedule>=0.6.0
 flask
