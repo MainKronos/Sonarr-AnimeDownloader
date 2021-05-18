@@ -1,15 +1,19 @@
-FROM ubuntu:18.04
+FROM python:3.9.5-slim
 
-MAINTAINER MainKronos
+LABEL maintainer="MainKronos"
 
 RUN mkdir /script
-RUN apt-get update -y
 
-RUN apt-get install -y python3 python3-pip cron ffmpeg nano wget -y
-
-RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
-
-RUN apt-get install -y locales && locale-gen it_IT.UTF-8
+RUN export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update; \
+    apt-get -y upgrade; \
+    apt-get -y install --no-install-recommends; \
+    apt-get -y install ffmpeg; \
+    apt-get -y install tzdata; \
+    apt-get -y install locales && locale-gen it_IT.UTF-8; \
+    apt-get clean; \
+    apt-get autoclean; \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /script
 RUN pip3 install --upgrade pip
@@ -29,5 +33,4 @@ ENV LANG it_IT.UTF-8
 ENV LANGUAGE it_IT:en
 ENV LC_ALL it_IT.UTF-8
 
-# CMD ["cron", "-f"]
 CMD ["python3","-u","/script/main.py"]
