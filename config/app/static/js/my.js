@@ -41,6 +41,21 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.FormSelect.init(elems, {});
 });
 
+
+document.getElementById("add_link").addEventListener("click", function (){
+    var parent = this.parentNode;
+    var input_links = document.querySelectorAll("#input_link");
+
+    var number_input = input_links.length;
+    var input_link = input_links[number_input - 1]
+
+    var clon = input_link.cloneNode(true);
+    // clon.getElementsByTagName("input")[0].name = "link[" + number_input + "]";
+    parent.insertBefore(clon, this);
+})
+
+
+
 // document.addEventListener('DOMContentLoaded', function() {
 //     var elems = document.querySelectorAll('.fixed-action-btn');
 //     var instances = M.FloatingActionButton.init(elems, {});

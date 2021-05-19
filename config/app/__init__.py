@@ -22,10 +22,11 @@ def favicon():
 @app.route('/append_anime', methods=['POST']) # Per aggiungere un anime
 def append_anime():
 	res = request.form
+	print(res, file=sys.stderr)
 	data = {
 		"title": request.form['title'],
 		"season": request.form['season'],
-		"link": request.form['link']
+		"links": request.form.getlist('link')
 	}
 	appendAnime(data)
 	return redirect(url_for('index'))
@@ -101,17 +102,19 @@ def appendAnime(data):
 		if data["title"] == anime["title"]: # Se esiste già l'anime nella tabella
 
 			if data["season"] in anime["seasons"]: # Se esiste già la stagione
-				anime["seasons"][data["season"]].append(data["link"]) # aggiunge un'altro link
+				for link in data["links"]:
+					if link not in anime["seasons"][data["season"]]: # Se il link non è già presente
+						anime["seasons"][data["season"]].append(link)  # aggiunge un'altro link
 				# print(f"\n-> È stata aggiunto un altro link per la stagione {season} della serie {SonarrTitle}.")
 			else:
-				anime["seasons"][data["season"]] = [data["link"]] # inizializza una nuova stagione
+				anime["seasons"][data["season"]] = list(data["links"]) # inizializza una nuova stagione
 				# print(f"\n-> È stata aggiunta la stagione {season} per la serie {SonarrTitle}.")
 
 			break
 	else: # se non è stato trovato nessun anime
 		table.append({
 			"title": data["title"],
-			"seasons": {data["season"]: [data["link"]]}
+			"seasons": {data["season"]: data["links"]}
 		})
 		# print(f"\n-> È stata aggiunta la serie {SonarrTitle}.")
 

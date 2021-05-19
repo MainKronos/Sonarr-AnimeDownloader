@@ -5,11 +5,6 @@ html {
 	background-color: #121212 !important;
 }
 
-body{
-	/*overflow-x: hidden;*/
-	/*height: 100vh;*/
-}
-
 .mainpage{
 	overflow-x: hidden;
 	position: relative;
@@ -108,6 +103,17 @@ nav.dark{
 	background-color: #9FA8DA !important;
 }
 
+.dark.btn-flat{
+	color: #9FA8DA;
+	text-align: center !important;
+	border-radius: 2px !important;
+	border:1px solid #9FA8DA;
+}
+
+.dark.btn-flat:hover{
+	background-color: rgba(159, 168, 218, 0.1) !important;
+}
+
 .dark.info{
 	background-color: rgba(0,0,0,0) !important;
 	margin: 6px;
@@ -175,10 +181,10 @@ input{
 }
 
 /* Track */
-::-webkit-scrollbar-track {
-  /*box-shadow: inset 0 0 5px grey;
-  border-radius: 10px;*/
-}
+/* ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+} */
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
