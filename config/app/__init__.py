@@ -10,6 +10,8 @@ import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
+LOG = None # variabile usata per inviare messaggi a schermo
+
 @app.template_filter()
 def msgSafe(msg):
 	msg = re.sub(r"[^a-zA-Z]", "", msg)
@@ -22,13 +24,18 @@ def favicon():
 @app.route('/append_anime', methods=['POST']) # Per aggiungere un anime
 def append_anime():
 	res = request.form
-	print(res, file=sys.stderr)
 	data = {
 		"title": request.form['title'],
-		"season": request.form['season'],
+		"season": "all",
+		"absolute": ("absolute" in request.form),
 		"links": request.form.getlist('link')
 	}
-	appendAnime(data)
+	if not data["absolute"]:
+		data["season"]= request.form['season']
+	# print(data, file=sys.stderr)
+
+	global LOG
+	LOG = appendAnime(data)
 	return redirect(url_for('index'))
 
 @app.route('/delete_anime', methods=['POST']) # Per cancellare un anime
@@ -63,9 +70,9 @@ def settings_update():
 @app.route('/index')
 @app.route('/')
 def index():
-
+	log = get_log()
 	anime = readData()
-	return render_template('index.html', infos=anime)
+	return render_template('index.html', infos=anime, log=log)
 
 
 
@@ -97,30 +104,36 @@ def appendAnime(data):
 		return serieInfo["title"]
 
 	table = readData()
+	log = None # In caso di errore viene segnalato a video
+
 
 	for anime in table:
 		if data["title"] == anime["title"]: # Se esiste già l'anime nella tabella
-
 			if data["season"] in anime["seasons"]: # Se esiste già la stagione
 				for link in data["links"]:
 					if link not in anime["seasons"][data["season"]]: # Se il link non è già presente
 						anime["seasons"][data["season"]].append(link)  # aggiunge un'altro link
-				# print(f"\n-> È stata aggiunto un altro link per la stagione {season} della serie {SonarrTitle}.")
+						log = "Nuovo link aggiunto"
 			else:
-				anime["seasons"][data["season"]] = list(data["links"]) # inizializza una nuova stagione
-				# print(f"\n-> È stata aggiunta la stagione {season} per la serie {SonarrTitle}.")
+				if not anime["absolute"] and not data["absolute"]:  # Se la numerazione non è assoluta
+					anime["seasons"][data["season"]] = list(data["links"]) # inizializza una nuova stagione
+					log = f"Stagione {data['seasons']} di {data['title']} aggiunta"
+				else:
+					log = "ERRORE"	
 
 			break
 	else: # se non è stato trovato nessun anime
 		table.append({
 			"title": data["title"],
-			"seasons": {data["season"]: data["links"]}
+			"seasons": {data["season"]: data["links"]},
+			"absolute": data["absolute"]
 		})
+		log = f"{data['title']} aggiunto"
 		# print(f"\n-> È stata aggiunta la serie {SonarrTitle}.")
 
 	table.sort(key=myOrder)
 	writeData(table)
-
+	return log
 
 ### getenv
 
@@ -174,3 +187,11 @@ def WriteSettings(settings):
 	json_location = "json/settings.json"
 	with open(json_location, 'w') as f:
 			f.write(json.dumps(settings, indent='\t'))
+
+### OTHER
+
+def get_log():
+	global LOG
+	log = LOG
+	LOG = None
+	return log

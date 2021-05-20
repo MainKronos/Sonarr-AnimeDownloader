@@ -157,6 +157,29 @@ input{
 
 /*#########################*/
 
+.row {
+	display: flex;
+  	align-items: baseline;
+}
+
+[type="checkbox"].filled-in:checked+span:not(.lever):after{
+	top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #9FA8DA;
+    background-color: #9FA8DA;
+    z-index: 0;
+}
+
+.dropdown-content li:hover,
+.dropdown-content{
+	background-color: #242424 !important;
+}
+
+.dropdown-content li>a, .dropdown-content li>span{
+	color: #9FA8DA;
+}
+
 .tap-target{
 	background-color: #9FA8DA !important;
 }
@@ -172,6 +195,13 @@ input{
 .tap-target-wave::before, .tap-target-wave::after {
 	background-color: #2c2c2c !important;
 }
+
+span.badge.new {
+	background-color: #9FA8DA !important;
+	margin-right: 20px;
+}
+
+
 
 /*### OTHER ###*/
 
