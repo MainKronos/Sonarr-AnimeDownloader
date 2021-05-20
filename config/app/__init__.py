@@ -26,7 +26,7 @@ def append_anime():
 	res = request.form
 	data = {
 		"title": request.form['title'],
-		"season": "all",
+		"season": "absolute",
 		"absolute": ("absolute" in request.form),
 		"links": request.form.getlist('link')
 	}
