@@ -2,9 +2,8 @@
 
 import animeworld as aw
 import requests
-import os
-import re
-import json
+import os, re, json
+from copy import deepcopy
 import schedule
 import time
 import shutil
@@ -99,14 +98,14 @@ def job():
 			logging.warning(f"\n{divider}")
 
 			try:
-				logging.warning("🔎 Ricerca anime '{}' per l'episodio S{}E{}.".format(info["SonarrTitle"], info["season"], info["episode"]))
+				logging.warning("🔎 Ricerca anime '{}' per l'episodio S{}E{}.".format(info["SonarrTitle"], info["season"], info["rawEpisode"]))
 				anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
 
 				logging.info("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
 				epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
 				episodi = fixEps(epsArr)
 
-				logging.info("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["episode"]))
+				logging.info("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["rawEpisode"]))
 				ep = None
 				for episodio in episodi:
 					if episodio.number == str(info["episode"]):
@@ -117,8 +116,8 @@ def job():
 					logging.info("✖️ L'episodio NON è ancora uscito.")
 
 				if ep is not None: # Se l'episodio è disponibile
-					logging.warning("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["episode"]))
-					title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["episode"]}'
+					logging.warning("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["rawEpisode"]))
+					title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["rawEpisode"]}'
 					if ep.number == str(info["episode"]):
 						fileLink = ep.links[0]
 						title = fileLink.sanitize(title) # Sanitizza il titolo
@@ -126,7 +125,7 @@ def job():
 							logging.info("✔️ Dowload Completato.")
 
 					if SETTINGS["MoveEp"]:
-						logging.info("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["episode"], info["path"]))
+						logging.info("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["rawEpisode"], info["path"]))
 						if move_file(title, info["path"]): 
 							logging.info("✔️ Episodio spostato.")
 
@@ -175,8 +174,9 @@ def fixEps(epsArr): # accorpa 2 o più serie di animeworld
 				continue # lo salta perchè sicuramente uno speciale
 
 			if re.search(r'^\d+-\d+$', ep.number) is not None: # Episodio Doppio
-				ep1 = ep   # Duplica l'episodio da sitemare la gestione.....
-				ep2 = ep   # Non mi piace 
+				ep1 = deepcopy(ep)   # Duplica l'episodio da sitemare la gestione.....
+				ep2 = deepcopy(ep)   # Non mi piace
+
 
 				ep1.number = str(int(ep.number.split('-')[0]) + up)
 				ep2.number = str(int(ep.number.split('-')[1]) + up)
@@ -203,7 +203,17 @@ def converting(series):
 	for anime in series:
 		for row in table:
 			if row["title"] == anime["SonarrTitle"]:
-				if str(anime["season"]) in row["seasons"].keys():
+				if row["absolute"]:
+					tmp = int(anime["episode"])
+					anime["episode"] = int(anime["rawEpisode"])
+					anime["rawEpisode"] = tmp
+
+					anime["AnimeWorldLinks"] = list(row["seasons"]["absolute"])
+					res.append(anime)
+					break
+				elif str(anime["season"]) in row["seasons"].keys():
+					anime["rawEpisode"] = int(anime["episode"])
+
 					anime["AnimeWorldLinks"] = list(row["seasons"][str(anime["season"])])
 					res.append(anime)
 					break
@@ -268,6 +278,7 @@ def get_missing_episodes():
 			info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
 			info["season"] = int(serie["seasonNumber"])
 			info["episode"] = int(serie["episodeNumber"])
+			info["rawEpisode"] = int(serie["absoluteEpisodeNumber"])
 			info["episodeTitle"] = serie["title"]
 			info["path"] = serie["series"]["path"]
 

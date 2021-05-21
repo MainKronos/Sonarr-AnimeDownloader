@@ -51,15 +51,21 @@
                         <div class="row">
                             <div class="input-field col s6">
                                 <i class="material-icons prefix dark">movie</i>
-                                <input placeholder="Sword Art Online" id="title" name="title" type="text" class="validate" maxlength="300" autocomplete="off" required>
+                                <input placeholder="Sword Art Online" id="title" name="title" type="text" class="validate autocomplete" maxlength="300" autocomplete="off" required>
                                 <label for="title">Nome Anime</label>
                                 <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
                             </div>
-                            <div class="input-field col s6">
+                            <div class="input-field col s4">
                                 <i class="material-icons prefix dark">turned_in</i>
                                 <input placeholder="1" id="season" name="season" type="text" class="validate" pattern="[0-9]+" autocomplete="off" required>
                                 <label for="season">Stagione</label>
                                 <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
+                            </div>
+                            <div class="input-check col s2">
+                                <label>
+                                    <input type="checkbox" class="filled-in" id="absolute" name="absolute" value="true"/>
+                                    <span>Absolute</span>
+                                </label>
                             </div>
                         </div>
                         <div id="input_link" class="row">
@@ -97,6 +103,11 @@
                             <div class='header-anime'>
                                 <div class="collapsible-header dark">
                                     <i class="material-icons">movie</i>{{ info.title }}
+                                    {% if info.absolute %}
+
+                                    <span class="new badge" data-badge-caption="Absolute"></span>
+
+                                    {% endif %}
                                 </div>
                                 <form class="delete-btn" method="post" action="/delete_anime">
                                     <button class="btn-floating-delete dark" onclick="return confirm('Sei sicuro di voler rimuovere \'{{ info.title }}\'?')" type="submit" name="delete_anime" value="{{ info.title }}">
@@ -137,5 +148,12 @@
         <!--JavaScript at end of body for optimized loading-->
         <script type="text/javascript" src="static/js/materialize.min.js"></script>
         <script type="text/javascript" src="static/js/my.js"></script>
+        <script>
+            window.onload = function (){
+                    if ("{{ log }}" != "None") {
+                        M.toast({ html: "{{ log }}" })
+                    }
+                };
+        </script>
     </body>
 </html>

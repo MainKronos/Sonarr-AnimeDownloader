@@ -42,6 +42,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+function get_anime(){
+    var elems = document.querySelectorAll('.collapsible-header');
+    var data = {};
+
+
+    for (var i = 0; i < elems.length; i++) {
+        data[elems[i].textContent.trim().replace('movie', '')] = null;
+    }
+    return data;
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.autocomplete');
+    var instances = M.Autocomplete.init(elems, {
+        data: get_anime()
+    });
+});
+
+
 document.getElementById("add_link").addEventListener("click", function (){
     var parent = this.parentNode;
     var input_links = document.querySelectorAll("#input_link");
@@ -54,9 +74,13 @@ document.getElementById("add_link").addEventListener("click", function (){
     parent.insertBefore(clon, this);
 })
 
+document.getElementById("absolute").addEventListener("click", function () {
+    var elem = document.getElementById("season");
 
+    if (this.checked == true) {
+        elem.disabled = true;
+    } else {
+        elem.disabled = false;
+    }
+})
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     var elems = document.querySelectorAll('.fixed-action-btn');
-//     var instances = M.FloatingActionButton.init(elems, {});
-//   });
