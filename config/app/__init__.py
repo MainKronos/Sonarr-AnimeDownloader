@@ -72,7 +72,8 @@ def settings_update():
 def index():
 	log = get_log()
 	anime = readData()
-	return render_template('index.html', infos=anime, log=log)
+	env = getmyenv()
+	return render_template('index.html', infos=anime, log=log, env=env)
 
 
 
@@ -144,6 +145,7 @@ def getmyenv():
 	env["API_KEY"] = os.getenv('API_KEY') # Chiave api di sonarr
 	env["CHAT_ID"] = os.getenv('CHAT_ID') # telegramm
 	env["BOT_TOKEN"] = os.getenv('BOT_TOKEN') # telegramm
+	env["VERSION"] = os.getenv('VERSION') # versione
 
 	return env
 

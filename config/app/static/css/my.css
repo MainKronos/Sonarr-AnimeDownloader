@@ -5,11 +5,17 @@ html {
 	background-color: #121212 !important;
 }
 
+
 .mainpage{
 	overflow-x: hidden;
 	position: relative;
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between
 }
+
+
 
 /*.dark{
 	background-color: rgba(0,0,0,0);
@@ -93,6 +99,14 @@ button.btn-floating-delete{
 /*#################################*/
 nav.dark{
 	background-color: #212121 !important;
+}
+
+footer.dark{
+	background-color: rgba(0, 0, 0, 0) !important;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+
 }
 
 .dark.brand-logo{
