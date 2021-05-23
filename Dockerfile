@@ -33,6 +33,8 @@ ENV LANG it_IT.UTF-8
 ENV LANGUAGE it_IT:en
 ENV LC_ALL it_IT.UTF-8
 
+ENV VERSION "1.4.0-beta"
+
 EXPOSE 5000
 
 CMD ["python3","-u","/script/main.py"]
