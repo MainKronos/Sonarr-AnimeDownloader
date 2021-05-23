@@ -192,34 +192,39 @@ def converting(series):
 	json_location = "/script/json/table.json"
 
 	if not os.path.exists(json_location):
-		raise Exception("Il file table.json non esiste.")
+		logging.warning("⚠️ Il file table.json non esiste, quindi verrà creato.")
+		with open(json_location, 'w') as f:
+			f.write("[]")
 
-	f = open(json_location, 'r')
-	table = json.loads(f.read())
-	f.close()
+	try:
+		f = open(json_location, 'r')
+		table = json.loads(f.read())
+		f.close()
 
-	res = []
+		res = []
 
-	for anime in series:
-		for row in table:
-			if row["title"] == anime["SonarrTitle"]:
-				if row["absolute"]:
-					tmp = int(anime["episode"])
-					anime["episode"] = int(anime["rawEpisode"])
-					anime["rawEpisode"] = tmp
+		for anime in series:
+			for row in table:
+				if row["title"] == anime["SonarrTitle"]:
+					if row["absolute"]:
+						tmp = int(anime["episode"])
+						anime["episode"] = int(anime["rawEpisode"])
+						anime["rawEpisode"] = tmp
 
-					anime["AnimeWorldLinks"] = list(row["seasons"]["absolute"])
-					res.append(anime)
-					break
-				elif str(anime["season"]) in row["seasons"].keys():
-					anime["rawEpisode"] = int(anime["episode"])
+						anime["AnimeWorldLinks"] = list(row["seasons"]["absolute"])
+						res.append(anime)
+						break
+					elif str(anime["season"]) in row["seasons"].keys():
+						anime["rawEpisode"] = int(anime["episode"])
 
-					anime["AnimeWorldLinks"] = list(row["seasons"][str(anime["season"])])
-					res.append(anime)
-					break
-		else:
+						anime["AnimeWorldLinks"] = list(row["seasons"][str(anime["season"])])
+						res.append(anime)
+						break
+			else:
 
-			logging.debug("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
+				logging.debug("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
+	except (json.decoder.JSONDecodeError, KeyError):
+		raise TableFormattingError
 
 	return res
 
@@ -360,3 +365,9 @@ if __name__ == '__main__':
 
 
 ### ERRORI ####################################
+
+# Problema alla formattazione del file table.json
+class TableFormattingError(Exception):
+	def __init__(self):
+		self.message = "Errore al file table.json"
+		super().__init__(self.message)

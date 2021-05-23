@@ -8,6 +8,7 @@
 |[Dove posso reperire il Token per il Bot di telegram?](#dove-posso-reperire-il-token-per-il-bot-di-telegram)|
 |[Ho aggiornato alla nuova versione del container e adesso non funziona più nulla](#dove-posso-reperire-il-token-per-il-bot-di-telegram)|
 |[Una stagione di Sonarr è composta da due stagioni di AnimeWorld](#una-stagione-di-sonarr-è-composta-da-due-stagioni-di-animeworld)|
+|[AnimeWorld Segue una numerazione Assoluta degli episodi](#animeworld-segue-una-numerazione-assoluta-degli-episodi)|
 |[Uso Sonarr, ma non con Docker, e non sò quale mount dovrei fare](#uso-sonarr-ma-non-con-docker-e-non-sò-quale-mount-dovrei-fare)|
 |[Ho bisogno fare più mount](#ho-bisogno-fare-più-mount)|
 |[Uso Sonarr in ambiente Windows, come devo fare il mount?](#uso-sonarr-in-ambiente-windows-come-devo-fare-il-mount)|
@@ -49,6 +50,16 @@ Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sareb
 
 **È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
 Per aggiungere un campo, in questo caso un nuovo link all'array, e sufficiente reinserire tutti i campi (come se si stesse riaggiungendo di nuovo lo stesso anime) e nel campo link inserire **soltanto** il secondo/terzo/ecc. link.
+
+## AnimeWorld Segue una numerazione Assoluta degli episodi 
+Se AnimeWorld segue una numerazione Assoluta degli episodi, come ad esempio 'One Piece', selezionare nella pagina web, nel Modal per l'aggiunta di un anime, la checkbox `absolute`. Di conseguenza il campo `Season` deve essere vuoto.
+![Esempio](/documentation/images/AbsoluteCheckbox.png)
+
+Se tutto è stato inserito correttamente apparirà un toast tipo questo:
+![Esempio](/documentation/images/Toast.png)
+
+E nell'elenco delle serie si potrà riconoscere facilmente gli anime impostati con un ordinamento assoluto grazie ad una targhettina come questa:
+![Esempio](/documentation/images/SeasonAbsolute.png)
 
 ## Uso Sonarr, ma non con Docker, e non sò quale mount dovrei fare
 Se Sonarr non è installato tramite Docker, per riuscire a trovare la giusta cartella da collegare nel Container `Sonarr-AnimeDownloader` ti basta soltanto mantare le cartelle conteneti gli anime nella stessa posizione.
