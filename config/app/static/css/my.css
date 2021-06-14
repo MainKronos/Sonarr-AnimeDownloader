@@ -171,7 +171,7 @@ input{
 
 /*#########################*/
 
-.row {
+.modal-content > .row {
 	display: flex;
   	align-items: baseline;
 }
