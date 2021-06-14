@@ -18,12 +18,6 @@ Il progetto utilizza la libreria `animeworld`, l'ho dovuta rendere **privata** p
 
 Le **FAQ** si trovano [qui](FAQ.md)
 
-## AGGIORNAMENTI IMPORTANTI
-## versione `1.4.0`
-Il file `table.json` è un po' cambiato, quindi va necessariamente aggiornato. Per facilitare la transazione dalla versione `1.3.x` alla `1.4.0` ho creato questo [script](/documentation/other/FixTable_1.3.x_to_1.4.x.py) python, basta avviarlo nella stessa cartella del file `table.json` e lo aggiorna alla nuova versione.
-Il changelog della versione `1.4.0` può essere trovato [qui](../../releases/tag/1.4.0)
-
-
 ![Presentazione](/documentation/images/Presentazione.gif)
 
 ## Utilizzo
