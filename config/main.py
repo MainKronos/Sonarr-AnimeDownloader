@@ -6,8 +6,8 @@ import os, re, json
 from copy import deepcopy
 import schedule
 import time
-import shutil
 import threading
+import shutil
 import logging.config
 from app import app, ReadSettings
 
@@ -72,18 +72,17 @@ def main():
 		job_thread = threading.Thread(target=server)
 		job_thread.start()
 
-		time.sleep(1)
-
 		job() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
 		schedule.every(SCHEDULE_MINUTES).minutes.do(run_threaded, job)
 
+
 def server():
-	app.run(debug=False, host='0.0.0.0')		
+	os.system("gunicorn --bind 0.0.0.0:5000 app:app > /dev/null 2>&1")
+
 
 def run_threaded(job_func):
 	job_thread = threading.Thread(target=job_func)
 	job_thread.start()
-	
 
 def job():
 	divider = f"{DIVIDC}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - {NC}"
@@ -273,21 +272,25 @@ def get_missing_episodes():
 			break
 
 		for serie in result["records"]:
-			info = {}
-			info["IDs"] = {
-				"seriesId": serie["seriesId"],
-				"epId": serie["id"]
-			}
-			info["seriesId"] = serie["seriesId"]
-			info["SonarrTitle"] = serie["series"]["title"]
-			info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
-			info["season"] = int(serie["seasonNumber"])
-			info["episode"] = int(serie["episodeNumber"])
-			info["rawEpisode"] = int(serie["absoluteEpisodeNumber"])
-			info["episodeTitle"] = serie["title"]
-			info["path"] = serie["series"]["path"]
 
-			series.append(info)
+			try:
+				info = {}
+				info["IDs"] = {
+					"seriesId": serie["seriesId"],
+					"epId": serie["id"]
+				}
+				info["seriesId"] = serie["seriesId"]
+				info["SonarrTitle"] = serie["series"]["title"]
+				info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
+				info["season"] = int(serie["seasonNumber"])
+				info["episode"] = int(serie["episodeNumber"])
+				info["rawEpisode"] = int(serie["absoluteEpisodeNumber"])
+				info["episodeTitle"] = serie["title"]
+				info["path"] = serie["series"]["path"]
+			except KeyError:
+				logging.debug("⁉️ Serie '{}' S{} scartata per mancanza di informazioni.".format(serie["series"]["title"], serie["seasonNumber"]))
+			else:
+				series.append(info)
 
 	return series
 

@@ -197,3 +197,7 @@ def get_log():
 	log = LOG
 	LOG = None
 	return log
+
+
+if __name__ == "__main__":
+    app.run(debug=False, use_evalex=False, use_reloader=False, host='0.0.0.0')
