@@ -18,10 +18,40 @@
 ![Sonarr API KEY](/documentation/images/Sonarr_ApiKey.png)
 
 ## Dove posso reperire la Chat ID di telegram?
-TODO: da fare
+Prima di reperire la Chat ID è necessario aver già creato un Bot Telegram, e per farlo basta continuare a leggere [qui](#dove-posso-reperire-il-token-per-il-bot-di-telegram).
+
+Dopo aver creato il bot Telegram, bisogna inviargli un messaggio di prova con scritto qualsiasi cosa, serve per attivare la chat.
+Poi bisogna andare su questa 'pagina':
+```
+https://api.telegram.org/bot<YourBOTToken>/getUpdates
+```
+Lì ci saranno scritte un po' di informazioni tipo queste riportate sotto, la vostra Chat ID si trova lì da qualche parte :) :
+```
+{
+    "ok":true,
+    "result":[{
+        "update_id":379225167,
+        "message":{
+            "message_id":5,
+            "from":{
+                "id":123456789,
+                "first_name":"MyName",
+                "language_code":"it-IT"
+            },"chat":{
+                "id":987654321,     <---------------------------------------------------- Chat ID
+                "first_name":"MyName",
+                "type":"private"
+            },
+            "date":123456,
+            "text":"hello"
+        }
+    }]
+}
+```
 
 ## Dove posso reperire il Token per il Bot di telegram?
-TODO: da fare
+Per prima cosa bisogna creare il proprio bot Telegram e per farlo basta seguire [queste](https://core.telegram.org/bots#3-how-do-i-create-a-bot) istruzioni.
+Il token verrà generato alla creazione del bot. Leggere [qui](https://core.telegram.org/bots#6-botfather) per ulteriori informazioni.
 
 ## Ho aggiornato alla nuova versione del container e adesso non funziona più nulla
 Alcune volte faccio modifiche importanti al programma, se riscontrate questo tipo di problema per favore controllate il [changelog](../../releases).
