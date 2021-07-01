@@ -10,7 +10,7 @@
 |[Una stagione di Sonarr è composta da due stagioni di AnimeWorld](#una-stagione-di-sonarr-è-composta-da-due-stagioni-di-animeworld)|
 |[AnimeWorld Segue una numerazione Assoluta degli episodi](#animeworld-segue-una-numerazione-assoluta-degli-episodi)|
 |[Uso Sonarr, ma non con Docker, e non sò quale mount dovrei fare](#uso-sonarr-ma-non-con-docker-e-non-sò-quale-mount-dovrei-fare)|
-|[Ho bisogno fare più mount](#ho-bisogno-fare-più-mount)|
+|[Ho bisogno di fare più mount](#ho-bisogno-fare-di-più-mount)|
 |[Uso Sonarr in ambiente Windows, come devo fare il mount?](#uso-sonarr-in-ambiente-windows-come-devo-fare-il-mount)|
 ---
 
@@ -102,7 +102,7 @@ Se Sonarr non è installato tramite Docker, per riuscire a trovare la giusta car
 Ad esempio se hai la tua cartella degli anime nella posizione `/myfolder/myanime` il comando corretto sarà questo: `-v /myfolder/myanime:/myfolder/myanime`.
 Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/9#issuecomment-774676181).
 
-## Ho bisogno fare più mount
+## Ho bisogno fare di più mount
 Se hai bisogno di fare più mount non c'è nessun problema basta però mantenere lo stesso schema delle cartelle gestite da Sonarr.
 Ad esempio:
 > Hai una parte degli anime si trovano su  `/myfolder/myanime`
