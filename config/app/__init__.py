@@ -118,7 +118,7 @@ def appendAnime(data):
 			else:
 				if not anime["absolute"] and not data["absolute"]:  # Se la numerazione non è assoluta
 					anime["seasons"][data["season"]] = list(data["links"]) # inizializza una nuova stagione
-					log = f"Stagione {data['seasons']} di {data['title']} aggiunta"
+					log = f"Stagione {data['season']} di {data['title']} aggiunta"
 				else:
 					log = "ERRORE"	
 
