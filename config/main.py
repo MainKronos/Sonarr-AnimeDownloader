@@ -132,11 +132,18 @@ def job():
 						RescanSerie(info["IDs"]["seriesId"])
 
 						if SETTINGS["RenameEp"]:
-							time.sleep(2)
-
 							logging.info("⏳ Rinominando l'episodio.")
-							epFileId = GetEpisodeFileID(info["IDs"]["epId"])
-							RenameEpisode(info["IDs"]["seriesId"], epFileId)
+							for i in range(5): # Fa 5 tentativi
+								try:
+									time.sleep(1)
+									epFileId = GetEpisodeFileID(info["IDs"]["epId"])
+								except KeyError:
+									continue
+								else:
+									RenameEpisode(info["IDs"]["seriesId"], epFileId)
+									break
+							else:
+								logging.warning(f"⚠️ NON è stato possibile rinominare l'episodio.")
 
 						if None not in (CHAT_ID, BOT_TOKEN):
 							logging.info("✉️ Inviando il messaggio via telegram.")
