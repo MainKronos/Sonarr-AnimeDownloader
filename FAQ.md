@@ -130,3 +130,6 @@ La soluzione è fare in questo modo:
 -v E:\Anime3\:/Anime3
 ```
 Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/9#issuecomment-774692933).
+
+## Cosa significa che la serie è stata scartata per mancanza di informazioni?
+Significa che quella stagione non ha ancora una numerazione assoluta su Sonarr.
