@@ -46,7 +46,7 @@ html {
 	color: #9FA8DA !important;
 }
 
-button.btn-floating-delete{
+.btn-floating-delete{
 	background-color: #242424 !important;
 	border-radius: 10%;
 	width: 30px;
@@ -56,7 +56,9 @@ button.btn-floating-delete{
 	display: inline-block;
 	padding: 0;
 	cursor: pointer;
+	text-align: center;
 }
+
 
 .delete-btn{
 	position: absolute;
@@ -155,12 +157,12 @@ input{
 
 
 /* label focus color */
-.input-field input[type=text]:focus + label {
+input[type=text]:focus + label {
  color: #9FA8DA !important;
 }
 
 /* label underline focus color */
-.input-field input[type=text]:focus {
+input[type=text]:focus {
 	border-bottom: 1px solid #9FA8DA !important;
 	box-shadow: 0 1px 0 0 #9FA8DA !important;
 }

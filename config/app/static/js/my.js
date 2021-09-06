@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// ########################
 
 document.getElementById("add_link").addEventListener("click", function (){
     var parent = this.parentNode;
@@ -84,3 +85,27 @@ document.getElementById("absolute").addEventListener("click", function () {
     }
 })
 
+document.querySelector("input[name=anime_editor]").addEventListener('change', function () {
+	elements = document.getElementsByClassName("anime_editor");
+	if (this.checked) {
+		for (var i = 0; i < elements.length; i++) {
+			elements[i].children[0].classList.add("hide");
+			elements[i].children[1].classList.remove("hide");
+			console.log(elements[i].parentNode);
+			elements[i].parentNode.action = "/edit_anime";
+		}
+	} else {
+		for (var i = 0; i < elements.length; i++) {
+			elements[i].children[1].classList.add("hide");
+			elements[i].children[0].classList.remove("hide");
+			elements[i].parentNode.action = "/delete_anime";
+		}
+	}
+});
+
+document.querySelector(".edit_button").addEventListener("click", function () {
+	this.classList.add("hide");
+	this.parentNode.children[0].classList.remove("hide");
+	this.parentNode.parentNode.parentNode.querySelector(".title").classList.add("hide");
+	this.parentNode.parentNode.parentNode.querySelector(".title_editor").classList.remove("hide");
+});

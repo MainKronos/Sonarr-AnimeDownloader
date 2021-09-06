@@ -46,6 +46,14 @@ def delete_anime():
 
 	return redirect(url_for('index'))
 
+@app.route('/edit_anime', methods=['POST']) # Per modificare un anime
+def edit_anime():
+	res = request.form
+	# print(res, flush=True)
+	editAnime(res['edit_anime'], res['input'])
+
+	return redirect(url_for('index'))
+
 @app.route('/settings')
 def settings():
 	setts = ReadSettings()
@@ -96,6 +104,16 @@ def deleteAnime(title):
 	for anime in table:
 		if anime["title"] == title:
 			table.remove(anime)
+			break
+
+	writeData(table)
+
+def editAnime(title, newTitle):
+	table = readData()
+
+	for anime in table:
+		if anime["title"] == title:
+			anime["title"] = newTitle
 			break
 
 	writeData(table)

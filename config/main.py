@@ -89,81 +89,85 @@ def job():
 	
 	logging.warning("\n{color}╭-----------------------------------「{time}」-----------------------------------╮{nc}\n".format(time=time.strftime("%d %b %Y %H:%M:%S"), color=SEPARC, nc=NC))
 
-	raw_series = get_missing_episodes()
-	if len(raw_series)!=0:
-		series = converting(raw_series)
+	try:
+		raw_series = get_missing_episodes()
+		if len(raw_series)!=0:
+			series = converting(raw_series)
 
-		for info in series:
-			logging.warning(f"\n{divider}")
-
-			try:
-				logging.warning("🔎 Ricerca anime '{}' per l'episodio S{}E{}.".format(info["SonarrTitle"], info["season"], info["rawEpisode"]))
-				anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
-
-				logging.info("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
-				epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
-				episodi = fixEps(epsArr)
-
-				logging.info("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["rawEpisode"]))
-				ep = None
-				for episodio in episodi:
-					if episodio.number == str(info["episode"]):
-						ep = episodio
-						logging.info("✔️ L'episodio è disponibile.")
-						break
-				else:
-					logging.info("✖️ L'episodio NON è ancora uscito.")
-
-				if ep is not None: # Se l'episodio è disponibile
-					logging.warning("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["rawEpisode"]))
-					title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["rawEpisode"]}'
-					if ep.number == str(info["episode"]):
-						fileLink = ep.links[0]
-						title = fileLink.sanitize(title) # Sanitizza il titolo
-						if fileLink.download(title): 
-							logging.info("✔️ Dowload Completato.")
-
-					if SETTINGS["MoveEp"]:
-						logging.info("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["rawEpisode"], info["path"]))
-						if move_file(title, info["path"]): 
-							logging.info("✔️ Episodio spostato.")
-
-						logging.info("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
-						RescanSerie(info["IDs"]["seriesId"])
-
-						if SETTINGS["RenameEp"]:
-							logging.info("⏳ Rinominando l'episodio.")
-							for i in range(5): # Fa 5 tentativi
-								try:
-									time.sleep(1)
-									epFileId = GetEpisodeFileID(info["IDs"]["epId"])
-								except KeyError:
-									continue
-								else:
-									RenameEpisode(info["IDs"]["seriesId"], epFileId)
-									break
-							else:
-								logging.warning(f"⚠️ NON è stato possibile rinominare l'episodio.")
-
-						if None not in (CHAT_ID, BOT_TOKEN):
-							logging.info("✉️ Inviando il messaggio via telegram.")
-							send_message(info)
-
-			except requests.exceptions.RequestException as res_error:
-				logging.warning(f"⚠️ Errore di connessione. ({res_error})")
-			except aw.AnimeNotAvailable as info:
-				logging.warning(f"⚠️ {info}")
-			except aw.ServerNotSupported as warning:
-				logging.error(f"{WARNC}🆆🅰🆁🅽🅸🅽🅶: {warning}{NC}")
-			except aw.DeprecatedLibrary as dev:
-				logging.critical(f"{ALERTC}🅰🅻🅴🆁🆃: {dev}{NC}")
-			except Exception as error:
-				logging.exception(f"{ERRORC}🅴🆁🆁🅾🆁: {error}{NC}")
-			finally:
+			for info in series:
 				logging.warning(f"\n{divider}")
 
-	else:
-		logging.info("\nNon c'è nessun episodio da cercare.\n")
+				try:
+					logging.warning("🔎 Ricerca anime '{}' per l'episodio S{}E{}.".format(info["SonarrTitle"], info["season"], info["rawEpisode"]))
+					anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
+
+					logging.info("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
+					epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
+					episodi = fixEps(epsArr)
+
+					logging.info("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["rawEpisode"]))
+					ep = None
+					for episodio in episodi:
+						if episodio.number == str(info["episode"]):
+							ep = episodio
+							logging.info("✔️ L'episodio è disponibile.")
+							break
+					else:
+						logging.info("✖️ L'episodio NON è ancora uscito.")
+
+					if ep is not None: # Se l'episodio è disponibile
+						logging.warning("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["rawEpisode"]))
+						title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["rawEpisode"]}'
+						if ep.number == str(info["episode"]):
+							fileLink = ep.links[0]
+							title = fileLink.sanitize(title) # Sanitizza il titolo
+							if fileLink.download(title): 
+								logging.info("✔️ Dowload Completato.")
+
+						if SETTINGS["MoveEp"]:
+							logging.info("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["rawEpisode"], info["path"]))
+							if move_file(title, info["path"]): 
+								logging.info("✔️ Episodio spostato.")
+
+							logging.info("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
+							RescanSerie(info["IDs"]["seriesId"])
+
+							if SETTINGS["RenameEp"]:
+								logging.info("⏳ Rinominando l'episodio.")
+								for i in range(5): # Fa 5 tentativi
+									try:
+										time.sleep(1)
+										epFileId = GetEpisodeFileID(info["IDs"]["epId"])
+									except KeyError:
+										continue
+									else:
+										RenameEpisode(info["IDs"]["seriesId"], epFileId)
+										break
+								else:
+									logging.warning(f"⚠️ NON è stato possibile rinominare l'episodio.")
+
+							if None not in (CHAT_ID, BOT_TOKEN):
+								logging.info("✉️ Inviando il messaggio via telegram.")
+								send_message(info)
+
+				except requests.exceptions.RequestException as res_error:
+					logging.warning(f"⚠️ Errore di connessione. ({res_error})")
+				except aw.AnimeNotAvailable as info:
+					logging.warning(f"⚠️ {info}")
+				except aw.ServerNotSupported as warning:
+					logging.error(f"{WARNC}🆆🅰🆁🅽🅸🅽🅶: {warning}{NC}")
+				except aw.DeprecatedLibrary as dev:
+					logging.critical(f"{ALERTC}🅰🅻🅴🆁🆃: {dev}{NC}")
+				finally:
+					logging.warning(f"\n{divider}")
+
+		else:
+			logging.info("\nNon c'è nessun episodio da cercare.\n")
+
+	except requests.exceptions.RequestException as res_error:
+		logging.error(f"🆆🅰🆁🅽🅸🅽🅶: Errore di connessione. ({res_error})")	
+	except Exception as error:
+		logging.exception(f"{ERRORC}🅴🆁🆁🅾🆁: {error}{NC}")
 
 	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
 	logging.warning("\n{color}╰-----------------------------------「{time}」-----------------------------------╯{nc}\n".format(time=nextStart, color=SEPARC, nc=NC))
@@ -267,39 +271,46 @@ def get_missing_episodes():
 	series = []
 	endpoint = "wanted/missing"
 	page = 0
+	error_attempt = 0
 
 	while True:
-		page += 1
-		res = requests.get("{}/api/{}?apikey={}&sortKey=airDateUtc&page={}".format(SONARR_URL, endpoint, API_KEY, page))
-		result = res.json()
+		try:
+			page += 1
+			res = requests.get("{}/api/{}?apikey={}&sortKey=airDateUtc&page={}".format(SONARR_URL, endpoint, API_KEY, page))
+			result = res.json()
 
-		# f = open("res.json", 'w')
-		# f.write(json.dumps(result, indent=4))
-		# f.close()
+			# f = open("res.json", 'w')
+			# f.write(json.dumps(result, indent=4))
+			# f.close()
 
-		if len(result["records"]) == 0: 
-			break
+			if len(result["records"]) == 0: 
+				break
 
-		for serie in result["records"]:
+			for serie in result["records"]:
 
-			try:
-				info = {}
-				info["IDs"] = {
-					"seriesId": serie["seriesId"],
-					"epId": serie["id"]
-				}
-				info["seriesId"] = serie["seriesId"]
-				info["SonarrTitle"] = serie["series"]["title"]
-				info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
-				info["season"] = int(serie["seasonNumber"])
-				info["episode"] = int(serie["episodeNumber"])
-				info["rawEpisode"] = int(serie["absoluteEpisodeNumber"])
-				info["episodeTitle"] = serie["title"]
-				info["path"] = serie["series"]["path"]
-			except KeyError:
-				logging.debug("⁉️ Serie '{}' S{} scartata per mancanza di informazioni.".format(serie["series"]["title"], serie["seasonNumber"]))
-			else:
-				series.append(info)
+				try:
+					info = {}
+					info["IDs"] = {
+						"seriesId": serie["seriesId"],
+						"epId": serie["id"]
+					}
+					info["seriesId"] = serie["seriesId"]
+					info["SonarrTitle"] = serie["series"]["title"]
+					info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
+					info["season"] = int(serie["seasonNumber"])
+					info["episode"] = int(serie["episodeNumber"])
+					info["rawEpisode"] = int(serie["absoluteEpisodeNumber"])
+					info["episodeTitle"] = serie["title"]
+					info["path"] = serie["series"]["path"]
+				except KeyError:
+					logging.debug("⁉️ Serie '{}' S{} scartata per mancanza di informazioni.".format(serie["series"]["title"], serie["seasonNumber"]))
+				else:
+					series.append(info)
+		except requests.exceptions.RequestException as res_error:
+			if error_attempt > 3: raise res_error
+			error_attempt += 1
+			logging.warning(f"⚠️ Errore di connessione, prossimo tentativo fra 10s. ({res_error})")
+			time.sleep(10)
 
 	return series
 

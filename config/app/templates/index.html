@@ -22,20 +22,28 @@
         <div class="mainpage">
             <div>
                 <!-- Header -->
-                <nav class="nav-extended dark">
-                    <div class="nav-wrapper">
-                        <a href="#!" class="brand-logo center dark">Tabella Di Conversione</a>
-                        <a class="btn-floating waves-effect waves-light btn-small dark left info" href="/settings">
-                            <i class="material-icons">settings</i>
-                        </a>
-                    </div>
-                    <div class="nav-content">
-                        <span class="nav-title hide-on-med-and-up"></span>
-                        <a id="menu" class="btn btn-floating waves-effect waves-light btn-large halfway-fab modal-trigger dark" href="#append_anime_modal">
-                            <i class="material-icons">add</i>
-                        </a>
-                    </div>
-                </nav>
+				<nav class="nav-extended dark">
+					<div class="nav-wrapper">
+						<a href="#" class="brand-logo center dark">Tabella Di Conversione</a>
+						<ul id="nav-mobile" class="left hide-on-med-and-down">
+							<li><a href="./settings" class="waves-effect waves-light btn-floating dark info"><i class="material-icons left">settings</i></a></li>
+						</ul>
+						<div class="switch">
+							<label>
+								Delete
+								<input type="checkbox" name="anime_editor">
+								<span class="lever"></span>
+								Edit
+							</label>
+						</div>
+					</div>
+					<div class="nav-content">
+						<span class="nav-title hide-on-med-and-up"></span>
+						<a id="menu" class="btn btn-floating waves-effect waves-light btn-large halfway-fab modal-trigger dark" href="#append_anime_modal">
+							<i class="material-icons">add</i>
+						</a>
+					</div>
+				</nav>
 
                 <!-- Tap Target Structure -->
                 <div class="tap-target" data-target="menu">
@@ -99,35 +107,51 @@
                     </div>
                     <div class="section">
                         <ul class="collapsible popout">
-                            {% for info in infos %}
+                            {% for i in range(infos| length)%}
                             <li class='blocco_anime'>
                                 <div class='header-anime'>
-                                    <div class="collapsible-header dark">
-                                        <i class="material-icons">movie</i>{{ info.title }}
-                                        {% if info.absolute %}
+									<form method="post" class="anime_editor_form" action="/delete_anime">
+										<div class="collapsible-header dark">
+											<i class="material-icons">movie</i>
+											<div class="title">
+												{{ infos[i].title }}
+											</div>
+											<input name="input" id="anime{{ i }}" type="text" placeholder="{{ infos[i].title }}" class="title_editor hide">
+											{% if infos[i].absolute %}
 
-                                        <span class="new badge" data-badge-caption="Absolute"></span>
+											<span class="new badge" data-badge-caption="Absolute"></span>
 
-                                        {% endif %}
-                                    </div>
-                                    <form class="delete-btn" method="post" action="/delete_anime">
-                                        <button class="btn-floating-delete dark" onclick="return confirm('Sei sicuro di voler rimuovere \'{{ info.title }}\'?')" type="submit" name="delete_anime" value="{{ info.title }}">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    </form>
+											{% endif %}
+										</div>
+										<div class="anime_editor">
+											<div class="delete-btn">
+												<button class="btn-floating-delete dark" onclick="return confirm('Sei sicuro di voler rimuovere \'{{ infos[i].title }}\'?')" type="submit" name="delete_anime" value="{{ infos[i].title }}">
+													<i class="material-icons">delete</i>
+												</button>
+											</div>
+											<div class="hide delete-btn">
+												<button class="btn-floating-delete dark hide" type="submit" name="edit_anime" value="{{ infos[i].title }}">
+													<i class="material-icons">done</i>
+												</button>
+												<a class="btn-floating-delete dark edit_button" >
+													<i class="material-icons">edit</i>
+												</a>
+											</div>
+										</div>
+									</form>
                                 </div>
                                 <div class="collapsible-body dark">
                                     <ul class="tabs dark">
-                                        {% for stagione in info.seasons %}
+                                        {% for stagione in infos[i].seasons %}
 
-                                        <li class="tab"><a href="#{{ stagione }}_{{ info.title | msgSafe }}">{{ stagione }}</a></li>
+                                        <li class="tab"><a href="#{{ stagione }}_{{ infos[i].title | msgSafe }}">{{ stagione }}</a></li>
 
                                         {% endfor %}
                                     </ul>
-                                    {% for stagione in info.seasons %}
-                                    <div id="{{ stagione }}_{{ info.title | msgSafe }}">
+                                    {% for stagione in infos[i].seasons %}
+                                    <div id="{{ stagione }}_{{ infos[i].title | msgSafe }}">
                                         <div class="collection dark">
-                                            {% for link in info.seasons[stagione] %}
+                                            {% for link in infos[i].seasons[stagione] %}
 
                                             <!-- <li class="collection-item">Alvin</li> -->
                                             <a href="{{ link }}" class="collection-item dark">{{ link }}</a>
