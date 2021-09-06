@@ -149,6 +149,8 @@ def job():
 							logging.info("✉️ Inviando il messaggio via telegram.")
 							send_message(info)
 
+			except requests.exceptions.RequestException as res_error:
+				logging.warning(f"⚠️ Errore di connessione. ({res_error})")
 			except aw.AnimeNotAvailable as info:
 				logging.warning(f"⚠️ {info}")
 			except aw.ServerNotSupported as warning:
