@@ -124,18 +124,18 @@
 											{% endif %}
 										</div>
 										<div class="anime_editor">
+											<div class="hide delete-btn">
+												<button class="btn-floating-delete dark hide" type="submit" name="edit_anime" value="{{ infos[i].title }}" disabled>
+													<i class="material-icons">done</i>
+												</button>
+												<a class="btn-floating-delete dark edit_button" onclick='edit_anime(this);'>
+													<i class="material-icons">edit</i>
+												</a>
+											</div>
 											<div class="delete-btn">
 												<button class="btn-floating-delete dark" onclick="return confirm('Sei sicuro di voler rimuovere \'{{ infos[i].title }}\'?')" type="submit" name="delete_anime" value="{{ infos[i].title }}">
 													<i class="material-icons">delete</i>
 												</button>
-											</div>
-											<div class="hide delete-btn">
-												<button class="btn-floating-delete dark hide" type="submit" name="edit_anime" value="{{ infos[i].title }}">
-													<i class="material-icons">done</i>
-												</button>
-												<a class="btn-floating-delete dark edit_button" >
-													<i class="material-icons">edit</i>
-												</a>
 											</div>
 										</div>
 									</form>

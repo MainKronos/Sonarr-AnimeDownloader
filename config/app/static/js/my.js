@@ -89,23 +89,30 @@ document.querySelector("input[name=anime_editor]").addEventListener('change', fu
 	elements = document.getElementsByClassName("anime_editor");
 	if (this.checked) {
 		for (var i = 0; i < elements.length; i++) {
-			elements[i].children[0].classList.add("hide");
-			elements[i].children[1].classList.remove("hide");
-			console.log(elements[i].parentNode);
+			elements[i].children[1].classList.add("hide");
+			elements[i].children[1].children[0].disabled = true;
+
+			elements[i].children[0].classList.remove("hide");
+			elements[i].children[0].children[0].disabled = false;
+
 			elements[i].parentNode.action = "/edit_anime";
 		}
 	} else {
 		for (var i = 0; i < elements.length; i++) {
-			elements[i].children[1].classList.add("hide");
-			elements[i].children[0].classList.remove("hide");
+			elements[i].children[0].classList.add("hide");
+			elements[i].children[0].children[0].disabled = true;
+			
+			elements[i].children[1].classList.remove("hide");
+			elements[i].children[1].children[0].disabled = false;
+
 			elements[i].parentNode.action = "/delete_anime";
 		}
 	}
 });
 
-document.querySelector(".edit_button").addEventListener("click", function () {
-	this.classList.add("hide");
-	this.parentNode.children[0].classList.remove("hide");
-	this.parentNode.parentNode.parentNode.querySelector(".title").classList.add("hide");
-	this.parentNode.parentNode.parentNode.querySelector(".title_editor").classList.remove("hide");
-});
+function edit_anime(elem) {
+	elem.classList.add("hide");
+	elem.parentNode.children[0].classList.remove("hide");
+	elem.parentNode.parentNode.parentNode.querySelector(".title").classList.add("hide");
+	elem.parentNode.parentNode.parentNode.querySelector(".title_editor").classList.remove("hide");
+};
