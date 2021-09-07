@@ -11,6 +11,24 @@
     {
         "absolute": false,
         "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/bakuten.MfCW1"
+            ]
+        },
+        "title": "Backflip!!"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/deatte-5-byou-de-battle.njUd3"
+            ]
+        },
+        "title": "Battle Game in 5 Seconds"
+    },
+    {
+        "absolute": false,
+        "seasons": {
             "2": [
                 "https://www.animeworld.tv/play/beastars-2.Jdlq8"
             ]
@@ -56,6 +74,15 @@
     {
         "absolute": false,
         "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/cheat-kusushi-no-slow-life-isekai-ni-tsukurou-drugstore.sfvL-"
+            ]
+        },
+        "title": "Drug Store in Another World: The Slow Life of a Cheat Pharmacist"
+    },
+    {
+        "absolute": false,
+        "seasons": {
             "3": [
                 "https://www.animeworld.tv/play/fruits-basket-the-final.frf-n"
             ]
@@ -69,7 +96,7 @@
                 "https://www.animeworld.tv/play/kyuukyoku-shinka-shita-full-dive-rpg-ga-genjitsu-yori-mo-kusoge-dattara.-nptV"
             ]
         },
-        "title": "Full Dive: This Ultimate Next-Gen Full Dive RPG Is Even Shittier than Real Life!"
+        "title": "Full Dive: This Ultimate Next-Gen Full Dive RPG Is Even Shittier Than Real Life!"
     },
     {
         "absolute": false,
@@ -85,6 +112,9 @@
         "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/higurashi-no-naku-koro-ni-2020.DoJuQ"
+            ],
+            "2": [
+                "https://www.animeworld.tv/play/higurashi-no-naku-koro-ni-sotsu.j7iq7"
             ]
         },
         "title": "Higurashi: When They Cry \u2013 GOU"
@@ -97,6 +127,15 @@
             ]
         },
         "title": "Horimiya"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/genjitsu-shugi-yuusha-no-oukoku-saikenki.LpDFM"
+            ]
+        },
+        "title": "How a Realist Hero Rebuilt the Kingdom"
     },
     {
         "absolute": false,
@@ -130,6 +169,15 @@
         "absolute": false,
         "seasons": {
             "1": [
+                "https://www.animeworld.tv/play/megami-ryou-no-ryoubo-kun.48hLw"
+            ]
+        },
+        "title": "Mother of the Goddess' Dormitory"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
                 "https://www.animeworld.tv/play/mushoku-tensei-isekai-ittara-honki-dasu.FwbNc"
             ]
         },
@@ -147,6 +195,24 @@
     {
         "absolute": false,
         "seasons": {
+            "2": [
+                "https://www.animeworld.tv/play/my-life-as-a-villainess-all-routes-lead-to-doom-2.8RcIg"
+            ]
+        },
+        "title": "My Next Life as a Villainess: All Routes Lead to Doom!"
+    },
+    {
+        "absolute": true,
+        "seasons": {
+            "absolute": [
+                "https://www.animeworld.tv/play/one-piece-subita.j9hCX"
+            ]
+        },
+        "title": "One Piece"
+    },
+    {
+        "absolute": false,
+        "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/osananajimi-ga-zettai-ni-makenai-love-comedy.J2uW-"
             ]
@@ -157,10 +223,10 @@
         "absolute": false,
         "seasons": {
             "1": [
-                "https://www.animeworld.tv/play/otherside-picnic.RcFjZ"
+                "https://www.animeworld.tv/play/re-main.99hiG"
             ]
         },
-        "title": "Otherside Picnic"
+        "title": "Re-Main"
     },
     {
         "absolute": false,
@@ -175,6 +241,42 @@
         "absolute": false,
         "seasons": {
             "1": [
+                "https://www.animeworld.tv/play/bokutachi-no-remake.lB6Bh"
+            ]
+        },
+        "title": "Remake Our Life!"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/seirei-gensouki.NgIKG/"
+            ]
+        },
+        "title": "Seirei Gensouki: Spirit Chronicles"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/shadows-house.rCg-x"
+            ]
+        },
+        "title": "Shadows House"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/sonny-boy.7Utce"
+            ]
+        },
+        "title": "Sonny Boy"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
                 "https://www.animeworld.tv/play/tatoeba-last-dungeon-mae-no-mura-no-shounen-ga-joban-no-machi-de-kurasu-youna-monogatari.EqCF-"
             ]
         },
@@ -184,10 +286,65 @@
         "absolute": false,
         "seasons": {
             "2": [
-                "https://www.animeworld.tv/play/tensei-shitara-slime-datta-ken-2.jregU"
+                "https://www.animeworld.tv/play/tensei-shitara-slime-datta-ken-2.jregU",
+                "https://www.animeworld.tv/play/tensei-shitara-slime-datta-ken-2nd-season-part-2.0K6vE"
             ]
         },
         "title": "That Time I Got Reincarnated as a Slime"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/shiroi-suna-no-aquatope.wCt0J"
+            ]
+        },
+        "title": "The Aquatope on White Sand"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/vanitas-no-carte.Z2zwI"
+            ]
+        },
+        "title": "The Case Study of Vanitas"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/the-detective-is-already-dead.wWFQN"
+            ]
+        },
+        "title": "The Detective Is Already Dead"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/the-duke-of-death-and-his-maid.YkcXB"
+            ]
+        },
+        "title": "The Duke of Death and His Maid"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/meikyuu-black-company.JOXcZ"
+            ]
+        },
+        "title": "The Dungeon of Black Company"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/heion-sedai-no-idaten-tachi.1TB--"
+            ]
+        },
+        "title": "The Idaten Deities Know Only Peace"
     },
     {
         "absolute": false,
@@ -205,7 +362,34 @@
                 "https://www.animeworld.tv/play/the-saints-magic-power-is-omnipotent.iKqoM"
             ]
         },
-        "title": "The Saint's Magic Power is Omnipotent"
+        "title": "The Saint's Magic Power Is Omnipotent"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/fumetsu-no-anata-e.tY9Ls"
+            ]
+        },
+        "title": "To Your Eternity"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/tokyo-revengers.Zkczy"
+            ]
+        },
+        "title": "Tokyo Revengers"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/tsuki-ga-michibiku-isekai-douchuu.qTZiB"
+            ]
+        },
+        "title": "Tsukimichi -Moonlit Fantasy-"
     },
     {
         "absolute": false,
