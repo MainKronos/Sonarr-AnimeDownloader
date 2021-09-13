@@ -73,7 +73,7 @@ def main():
 		job_thread.start()
 
 		job() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
-		schedule.every(SCHEDULE_MINUTES).minutes.do(run_threaded, job)
+		schedule.every(SCHEDULE_MINUTES).minutes.do(job)
 
 
 def server():
