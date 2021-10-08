@@ -77,7 +77,7 @@ def main():
 
 
 def server():
-	os.system("gunicorn -w 4 --bind 0.0.0.0:5000 app:app > /dev/null 2>&1")
+	os.system("gunicorn -w 2 --bind 0.0.0.0:5000 app:app > /dev/null 2>&1")
 
 
 def run_threaded(job_func):
