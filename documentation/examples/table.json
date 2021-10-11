@@ -2,6 +2,16 @@
     {
         "absolute": false,
         "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/86.kdabE",
+                "https://www.animeworld.tv/play/86-eighty-six-2.cWHjp"
+            ]
+        },
+        "title": "86: Eighty Six"
+    },
+    {
+        "absolute": false,
+        "seasons": {
             "4": [
                 "https://www.animeworld.tv/play/lattacco-dei-giganti-4.OH0AI"
             ]
@@ -21,6 +31,15 @@
         "absolute": false,
         "seasons": {
             "1": [
+                "https://www.animeworld.tv/play/shin-no-nakama-ja-nai-to-yuusha-no-party-wo-oidasareta-node-henkyou-de-slow-life-suru-koto-ni-shima.JpINB"
+            ]
+        },
+        "title": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
                 "https://www.animeworld.tv/play/deatte-5-byou-de-battle.njUd3"
             ]
         },
@@ -34,6 +53,15 @@
             ]
         },
         "title": "Beastars"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/blue-period.S2fQi"
+            ]
+        },
+        "title": "Blue Period"
     },
     {
         "absolute": false,
@@ -79,6 +107,15 @@
             ]
         },
         "title": "Drug Store in Another World: The Slow Life of a Cheat Pharmacist"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/edens-zero.A3qCl"
+            ]
+        },
+        "title": "EDENS ZERO"
     },
     {
         "absolute": false,
@@ -141,10 +178,28 @@
         "absolute": false,
         "seasons": {
             "1": [
+                "https://www.animeworld.tv/play/tsuki-to-laika-to-nosferatu.oon50"
+            ]
+        },
+        "title": "Irina: The Vampire Cosmonaut"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
                 "https://www.animeworld.tv/play/kemono-jihen.xb1V1"
             ]
         },
         "title": "Kemono Jihen"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/komi-cant-communicate.9x9ku"
+            ]
+        },
+        "title": "Komi Can't Communicate"
     },
     {
         "absolute": false,
@@ -154,6 +209,15 @@
             ]
         },
         "title": "Log Horizon"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/mieruko-chan.M7FrP"
+            ]
+        },
+        "title": "Mieruko-chan"
     },
     {
         "absolute": false,
@@ -178,7 +242,8 @@
         "absolute": false,
         "seasons": {
             "1": [
-                "https://www.animeworld.tv/play/mushoku-tensei-isekai-ittara-honki-dasu.FwbNc"
+                "https://www.animeworld.tv/play/mushoku-tensei-isekai-ittara-honki-dasu.FwbNc",
+                "https://www.animeworld.tv/play/mushoku-tensei-isekai-ittara-honki-dasu-2.UNNMY"
             ]
         },
         "title": "Mushoku Tensei: Jobless Reincarnation"
@@ -223,6 +288,15 @@
         "absolute": false,
         "seasons": {
             "1": [
+                "https://www.animeworld.tv/play/platinum-end.a9nvR"
+            ]
+        },
+        "title": "Platinum End"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
                 "https://www.animeworld.tv/play/re-main.99hiG"
             ]
         },
@@ -245,6 +319,15 @@
             ]
         },
         "title": "Remake Our Life!"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/sakugan-labyrinth-marker.hbTSd"
+            ]
+        },
+        "title": "SAKUGAN"
     },
     {
         "absolute": false,
@@ -281,6 +364,15 @@
             ]
         },
         "title": "Suppose a Kid From the Last Dungeon Boonies Moved to a Starter Town?"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/takt-opdestiny.S6Gxe"
+            ]
+        },
+        "title": "Takt Op. Destiny"
     },
     {
         "absolute": false,
@@ -341,6 +433,24 @@
         "absolute": false,
         "seasons": {
             "1": [
+                "https://www.animeworld.tv/play/saihate-no-paladin.aYZzH"
+            ]
+        },
+        "title": "The Faraway Paladin"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/the-heike-story.zQCZz"
+            ]
+        },
+        "title": "The Heike Story"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
                 "https://www.animeworld.tv/play/heion-sedai-no-idaten-tachi.1TB--"
             ]
         },
@@ -363,6 +473,15 @@
             ]
         },
         "title": "The Saint's Magic Power Is Omnipotent"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/the-worlds-finest-assassin-gets-reincarnated-in-another-world-as-an-aristocrat.WFG1J"
+            ]
+        },
+        "title": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat"
     },
     {
         "absolute": false,
@@ -408,5 +527,14 @@
             ]
         },
         "title": "Wonder Egg Priority"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/worlds-end-harem.gZnmN"
+            ]
+        },
+        "title": "World's End Harem"
     }
 ]
