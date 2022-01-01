@@ -289,6 +289,7 @@ def get_missing_episodes():
 			for serie in result["records"]:
 
 				try:
+					if serie["series"]["seriesType"] != 'anime': continue
 					info = {}
 					info["IDs"] = {
 						"seriesId": serie["seriesId"],
