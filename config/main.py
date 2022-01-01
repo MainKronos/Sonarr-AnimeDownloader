@@ -13,6 +13,8 @@ from app import app, ReadSettings
 
 SETTINGS = ReadSettings()
 
+DOWNLOAD_FOLDER = '/downloads'
+
 SONARR_URL = os.getenv('SONARR_URL') # Indirizzo ip + porta di sonarr
 API_KEY = os.getenv('API_KEY') # Chiave api di sonarr
 CHAT_ID = os.getenv('CHAT_ID') # telegramm
@@ -121,12 +123,12 @@ def job():
 						if ep.number == str(info["episode"]):
 							fileLink = ep.links[0]
 							title = fileLink.sanitize(title) # Sanitizza il titolo
-							if fileLink.download(title): 
+							if fileLink.download(title, DOWNLOAD_FOLDER): 
 								logging.info("✔️ Dowload Completato.")
 
 						if SETTINGS["MoveEp"]:
 							logging.info("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["rawEpisode"], info["path"]))
-							if move_file(title, info["path"]): 
+							if move_file(os.path.join(DOWNLOAD_FOLDER,title), info["path"]): 
 								logging.info("✔️ Episodio spostato.")
 
 							logging.info("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
@@ -240,22 +242,21 @@ def converting(series):
 
 	return res
 
-def move_file(title, path):
+def move_file(source, destinationPath):
 	
-	file = title
-	if os.path.isfile(file+'.mp4'):
-		file = file + '.mp4'
-	elif os.path.isfile(file+'.mkv'):
-		file = file + '.mkv'
+	
+	if os.path.isfile(source+'.mp4'):
+		source = source + '.mp4'
+	elif os.path.isfile(source+'.mkv'):
+		source = source + '.mkv'
 	else:
 		return False
+	
+	file = source.split(os.path.sep)[-1]
 
-	# destinationPath = os.fspath(path)
-	path = path.replace('\\', '/')
-	destinationPath = re.sub(r"\w:", "", path)
-	currentPath = os.getcwd()
+	destinationPath = destinationPath.replace('\\', '/')
+	destinationPath = re.sub(r"\w:", "", destinationPath)
 
-	source = os.path.join(currentPath, file)
 	destination = os.path.join(destinationPath, file)
 
 	if not os.path.exists(destinationPath):

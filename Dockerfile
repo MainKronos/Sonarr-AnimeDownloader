@@ -2,6 +2,7 @@ FROM python:3.9.5-slim
 
 LABEL maintainer="MainKronos"
 
+RUN mkdir /downloads
 RUN mkdir /script
 
 RUN export DEBIAN_FRONTEND=noninteractive; \
@@ -33,7 +34,7 @@ ENV LANG it_IT.UTF-8
 ENV LANGUAGE it_IT:en
 ENV LC_ALL it_IT.UTF-8
 
-ENV VERSION "1.4.6"
+ENV VERSION "1.5.0"
 
 EXPOSE 5000
 
