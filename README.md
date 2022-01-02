@@ -26,7 +26,7 @@ docker run -d \
     --name=AnimeDownloader \
     -v /path/to/data:/script/json/ \
     -v /path/to/animeSeries:/tv \
-	-v /path/to/downloads:/downloads \
+    -v /path/to/downloads:/downloads \
     -p {port}:5000 \
     --env SONARR_URL='http://{url}:{port}' \
     --env API_KEY='1234567890abcdefghijklmn' \
