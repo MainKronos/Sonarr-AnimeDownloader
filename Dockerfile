@@ -2,8 +2,6 @@ FROM python:3.9.5-slim
 
 LABEL maintainer="MainKronos"
 
-RUN mkdir /downloads
-RUN mkdir /script
 
 RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \
@@ -16,26 +14,40 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get autoclean; \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /script
-RUN pip3 install --upgrade pip
+RUN pip3 install --no-cache-dir --upgrade pip
 
-RUN pip3 install config --upgrade
+RUN pip3 install config --upgrade --no-cache-dir
 
 COPY requirements.txt /tmp/
 
-RUN pip3 install -r /tmp/requirements.txt
+RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
 
-COPY config/json/* /script/json/
-COPY config/main.py /script/
-COPY config/app/. /script/app/
+RUN groupadd --gid 1000 dockergroup
+RUN useradd --no-log-init -r -m --gid dockergroup --uid 1000 dockeruser 
+
+RUN mkdir /downloads && chown -R dockeruser /downloads
+RUN mkdir /script && chown -R dockeruser /script
+
+WORKDIR /script
+
+COPY --chown=dockeruser config/json/* /script/json/
+COPY --chown=dockeruser config/main.py /script/
+COPY --chown=dockeruser config/app/. /script/app/
+
+RUN chmod 777 /downloads -R 
+RUN chmod 777 /script -R 
 
 RUN locale-gen it_IT.UTF-8
 ENV LANG it_IT.UTF-8
 ENV LANGUAGE it_IT:en
 ENV LC_ALL it_IT.UTF-8
 
+USER dockeruser
+
 ENV VERSION "1.5.0"
 
 EXPOSE 5000
+
+VOLUME [ "/downloads", "/script/json" ]
 
 CMD ["python3","-u","/script/main.py"]
