@@ -30,9 +30,9 @@ RUN mkdir /script && chown -R dockeruser /script
 
 WORKDIR /script
 
-COPY --chown=dockeruser config/json/* /script/json/
-COPY --chown=dockeruser config/main.py /script/
-COPY --chown=dockeruser config/app/. /script/app/
+COPY --chown=dockeruser:dockergroup config/json/* /script/json/
+COPY --chown=dockeruser:dockergroup config/main.py /script/
+COPY --chown=dockeruser:dockergroup config/app/. /script/app/
 
 RUN chmod 777 /downloads -R 
 RUN chmod 777 /script -R 
@@ -41,6 +41,8 @@ RUN locale-gen it_IT.UTF-8
 ENV LANG it_IT.UTF-8
 ENV LANGUAGE it_IT:en
 ENV LC_ALL it_IT.UTF-8
+
+ENV WERKZEUG_RUN_MAIN true
 
 USER dockeruser
 
