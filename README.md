@@ -43,15 +43,15 @@ Le immagini del Docker Container vengono configurate utilizzando i parametri pas
 
 Parametro | Necessario | Funzione
  :---: | :---: | :---
-`--name` | :heavy_multiplication_x: | Indica il nome del Container, può essere qualsiasi cosa
+`--name` | :x: | Indica il nome del Container, può essere qualsiasi cosa
 `-v /tv` | :heavy_check_mark: | Posizione della libreria Anime su disco, vedi sotto per ulteriori informazioni
 `-v /script/json/` | :heavy_check_mark: | Contiene file di configurazione
-`-v /downloads` | :heavy_multiplication_x: | Cartella dove verranno scaricati tutti gli episodi (poi verranno spostati nella giusta cartella di destinazione)
+`-v /downloads` | :x: | Cartella dove verranno scaricati tutti gli episodi (poi verranno spostati nella giusta cartella di destinazione)
 `-p {port}:5000` | :heavy_check_mark: | La porta per la pagina web
 `--env SONARR_URL` | :heavy_check_mark: | Url di Sonarr es. http://localhost:8989
 `--env API_KEY` | :heavy_check_mark: | Api key di sonarr, vedi sotto per ulteriori informazioni
-`--env CHAT_ID` | :heavy_multiplication_x: | Chat ID di telegram, vedi sotto per ulteriori informazioni
-`--env BOT_TOKEN` | :heavy_multiplication_x: | Token per il Bot di telegram, vedi sotto per ulteriori informazioni
+`--env CHAT_ID` | :x: | Chat ID di telegram, vedi sotto per ulteriori informazioni
+`--env BOT_TOKEN` | :x: | Token per il Bot di telegram, vedi sotto per ulteriori informazioni
 `--env TZ` | :heavy_check_mark: | Specifica un fuso orario, è necessario per il corretto funzionamento del Container
 
 ### /tv
