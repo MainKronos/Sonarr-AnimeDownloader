@@ -364,8 +364,8 @@ def GetEpisodeFileID(epId): # Converte l'epId in epFileId
 
 def LoadLog():
 
-	# logging.config.dictConfig({ 'version': 1, 'disable_existing_loggers': True, })
 	logging.basicConfig(format='%(message)s')
+	# 
 
 	# sh = logging.StreamHandler()
 	# sh.setFormatter(logging.Formatter('%(message)s'))
@@ -374,6 +374,11 @@ def LoadLog():
 	fh = logging.FileHandler('log.log', encoding='utf-8')
 	fh.setFormatter(logging.Formatter("%(message)s"))
 	logger.addHandler(fh)
+
+	logging.getLogger("urllib3").setLevel(logging.WARNING)
+	logging.getLogger("requests").setLevel(logging.WARNING)
+
+	
 
 	
 	SetLog()
