@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+	<head>
+		<!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="static/css/materialize.min.css"  media="screen,projection"/>
+
+        <link type="text/css" rel="stylesheet" href="static/css/my.css" media="screen,projection"/>
+        
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <meta charset="UTF-8">
+        <meta name="author" content="MainKronos">
+
+        <title>Log</title>
+	</head>
+	<body>
+		<div class="mainpage">
+			<div>
+				<nav class="nav-extended dark">
+					<div class="nav-wrapper">
+						<a href="index" class="brand-logo center dark">Log</a>
+					</div>
+				</nav>
+				<div class="container">
+					<div class="section">
+						<br>
+					</div>
+					<div class="section">
+						<div class="row">
+							<div class="col s12">
+								<div class="card dark-back">
+									<div class="card-image">
+										<img src="static/images/card-background.png">
+										<span class="card-title"></span>
+									</div>
+									<div class="card-content" id='log'>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			<footer class="page-footer dark">
+                <div class="footer-copyright">
+                    <div class="container center-align">
+                        Ver. {{ env['VERSION'] }}
+                    </div>
+                </div>
+            </footer>
+		</div>
+	</body>
+	<script type="text/javascript" src="static/js/ansi_up.js"></script>
+	<script>
+		var ansi_up = new AnsiUp();
+
+		var Glines = 0;
+		function get_logs(lines){
+			let logDiv = document.getElementById('log');
+			
+			fetch("{{ url_for('get_logs') }}/"+lines)
+			.then(res=>res.json())
+			.then(res=>{
+				let ret = "";
+				for(let elem of res['data']){
+					ret += `<li>${ansi_up.ansi_to_html(elem)}</li>`;
+				}
+				logDiv.innerHTML = ret;
+			})
+		}
+
+
+		window.addEventListener('load', ()=>{
+			Glines+=100; 
+			setInterval(function e(){
+				get_logs(Glines);
+				return e;
+			}(), 5000);
+			
+		
+		});
+		document.querySelector('div.mainpage').addEventListener('scroll', function(ev){
+			if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+				// you're at the bottom of the page
+				Glines+=100;
+				get_logs(Glines);
+			}
+			
+		});
+
+	</script>
+</html>

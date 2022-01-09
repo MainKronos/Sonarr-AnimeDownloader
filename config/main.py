@@ -8,7 +8,7 @@ import schedule
 import time
 import threading
 import shutil
-import logging.config
+import logging.config; logger = logging.getLogger(__name__)
 from app import app, ReadSettings
 
 SETTINGS = ReadSettings()
@@ -46,31 +46,31 @@ start = r"""{color}┌------------------------------------{time}----------------
 
 def main():
 	LoadLog()
-	logging.warning(start)
+	logger.warning(start)
 
 	if SONARR_URL is None:
-		logging.warning("✖️ Variabile d'ambinete '𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇' non inserita.")
+		logger.warning("✖️ Variabile d'ambinete '𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇' non inserita.")
 	else:
-		logging.info("✔ 𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇: {}".format(SONARR_URL))
+		logger.info("✔ 𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇: {}".format(SONARR_URL))
 	if API_KEY is None:
-		logging.warning("✖️ Variabile d'ambinete '𝘼𝙋𝙄_𝙆𝙀𝙔' non inserita.")
+		logger.warning("✖️ Variabile d'ambinete '𝘼𝙋𝙄_𝙆𝙀𝙔' non inserita.")
 	else:
-		logging.info("✔ 𝘼𝙋𝙄_𝙆𝙀𝙔: {}".format(API_KEY))
+		logger.info("✔ 𝘼𝙋𝙄_𝙆𝙀𝙔: {}".format(API_KEY))
 	if CHAT_ID is None:
-		logging.debug("✖️ Variabile d'ambinete '𝘾𝙃𝘼𝙏_𝙄𝘿' non inserita.")
+		logger.debug("✖️ Variabile d'ambinete '𝘾𝙃𝘼𝙏_𝙄𝘿' non inserita.")
 	else:
-		logging.info("✔ 𝘾𝙃𝘼𝙏_𝙄𝘿: {}".format(CHAT_ID))
+		logger.info("✔ 𝘾𝙃𝘼𝙏_𝙄𝘿: {}".format(CHAT_ID))
 	if BOT_TOKEN is None:
-		logging.debug("✖️ Variabile d'ambinete '𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉' non inserita.")
+		logger.debug("✖️ Variabile d'ambinete '𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉' non inserita.")
 	else:
-		logging.info("✔ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {}".format(BOT_TOKEN))
+		logger.info("✔ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {}".format(BOT_TOKEN))
 
 	if None not in (SONARR_URL, API_KEY):
-		logging.info(f"\n{OKC}☑️ Le variabili d'ambiente sono state inserite correttamente.{NC}\n")
+		logger.info(f"\n{OKC}☑️ Le variabili d'ambiente sono state inserite correttamente.{NC}\n")
 
-		logging.info(f"\n⚙️ Intervallo Scan: {SCHEDULE_MINUTES} minuti\n")
+		logger.info(f"\n⚙️ Intervallo Scan: {SCHEDULE_MINUTES} minuti\n")
 
-		logging.info("\nAVVIO SERVER")
+		logger.info("\nAVVIO SERVER")
 		job_thread = threading.Thread(target=server)
 		job_thread.start()
 
@@ -89,7 +89,7 @@ def run_threaded(job_func):
 def job():
 	divider = f"{DIVIDC}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - {NC}"
 	
-	logging.warning("\n{color}╭-----------------------------------「{time}」-----------------------------------╮{nc}\n".format(time=time.strftime("%d %b %Y %H:%M:%S"), color=SEPARC, nc=NC))
+	logger.warning("\n{color}╭-----------------------------------「{time}」-----------------------------------╮{nc}\n".format(time=time.strftime("%d %b %Y %H:%M:%S"), color=SEPARC, nc=NC))
 
 	try:
 		raw_series = get_missing_episodes()
@@ -97,45 +97,45 @@ def job():
 			series = converting(raw_series)
 
 			for info in series:
-				logging.warning(f"\n{divider}")
+				logger.warning(f"\n{divider}")
 
 				try:
-					logging.warning("🔎 Ricerca anime '{}' per l'episodio S{}E{}.".format(info["SonarrTitle"], info["season"], info["rawEpisode"]))
+					logger.warning("🔎 Ricerca anime '{}' per l'episodio S{}E{}.".format(info["SonarrTitle"], info["season"], info["rawEpisode"]))
 					anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
 
-					logging.info("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
+					logger.info("🔎 Ricerca degli episodi per '{}'.".format(info["SonarrTitle"]))
 					epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
 					episodi = fixEps(epsArr)
 
-					logging.info("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["rawEpisode"]))
+					logger.info("⚙️ Verifica se l'episodio 𝐒{}𝐄{} è disponibile.".format(info["season"], info["rawEpisode"]))
 					ep = None
 					for episodio in episodi:
 						if episodio.number == str(info["episode"]):
 							ep = episodio
-							logging.info("✔️ L'episodio è disponibile.")
+							logger.info("✔️ L'episodio è disponibile.")
 							break
 					else:
-						logging.info("✖️ L'episodio NON è ancora uscito.")
+						logger.info("✖️ L'episodio NON è ancora uscito.")
 
 					if ep is not None: # Se l'episodio è disponibile
-						logging.warning("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["rawEpisode"]))
+						logger.warning("⏳ Download episodio 𝐒{}𝐄{}.".format(info["season"], info["rawEpisode"]))
 						title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["rawEpisode"]}'
 						if ep.number == str(info["episode"]):
 							fileLink = ep.links[0]
 							title = fileLink.sanitize(title) # Sanitizza il titolo
 							if fileLink.download(title, DOWNLOAD_FOLDER): 
-								logging.info("✔️ Dowload Completato.")
+								logger.info("✔️ Dowload Completato.")
 
 						if SETTINGS["MoveEp"]:
-							logging.info("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["rawEpisode"], info["path"]))
+							logger.info("⏳ Spostamento episodio 𝐒{}𝐄{} in {}.".format(info["season"], info["rawEpisode"], info["path"]))
 							if move_file(os.path.join(DOWNLOAD_FOLDER,title), info["path"]): 
-								logging.info("✔️ Episodio spostato.")
+								logger.info("✔️ Episodio spostato.")
 
-							logging.info("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
+							logger.info("⏳ Ricaricando la serie '{}'.".format(info["SonarrTitle"]))
 							RescanSerie(info["IDs"]["seriesId"])
 
 							if SETTINGS["RenameEp"]:
-								logging.info("⏳ Rinominando l'episodio.")
+								logger.info("⏳ Rinominando l'episodio.")
 								for i in range(5): # Fa 5 tentativi
 									try:
 										time.sleep(1)
@@ -146,33 +146,33 @@ def job():
 										RenameEpisode(info["IDs"]["seriesId"], epFileId)
 										break
 								else:
-									logging.warning(f"⚠️ NON è stato possibile rinominare l'episodio.")
+									logger.warning(f"⚠️ NON è stato possibile rinominare l'episodio.")
 
 							if None not in (CHAT_ID, BOT_TOKEN):
-								logging.info("✉️ Inviando il messaggio via telegram.")
+								logger.info("✉️ Inviando il messaggio via telegram.")
 								send_message(info)
 
 				except requests.exceptions.RequestException as res_error:
-					logging.warning(f"⚠️ Errore di connessione. ({res_error})")
+					logger.warning(f"⚠️ Errore di connessione. ({res_error})")
 				except aw.AnimeNotAvailable as info:
-					logging.warning(f"⚠️ {info}")
+					logger.warning(f"⚠️ {info}")
 				except aw.ServerNotSupported as warning:
-					logging.error(f"{WARNC}🆆🅰🆁🅽🅸🅽🅶: {warning}{NC}")
+					logger.error(f"{WARNC}🆆🅰🆁🅽🅸🅽🅶: {warning}{NC}")
 				except aw.DeprecatedLibrary as dev:
-					logging.critical(f"{ALERTC}🅰🅻🅴🆁🆃: {dev}{NC}")
+					logger.critical(f"{ALERTC}🅰🅻🅴🆁🆃: {dev}{NC}")
 				finally:
-					logging.warning(f"\n{divider}")
+					logger.warning(f"\n{divider}")
 
 		else:
-			logging.info("\nNon c'è nessun episodio da cercare.\n")
+			logger.info("\nNon c'è nessun episodio da cercare.\n")
 
 	except requests.exceptions.RequestException as res_error:
-		logging.error(f"🆆🅰🆁🅽🅸🅽🅶: Errore di connessione. ({res_error})")	
+		logger.error(f"🆆🅰🆁🅽🅸🅽🅶: Errore di connessione. ({res_error})")	
 	except Exception as error:
-		logging.exception(f"{ERRORC}🅴🆁🆁🅾🆁: {error}{NC}")
+		logger.exception(f"{ERRORC}🅴🆁🆁🅾🆁: {error}{NC}")
 
 	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SCHEDULE_MINUTES*60))
-	logging.warning("\n{color}╰-----------------------------------「{time}」-----------------------------------╯{nc}\n".format(time=nextStart, color=SEPARC, nc=NC))
+	logger.warning("\n{color}╰-----------------------------------「{time}」-----------------------------------╯{nc}\n".format(time=nextStart, color=SEPARC, nc=NC))
 
 def fixEps(epsArr): # accorpa 2 o più serie di animeworld
 	up = 0 # numero da aggiungere per rendere consecutivi gli episodi di varie stagioni
@@ -206,7 +206,7 @@ def converting(series):
 	json_location = "/script/json/table.json"
 
 	if not os.path.exists(json_location):
-		logging.warning("⚠️ Il file table.json non esiste, quindi verrà creato.")
+		logger.warning("⚠️ Il file table.json non esiste, quindi verrà creato.")
 		with open(json_location, 'w') as f:
 			f.write("[]")
 
@@ -236,7 +236,7 @@ def converting(series):
 						break
 			else:
 
-				logging.debug("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
+				logger.debug("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
 	except (json.decoder.JSONDecodeError, KeyError):
 		raise TableFormattingError
 
@@ -261,7 +261,7 @@ def move_file(source, destinationPath):
 
 	if not os.path.exists(destinationPath):
 		os.makedirs(destinationPath)
-		logging.warning(f"⚠️ La cartella {destinationPath} è stata creata.")
+		logger.warning(f"⚠️ La cartella {destinationPath} è stata creata.")
 
 	shutil.move(source, destination)
 	return True
@@ -305,13 +305,13 @@ def get_missing_episodes():
 					info["episodeTitle"] = serie["title"]
 					info["path"] = serie["series"]["path"]
 				except KeyError:
-					logging.debug("⁉️ Serie '{}' S{} scartata per mancanza di informazioni.".format(serie["series"]["title"], serie["seasonNumber"]))
+					logger.debug("⁉️ Serie '{}' S{} scartata per mancanza di informazioni.".format(serie["series"]["title"], serie["seasonNumber"]))
 				else:
 					series.append(info)
 		except requests.exceptions.RequestException as res_error:
 			if error_attempt > 3: raise res_error
 			error_attempt += 1
-			logging.warning(f"⚠️ Errore di connessione, prossimo tentativo fra 10s. ({res_error})")
+			logger.warning(f"⚠️ Errore di connessione, prossimo tentativo fra 10s. ({res_error})")
 			time.sleep(10)
 
 	return series
@@ -363,13 +363,25 @@ def GetEpisodeFileID(epId): # Converte l'epId in epFileId
 ### LOG
 
 def LoadLog():
-	logging.basicConfig(format='%(message)s')
-	logging.config.dictConfig({ 'version': 1, 'disable_existing_loggers': True, })
+
+	# logging.config.dictConfig({ 'version': 1, 'disable_existing_loggers': True, })
+
+	sh = logging.StreamHandler()
+	sh.setLevel(logging.DEBUG)
+	sh.setFormatter(logging.Formatter('%(message)s'))
+	logger.addHandler(sh)
+
+	fh = logging.FileHandler('log.log', encoding='utf-8')
+	fh.setLevel(logging.DEBUG)
+	fh.setFormatter(logging.Formatter("%(asctime)s: %(message)s", "%H:%M:%S"))
+	logger.addHandler(fh)
+
+	
 	SetLog()
 
 def SetLog():
 	LogLevel = SETTINGS["LogLevel"]
-	logging.getLogger().setLevel(LogLevel)
+	logger.setLevel(LogLevel)
 
 
 #### Telegram ###########################################################################################################

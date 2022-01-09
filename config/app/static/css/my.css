@@ -15,7 +15,9 @@ html {
 	justify-content: space-between
 }
 
-
+#log > li{
+	list-style: none;
+}
 
 /*.dark{
 	background-color: rgba(0,0,0,0);

@@ -84,6 +84,16 @@ def index():
 	return render_template('index.html', infos=anime, log=log, env=env)
 
 
+@app.route('/get_logs')
+@app.route('/get_logs/<rows>')
+def get_logs(rows=100):
+
+	return {'data': [x.lstrip() for x in (reversed(open("log.log").readlines()))][0:int(rows)]}
+
+@app.route('/log')
+def log():
+	env = getmyenv()
+	return render_template('log.html', env=env)
 
 ####### DATA
 
