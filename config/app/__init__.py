@@ -88,7 +88,7 @@ def index():
 @app.route('/get_logs/<rows>')
 def get_logs(rows=100):
 
-	return {'data': [x.lstrip() for x in (reversed(open("log.log").readlines()))][0:int(rows)]}
+	return {'data': [x for x in (open("log.log").readlines())][-int(rows):99 - int(rows)]}
 
 @app.route('/log')
 def log():

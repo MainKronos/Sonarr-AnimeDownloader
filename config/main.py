@@ -365,15 +365,14 @@ def GetEpisodeFileID(epId): # Converte l'epId in epFileId
 def LoadLog():
 
 	# logging.config.dictConfig({ 'version': 1, 'disable_existing_loggers': True, })
+	logging.basicConfig(format='%(message)s')
 
-	sh = logging.StreamHandler()
-	sh.setLevel(logging.DEBUG)
-	sh.setFormatter(logging.Formatter('%(message)s'))
-	logger.addHandler(sh)
+	# sh = logging.StreamHandler()
+	# sh.setFormatter(logging.Formatter('%(message)s'))
+	# logger.addHandler(sh)
 
 	fh = logging.FileHandler('log.log', encoding='utf-8')
-	fh.setLevel(logging.DEBUG)
-	fh.setFormatter(logging.Formatter("%(asctime)s: %(message)s", "%H:%M:%S"))
+	fh.setFormatter(logging.Formatter("%(message)s"))
 	logger.addHandler(fh)
 
 	
@@ -381,7 +380,7 @@ def LoadLog():
 
 def SetLog():
 	LogLevel = SETTINGS["LogLevel"]
-	logger.setLevel(LogLevel)
+	logging.getLogger().setLevel(LogLevel)
 
 
 #### Telegram ###########################################################################################################

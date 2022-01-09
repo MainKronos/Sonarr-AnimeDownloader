@@ -15,8 +15,12 @@ html {
 	justify-content: space-between
 }
 
-#log > li{
+#log > li, #log span{
 	list-style: none;
+	display: block;
+	min-height: 23px;
+	white-space: pre-wrap;
+	font-family: monospace, monospace;
 }
 
 /*.dark{

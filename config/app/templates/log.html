@@ -64,36 +64,47 @@
 		var Glines = 0;
 		function get_logs(lines){
 			let logDiv = document.getElementById('log');
+
+			let firstEl = logDiv.firstElementChild;
 			
-			fetch("{{ url_for('get_logs') }}/"+lines)
+			return fetch("{{ url_for('get_logs') }}/"+lines)
 			.then(res=>res.json())
 			.then(res=>{
 				let ret = "";
-				for(let elem of res['data']){
-					ret += `<li>${ansi_up.ansi_to_html(elem)}</li>`;
+				for(let i=res['data'].length-1; i>=0; i--){
+					let li = document.createElement('li');
+					li.innerHTML = ansi_up.ansi_to_html(res['data'][i]);
+					logDiv.prepend(li);
 				}
-				logDiv.innerHTML = ret;
+				document.querySelector('div.mainpage').scrollTop = (firstEl==null)? 0 : firstEl.offsetTop;
 			})
 		}
 
 
 		window.addEventListener('load', ()=>{
 			Glines+=100; 
-			setInterval(function e(){
-				get_logs(Glines);
-				return e;
-			}(), 5000);
+
+			get_logs(Glines)
+			.then(()=>{
+				document.querySelector('div.mainpage').scrollTo(0, document.querySelector('div.mainpage').scrollHeight);
+			});
 			
-		
+
+			// setInterval(function(){
+			// 	get_logs(Glines);
+			// }, 5000);
+				
 		});
 		document.querySelector('div.mainpage').addEventListener('scroll', function(ev){
-			if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
-				// you're at the bottom of the page
+			if (this.scrollTop <= 100) {
+				// you're at the top of the page
 				Glines+=100;
 				get_logs(Glines);
 			}
 			
 		});
+
+		
 
 	</script>
 </html>
