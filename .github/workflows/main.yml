@@ -48,7 +48,7 @@ jobs:
       
       - name: Print INFO
         run: |
-          echo "Event:     ${{ github.event.inputs.version }}"
+          echo "Event:     ${{ github.event_name }}"
           echo "Version:   ${{ env.RELEASE_VERSION }}"
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
         
