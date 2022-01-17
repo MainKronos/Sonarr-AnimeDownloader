@@ -60,7 +60,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          platforms: ${{ steps.buildx.outputs.platforms }}
+          platforms: linux/arm/v7,linux/amd64,linux/arm64
           tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:latest,${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:${{ env.RELEASE_VERSION }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
