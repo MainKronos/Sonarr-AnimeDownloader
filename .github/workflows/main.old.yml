@@ -1,67 +1,67 @@
-# # This is a basic workflow to help you get started with Actions
+# This is a basic workflow to help you get started with Actions
 
-# name: CI to Docker Hub OLD
+name: CI to Docker Hub OLD
 
-# # Controls when the workflow will run
-# # on:
-# #   release:
-# #     types: [created]
+# Controls when the workflow will run
+on:
+#   release:
+#     types: [created]
 
-#   # Allows you to run this workflow manually from the Actions tab
-# #   workflow_dispatch:
+  # Allows you to run this workflow manually from the Actions tab
+ workflow_dispatch:
 
-# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-# jobs:
-#   # This workflow contains a single job called "build"
-#   build:
-#     # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-#     # Steps represent a sequence of tasks that will be executed as part of the job
-#     steps:
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
     
-#       - name: Check Out Repo 
-#         uses: actions/checkout@v2
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
         
-#       - name: Set env
-#         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
         
-#       - name: Login to Docker Hub
-#         uses: docker/login-action@v1
-#         with:
-#           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-#       - name: Set up Docker Buildx
-#         id: buildx
-#         uses: docker/setup-buildx-action@v1
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
         
-#       - name: Build latest and push
-#         id: docker_build_latest
-#         uses: docker/build-push-action@v2
-#         with:
-#           context: ./
-#           file: ./Dockerfile
-#           builder: ${{ steps.buildx.outputs.name }}
-#           push: true
-#           tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:latest
-#           cache-from: type=local,src=/tmp/.buildx-cache
-#           cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Build latest and push
+        id: docker_build_latest
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
-#       - name: Image latest digest
-#         run: echo ${{ steps.docker_build_latest.outputs.digest }}
+      - name: Image latest digest
+        run: echo ${{ steps.docker_build_latest.outputs.digest }}
       
-#       - name: Build tag and push
-#         id: docker_build_tag
-#         uses: docker/build-push-action@v2
-#         with:
-#           context: ./
-#           file: ./Dockerfile
-#           builder: ${{ steps.buildx.outputs.name }}
-#           push: true
-#           tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:${{ env.RELEASE_VERSION }}
-#           cache-from: type=local,src=/tmp/.buildx-cache
-#           cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Build tag and push
+        id: docker_build_tag
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:${{ env.RELEASE_VERSION }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
-#       - name: Image tag digest
-#         run: echo ${{ steps.docker_build_tag.outputs.digest }}
+      - name: Image tag digest
+        run: echo ${{ steps.docker_build_tag.outputs.digest }}
