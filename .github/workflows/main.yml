@@ -52,32 +52,32 @@ jobs:
           echo "Version:   ${{ env.RELEASE_VERSION }}"
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
         
-      # - name: Build latest and push
-      #   id: docker_build_latest
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ./
-      #     file: ./Dockerfile
-      #     builder: ${{ steps.buildx.outputs.name }}
-      #     push: true
-      #     tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:latest
-      #     cache-from: type=local,src=/tmp/.buildx-cache
-      #     cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Build latest and push
+        id: docker_build_latest
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
-      # - name: Image latest digest
-      #   run: echo ${{ steps.docker_build_latest.outputs.digest }}
+      - name: Image latest digest
+        run: echo ${{ steps.docker_build_latest.outputs.digest }}
       
-      # - name: Build tag and push
-      #   id: docker_build_tag
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ./
-      #     file: ./Dockerfile
-      #     builder: ${{ steps.buildx.outputs.name }}
-      #     push: true
-      #     tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:${{ env.RELEASE_VERSION }}
-      #     cache-from: type=local,src=/tmp/.buildx-cache
-      #     cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Build tag and push
+        id: docker_build_tag
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader:${{ env.RELEASE_VERSION }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
-      # - name: Image tag digest
-      #   run: echo ${{ steps.docker_build_tag.outputs.digest }}
+      - name: Image tag digest
+        run: echo ${{ steps.docker_build_tag.outputs.digest }}
