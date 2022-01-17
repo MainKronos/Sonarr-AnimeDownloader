@@ -39,6 +39,9 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v
+
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
