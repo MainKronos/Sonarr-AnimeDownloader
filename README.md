@@ -135,4 +135,4 @@ Segnalatelo il prima possibile sotto la sezione _Issues_, in modo tale che possa
 Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
 
 ## Support
-<a href="https://www.buymeacoffee.com/MainKronos"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=MainKronos&button_colour=242424&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"></a>
+<a href="https://www.buymeacoffee.com/MainKronos"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=MainKronos&button_colour=292929&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"></a>
