@@ -9,7 +9,7 @@ import time
 import threading
 import shutil
 import logging.config; logger = logging.getLogger(__name__)
-from app import app, ReadSettings
+from app import app, ReadSettings, appendAnime
 
 SETTINGS = ReadSettings()
 
@@ -235,8 +235,22 @@ def converting(series):
 						res.append(anime)
 						break
 			else:
-
 				logger.debug("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
+				if SETTINGS["AutoBind"]:
+					logger.warning("⚠️ Ricerca automatica link di AnimeWorld.")
+					data = aw.find(f'{anime["SonarrTitle"]} {anime["season"] if anime["season"] != 1 else ""}')
+					if data is None:
+						logger.info("⛔ Nessun risultato trovato.")
+					else:
+						logger.warning(f"✳️ Risultato trovato, verrà utilizzato nella prossima ricerca: \n- {data['name']} ({data['link']}).\n")
+						appendAnime({
+							"title": anime["SonarrTitle"],
+							"season": str(anime["season"]),
+							"absolute": False,
+							"links": [data['link']]
+						})
+
+					
 	except (json.decoder.JSONDecodeError, KeyError):
 		raise TableFormattingError
 

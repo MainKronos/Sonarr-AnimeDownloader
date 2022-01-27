@@ -12,8 +12,27 @@
     {
         "absolute": false,
         "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/akebi-chan-no-sailor-fuku.6t2t7"
+            ]
+        },
+        "title": "Akebi's Sailor Uniform"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "2": [
+                "https://www.animeworld.tv/play/arifureta-shokugyou-de-sekai-saikyou-2.ihBQk"
+            ]
+        },
+        "title": "Arifureta: From Commonplace to World's Strongest"
+    },
+    {
+        "absolute": false,
+        "seasons": {
             "4": [
-                "https://www.animeworld.tv/play/lattacco-dei-giganti-4.OH0AI"
+                "https://www.animeworld.tv/play/lattacco-dei-giganti-4.OH0AI",
+                "https://www.animeworld.tv/play/lattacco-dei-giganti-4-parte-2.IsVqa"
             ]
         },
         "title": "Attack on Titan"
@@ -75,6 +94,15 @@
     {
         "absolute": false,
         "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/180-byou-de-kimi-no-mimi-wo-shiawase-ni-dekiru-ka.N9OZX"
+            ]
+        },
+        "title": "Can I Make Your Ears Happy in 180 Seconds?"
+    },
+    {
+        "absolute": false,
+        "seasons": {
             "2": [
                 "https://www.animeworld.tv/play/cells-at-work-2.pE6uS"
             ]
@@ -98,6 +126,18 @@
             ]
         },
         "title": "Combatants Will Be Dispatched!"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "2": [
+                "https://www.animeworld.tv/play/demon-slayer-kimetsu-no-yaiba-2.YIoa-"
+            ],
+            "3": [
+                "https://www.animeworld.tv/play/demon-slayer-kimetsu-no-yaiba-entertainment-district-arc.IFmFs"
+            ]
+        },
+        "title": "Demon Slayer: Kimetsu no Yaiba"
     },
     {
         "absolute": false,
@@ -139,6 +179,15 @@
         "absolute": false,
         "seasons": {
             "1": [
+                "https://www.animeworld.tv/play/gunslinger-girl.vIUhE"
+            ]
+        },
+        "title": "Gunslinger Girl"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
                 "https://www.animeworld.tv/play/haibane-renmei.4yJAg"
             ]
         },
@@ -169,10 +218,20 @@
         "absolute": false,
         "seasons": {
             "1": [
-                "https://www.animeworld.tv/play/genjitsu-shugi-yuusha-no-oukoku-saikenki.LpDFM"
+                "https://www.animeworld.tv/play/genjitsu-shugi-yuusha-no-oukoku-saikenki.LpDFM",
+                "https://www.animeworld.tv/play/genjitsu-shugi-yuusha-no-oukoku-saikenki-parte-2.5cDX2"
             ]
         },
         "title": "How a Realist Hero Rebuilt the Kingdom"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/leadale-no-daichi-nite.ZNPJp"
+            ]
+        },
+        "title": "In the Land of Leadale"
     },
     {
         "absolute": false,
@@ -251,6 +310,15 @@
     {
         "absolute": false,
         "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/sono-bisque-doll-wa-koi-wo-suru.bxYq6"
+            ]
+        },
+        "title": "My Dress-Up Darling"
+    },
+    {
+        "absolute": false,
+        "seasons": {
             "5": [
                 "https://www.animeworld.tv/play/boku-no-hero-academia-5.JosMp"
             ]
@@ -279,6 +347,15 @@
         "absolute": false,
         "seasons": {
             "1": [
+                "https://www.animeworld.tv/play/orient.myAXD"
+            ]
+        },
+        "title": "Orient"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
                 "https://www.animeworld.tv/play/osananajimi-ga-zettai-ni-makenai-love-comedy.J2uW-"
             ]
         },
@@ -288,10 +365,19 @@
         "absolute": false,
         "seasons": {
             "1": [
-                "https://www.animeworld.tv/play/platinum-end.a9nvR"
+                "https://www.animeworld.tv/play/puraore-pride-of-orange.OnxR3"
             ]
         },
-        "title": "Platinum End"
+        "title": "PuraOre! ~Pride of Orange~"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/ousama-ranking.W-Hq7"
+            ]
+        },
+        "title": "Ranking of Kings"
     },
     {
         "absolute": false,
@@ -324,10 +410,28 @@
         "absolute": false,
         "seasons": {
             "1": [
-                "https://www.animeworld.tv/play/sakugan-labyrinth-marker.hbTSd"
+                "https://www.animeworld.tv/play/baraou-no-souretsu.LVB1N"
             ]
         },
-        "title": "SAKUGAN"
+        "title": "Requiem of the Rose King"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/sabikui-bisco.qUN6L"
+            ]
+        },
+        "title": "Sabikui Bisco"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/sasaki-to-miyano.mij7d"
+            ]
+        },
+        "title": "Sasaki and Miyano"
     },
     {
         "absolute": false,
@@ -364,15 +468,6 @@
             ]
         },
         "title": "Suppose a Kid From the Last Dungeon Boonies Moved to a Starter Town?"
-    },
-    {
-        "absolute": false,
-        "seasons": {
-            "1": [
-                "https://www.animeworld.tv/play/takt-opdestiny.S6Gxe"
-            ]
-        },
-        "title": "Takt Op. Destiny"
     },
     {
         "absolute": false,
@@ -433,10 +528,10 @@
         "absolute": false,
         "seasons": {
             "1": [
-                "https://www.animeworld.tv/play/saihate-no-paladin.aYZzH"
+                "https://www.animeworld.tv/play/tensai-ouji-no-akaji-kokka-saisei-jutsu.iwtzm"
             ]
         },
-        "title": "The Faraway Paladin"
+        "title": "The Genius Prince's Guide to Raising a Nation Out of Debt"
     },
     {
         "absolute": false,
@@ -473,6 +568,15 @@
             ]
         },
         "title": "The Saint's Magic Power Is Omnipotent"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/shikkakumon-no-saikyou-kenja.5HJOk"
+            ]
+        },
+        "title": "The Strongest Sage With the Weakest Crest"
     },
     {
         "absolute": false,
@@ -527,6 +631,15 @@
             ]
         },
         "title": "Wonder Egg Priority"
+    },
+    {
+        "absolute": false,
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/world-trigger.L3ftn"
+            ]
+        },
+        "title": "World Trigger"
     },
     {
         "absolute": false,

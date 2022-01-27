@@ -1,5 +1,7 @@
 {
 	"LogLevel": "DEBUG",
 	"MoveEp": true,
-	"RenameEp": true
+	"ScanDalay": 30,
+	"RenameEp": true,
+	"AutoBind": false
 }

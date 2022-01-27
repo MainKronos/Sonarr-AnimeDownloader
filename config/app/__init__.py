@@ -67,7 +67,8 @@ def settings_update():
 		"LogLevel": request.form.get("LogLevel"),
 		"RenameEp": False if request.form.get("RenameEp") is None or request.form.get("MoveEp") is None else True,
 		"MoveEp": False if request.form.get("MoveEp") is None else True,
-		"ScanDalay": int(request.form.get("ScanDalay"))
+		"ScanDalay": int(request.form.get("ScanDalay")),
+		"AutoBind": False if request.form.get("AutoBind") is None else True
 	}
 
 	WriteSettings(settings)
@@ -183,10 +184,11 @@ def getmyenv():
 def ReadSettings():
 
 	data = {
-		"LogLevel":"DEBUG",
-		"RenameEp":True,
-		"MoveEp":True,
-		"ScanDalay": 30
+		"LogLevel": "DEBUG",
+		"RenameEp": True,
+		"MoveEp": True,
+		"ScanDalay": 30,
+		"AutoBind": False
 	}
 
 	json_location = "json/settings.json"
