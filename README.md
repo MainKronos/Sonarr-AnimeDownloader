@@ -13,7 +13,7 @@ Il Container si interfaccia con Sonarr per avere informazini riguardante gli ani
 L'utilizzo di _**Sonarr**_ è necessario.
 Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com/linuxserver/docker-sonarr)
 
-Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documentazione è reperibile [qui](../../AnimeWorld-API)
+Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documentazione è reperibile [qui](../../../AnimeWorld-API)
 
 Le **FAQ** si trovano [qui](FAQ.md)
 
