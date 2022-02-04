@@ -37,16 +37,15 @@ COPY --chown=dockeruser:dockergroup config/app/. /script/app/
 RUN chmod 777 /downloads -R 
 RUN chmod 777 /script -R 
 
-RUN locale-gen it_IT.UTF-8
-ENV LANG it_IT.UTF-8
-ENV LANGUAGE it_IT:en
-ENV LC_ALL it_IT.UTF-8
+RUN sed -i -e 's/# it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=it_IT.UTF-8
 
 ENV WERKZEUG_RUN_MAIN true
 
 USER dockeruser
 
-ENV VERSION "1.6.0"
+ENV VERSION "1.5.5"
 
 EXPOSE 5000
 

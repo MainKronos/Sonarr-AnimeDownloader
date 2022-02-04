@@ -201,6 +201,49 @@ def fixEps(epsArr): # accorpa 2 o più serie di animeworld
 
 	return ret
 
+def bindAnime(anime_name:str, season:int, thetvdb_id:int) -> dict:
+
+	# ottengo tutti gli ids
+	db = requests.get("https://raw.githubusercontent.com/Fribb/anime-lists/master/anime-list-full.json").json()
+
+	# filtro tutti gli ids alla ricerca di tutti i dizionari che contengono lo stesso id di thetvdb
+	ids = [
+		{
+			"thetvdb_id": elem["thetvdb_id"], 
+			"mal_id": elem["mal_id"]
+		} 
+		for elem in db if "thetvdb_id" in elem and elem["thetvdb_id"] == thetvdb_id and elem["type"] == "TV"
+	]
+
+	# ottengo tutti i risultati da animewolrd ricercando solamente con il nome dell'anime
+	results = aw.find(anime_name)
+
+	ret = []
+
+	for res in results:
+		# controlla se è doppiato, e se lo fosse lo scarta
+		if res["dub"]: continue
+
+		# controllo se l'id di MAL è presente tra tutti gli id che ho filtrato precedentemente
+		if len([x for x in ids if x["mal_id"] == res["malId"]]) != 0:
+			ret.append({
+				"name": res["name"],
+				"release": res["release"],
+				"link": res["link"]
+			})
+
+	# riordino per data di uscita
+	ret.sort(key=lambda elem: elem["release"])
+
+	# controllo se effettivamente esiste la stagione
+	if len(ret) < season: return None
+	else:
+		# ritorno nome e link
+		return {
+			"name": ret[season-1]["name"],
+			"link": ret[season-1]["link"]
+		}
+
 
 def converting(series):
 	json_location = "/script/json/table.json"
@@ -238,7 +281,7 @@ def converting(series):
 				logger.debug("❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {} della 𝘴𝘦𝘳𝘪𝘦 '{}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲.".format(anime["season"], anime["SonarrTitle"]))
 				if SETTINGS["AutoBind"]:
 					logger.warning("⚠️ Ricerca automatica link di AnimeWorld.")
-					data = aw.find(f'{anime["SonarrTitle"]} {anime["season"] if anime["season"] != 1 else ""}')[0]
+					data = bindAnime(anime["SonarrTitle"], anime["season"], anime["IDs"]["tvdbId"])
 					if data is None:
 						logger.info("⛔ Nessun risultato trovato.")
 					else:
@@ -308,9 +351,9 @@ def get_missing_episodes():
 					info = {}
 					info["IDs"] = {
 						"seriesId": serie["seriesId"],
-						"epId": serie["id"]
+						"epId": serie["id"],
+						"tvdbId": serie["series"]["tvdbId"]
 					}
-					info["seriesId"] = serie["seriesId"]
 					info["SonarrTitle"] = serie["series"]["title"]
 					info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
 					info["season"] = int(serie["seasonNumber"])
