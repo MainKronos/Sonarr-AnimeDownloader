@@ -122,7 +122,6 @@ def job():
 						title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["rawEpisode"]}'
 						if ep.number == str(info["episode"]):
 							fileLink = ep.links[0]
-							title = fileLink.sanitize(title) # Sanitizza il titolo
 							if fileLink.download(title, DOWNLOAD_FOLDER): 
 								logger.info("✔️ Dowload Completato.")
 
