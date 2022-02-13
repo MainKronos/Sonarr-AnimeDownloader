@@ -30,9 +30,7 @@ RUN mkdir /script && chown -R dockeruser /script
 
 WORKDIR /script
 
-COPY --chown=dockeruser:dockergroup config/json/* /script/json/
-COPY --chown=dockeruser:dockergroup config/main.py /script/
-COPY --chown=dockeruser:dockergroup config/app/. /script/app/
+COPY --chown=dockeruser:dockergroup config/ /script/
 
 RUN chmod 777 /downloads -R 
 RUN chmod 777 /script -R 
@@ -45,7 +43,7 @@ ENV WERKZEUG_RUN_MAIN true
 
 USER dockeruser
 
-ENV VERSION "1.6.1"
+ENV VERSION "1.6.2-alpha"
 
 EXPOSE 5000
 

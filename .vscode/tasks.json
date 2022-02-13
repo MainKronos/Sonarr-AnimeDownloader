@@ -1,0 +1,48 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "docker-run: debug",
+			"type": "docker-run",
+			"dependsOn": ["docker-build"],
+			"dockerRun": {
+				"containerName": "AnimeDownloader",
+				"image": "mainkronos/anime_downloader:latest",
+				"env": {
+					"SONARR_URL":"http://192.168.1.11:80",
+					"API_KEY":"1234567890abcdefghijklmn",
+					"CHAT_ID":"123456789",
+					"BOT_TOKEN":"123456789:ABCDEFGHIJKLM-abc_AbCdEfGhI12345678",
+					"TZ":"Europe/Rome"
+				},
+				"ports": [
+					{
+						"containerPort": 5000,
+						"hostPort": 8573
+					}
+				],
+				"volumes": [
+					{
+						"containerPath": "/script/json/",
+						"localPath": "${workspaceFolder}/documentation/examples"
+					}
+				]
+			},
+			"python": {
+				"file": "main.py"
+			}
+		},
+		{
+			"label": "docker-build",
+			"type": "docker-build",
+			"dockerBuild": {
+				"context": "${workspaceFolder}",
+				"dockerfile": "${workspaceFolder}/Dockerfile",
+				"tag": "mainkronos/anime_downloader:latest",
+				// "customOptions": "--no-cache"
+			}
+		}
+	]
+}
