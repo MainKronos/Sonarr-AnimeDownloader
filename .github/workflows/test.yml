@@ -44,10 +44,14 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v1
+        uses: docker/metadata-action@v3
         with:
           images: |
             ghcr.io/${{ github.repository }}
+          flavor: |
+            latest=true
+          tags: |
+            type=raw,enable=true,value=${{ env.RELEASE_VERSION }}
       
       - name: Print INFO
         run: |
