@@ -49,11 +49,16 @@ def readSettings() -> Dict[str, str]:
 	
 	return settings
 
+class classproperty(object):
+	def __init__(self, fget):
+		self.fget = fget
+	def __get__(self, owner_self, owner_cls):
+		return self.fget(owner_cls)
+
 class Table:
 	file = "json/table.json"
 	
-	@classmethod
-	@property
+	@classproperty
 	def data(self) -> List[Dict]:
 		"""
 		Lista di dizionari contenente tutta la tabella di conversione.
@@ -102,3 +107,5 @@ class Table:
 		"""
 		with open(self.file, 'w') as f:
 			f.write(json.dumps(table, indent=4))
+
+
