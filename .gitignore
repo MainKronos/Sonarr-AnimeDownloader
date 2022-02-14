@@ -1,3 +1,4 @@
 
 *.sh
 *.pyc
+.vscode/tasks.json
