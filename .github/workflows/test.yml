@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI to Docker Package
+name: Test GitHub Package
 
 # Controls when the workflow will run
 on:
@@ -51,7 +51,7 @@ jobs:
       
       - name: Print INFO
         run: |
-          echo "Tags:     ${{ steps.meta.outputs.tags }}
-          echo "labels:   ${{ steps.meta.outputs.labels }}
+          echo "Tags:     ${{ steps.meta.outputs.tags }}"
+          echo "labels:   ${{ steps.meta.outputs.labels }}"
         
 
