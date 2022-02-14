@@ -1,29 +1,25 @@
-# This is a basic workflow to help you get started with Actions
+name: Build and Push Docker Image
 
-name: Test GitHub Package
 
-# Controls when the workflow will run
 on:
+  # release:
+  #   types: [created]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
      version:
       description: 'Versione'
       required: true
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
   build_and_push:
   
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     
       - name: Check Out Repo 
@@ -34,7 +30,13 @@ jobs:
       - name: Set env
         if: github.event_name == 'workflow_dispatch'
         run: echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-        
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
       - name: Log in to the Container registry
         uses: docker/login-action@v1
         with:
@@ -42,11 +44,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v1
+
+      # - name: Set up Docker Buildx
+      #   id: buildx
+      #   uses: docker/setup-buildx-action@v1
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/anime_downloader
             ghcr.io/${{ github.repository }}
           flavor: |
             latest=true
@@ -55,7 +65,25 @@ jobs:
       
       - name: Print INFO
         run: |
-          echo "Tags:     ${{ steps.meta.outputs.tags }}"
-          echo "labels:   ${{ steps.meta.outputs.labels }}"
+          echo "Event:     ${{ github.event_name }}"
+          echo "Version:   ${{ env.RELEASE_VERSION }}"
+          echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
+          echo "Tags:      ${{ steps.meta.outputs.tags }}"
+      
+      # - name: Build latest and push
+      #   id: docker_build_latest
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ./
+      #     file: ./Dockerfile
+      #     builder: ${{ steps.buildx.outputs.name }}
+      #     push: true
+      #     platforms: linux/arm/v7,linux/amd64,linux/arm64
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     cache-from: type=local,src=/tmp/.buildx-cache
+      #     cache-to: type=local,dest=/tmp/.buildx-cache
+
+      # - name: Image latest digest
+      #   run: echo ${{ steps.docker_build_latest.outputs.digest }}
         
 
