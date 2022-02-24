@@ -1,0 +1,94 @@
+/* MODAL */
+
+.modal{
+	display: flex;
+	justify-content: center;
+    flex-direction: column;
+    align-items: center;
+	position: fixed;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+	width: 0%;
+	height: 0%;
+	z-index: 1;
+}
+
+.modal.active{
+	width: 100%;
+	height: 100%;
+}
+
+.modal-overlay{
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+}
+.modal.active > .modal-overlay{
+	display: block;
+}
+.modal-content{
+	width: auto;
+	height: auto;
+	background-color: var(--card-color);
+	transition: opacity 0.3s;
+	z-index: 1;
+	border-radius: 3px;
+	padding: 15px;
+	opacity: 0;
+}
+
+.modal.active > .modal-content{
+	opacity: 1;
+}
+
+
+#clear.btn, #submit.btn{
+	font-family: 'Roboto';
+	width: 200px;
+	margin: 15px 50px;
+	border: 2px solid var(--primary-color);
+	background-color: transparent;
+	border-radius: 4px;
+	color: var(--primary-color);
+	font-size: 18px;
+	padding: 10px;
+}
+
+#clear.btn:hover, #submit.btn:hover{
+	background-color: var(--primary-color);
+	color: rgba(255,255,255,0.7);
+}
+
+/* MENU */
+
+ul#menu{
+	color: rgba(255,255,255,0.7);
+	position: absolute;
+	top: -65px;
+	left: 0;
+	background-color: var(--card-color);
+	padding: 2px;
+	border-radius: 4px;
+	border: 1px solid rgba(0,0,0,0.5);
+	cursor: pointer;
+	user-select: none;
+	margin: 0;
+	display: none;
+	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+	z-index: 1;
+}
+ul#menu > li {
+	padding: 5px;
+	list-style-type: none;
+}
+ul#menu > li:not(:last-child){
+	border-bottom: 1px solid rgba(0,0,0,0.5);
+}
+ul#menu > li:hover{
+	color: var(--primary-color);
+}

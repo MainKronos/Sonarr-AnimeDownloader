@@ -1,192 +1,64 @@
-<!DOCTYPE html>
-<html lang="it">
-    <head>
-        <!--Import Google Icon Font-->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% extends "base.html" %}
 
-        <!--Import materialize.css-->
-        <link type="text/css" rel="stylesheet" href="static/css/materialize.min.css"  media="screen,projection"/>
+{% block title %}Tabella Di Conversione{% endblock %}
 
-        <link type="text/css" rel="stylesheet" href="static/css/my.css" media="screen,projection"/>
-        
-        <!--Let browser know website is optimized for mobile-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-        <meta charset="UTF-8">
-        <meta name="description" content="Tabella Di Conversione">
-        <meta name="author" content="MainKronos">
-
-        <title>Tabella Di Conversione</title>
-    </head>
-    <body>
-        <div class="mainpage">
-            <div>
-                <!-- Header -->
-				<nav class="nav-extended dark">
-					<div class="nav-wrapper">
-						<a href="#" class="brand-logo center dark">Tabella Di Conversione</a>
-						<ul id="nav-mobile" class="left hide-on-med-and-down">
-							<li><a href="./settings" class="waves-effect waves-light btn-floating dark info"><i class="material-icons left">settings</i></a></li>
-						</ul>
-						<div class="switch">
-							<label>
-								Delete
-								<input type="checkbox" name="anime_editor">
-								<span class="lever"></span>
-								Edit
-							</label>
-						</div>
-					</div>
-					<div class="nav-content">
-						<span class="nav-title hide-on-med-and-up"></span>
-						<a id="menu" class="btn btn-floating waves-effect waves-light btn-large halfway-fab modal-trigger dark" href="#append_anime_modal">
-							<i class="material-icons">add</i>
-						</a>
-					</div>
-				</nav>
-
-                <!-- Tap Target Structure -->
-                <div class="tap-target" data-target="menu">
-                    <div class="tap-target-content">
-                        <h5>Aggiungi un Anime</h5>
-                        <p>Premi questo pulsante per mappare un Anime</p>
-                    </div>
-                </div>
-
-                <!-- Modal Structure -->
-                <div id="append_anime_modal" class="modal dark">
-                    <form class="col s12" method="post" action="/append_anime">
-                        <div class="modal-content">
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <i class="material-icons prefix dark">movie</i>
-                                    <input placeholder="Sword Art Online" id="title" name="title" type="text" class="validate autocomplete" maxlength="300" autocomplete="off" required>
-                                    <label for="title">Nome Anime</label>
-                                    <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
-                                </div>
-                                <div class="input-field col s4">
-                                    <i class="material-icons prefix dark">turned_in</i>
-                                    <input placeholder="1" id="season" name="season" type="text" class="validate" pattern="[0-9]+" autocomplete="off" required>
-                                    <label for="season">Stagione</label>
-                                    <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
-                                </div>
-                                <div class="input-check col s2">
-                                    <label>
-                                        <input type="checkbox" class="filled-in" id="absolute" name="absolute" value="true"/>
-                                        <span>Absolute</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div id="input_link" class="row">
-                                <div class="input-field col s12">
-                                    <i class="material-icons prefix dark">link</i>
-                                    <input placeholder="https://www.animeworld.tv/play/sword-art-online.N0onT" id="link" name="link" type="text" class="validate" pattern="https:\/\/www\.animeworld\.tv\/play\/.+" autocomplete="off" required>
-                                    <label for="link">Link</label>
-                                    <span class="helper-text dark" data-error="wrong" data-success="right">Helper text</span>
-                                </div>
-                            </div>
-                            <div id="add_link" class="row">
-                                <a class="btn-flat col s12 dark"><i class="material-icons center">add</i></a>
-                            </div>
-                        </div>
-                        <div class="modal-footer row">
-                            <div class="col s12 right-align">
-                                <button class="btn waves-effect waves-light dark" type="submit">Submit
-                                    <i class="material-icons right">send</i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+{% block header %}
+	<button class="btn" id="nav">&#xe5d2;</button>
+	{{ super() }}
+{% endblock %}
 
 
+{% block content %}
+	<div id="toast">some text...</div>
+	<ul id="menu"></ul>
 
-                <div class="container">
-                    <div class="section">
-                        <br>
-                    </div>
-                    <div class="section">
-                        <ul class="collapsible popout">
-                            {% for i in range(infos| length)%}
-                            <li class='blocco_anime'>
-                                <div class='header-anime'>
-									<form method="post" class="anime_editor_form" action="/delete_anime">
-										<div class="collapsible-header dark">
-											<i class="material-icons">movie</i>
-											<div class="title">
-												{{ infos[i].title }}
-											</div>
-											<input name="input" id="anime{{ i }}" type="text" placeholder="{{ infos[i].title }}" class="title_editor hide">
-											{% if infos[i].absolute %}
-
-											<span class="new badge" data-badge-caption="Absolute"></span>
-
-											{% endif %}
-										</div>
-										<div class="anime_editor">
-											<div class="hide delete-btn">
-												<button class="btn-floating-delete dark hide" type="submit" name="edit_anime" value="{{ infos[i].title }}" disabled>
-													<i class="material-icons">done</i>
-												</button>
-												<a class="btn-floating-delete dark edit_button" onclick='edit_anime(this);'>
-													<i class="material-icons">edit</i>
-												</a>
-											</div>
-											<div class="delete-btn">
-												<button class="btn-floating-delete dark" onclick="return confirm('Sei sicuro di voler rimuovere \'{{ infos[i].title }}\'?')" type="submit" name="delete_anime" value="{{ infos[i].title }}">
-													<i class="material-icons">delete</i>
-												</button>
-											</div>
-										</div>
-									</form>
-                                </div>
-                                <div class="collapsible-body dark">
-                                    <ul class="tabs dark">
-                                        {% for stagione in infos[i].seasons %}
-
-                                        <li class="tab"><a href="#{{ stagione }}_{{ infos[i].title | msgSafe }}">{{ stagione }}</a></li>
-
-                                        {% endfor %}
-                                    </ul>
-                                    {% for stagione in infos[i].seasons %}
-                                    <div id="{{ stagione }}_{{ infos[i].title | msgSafe }}">
-                                        <div class="collection dark">
-                                            {% for link in infos[i].seasons[stagione] %}
-
-                                            <!-- <li class="collection-item">Alvin</li> -->
-                                            <a href="{{ link }}" class="collection-item dark">{{ link }}</a>
-
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-
-                                </div>
-                            </li>
-                            {% endfor %}
-                        </ul> 
-                    </div>
-                </div>
-            </div>
-            <footer class="page-footer dark">
-                <div class="footer-copyright">
-                    <div class="container center-align">
-                        Ver. {{ env['VERSION'] }}
-                    </div>
-                </div>
-            </footer>
-        </div>
+	<nav>
+		<div class="nav-overlay"></div>
+		<div class="nav-content">
+			<a>Home</a>
+			<a href="settings">Settings</a>
+			<a href="log">Log</a>
+		</div>
+	</nav>
 
 
-        <!--JavaScript at end of body for optimized loading-->
-        <script type="text/javascript" src="static/js/materialize.min.js"></script>
-        <script type="text/javascript" src="static/js/my.js"></script>
-        <script>
-            window.onload = function (){
-                    if ("{{ log }}" != "None") {
-                        M.toast({ html: "{{ log }}" })
-                    }
-                };
-        </script>
-    </body>
-</html>
+	<div class="modal" id="add-anime-modal">
+		<div class="modal-overlay"></div>
+		<form class="modal-content">
+			<div class="content">
+				<input type="text" name="title" id="title" placeholder="Sword Art Online" required>
+				<label for="title">Nome Anime</label>
+			</div>
+			<div class="content">
+				<input type="number" name="season" id="season" placeholder="1" min="0" step="1" required>
+				<label for="season">Stagione</label>
+				
+			</div>
+			<div class="content">
+				<label for="absolute" class="checkbox">
+					<input type="checkbox" id="absolute" name="absolute" value="false">
+					Absolute
+					<span></span>
+				</label>
+			</div>
+			<div class="content">
+				<input type="text" name="link" id="link" placeholder="https://www.animeworld.tv/play/sword-art-online.N0onT" pattern="^https:\/\/www\.animeworld\.tv\/play\/.+" required>
+				<label for="link">Link</label>
+			</div>
+			<button type="reset" id="clear" class="btn">CLEAR</button>
+			<button type="submit" id="submit" class="btn">SUBMIT</button>
+		</form>
+	</div>
+
+
+	<div class="container">
+		<button class="btn add-anime" id="add-anime">&#xe145;</button>
+		<div id="root"></div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script type="text/javascript" src="static/js/table.js"></script>
+	<script type="text/javascript" src="static/js/elems.js"></script>
+	<script type="text/javascript" src="static/js/nav.js"></script>
+{% endblock %}

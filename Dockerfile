@@ -43,7 +43,7 @@ ENV WERKZEUG_RUN_MAIN true
 
 USER dockeruser
 
-ENV VERSION "1.6.2-alpha"
+ENV VERSION "1.7.0"
 
 EXPOSE 5000
 

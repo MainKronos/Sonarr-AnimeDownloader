@@ -1,0 +1,79 @@
+/* NAV */
+nav {
+	height: 100%;
+	width: 0; 
+	position: fixed; 
+	/* z-index: 1;  */
+	top: 0; 
+	left: 0;
+	background-color: var(--card-color); 
+	overflow-x: hidden; 
+	padding-top: 60px; 
+	transition: 0.5s; 
+}
+nav.active{
+	width: 200px; 
+}
+nav > .nav-overlay{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 100%;
+	background-color: rgba(0,0,0,0);
+	transition: background-color 0.5s; 
+}
+nav.active > .nav-overlay{
+	width: 100%;
+	background-color: rgba(0,0,0,0.2);
+}
+nav > .nav-content{
+	position: relative;
+	top: 0;
+	left: 0;
+	padding: 10px;
+	text-align: center;
+}
+nav > .nav-content > a{
+	display: block;
+	color: rgba(255,255,255,0.5);
+	text-decoration: none;
+	width: max-content;
+	margin: 10px;
+	cursor: pointer;
+	padding: 5px;
+	border-bottom: 1.5px solid rgba(0,0,0,0.4);
+}
+nav > .nav-content > a:active, nav > a:visited{
+	color: rgba(255,255,255,0.5);
+}
+nav > .nav-content > a:hover{
+	color: var(--primary-color);
+}
+
+/* TOAST */
+
+#toast {
+	visibility: hidden;
+	opacity: 0;
+	min-width: 250px; 
+	background-color: var(--card-color); 
+	box-shadow: 0 0 10px var(--background-color);
+	border: 1px solid var(--background-color);
+	border-radius: 4px;
+	color: rgba(255,255,255,0.7);
+	text-align: center; 
+	padding: 16px; 
+	position: fixed; 
+	z-index: 1; 
+	right: 5%; 
+	top: -53px;
+	user-select: none;
+	transition: all 0.5s;
+}
+  
+#toast.active {
+	opacity: 100;
+	top: 5%;
+	visibility: visible; 
+}
