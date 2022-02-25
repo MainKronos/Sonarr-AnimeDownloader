@@ -76,14 +76,4 @@ summary::before{
 
 .tab-content > a{
 	display: block;
-	color: rgba(255,255,255,0.5);
-	text-decoration: none;
-	width: fit-content;
-	margin: 10px;
-}
-.tab-content > a:active, .tab-content > a:visited{
-	color: rgba(255,255,255,0.5);
-}
-.tab-content > a:hover{
-	color: var(--primary-color);
 }

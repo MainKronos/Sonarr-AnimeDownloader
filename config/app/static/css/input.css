@@ -17,8 +17,8 @@ input[type=number]:disabled,input[type=text]:disabled{
 	border: 2px solid rgba(0,0,0,0.2);
 }
 
-input[type=number]:placeholder,input[type=text]:placeholder{
-	color: rgba(255,255,255,0.5);
+input[type=number]::placeholder,input[type=text]::placeholder{
+	color: rgba(255,255,255,0.2);
 }
 input[type=number]:focus,input[type=text]:focus{
 	outline: none;

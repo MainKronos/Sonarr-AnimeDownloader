@@ -47,6 +47,19 @@ footer{
 	color: rgba(255,255,255,0.5);
 	vertical-align: middle;
 }
+a{
+
+	color: rgba(255,255,255,0.5);
+	text-decoration: none;
+	width: fit-content;
+	margin: 10px;
+}
+a:active, a:visited{
+	color: rgba(255,255,255,0.5);
+}
+a:hover{
+	color: var(--primary-color);
+}
 
 table{
 	width: 100%;

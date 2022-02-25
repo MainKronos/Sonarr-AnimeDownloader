@@ -9,6 +9,7 @@
 |[Ho aggiornato alla nuova versione del container e adesso non funziona più nulla](#dove-posso-reperire-il-token-per-il-bot-di-telegram)|
 |[Una stagione di Sonarr è composta da due stagioni di AnimeWorld](#una-stagione-di-sonarr-è-composta-da-due-stagioni-di-animeworld)|
 |[AnimeWorld Segue una numerazione Assoluta degli episodi](#animeworld-segue-una-numerazione-assoluta-degli-episodi)|
+|[Devo cancellare/modificare un link/stagione/anime](#devo-cancellaremodificare-un-linkstagioneanime)|
 |[Uso Sonarr, ma non con Docker, e non sò quale mount dovrei fare](#uso-sonarr-ma-non-con-docker-e-non-sò-quale-mount-dovrei-fare)|
 |[Ho bisogno di fare più mount](#ho-bisogno-fare-di-più-mount)|
 |[Uso Sonarr in ambiente Windows, come devo fare il mount?](#uso-sonarr-in-ambiente-windows-come-devo-fare-il-mount)|
@@ -16,7 +17,7 @@
 ---
 
 ## Dove posso reperire la chiave api di sonarr?
-![Sonarr API KEY](/documentation/images/Sonarr_ApiKey.png)
+![Sonarr API KEY](/documentation/images/sonarr_api_key.png)
 
 ## Dove posso reperire la Chat ID di telegram?
 Prima di reperire la Chat ID è necessario aver già creato un Bot Telegram, e per farlo basta continuare a leggere [qui](#dove-posso-reperire-il-token-per-il-bot-di-telegram).
@@ -58,7 +59,7 @@ Il token verrà generato alla creazione del bot. Leggere [qui](https://core.tele
 Alcune volte faccio modifiche importanti al programma, se riscontrate questo tipo di problema per favore controllate il [changelog](../../releases).
 
 ## Una stagione di Sonarr è composta da due stagioni di AnimeWorld
-![Esempio](/documentation/images/AnimeWold_2serie.png)
+![Esempio](/documentation/images/animewold_2_serie.png)
 
 Per riuscire a dire al programma che una stagione di Sonarr sono due di AnimeWold basta aggiunge all'Array dei link di AnimeWold per quella stagione di Sonarr anche il link di AnimeWold della seconda stagione.
 
@@ -86,17 +87,24 @@ Per aggiungere un campo, in questo caso un nuovo link all'array, e sufficiente r
 Se AnimeWorld segue una numerazione Assoluta degli episodi, come ad esempio 'One Piece', selezionare nella pagina web, nel Modal per l'aggiunta di un anime, la checkbox `absolute`. Di conseguenza il campo `Season` deve essere vuoto.
 
 
-![Esempio](/documentation/images/AbsoluteCheckbox.png)
+![Esempio](/documentation/images/absolute_checkbox.png)
 
 Se tutto è stato inserito correttamente apparirà un toast tipo questo:
 
 
-![Esempio](/documentation/images/Toast.png)
+![Esempio](/documentation/images/toast.png)
 
 E nell'elenco delle serie si potrà riconoscere facilmente gli anime impostati con un ordinamento assoluto grazie ad una targhettina come questa:
 
 
-![Esempio](/documentation/images/SeasonAbsolute.png)
+![Esempio](/documentation/images/season_absolute.png)
+
+## Devo cancellare/modificare un link/stagione/anime
+È possibile cancellare o modificare link/stagione/anime presente nella tabella di conversione, per farlo è sufficiente premere tasto destro sull'elemento che si vuole modificare/cancellare e premere Edit/Delete.
+Nel caso in cui si voglia modificare, dopo aver premuto Edit, apparirà un input dove si potrà inserire la modifica; per confermare la modifica bisogna premere il tasto `Enter` altrimenti per annularla premere il tasto `Escape`.
+Se l'input perde il focus e non è stata rilevata nessuna modifica, l'input scomparirà automaticamente.
+
+![Esempio](/documentation/images/edit_anime.gif)
 
 ## Uso Sonarr, ma non con Docker, e non sò quale mount dovrei fare
 Se Sonarr non è installato tramite Docker, per riuscire a trovare la giusta cartella da collegare nel Container `Sonarr-AnimeDownloader` ti basta soltanto mantare le cartelle conteneti gli anime nella stessa posizione.
