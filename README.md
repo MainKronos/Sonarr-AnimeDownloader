@@ -119,6 +119,14 @@ La struttura interna del Container è così strutturata:
 
 ![Settings](/documentation/images/settings.png)
 
+Parametro | Descrizione
+ :---: | :---
+**Livello del Log** | Indica quale tipo di messaggi mostrare nei log. Sconsiglio fortemente di impostare un livello superiore a `INFO`.
+**Rinomina Episodi** | Indica se gli episodi devono essere rinominati secondo la formattazione impostata su *Sonarr* (`http://sonarr-url/settings/mediamanagement` in `Episode Naming`).
+**Sposta Episodi** | Indica se gli episodi devono essere spostati nella cartella indicata da *Sonarr* oppure lasciarli nella cartella interna al container (`/downloads`).
+**Intervallo Scan** | Indica quanto tempo deve passare (in minuti) tra una ricerca degli episodi mancanti e un'altra, e in caso di risultati il download.
+**Auto Ricerca Link** | **!!!MODALITÀ SPERIMENTALE!!!** Ricerca automaticamente i link che non sono presenti nella tabella di conversione.
+
 Le impostazioni si trovano in `http://localhost:5000/settings`
 
 ## Problemi
