@@ -26,9 +26,13 @@ body{
 header {
 	overflow: hidden;
 	text-align: center;
-	background-color: rgba(255,255,255,0.05);
+	background-color: var(--card-color);
 	box-shadow: 0 0 10px black;
 	margin-bottom: 60px;
+	z-index: 1;
+	position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 header > h1 {
@@ -82,7 +86,7 @@ td, th {
 
 
 .container {
-    margin: 100px auto;
+    margin: 180px auto 100px auto;
     max-width: 1280px;
 	min-height: calc(100vh - 340px);
     width: 70%;

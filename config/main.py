@@ -33,10 +33,10 @@ def main():
 		logger.info(txt.BOT_TOKEN_CHECK_LOG.format(bot_token=BOT_TOKEN))
 
 	if None not in (SONARR_URL, API_KEY):
-		logger.info(f"\n{txt.AMBIENT_VARS_CHECK_LOG}\n")
-		logger.info(f"\n{txt.SCAN_DELAY_LOG.format(delay=SETTINGS['ScanDelay'])}\n")
+		logger.info(f"\n{txt.AMBIENT_VARS_CHECK_LOG}")
+		logger.info(f"\n{txt.SCAN_DELAY_LOG.format(delay=SETTINGS['ScanDelay'])}")
 
-		logger.info("\nAVVIO SERVER")
+		logger.info(f"\n{txt.START_SERVER_LOG}")
 		job_thread = threading.Thread(target=server)
 		job_thread.start()
 

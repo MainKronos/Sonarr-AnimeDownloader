@@ -54,7 +54,7 @@ summary::before{
     padding: 10px 50px;
     cursor: pointer;
 	border-bottom: 2px solid rgba(255,255,255,0);
-	margin-bottom: -2px;
+	margin: 0 0 -2px 0;
 	transition-property: color, border;
 	transition-duration: 0.3s;
 }

@@ -14,73 +14,123 @@ from constants import SETTINGS
 import texts as txt
 from .exceptions import TableFormattingError
 
-def converting(series:List[Dict]) -> List[Dict]:
+def converting(data:List[Dict]) -> List[Dict]:
 	"""
 	Con le informazione passate da Sonarr ottiene i rispettivi link di Animeworld.
 
 	```
 	return [
 	  {
-	    "IDs":{
-	      "seriesId": int, # ID di Sonarr per la serie
-	      "epId": int, # ID di Sonarr per l'episodio
-	      "tvdbId": int # ID di TvDB
-	    },
-	    "SonarrTitle": str, # Titolo della serie di Sonarr
-	    "AnimeWorldLinks":[str,...], # Link di AnimeWorld
-	    "season": int, # Stagione
-	    "episode": int, # Episodio
-	    "rawEpisode": int, # Episodio Assoluto
-	    "episodeTitle": str, # Titolo dell'episodio
-	    "path": str # Cartella dell'anime
+	    "title": str, # Titolo della serie di Sonarr
+	    "ID": int, # ID di Sonarr per la serie
+	    "tvdbID": int, # ID di TvDB
+	    "path": str, # Cartella dell'anime
+	    "absolute": False, # Se la serie è absolute (a questo livello è sempre False)
+	    "seasons": [
+	      {
+	        "num": str, # Numero stagione
+	        "links": [str,...], # Links di AnimeWorld
+	        "episodes": [
+	          {
+	            "num": str, # Numero episodio
+	            "abs": str, # Numero assoluto episodio
+	            "season": str # Numero stagione
+	            "title": str, # Titolo dell'episodio
+	            "ID": int # ID di Sonarr per l'episodio
+	          },
+	          ...
+	        ]
+	      },
+	      ...
+	    ]
 	  },
 	  ...
 	]
 	```
 	"""
 
+	def linkSearch(title: str, season: str, tvdbID:int) -> str:
+		"""
+		Cerca i link di animeworld e notifica l'utente.
+		"""
+		logger.warning(txt.AUTOMATIC_LINK_SEARCH_LOG.format(season=season, anime=title))
+		result = bindAnime(title, int(season), tvdbID)
+		if result is None:
+			logger.info(txt.NO_RESULT_LOG)
+		else:
+			logger.warning(f"{txt.LINK_FOUND_LOG.format(anime=result['name'],link=result['link'])}\n")
+			Table.append({
+				"title": title,
+				"season": str(season),
+				"absolute": False,
+				"links": [result['link']]
+			})
+			return result['link']
+		
+	
 
 	try:
-		res = []
-
-		for anime in series:
+		for anime in data:
 			for row in Table.data:
-				if row["title"] == anime["SonarrTitle"]:
-					if row["absolute"]:
-						tmp = int(anime["episode"])
-						anime["episode"] = int(anime["rawEpisode"])
-						anime["rawEpisode"] = tmp
+				if row["title"] == anime["title"]:
+					if row["absolute"]: # se la serie ha un ordinamento assoluto
+						if "absolute" in row["seasons"]: # se esiste la stagione "absolute"
+							anime["absolute"] = True,
+							season_absolute = {
+								"num": "absolute",
+								"links": list(row["seasons"]["absolute"]), # aggiunge i link di AnimeWorld
+								"episodes": []
+							}
+							while True:
+								try:
+									season = anime["seasons"].pop(1) # rimuove ogni stagione
+								except IndexError: # finche esistono
+									break
+								else:
+									season_absolute["episodes"].extend(season["episodes"]) # compatta ogni peisodio in un una stagione
+							anime["seasons"].append(season_absolute)
+							break
+						else:
+							# La serie risolta con ordinamento assoluto ma non esiste la stagione "absolute" nella tabella
+							logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=", ".join([x["num"] for x in anime["seasons"]]), anime=anime["title"]))
 
-						anime["AnimeWorldLinks"] = list(row["seasons"]["absolute"])
-						res.append(anime)
-						break
-					elif str(anime["season"]) in row["seasons"].keys():
-						anime["rawEpisode"] = int(anime["episode"])
+							if SETTINGS["AutoBind"]: # ricerca automatica links
+								logger.debug(txt.ABSOLUTE_AUTOMATIC_LINK_SEARCH_ERROR_LOG)
 
-						anime["AnimeWorldLinks"] = list(row["seasons"][str(anime["season"])])
-						res.append(anime)
+							break
+	
+					else:
+						for season in anime["seasons"]:
+							if season["num"] in row["seasons"]:
+								season["links"] = list(row["seasons"][season["num"]]) # aggiunge i link di AnimeWorld
+							else:
+								# La stagione non esiste nella tabella
+								logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]))
+
+								if SETTINGS["AutoBind"]: # ricerca automatica links
+									link = linkSearch(anime["title"], season["num"], anime["tvdbID"])
+									if link is not None: season["links"] = [link]
+
 						break
 			else:
-				logger.debug(txt.ANIME_INEXISTENT_LOG.format(season=anime["season"], anime=anime["SonarrTitle"]))
-				if SETTINGS["AutoBind"]:
-					logger.warning(txt.AUTOMATIC_LINK_SEARCH_LOG)
-					data = bindAnime(anime["SonarrTitle"], anime["season"], anime["IDs"]["tvdbId"])
-					if data is None:
-						logger.info(txt.NO_RESULT_LOG)
-					else:
-						logger.warning(f"{txt.LINK_FOUND_LOG.format(anime=data['name'],link=data['link'])}\n")
-						Table.append({
-							"title": anime["SonarrTitle"],
-							"season": str(anime["season"]),
-							"absolute": False,
-							"links": [data['link']]
-						})
+				# L'anime non esiste nella tabella
+				logger.debug(txt.ANIME_INEXISTENT_LOG.format(anime=anime["title"]))
+
+				if SETTINGS["AutoBind"]: # ricerca automatica links
+					for season in anime["seasons"]:
+						link = linkSearch(anime["title"], season["num"], anime["tvdbID"])
+						if link is not None: season["links"] = [link]
+
+			
+
+			# rimuove le stagioni senza links
+			anime["seasons"] = list(filter(lambda season: len(season["links"]) != 0, anime["seasons"]))
 
 					
 	except (json.decoder.JSONDecodeError, KeyError):
 		raise TableFormattingError
 
-	return res
+	return list(filter(lambda anime: len(anime["seasons"]) != 0, data)) # rimuove gli anime senza stagioni
 
 def fixEps(epsArr:List[List[aw.Episodio]]) -> List[aw.Episodio]:
 	"""

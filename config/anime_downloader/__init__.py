@@ -23,73 +23,76 @@ def job():
 		if len(raw_series)!=0:
 			series = converting(raw_series)
 
-			for info in series:
-				logger.warning(f"\n{txt.DIVIDER_LOG}")
+			for anime in series:
+				for season in anime["seasons"]:
+					logger.warning(f"\n{txt.DIVIDER_LOG}\n")
+					try:
+						logger.warning(txt.ANIME_RESEARCH_LOG.format(anime=anime["title"], season=season["num"]))
 
-				try:
-					logger.warning(txt.ANIME_RESEARCH_LOG.format(anime=info["SonarrTitle"], season=info["season"], episode=info["rawEpisode"]))
-					anime = [aw.Anime(link=x) for x in info["AnimeWorldLinks"]]
+						results = [aw.Anime(link=x) for x in season["links"]]
 
-					logger.info(txt.EPISODE_RESEARCH_LOG.format(anime=info["SonarrTitle"]))
-					epsArr = [x.getEpisodes() for x in anime] # array di episodi da accorpare
-					episodi = fixEps(epsArr)
+						logger.info(txt.EPISODE_RESEARCH_LOG.format(episode=", ".join([x["num"] for x in season["episodes"]])))
 
-					logger.info(txt.CHECK_EPISODE_AVAILABILITY_LOG.format(season=info["season"], episode=info["rawEpisode"]))
-					ep = None
-					for episodio in episodi:
-						if episodio.number == str(info["episode"]):
-							ep = episodio
-							logger.info(txt.EPISODE_AVAILABLE_LOG)
-							break
-					else:
-						logger.info(txt.EPISODE_UNAVAILABLE_LOG)
+						episodi = fixEps([x.getEpisodes() for x in results])
 
-					if ep is not None: # Se l'episodio è disponibile
-						logger.warning(txt.EPISODE_DOWNLOAD_LOG.format(season=info["season"], episode=info["rawEpisode"]))
-						title = f'{info["SonarrTitle"]} - S{info["season"]}E{info["rawEpisode"]}'
-						if ep.number == str(info["episode"]):
-							fileLink = ep.links[0]
+						for episode in season["episodes"]:
+							logger.info(f'\n{txt.CHECK_EPISODE_AVAILABILITY_LOG.format(season=episode["season"], episode=episode["num"])}')
+							for ep in episodi:
+								
+								# episodio disponibile
+								if (str(ep.number) == str(episode["num"]) and not anime["absolute"]) or (str(ep.number) == str(episode["abs"]) and anime["absolute"]): 
+									logger.info(txt.EPISODE_AVAILABLE_LOG)
+									logger.warning(txt.EPISODE_DOWNLOAD_LOG.format(season=episode["season"], episode=episode["num"]))
 
-							file = ep.download(title, DOWNLOAD_FOLDER)
-							if file: 
-								logger.info(txt.DOWNLOAD_COMPLETED_LOG)
+									title = f'{anime["title"]} - S{episode["season"]}E{episode["num"]}'
 
-						if SETTINGS["MoveEp"]:
-							logger.info(txt.EPISODE_SHIFT_LOG.format(season=info["season"], episode=info["rawEpisode"], folder=info["path"]))
-							if movefile(os.path.join(DOWNLOAD_FOLDER,file), info["path"]): 
-								logger.info(txt.EPISODE_SHIFT_DONE_LOG)
+									file = ep.download(title, DOWNLOAD_FOLDER)
+									if file: 
+										logger.info(txt.DOWNLOAD_COMPLETED_LOG)
 
-							logger.info(txt.ANIME_REFRESH_LOG.format(anime=info["SonarrTitle"]))
-							sonarr.rescanSerie(info["IDs"]["seriesId"])
 
-							if SETTINGS["RenameEp"]:
-								logger.info(txt.EPISODE_RENAME_LOG)
-								for i in range(5): # Fa 5 tentativi
-									try:
-										time.sleep(1)
-										epFileId = sonarr.getEpisodeFileID(info["IDs"]["epId"])
-									except KeyError:
-										continue
-									else:
-										sonarr.renameEpisode(info["IDs"]["seriesId"], epFileId)
-										break
-								else:
-									logger.warning(txt.EPISODE_RENAME_ERROR_LOG)
+										if SETTINGS["MoveEp"]:
+											logger.info(txt.EPISODE_SHIFT_LOG.format(season=episode["season"], episode=episode["num"], folder=anime["path"]))
+											if movefile(os.path.join(DOWNLOAD_FOLDER,file), anime["path"]): 
+												logger.info(txt.EPISODE_SHIFT_DONE_LOG)
 
-							if None not in (CHAT_ID, BOT_TOKEN):
-								logger.info(txt.SEND_TELEGRAM_MESSAGE_LOG)
-								telegram.sendMessage(info)
+											logger.info(txt.ANIME_REFRESH_LOG.format(anime=anime["title"]))
+											sonarr.rescanSerie(anime["ID"])
 
-				except requests.exceptions.RequestException as res_error:
-					logger.warning(txt.CONNECTION_ERROR_LOG.format(res_error=res_error))
-				except aw.AnimeNotAvailable as info:
-					logger.warning(txt.WARNING_STATE_LOG.format(warning=info))
-				except aw.ServerNotSupported as warning:
-					logger.error(txt.ERROR_STATE_LOG.format(error=warning))
-				except aw.DeprecatedLibrary as dev:
-					logger.critical(txt.CRITICAL_STATE_LOG.format(critical=dev))
-				finally:
-					logger.warning(f"\n{txt.DIVIDER_LOG}")
+											if SETTINGS["RenameEp"]:
+												logger.info(txt.EPISODE_RENAME_LOG)
+												for i in range(5): # Fa 5 tentativi
+													try:
+														time.sleep(1)
+														epFileId = sonarr.getEpisodeFileID(episode["ID"])
+													except KeyError:
+														continue
+													else:
+														sonarr.renameEpisode(anime["ID"], epFileId)
+														logger.info(txt.EPISODE_RENAME_DONE_LOG)
+														break
+												else:
+													logger.warning(txt.EPISODE_RENAME_ERROR_LOG)
+
+											if None not in (CHAT_ID, BOT_TOKEN):
+												logger.info(txt.SEND_TELEGRAM_MESSAGE_LOG)
+												telegram.sendMessage(txt.TELEGRAM_MESSAGE.format(title=anime["title"], season=episode["season"], episode=episode["num"], episodeTitle=episode["title"]))
+
+									break
+							else:
+								logger.info(txt.EPISODE_UNAVAILABLE_LOG)
+
+					
+					except requests.exceptions.RequestException as res_error:
+						logger.warning(txt.CONNECTION_ERROR_LOG.format(res_error=res_error))
+					except aw.AnimeNotAvailable as info:
+						logger.warning(txt.WARNING_STATE_LOG.format(warning=info))
+					except aw.ServerNotSupported as warning:
+						logger.error(txt.ERROR_STATE_LOG.format(error=warning))
+					except aw.DeprecatedLibrary as dev:
+						logger.critical(txt.CRITICAL_STATE_LOG.format(critical=dev))
+					finally:
+						logger.warning(f"\n{txt.DIVIDER_LOG}\n")
 
 		else:
 			logger.info(f"\n{txt.NO_EPISODES}\n")

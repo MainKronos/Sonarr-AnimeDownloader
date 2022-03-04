@@ -13,24 +13,34 @@ def getMissingEpisodes() -> List[Dict]:
 	```
 	return [
 	  {
-	    "IDs":{
-	      "seriesId": int, # ID di Sonarr per la serie
-	      "epId": int, # ID di Sonarr per l'episodio
-	      "tvdbId": int # ID di TvDB
-	    },
-	    "SonarrTitle": str, # Titolo della serie di Sonarr
-	    "AnimeWorldLinks":[], # Link di AnimeWorld (ancora vuoto)
-	    "season": int, # Stagione
-	    "episode": int, # Episodio
-	    "rawEpisode": int, # Episodio Assoluto
-	    "episodeTitle": str, # Titolo dell'episodio
-	    "path": str # Cartella dell'anime
+	    "title": str, # Titolo della serie di Sonarr
+	    "ID": int, # ID di Sonarr per la serie
+	    "tvdbID": int, # ID di TvDB
+	    "path": str, # Cartella dell'anime
+	    "absolute": False, # Se la serie è absolute (a questo livello è sempre False)
+	    "seasons": [
+	      {
+	        "num": str, # Numero stagione
+	        "links": [], # Links di AnimeWorld
+	        "episodes": [
+	          {
+	            "num": str, # Numero episodio
+	            "abs": str, # Numero assoluto episodio
+	            "season": str # Numero stagione
+	            "title": str, # Titolo dell'episodio
+	            "ID": int # ID di Sonarr per l'episodio
+	          },
+	          ...
+	        ]
+	      },
+	      ...
+	    ]
 	  },
 	  ...
 	]
 	```
 	"""
-	series = []
+	data = []
 	endpoint = "wanted/missing"
 	page = 0
 	error_attempt = 0
@@ -44,34 +54,51 @@ def getMissingEpisodes() -> List[Dict]:
 			if len(result["records"]) == 0: 
 				break
 
-			for serie in result["records"]:
+			for record in result["records"]:
 
 				try:
-					if serie["series"]["seriesType"] != 'anime': continue
-					info = {}
-					info["IDs"] = {
-						"seriesId": serie["seriesId"],
-						"epId": serie["id"],
-						"tvdbId": serie["series"]["tvdbId"]
-					}
-					info["SonarrTitle"] = serie["series"]["title"]
-					info["AnimeWorldLinks"] = []    # season 1 di sonarr corrisponde a più season di AnimeWorld
-					info["season"] = int(serie["seasonNumber"])
-					info["episode"] = int(serie["episodeNumber"])
-					info["rawEpisode"] = int(serie["absoluteEpisodeNumber"])
-					info["episodeTitle"] = serie["title"]
-					info["path"] = serie["series"]["path"]
+					if record["series"]["seriesType"] != 'anime': continue # scarta gli episodi che non sono anime
+
+					def addData():
+						while True:
+							for anime in data:
+								if anime["ID"] == record["seriesId"]:
+									for season in anime["seasons"]:
+										if season["num"] == str(record["seasonNumber"]):
+											season["episodes"].append({
+												"num": str(record["episodeNumber"]),
+												"abs": str(record["absoluteEpisodeNumber"]),
+												"season": str(record["seasonNumber"]),
+												"title": record["title"],
+												"ID": record["id"]
+											})
+											return
+									else:
+										anime["seasons"].append({
+											"num": str(record["seasonNumber"]),
+											"links": [],
+											"episodes": []
+										})
+										break
+							else:
+								data.append({
+									"title": record["series"]["title"],
+									"ID": record["seriesId"],
+									"tvdbID": record["series"]["tvdbId"],
+									"path": record["series"]["path"],
+									"absolute": False,
+									"seasons": []
+								})
+					addData()
 				except KeyError:
-					logger.debug(txt.ANIME_REJECTED_LOG.format(anime=serie["series"]["title"], season=serie["seasonNumber"]))
-				else:
-					series.append(info)
+					logger.debug(txt.ANIME_REJECTED_LOG.format(anime=record["series"]["title"], season=record["seasonNumber"]))
 		except requests.exceptions.RequestException as res_error:
 			if error_attempt > 3: raise res_error
 			error_attempt += 1
 			logger.warning(txt.CONNECTION_ERROR_LOG.format(res_error=res_error))
 			time.sleep(10)
 
-	return series
+	return data
 
 def rescanSerie(seriesId:int):
 	"""
