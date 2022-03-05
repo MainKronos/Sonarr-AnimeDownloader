@@ -33,7 +33,7 @@ docker run -d \
     --env CHAT_ID=123456789 \
     --env BOT_TOKEN='123456789:ABCDEFGHIJKLM-abc_AbCdEfGhI12345678' \
     --env TZ=Europe/Rome \
-    mainkronos/anime_downloader
+    ghcr.io/mainkronos/anime_downloader:latest
 
 ```
 
