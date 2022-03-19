@@ -5,11 +5,13 @@ import requests
 import animeworld as aw
 import json
 import shutil
+from datetime import datetime
 from typing import Dict, List
 
 from utility import Table
+from app import socketio
 
-from logger import logger
+from logger import logger, telegram
 from constants import SETTINGS
 import texts as txt
 from .exceptions import TableFormattingError
@@ -53,12 +55,13 @@ def converting(data:List[Dict]) -> List[Dict]:
 		"""
 		Cerca i link di animeworld e notifica l'utente.
 		"""
-		logger.warning(txt.AUTOMATIC_LINK_SEARCH_LOG.format(season=season, anime=title))
+		logger.warning(txt.AUTOMATIC_LINK_SEARCH_LOG.format(season=season, anime=title) + '\n')
 		result = bindAnime(title, int(season), tvdbID)
 		if result is None:
-			logger.info(txt.NO_RESULT_LOG)
+			logger.info(txt.NO_RESULT_LOG + '\n')
 		else:
-			logger.warning(f"{txt.LINK_FOUND_LOG.format(anime=result['name'],link=result['link'])}\n")
+			logger.warning(txt.LINK_FOUND_LOG.format(anime=result['name'],link=result['link']) + '\n\n')
+			telegram.warning(txt.TELEGRAM_LINK_FOUND_LOG.format(sanime=title, sseason=season, anime=result['name'],link=result['link']))
 			Table.append({
 				"title": title,
 				"season": str(season),
@@ -87,34 +90,42 @@ def converting(data:List[Dict]) -> List[Dict]:
 								except IndexError: # finche esistono
 									break
 								else:
-									season_absolute["episodes"].extend(season["episodes"]) # compatta ogni peisodio in un una stagione
+									season_absolute["episodes"].extend(season["episodes"]) # compatta ogni episodio in un una stagione
 							anime["seasons"].append(season_absolute)
 							break
 						else:
 							# La serie risolta con ordinamento assoluto ma non esiste la stagione "absolute" nella tabella
-							logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=", ".join([x["num"] for x in anime["seasons"]]), anime=anime["title"]))
+							logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=", ".join([x["num"] for x in anime["seasons"]]), anime=anime["title"]) + '\n')
 
 							if SETTINGS["AutoBind"]: # ricerca automatica links
-								logger.debug(txt.ABSOLUTE_AUTOMATIC_LINK_SEARCH_ERROR_LOG)
+								logger.debug(txt.ABSOLUTE_AUTOMATIC_LINK_SEARCH_ERROR_LOG + '\n')
 
 							break
 	
 					else:
 						for season in anime["seasons"]:
-							if season["num"] in row["seasons"]:
-								season["links"] = list(row["seasons"][season["num"]]) # aggiunge i link di AnimeWorld
-							else:
+							if season["num"] not in row["seasons"] or len(list(row["seasons"][season["num"]])) == 0:
+
 								# La stagione non esiste nella tabella
-								logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]))
+								if season["num"] not in row["seasons"]: 
+									logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]) + '\n')
+
+								# il link non esiste nella tabella
+								if len(list(row["seasons"][season["num"]])):
+									logger.debug(txt.LINK_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]) + '\n')
 
 								if SETTINGS["AutoBind"]: # ricerca automatica links
 									link = linkSearch(anime["title"], season["num"], anime["tvdbID"])
 									if link is not None: season["links"] = [link]
+							else:
+								season["links"] = list(row["seasons"][season["num"]]) # aggiunge i link di AnimeWorld
+							
+								
 
 						break
 			else:
 				# L'anime non esiste nella tabella
-				logger.debug(txt.ANIME_INEXISTENT_LOG.format(anime=anime["title"]))
+				logger.debug(txt.ANIME_INEXISTENT_LOG.format(anime=anime["title"]) + '\n')
 
 				if SETTINGS["AutoBind"]: # ricerca automatica links
 					for season in anime["seasons"]:
@@ -235,7 +246,20 @@ def movefile(source, destinationPath):
 
 	if not os.path.exists(destinationPath):
 		os.makedirs(destinationPath)
-		logger.warning(txt.FOLDER_CREATION_LOG.format(folder=destinationPath))
+		logger.warning(txt.FOLDER_CREATION_LOG.format(folder=destinationPath) + '\n')
 
 	shutil.move(source, destination)
 	return True
+
+
+
+def downloadProgress(d):
+	"""
+	Stampa il progresso di download dell'episodio.
+	"""
+	
+	if int(datetime.timestamp(datetime.now()) - downloadProgress.step ) > 0 or d["percentage"] == 1:
+		socketio.emit("download_info", d, broadcast=True)
+		downloadProgress.step = datetime.timestamp(datetime.now())
+
+downloadProgress.step = datetime.timestamp(datetime.now())

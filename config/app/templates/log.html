@@ -23,11 +23,30 @@
 				<ul id="log"></ul>
 			</div>
 		</div>
+
+		<div class="card" id="download-info">
+			<div class="card-title">Download</div>
+			<div class="card-content">
+				<span id="filename">Nessun file in download</span>
+				<span id="downloaded">0</span>
+				<div class="progress" style="grid-area: c;">
+					<label id="percentage">0%</label>
+					<span></span>
+				</div>
+				<time id="elapsed">--:--:--</time>
+				<span id="speed">0</span>
+				<time id="eta">--:--:--</time>
+			</div>
+		</div>
 	</div>
 {% endblock %}
 
 {% block script %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
 <script type="text/javascript" src="static/js/nav.js"></script>
 <script type="text/javascript" src="static/js/ansi.js"></script>
 <script type="text/javascript" src="static/js/log.js"></script>
+<script type="text/javascript" src="static/js/info.js"></script>
 {% endblock %}

@@ -6,6 +6,7 @@
 @import url(nav.css);
 @import url(card.css);
 @import url(settings.css);
+@import url(log.css);
 
 :root{
 	--primary-color: #9FA8DA;
@@ -106,23 +107,13 @@ td, th {
 	font-weight: 300;
 }
 
-ul#log{
-	font-family: monospace, monospace;
-	margin: auto;
-	white-space: pre-wrap;
-}
-ul#log > li {
-	list-style: none;
-    display: block;
-    min-height: 23px;
-    white-space: pre-wrap;
-}
-
 /* contenitore generale */
 .content{
 	padding: 15px;
 	position: relative;
 }
+
+/* SCROLLBAR */
 
 /* width */
 ::-webkit-scrollbar {

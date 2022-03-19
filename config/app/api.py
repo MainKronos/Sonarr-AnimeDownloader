@@ -118,11 +118,10 @@ def updateSettings():
 	)
 
 @app.route('/api/log', methods=['GET'])
-@app.route('/api/log/<page>', methods=['GET'])
-def getLog(page:int=1):
-
+@app.route('/api/log/<row>', methods=['GET'])
+def getLog(row:int=0):
 	rows = 100
-	page = int(page)
+	row = int(row)
 
 	return Response(
 		mimetype='application/json',
@@ -131,6 +130,8 @@ def getLog(page:int=1):
 			"error": False,
 			"data": [
 				x for x in (open("log.log", 'r', encoding='utf-8').readlines())
-			][ -rows * page : rows * (1 - page) - 1]
+			][ -(rows + row) :]
+			# ][ -100 :  - 1]
 		})
 	)
+	

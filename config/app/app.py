@@ -1,12 +1,11 @@
 from flask import *
+from flask_socketio import *
 
 from constants import VERSION, SONARR_URL, API_KEY, CHAT_ID, BOT_TOKEN
 
-import logging
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
-
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app, logger=False, async_mode='threading')
 
 @app.route('/index')
 @app.route('/')
@@ -20,3 +19,4 @@ def settings():
 @app.route('/log')
 def log():
 	return render_template('log.html', version=VERSION)
+	

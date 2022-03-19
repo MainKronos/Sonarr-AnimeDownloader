@@ -44,6 +44,7 @@ ANIME_REJECTED_LOG = "⁉️ Serie '{anime}' S{season} scartata per mancanza di 
 
 CONNECTION_ERROR_LOG = "⚠️ Errore di connessione. ({res_error})"
 
+LINK_INEXISTENT_LOG = "❌ Il link della 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {season} della 𝘴𝘦𝘳𝘪𝘦 '{anime}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲."
 SEASON_INEXISTENT_LOG = "❌ La 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {season} della 𝘴𝘦𝘳𝘪𝘦 '{anime}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲."
 ANIME_INEXISTENT_LOG = "❌ La 𝘴𝘦𝘳𝘪𝘦 '{anime}' non esiste nella 𝗧𝗮𝗯𝗲𝗹𝗹𝗮 𝗗𝗶 𝗖𝗼𝗻𝘃𝗲𝗿𝘀𝗶𝗼𝗻𝗲."
 TABLE_INEXISTENT_LOG = "⚠️ Il file table.json non esiste, quindi verrà creato."
@@ -69,6 +70,9 @@ ABSOLUTE_AUTOMATIC_LINK_SEARCH_ERROR_LOG = "⛔ La ricerca automatica link di An
 NO_RESULT_LOG = "⛔ Nessun risultato trovato."
 LINK_FOUND_LOG = """✳️ Risultato trovato: 
 - {anime} ({link})."""
+TELEGRAM_LINK_FOUND_LOG = """*Auto Ricerca Link*
+Risultato trovato per _{sanime}_ _{sseason}_:
+- `{anime}` ({link})."""
 
 WARNING_STATE_LOG = "⚠️ {warning}"
 ERROR_STATE_LOG = "\033[93m🆆🅰🆁🅽🅸🅽🅶: {error}\033[0m"

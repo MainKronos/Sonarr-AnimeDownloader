@@ -2,6 +2,6 @@
     "LogLevel": "DEBUG",
     "MoveEp": true,
     "RenameEp": true,
-    "AutoBind": false,
+    "AutoBind": true,
     "ScanDelay": 30
 }
