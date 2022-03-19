@@ -40,6 +40,7 @@ RUN sed -i -e 's/# it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/' /etc/locale.gen && \
     update-locale LANG=it_IT.UTF-8
 
 ENV WERKZEUG_RUN_MAIN true
+ENV FLASK_ENV production
 
 USER dockeruser
 
