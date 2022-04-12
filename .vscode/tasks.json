@@ -11,8 +11,8 @@
 				"containerName": "AnimeDownloader",
 				"image": "mainkronos/anime_downloader:latest",
 				"env": {
-					"SONARR_URL":"http://192.168.1.11:80",
-					"API_KEY":"1234567890abcdefghijklmn",
+					"SONARR_URL":"http://192.168.1.11:8989",
+					"API_KEY":"f10994e9f3494368a31a3088aba6b9fc",
 					"CHAT_ID":"123456789",
 					"BOT_TOKEN":"123456789:ABCDEFGHIJKLM-abc_AbCdEfGhI12345678",
 					"TZ":"Europe/Rome"

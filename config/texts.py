@@ -67,6 +67,7 @@ NO_EPISODES = "Non c'è nessun episodio da cercare."
 
 AUTOMATIC_LINK_SEARCH_LOG = "⚠️ Ricerca automatica link di AnimeWorld per la 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {season} della 𝘴𝘦𝘳𝘪𝘦 '{anime}'."
 ABSOLUTE_AUTOMATIC_LINK_SEARCH_ERROR_LOG = "⛔ La ricerca automatica link di AnimeWorld è incompatibile con le serie ad ordinamento assoluto."
+SPECIAL_AUTOMATIC_LINK_SEARCH_ERROR_LOG = "⛔ La ricerca automatica link di AnimeWorld è incompatibile con gli Special (Stagione 0)."
 NO_RESULT_LOG = "⛔ Nessun risultato trovato."
 LINK_FOUND_LOG = """✳️ Risultato trovato: 
 - {anime} ({link})."""

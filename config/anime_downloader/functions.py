@@ -105,18 +105,20 @@ def converting(data:List[Dict]) -> List[Dict]:
 					else:
 						for season in anime["seasons"]:
 							if season["num"] not in row["seasons"] or len(list(row["seasons"][season["num"]])) == 0:
+								if season["num"] != '0':
+									# La stagione non esiste nella tabella
+									if season["num"] not in row["seasons"]: 
+										logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]) + '\n')
 
-								# La stagione non esiste nella tabella
-								if season["num"] not in row["seasons"]: 
-									logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]) + '\n')
+									# il link non esiste nella tabella
+									elif len(list(row["seasons"][season["num"]])):
+										logger.debug(txt.LINK_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]) + '\n')
 
-								# il link non esiste nella tabella
-								if len(list(row["seasons"][season["num"]])):
-									logger.debug(txt.LINK_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]) + '\n')
-
-								if SETTINGS["AutoBind"]: # ricerca automatica links
-									link = linkSearch(anime["title"], season["num"], anime["tvdbID"])
-									if link is not None: season["links"] = [link]
+									if SETTINGS["AutoBind"]: # ricerca automatica links
+										link = linkSearch(anime["title"], season["num"], anime["tvdbID"])
+										if link is not None: season["links"] = [link]
+								else:
+									logger.debug(txt.SPECIAL_AUTOMATIC_LINK_SEARCH_ERROR_LOG + '\n')
 							else:
 								season["links"] = list(row["seasons"][season["num"]]) # aggiunge i link di AnimeWorld
 							
@@ -129,8 +131,11 @@ def converting(data:List[Dict]) -> List[Dict]:
 
 				if SETTINGS["AutoBind"]: # ricerca automatica links
 					for season in anime["seasons"]:
-						link = linkSearch(anime["title"], season["num"], anime["tvdbID"])
-						if link is not None: season["links"] = [link]
+						if season["num"] != '0':
+							link = linkSearch(anime["title"], season["num"], anime["tvdbID"])
+							if link is not None: season["links"] = [link]
+						else:
+							logger.debug(txt.SPECIAL_AUTOMATIC_LINK_SEARCH_ERROR_LOG + '\n')
 
 			
 

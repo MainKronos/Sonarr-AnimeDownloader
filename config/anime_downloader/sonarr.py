@@ -91,6 +91,7 @@ def getMissingEpisodes() -> List[Dict]:
 								})
 					addData()
 				except KeyError:
+					data.pop()
 					logger.debug(txt.ANIME_REJECTED_LOG.format(anime=record["series"]["title"], season=record["seasonNumber"]) + '\n')
 		except requests.exceptions.RequestException as res_error:
 			if error_attempt > 3: raise res_error
