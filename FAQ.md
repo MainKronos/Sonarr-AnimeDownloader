@@ -14,6 +14,7 @@
 |[Ho bisogno di fare più mount](#ho-bisogno-fare-di-più-mount)|
 |[Uso Sonarr in ambiente Windows, come devo fare il mount?](#uso-sonarr-in-ambiente-windows-come-devo-fare-il-mount)|
 |[Cosa significa che la serie è stata scartata per mancanza di informazioni?](#cosa-significa-che-la-serie-è-stata-scartata-per-mancanza-di-informazioni)|
+|[La serie non compare nei log](#la-serie-non-compare-nei-log)|
 ---
 
 ## Dove posso reperire la chiave api di sonarr?
@@ -142,3 +143,15 @@ Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDo
 
 ## Cosa significa che la serie è stata scartata per mancanza di informazioni?
 Significa che quella stagione non ha ancora una numerazione assoluta su Sonarr.
+
+## La serie non compare nei log
+
+Se la serie non compare nei log controllare:
+
+1) Che la tipologia della serie sia `anime`. ![serie_type](/documentation/images/serie_type.png)
+2) Che l'url e l'API Key di Sonarr siano corretti.
+
+Se il problema è ancora presente allora aprire un issue.
+
+Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/46).
+
