@@ -267,6 +267,14 @@ summary input[type=text]{
 	top: 0.67em;
 }
 
+#donate.btn{
+	animation: HeartBeat 1.5s infinite;
+	position: absolute;
+	right: 0.67em;
+	top: 0.67em;
+	text-shadow: 0 0 10px var(--primary-color);
+}
+
 .add-anime.btn{
 	width: calc(100% - 60px);
 	margin: 0 30px;
@@ -301,13 +309,15 @@ summary input[type=text]{
 	background-color: transparent;
 	border: 0;
 	border-radius: 4px;
-	color: white;
+	color: rgba(255,255,255,0.60);
 	font-size: 1.5rem;
 	font-weight: 400;
 	padding: 10px;
 	transition: background-color, color 0.1s;
 	cursor: pointer;
 	user-select: none;
+	text-align: center;
+	margin: 0;
 }
 .btn:hover{
 	color: var(--primary-color);

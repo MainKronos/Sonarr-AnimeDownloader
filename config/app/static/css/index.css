@@ -7,6 +7,7 @@
 @import url(card.css);
 @import url(settings.css);
 @import url(log.css);
+@import url(animation.css);
 
 :root{
 	--primary-color: #9FA8DA;
