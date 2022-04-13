@@ -44,7 +44,7 @@ ENV FLASK_ENV production
 
 USER dockeruser
 
-ENV VERSION "1.7.2"
+ENV VERSION "1.7.3"
 
 EXPOSE 5000
 
