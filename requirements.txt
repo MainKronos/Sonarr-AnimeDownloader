@@ -1,4 +1,4 @@
-animeworld>=1.4.14
+animeworld>=1.4.15
 schedule>=0.6.0
 flask
 flask_socketio
