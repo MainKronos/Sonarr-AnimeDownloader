@@ -168,10 +168,10 @@ def fixEps(epsArr:List[List[aw.Episodio]]) -> List[aw.Episodio]:
 				ep.number = str(int(ep.number) + up)
 				ret.append(ep)
 
-			if re.search(r'^\d+\.\d+$', ep.number) is not None: # Episodio fratto
+			elif re.search(r'^\d+\.\d+$', ep.number) is not None: # Episodio fratto
 				continue # lo salta perchè sicuramente uno speciale
 
-			if re.search(r'^\d+-\d+$', ep.number) is not None: # Episodio Doppio
+			elif re.search(r'^\d+-\d+$', ep.number) is not None: # Episodio Doppio
 				ep1 = deepcopy(ep)   # Duplica l'episodio da sitemare la gestione.....
 				ep2 = deepcopy(ep)   # Non mi piace
 
@@ -181,7 +181,7 @@ def fixEps(epsArr:List[List[aw.Episodio]]) -> List[aw.Episodio]:
 
 				ret.extend([ep1, ep2])
 			
-		up += int(eps[-1].number)
+		up = int(eps[-1].number)
 
 	return ret
 
