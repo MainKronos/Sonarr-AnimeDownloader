@@ -6,9 +6,9 @@ import os
 
 import texts as txt
 from logger import logger, telegram
-from constants import CHAT_ID, BOT_TOKEN, SETTINGS, DOWNLOAD_FOLDER
+from constants import CHAT_ID, BOT_TOKEN, SETTINGS, DOWNLOAD_FOLDER, VERSION
 
-from .functions import converting, fixEps, movefile, downloadProgress
+from .functions import converting, fixEps, movefile, downloadProgress, getLatestVersion
 from . import sonarr
 
 def job():
@@ -16,6 +16,11 @@ def job():
 	Esegue la ricerca degli episodi mancanti, se li trova li scarica.
 	"""
 	logger.warning('\n' + txt.START_BLOCK_LOG.format(time=time.strftime('%d %b %Y %H:%M:%S')) + '\n')
+
+	latest_version_container = getLatestVersion()
+	if VERSION != latest_version_container:
+		logger.info('\n' + txt.UPDATE_CONTAINER.format(version=latest_version_container))
+
 
 	try:
 		raw_series = sonarr.getMissingEpisodes()

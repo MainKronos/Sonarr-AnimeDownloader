@@ -256,7 +256,11 @@ def movefile(source, destinationPath):
 	shutil.move(source, destination)
 	return True
 
-
+def getLatestVersion():
+	try:
+		return requests.get("https://api.github.com/repos/MainKronos/Sonarr-AnimeDownloader/releases").json()[0]["name"]
+	except Exception:
+		return
 
 def downloadProgress(d):
 	"""
