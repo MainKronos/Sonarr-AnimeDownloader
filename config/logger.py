@@ -19,7 +19,6 @@ class TelegramHandler(logging.handlers.HTTPHandler):
 	def emit(self, record):
 		requests.get(self.host + self.url + record.msg)
 
-
 logging.config.dictConfig({
     'version': 1,
     'disable_existing_loggers': False,

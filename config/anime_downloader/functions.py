@@ -78,7 +78,7 @@ def converting(data:List[Dict]) -> List[Dict]:
 				if row["title"] == anime["title"]:
 					if row["absolute"]: # se la serie ha un ordinamento assoluto
 						if "absolute" in row["seasons"]: # se esiste la stagione "absolute"
-							anime["absolute"] = True,
+							anime["absolute"] = True
 							season_absolute = {
 								"num": "absolute",
 								"links": list(row["seasons"]["absolute"]), # aggiunge i link di AnimeWorld
@@ -86,11 +86,11 @@ def converting(data:List[Dict]) -> List[Dict]:
 							}
 							while True:
 								try:
-									season = anime["seasons"].pop(1) # rimuove ogni stagione
+									season = anime["seasons"].pop(0) # rimuove ogni stagione
 								except IndexError: # finche esistono
-									break
+									break				
 								else:
-									season_absolute["episodes"].extend(season["episodes"]) # compatta ogni episodio in un una stagione
+									season_absolute["episodes"].extend(season["episodes"]) # compatta ogni episodio in un una stagione					
 							anime["seasons"].append(season_absolute)
 							break
 						else:

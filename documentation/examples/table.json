@@ -10,6 +10,15 @@
         "title": "86: Eighty Six"
     },
     {
+        "title": "A Couple of Cuckoos",
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/kakkou-no-iinazuke.Q6ykQ"
+            ]
+        },
+        "absolute": false
+    },
+    {
         "title": "Aharen-san wa Hakarenai",
         "seasons": {
             "1": [
@@ -358,7 +367,7 @@
         "absolute": true,
         "seasons": {
             "absolute": [
-                "https://www.animeworld.tv/play/one-piece-subita.j9hCX"
+                "https://www.animeworld.tv/play/one-piece-subita.sORn4"
             ]
         },
         "title": "One Piece"

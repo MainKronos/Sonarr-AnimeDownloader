@@ -5,7 +5,7 @@ from constants import VERSION, SONARR_URL, API_KEY, CHAT_ID, BOT_TOKEN
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, logger=False, async_mode='threading')
+socketio = SocketIO(app, logger=False, async_handlers=False)
 
 @app.route('/index')
 @app.route('/')
