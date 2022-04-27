@@ -2,7 +2,13 @@ from typing import Dict, List, Optional, Union
 
 import json
 import os
-	
+import requests
+
+def getLatestVersion():
+	try:
+		return requests.get("https://api.github.com/repos/MainKronos/Sonarr-AnimeDownloader/releases").json()[0]["name"]
+	except Exception:
+		return
 
 class classproperty(object):
 	def __init__(self, fget):

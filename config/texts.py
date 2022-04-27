@@ -83,3 +83,7 @@ EXCEPTION_STATE_LOG = "\033[4;3;91m🅴🆁🆁🅾🆁: {exception}\033[0m"
 TELEGRAM_MESSAGE = """*Episode Downloaded*
 {title} - {season}x{episode} - {episodeTitle}"""
 
+UPDATE_CONTAINER = """🎉 È disponibile una nuova versione del container ({version})!
+- Per maggiori informazioni: https://github.com/MainKronos/Sonarr-AnimeDownloader/releases/latest
+"""
+

@@ -58,6 +58,15 @@
 {% endblock %}
 
 {% block script %}
+	<script type="text/javascript">
+		fetch('https://api.github.com/repos/MainKronos/Sonarr-AnimeDownloader/releases')
+		.then(response => response.json())
+		.then(data => {
+			if(data[0].name != '{{ version }}'){
+				showToast(`È disponibile una nuova versione del container (${data[0].name})`);
+			}
+		});
+	</script>
 	<script type="text/javascript" src="static/js/table.js"></script>
 	<script type="text/javascript" src="static/js/elems.js"></script>
 	<script type="text/javascript" src="static/js/nav.js"></script>

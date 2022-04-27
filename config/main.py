@@ -3,10 +3,12 @@
 import schedule
 import time
 import threading
+import requests
 
 from logger import logger, telegram
-from constants import SONARR_URL, API_KEY, CHAT_ID, BOT_TOKEN, SETTINGS
+from constants import SONARR_URL, API_KEY, CHAT_ID, BOT_TOKEN, SETTINGS, VERSION
 import texts as txt
+from utility import getLatestVersion
 
 from anime_downloader import job
 from app import app
@@ -34,6 +36,11 @@ def main():
 
 	if None not in (SONARR_URL, API_KEY):
 		logger.info('\n' + txt.AMBIENT_VARS_CHECK_LOG + '\n')
+
+		latest_version_container = getLatestVersion()
+		if VERSION != latest_version_container:
+			logger.info('\n' + txt.UPDATE_CONTAINER.format(version=latest_version_container) + '\n')
+
 		logger.info('\n' + txt.SCAN_DELAY_LOG.format(delay=SETTINGS['ScanDelay']) + '\n')
 
 		logger.info('\n' + txt.START_SERVER_LOG + '\n')
