@@ -10,22 +10,22 @@
         "title": "86: Eighty Six"
     },
     {
-        "title": "A Couple of Cuckoos",
+        "absolute": false,
         "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/kakkou-no-iinazuke.Q6ykQ"
             ]
         },
-        "absolute": false
+        "title": "A Couple of Cuckoos"
     },
     {
-        "title": "Aharen-san wa Hakarenai",
+        "absolute": false,
         "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/aharen-san-wa-hakarenai.SehbY"
             ]
         },
-        "absolute": false
+        "title": "Aharen-san wa Hakarenai"
     },
     {
         "absolute": false,
@@ -46,7 +46,7 @@
         "title": "Arifureta: From Commonplace to World's Strongest"
     },
     {
-        "title": "Ascendance of a Bookworm",
+        "absolute": false,
         "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/ascendance-of-a-bookworm.paCPb",
@@ -54,7 +54,7 @@
                 "https://www.animeworld.tv/play/ascendance-of-a-bookworm-3.l5fru"
             ]
         },
-        "absolute": false
+        "title": "Ascendance of a Bookworm"
     },
     {
         "absolute": false,
@@ -254,13 +254,13 @@
         "title": "How a Realist Hero Rebuilt the Kingdom"
     },
     {
-        "title": "I'm Quitting Heroing",
+        "absolute": false,
         "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/yuusha-yamemasu.pUnEf"
             ]
         },
-        "absolute": false
+        "title": "I'm Quitting Heroing"
     },
     {
         "absolute": false,
@@ -281,22 +281,22 @@
         "title": "Kemono Jihen"
     },
     {
-        "title": "Komi Can't Communicate",
+        "absolute": false,
         "seasons": {
             "2": [
                 "https://www.animeworld.tv/play/komi-cant-communicate-2.HgYCo"
             ]
         },
-        "absolute": false
+        "title": "Komi Can't Communicate"
     },
     {
-        "title": "Life With an Ordinary Guy Who Reincarnated Into a Total Fantasy Knockout",
+        "absolute": false,
         "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/fantasy-bishoujo-juniku-ojisan-to.ZhCYX"
             ]
         },
-        "absolute": false
+        "title": "Life With an Ordinary Guy Who Reincarnated Into a Total Fantasy Knockout"
     },
     {
         "absolute": false,
@@ -454,13 +454,13 @@
         "title": "Sasaki and Miyano"
     },
     {
-        "title": "Scum's Wish",
+        "absolute": false,
         "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/kuzu-no-honkai.MONpm"
             ]
         },
-        "absolute": false
+        "title": "Scum's Wish"
     },
     {
         "absolute": false,
@@ -490,13 +490,13 @@
         "title": "Sonny Boy"
     },
     {
-        "title": "Summer Time Rendering",
+        "absolute": false,
         "seasons": {
             "1": [
                 "https://www.animeworld.tv/play/summertime-render.GDU38"
             ]
         },
-        "absolute": false
+        "title": "Summer Time Rendering"
     },
     {
         "absolute": false,
@@ -623,13 +623,13 @@
         "title": "The Promised Neverland"
     },
     {
-        "title": "The Rising of the Shield Hero",
+        "absolute": false,
         "seasons": {
             "2": [
                 "https://www.animeworld.tv/play/the-rising-of-the-shield-hero-2.lgwm2"
             ]
         },
-        "absolute": false
+        "title": "The Rising of the Shield Hero"
     },
     {
         "absolute": false,

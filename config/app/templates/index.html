@@ -52,12 +52,19 @@
 
 
 	<div class="container">
-		<button class="btn add-anime" id="add-anime">&#xe145;</button>
+		<button class="btn" id="add-anime" type="button">&#xe145;</button>
 		<div id="root"></div>
+		<section class="bottom">
+			<a class="btn" id="export" href="/ie/table" target="_blank">&#xf090;</a>
+			<label for="import" class="btn">
+				<input id="import" type="file" accept=".json">&#xe2c6;
+			</label>
+		</section>
 	</div>
 {% endblock %}
 
 {% block script %}
+	{{ super() }}
 	<script type="text/javascript">
 		fetch('https://api.github.com/repos/MainKronos/Sonarr-AnimeDownloader/releases')
 		.then(response => response.json())
@@ -67,7 +74,6 @@
 			}
 		});
 	</script>
-	<script type="text/javascript" src="static/js/table.js"></script>
-	<script type="text/javascript" src="static/js/elems.js"></script>
-	<script type="text/javascript" src="static/js/nav.js"></script>
+	<script type="text/javascript" src="static/js/index/table.js"></script>
+	<script type="text/javascript" src="static/js/index/elems.js"></script>
 {% endblock %}

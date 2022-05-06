@@ -22,6 +22,9 @@
 			<div class="card-content">
 				<ul id="log"></ul>
 			</div>
+			<section class="bottom">
+				<a class="btn" id="export" href="/ie/log" target="_blank">&#xf090;</a>
+			</section>
 		</div>
 
 		<div class="card" id="download-info">
@@ -42,11 +45,10 @@
 {% endblock %}
 
 {% block script %}
-
+{{ super() }}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
 
-<script type="text/javascript" src="static/js/nav.js"></script>
-<script type="text/javascript" src="static/js/ansi.js"></script>
-<script type="text/javascript" src="static/js/log.js"></script>
-<script type="text/javascript" src="static/js/info.js"></script>
+<script type="text/javascript" src="static/js/log/ansi.js"></script>
+<script type="text/javascript" src="static/js/log/log.js"></script>
+<script type="text/javascript" src="static/js/log/info.js"></script>
 {% endblock %}

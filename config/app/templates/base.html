@@ -5,9 +5,13 @@
 		<meta charset="UTF-8">
 		<meta name="description" content="{{ self.title() }}">
 		<meta name="author" content="MainKronos">
+		
 
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		
 		<link rel="stylesheet" type="text/css" href="static/css/index.css" media="screen,projection"/>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 		<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
@@ -40,6 +44,7 @@
 		
 		
 		{% block script %}
+		<script type="text/javascript" src="static/js/base/nav.js"></script>
 		{% endblock %}
 
 	</body>

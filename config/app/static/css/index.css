@@ -86,6 +86,16 @@ td, th {
     border-radius: 2px;
 }
 
+section.bottom {
+	width: calc(100% - 60px);
+    margin: 0 30px;
+    padding: 5.5px 0;
+    background-color: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.5);
+    border-radius: 0 0 4px 4px;
+	display: flex;
+	justify-content: space-around;
+}
 
 .container {
     margin: 180px auto 100px auto;

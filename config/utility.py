@@ -57,7 +57,7 @@ class Settings:
 			update_fix = True
 
 		if update_fix:
-			self.__write(settings)
+			self.write(settings)
 		
 		return settings
 
@@ -83,18 +83,33 @@ class Settings:
 			settings["ScanDelay"] = ScanDelay
 			log = "Intervallo Scan aggiornato."
 
-		self.__write(settings)
+		self.write(settings)
 
 		return log
+	
+	@classmethod
+	def isValid(self, settings:Dict[str,str]) -> bool:
+		"""
+		Controlla se le informazioni sono valide.
+		"""
+
+		if "AutoBind" not in settings: return False
+		if "LogLevel" not in settings: return False
+		if "MoveEp" not in settings: return False
+		if "RenameEp" not in settings: return False
+		if "ScanDelay" not in settings: return False
+
+		return True
+
 
 	@classmethod
-	def __write(self, data:Dict[str,str]):
+	def write(self, data:Dict[str,str]):
 		"""
 		Sovrascrive le impostazioni con le nuove informazioni.
 		"""
-
-		with open(self.file, 'w') as f:
-			f.write(json.dumps(data, indent=4))
+		if self.isValid(data):
+			with open(self.file, 'w') as f:
+				f.write(json.dumps(data, indent=4))
 
 
 class Table:
@@ -106,7 +121,7 @@ class Table:
 		Lista di dizionari contenente tutta la tabella di conversione.
 		"""
 		if not os.path.exists(self.file):
-			self.__write([])
+			self.write([])
 			return []
 
 
@@ -151,7 +166,7 @@ class Table:
 			log = f"{data['title']} aggiunto."
 
 		table.sort(key=lambda s: s["title"])
-		self.__write(table)
+		self.write(table)
 
 		return log
 	
@@ -193,7 +208,7 @@ class Table:
 		else:
 			log = f"{title} inesistente."
 
-		self.__write(table)
+		self.write(table)
 		return log
 	
 	@classmethod
@@ -238,15 +253,28 @@ class Table:
 		else:
 			log = f"{title[0] if isinstance(title, list) else title} inesistente."
 
-		self.__write(table)
+		self.write(table)
 		return log
+	
+	@classmethod
+	def isValid(self, table:List) -> bool:
+		"""
+		Controlla se le informazioni sono valide.
+		"""
+		for anime in table:
+			if "absolute" not in anime: return False
+			if "seasons" not in anime: return False
+			if "title" not in anime: return False
+		
+		return True
 
 	@classmethod
-	def __write(self, table:List):
+	def write(self, table:List):
 		"""
 		Sovrascrive la tabella con le nuove informazioni.
 		"""
-		with open(self.file, 'w') as f:
-			f.write(json.dumps(table, indent=4))
+		if self.isValid(table):
+			with open(self.file, 'w') as f:
+				f.write(json.dumps(table, indent=4))
 
 

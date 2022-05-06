@@ -1,3 +1,21 @@
+// IMPORT / EXPORT ////////////////////////////////////////////////////////////////
+
+document.getElementById("import").addEventListener('change', function(){
+	let json = this.files[0];
+	if(this.files[0] != null){
+		let formData = new FormData();
+		formData.append("file", json, json.name);
+		fetch('/ie/table', {method: "POST", body: formData})
+		.then(response => response.json())
+		.then((res)=>{
+			syncData();
+			document.getElementById("import").value  = null;
+			showToast(res["error"] ? res["error"] : "Tabella caricata con successo.")
+		})
+	}
+});
+
+
 // MODAL ////////////////////////////////////////////////////////////////
 
 document.querySelector('#add-anime').addEventListener('click', function(){

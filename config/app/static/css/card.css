@@ -24,3 +24,10 @@ div.card{
 .card-content{
 	padding: 24px;
 }
+
+.card > section.bottom{
+	width: 100%;
+	margin: 0;
+	background-color: transparent;
+	border-top: 1px solid var(--background-color);
+}

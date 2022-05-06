@@ -227,7 +227,18 @@ input[type=range]::-moz-range-thumb {
 }
 
 
+/* FILE */
+
+input[type=file]{
+	opacity: 0;
+	width: 0;
+	height: 0;
+	visibility: hidden;
+}
+
 /* INPUT PARTICOLARI */
+
+
 
 input[type=number].add-tab{
 	color: rgba(255,255,255,0.5);
@@ -247,7 +258,9 @@ input[type=number].add-tab:focus{
 	border-bottom: 2px solid rgba(255,255,255,0.3);
 }
 
-input[type=text].add-anime{
+
+
+#add-anime.btn{
 	display: inline;
 }
 
@@ -275,13 +288,13 @@ summary input[type=text]{
 	text-shadow: 0 0 10px var(--primary-color);
 }
 
-.add-anime.btn{
+#add-anime.btn{
 	width: calc(100% - 60px);
 	margin: 0 30px;
 	padding: 15px;
 	border-bottom: 1px solid var(--background-color);
 	background-color: rgba(255,255,255,0.06);
-	color: rgba(255,255,255,0.5);
+	/* color: rgba(255,255,255,0.5); */
 	border-radius: 4px 4px 0 0;
 }
 

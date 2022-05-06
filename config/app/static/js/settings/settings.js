@@ -1,21 +1,25 @@
 // range
 
-fetch("/api/settings")
-.then(res => res.json())
-.then((res) => {
-	document.getElementById('RenameEp').checked = res.data.RenameEp;
-	document.getElementById('MoveEp').checked = res.data.MoveEp;
-	document.getElementById('AutoBind').checked = res.data.AutoBind;
+function syncData(){
 
-	document.getElementById('ScanDelay').value = res.data.ScanDelay;
-	document.querySelector("#ScanDelay + label").textContent = res.data.ScanDelay;
+	return fetch("/api/settings")
+	.then(res => res.json())
+	.then((res) => {
+		document.getElementById('RenameEp').checked = res.data.RenameEp;
+		document.getElementById('MoveEp').checked = res.data.MoveEp;
+		document.getElementById('AutoBind').checked = res.data.AutoBind;
 
-	for(let elem of document.querySelectorAll('input[name=LogLevel]')){
-		elem.checked = elem.value == res.data.LogLevel;
-	}
+		document.getElementById('ScanDelay').value = res.data.ScanDelay;
+		document.querySelector("#ScanDelay + label").textContent = res.data.ScanDelay;
+
+		for(let elem of document.querySelectorAll('input[name=LogLevel]')){
+			elem.checked = elem.value == res.data.LogLevel;
+		}
 
 
-});
+	});
+}
+syncData();
 
 document.getElementById('ScanDelay').addEventListener('input', function(event){
 	document.querySelector("#ScanDelay + label").textContent = this.value;
@@ -57,3 +61,18 @@ for(let elem of document.querySelectorAll('input[name=LogLevel]')){
 		if(this.checked) updateSettings({LogLevel: this.value})
 	});
 }
+
+document.getElementById("import").addEventListener('change', function(){
+	let json = this.files[0];
+	if(this.files[0] != null){
+		let formData = new FormData();
+		formData.append("file", json, json.name);
+		fetch('/ie/settings', {method: "POST", body: formData})
+		.then(response => response.json())
+		.then((res)=>{
+			syncData();
+			document.getElementById("import").value  = null;
+			showToast(res["error"] ? res["error"] : "Impostazioni caricate con successo.")
+		})
+	}
+});

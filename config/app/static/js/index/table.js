@@ -1,6 +1,7 @@
 'use strict';
 
 var addData;
+var syncData;
 
 class Table extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Table extends React.Component {
     this.removeData = this.removeData.bind(this);
     this.editData = this.editData.bind(this);
     addData = this.addData;
+	syncData = this.syncData.bind(this);;
   }
 
   componentDidMount() {

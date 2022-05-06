@@ -92,6 +92,12 @@
 					<label for="ScanDelay">30</label>
 				</div>
 			</div>
+			<section class="bottom">
+				<a class="btn" id="export" href="/ie/settings" target="_blank">&#xf090;</a>
+				<label for="import" class="btn">
+					<input id="import" type="file" accept=".json">&#xe2c6;
+				</label>
+			</section>
 		</div>
 		
 		<div class="card">
@@ -125,6 +131,6 @@
 {% endblock %}
 
 {% block script %}
-<script type="text/javascript" src="static/js/nav.js"></script>
-<script type="text/javascript" src="static/js/settings.js"></script>
+{{ super() }}
+<script type="text/javascript" src="static/js/settings/settings.js"></script>
 {% endblock %}

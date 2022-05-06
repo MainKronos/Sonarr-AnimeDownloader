@@ -1,3 +1,5 @@
+from textwrap import indent
+import time
 from flask import *
 import sys
 
@@ -135,3 +137,55 @@ def getLog(row:int=0):
 		})
 	)
 	
+# IMPORT / EXPORT 
+@app.route('/ie/table', methods=['GET', 'POST'])
+def ieTable():
+	if request.method == 'GET':
+		return Response(
+			json.dumps(Table.data, indent=4),
+			mimetype="text/plain",
+			headers={"Content-disposition":"attachment; filename=table.json"}
+		)
+	else:
+		uploaded_file = request.files['file']
+		if uploaded_file.filename != '':
+			data = uploaded_file.read()
+			Table.write(json.loads(data.decode('utf-8')))
+			
+			return Response(
+				mimetype='application/json',
+				status=200,
+				response=json.dumps({
+					"error": False
+				})
+	)
+
+@app.route('/ie/settings', methods=['GET', 'POST'])
+def ieSettings():
+	if request.method == 'GET':
+		return Response(
+			json.dumps(Settings.data, indent=4),
+			mimetype="text/plain",
+			headers={"Content-disposition":"attachment; filename=settings.json"}
+		)
+	else:
+		uploaded_file = request.files['file']
+		if uploaded_file.filename != '':
+			data = uploaded_file.read()
+			Settings.write(json.loads(data.decode('utf-8')))
+			
+			return Response(
+				mimetype='application/json',
+				status=200,
+				response=json.dumps({
+					"error": False
+				})
+	)
+
+@app.route('/ie/log', methods=['GET'])
+def ieLog():
+	return Response(
+		open("log.log", 'r', encoding='utf-8').read(),
+		mimetype="text/plain",
+		headers={"Content-disposition":"attachment; filename=log.log"}
+	)
