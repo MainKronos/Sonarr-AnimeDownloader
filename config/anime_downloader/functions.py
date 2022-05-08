@@ -11,8 +11,8 @@ from typing import Dict, List
 from utility import Table
 from app import socketio
 
-from logger import logger, telegram
-from constants import SETTINGS
+from logger import logger, message
+from utility import Settings
 import texts as txt
 from .exceptions import TableFormattingError
 
@@ -61,7 +61,7 @@ def converting(data:List[Dict]) -> List[Dict]:
 			logger.info(txt.NO_RESULT_LOG + '\n')
 		else:
 			logger.warning(txt.LINK_FOUND_LOG.format(anime=result['name'],link=result['link']) + '\n\n')
-			telegram.warning(txt.TELEGRAM_LINK_FOUND_LOG.format(sanime=title, sseason=season, anime=result['name'],link=result['link']))
+			message.warning(txt.TELEGRAM_LINK_FOUND_LOG.format(sanime=title, sseason=season, anime=result['name'],link=result['link']))
 			Table.append({
 				"title": title,
 				"season": str(season),
@@ -97,7 +97,7 @@ def converting(data:List[Dict]) -> List[Dict]:
 							# La serie risolta con ordinamento assoluto ma non esiste la stagione "absolute" nella tabella
 							logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=", ".join([x["num"] for x in anime["seasons"]]), anime=anime["title"]) + '\n')
 
-							if SETTINGS["AutoBind"]: # ricerca automatica links
+							if Settings.data["AutoBind"]: # ricerca automatica links
 								logger.debug(txt.ABSOLUTE_AUTOMATIC_LINK_SEARCH_ERROR_LOG + '\n')
 
 							break
@@ -114,7 +114,7 @@ def converting(data:List[Dict]) -> List[Dict]:
 									elif len(list(row["seasons"][season["num"]])):
 										logger.debug(txt.LINK_INEXISTENT_LOG.format(season=season["num"], anime=anime["title"]) + '\n')
 
-									if SETTINGS["AutoBind"]: # ricerca automatica links
+									if Settings.data["AutoBind"]: # ricerca automatica links
 										link = linkSearch(anime["title"], season["num"], anime["tvdbID"])
 										if link is not None: season["links"] = [link]
 								else:
@@ -129,7 +129,7 @@ def converting(data:List[Dict]) -> List[Dict]:
 				# L'anime non esiste nella tabella
 				logger.debug(txt.ANIME_INEXISTENT_LOG.format(anime=anime["title"]) + '\n')
 
-				if SETTINGS["AutoBind"]: # ricerca automatica links
+				if Settings.data["AutoBind"]: # ricerca automatica links
 					for season in anime["seasons"]:
 						if season["num"] != '0':
 							link = linkSearch(anime["title"], season["num"], anime["tvdbID"])

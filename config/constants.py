@@ -9,5 +9,3 @@ BOT_TOKEN = os.getenv('BOT_TOKEN') # telegramm
 VERSION = os.getenv('VERSION') # versione
 
 DOWNLOAD_FOLDER = '/downloads'
-
-SETTINGS = Settings.data

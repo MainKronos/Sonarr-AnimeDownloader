@@ -5,8 +5,9 @@ import animeworld as aw
 import os
 
 import texts as txt
-from logger import logger, telegram
-from constants import CHAT_ID, BOT_TOKEN, SETTINGS, DOWNLOAD_FOLDER, VERSION
+from logger import logger, message
+from constants import CHAT_ID, BOT_TOKEN, DOWNLOAD_FOLDER, VERSION
+from utility import Settings
 
 from .functions import converting, fixEps, movefile, downloadProgress, getLatestVersion
 from . import sonarr
@@ -55,7 +56,7 @@ def job():
 										logger.info(txt.DOWNLOAD_COMPLETED_LOG + '\n')
 
 
-										if SETTINGS["MoveEp"]:
+										if Settings.data["MoveEp"]:
 											logger.info(txt.EPISODE_SHIFT_LOG.format(season=episode["season"], episode=episode["num"], folder=anime["path"]) + '\n')
 											if movefile(os.path.join(DOWNLOAD_FOLDER,file), anime["path"]): 
 												logger.info(txt.EPISODE_SHIFT_DONE_LOG + '\n')
@@ -63,7 +64,7 @@ def job():
 											logger.info(txt.ANIME_REFRESH_LOG.format(anime=anime["title"]) + '\n')
 											sonarr.rescanSerie(anime["ID"])
 
-											if SETTINGS["RenameEp"]:
+											if Settings.data["RenameEp"]:
 												logger.info(txt.EPISODE_RENAME_LOG + '\n')
 												for i in range(5): # Fa 5 tentativi
 													try:
@@ -80,7 +81,7 @@ def job():
 
 											if None not in (CHAT_ID, BOT_TOKEN):
 												logger.info(txt.SEND_TELEGRAM_MESSAGE_LOG + '\n')
-												telegram.warning(txt.TELEGRAM_MESSAGE.format(title=anime["title"], season=episode["season"], episode=episode["num"], episodeTitle=episode["title"]))
+												message.warning(txt.TELEGRAM_MESSAGE.format(title=anime["title"], season=episode["season"], episode=episode["num"], episodeTitle=episode["title"]))
 
 									break
 							else:
@@ -106,7 +107,7 @@ def job():
 	except Exception as error:
 		logger.exception(txt.EXCEPTION_STATE_LOG.format(exception=error) + '\n')
 
-	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + SETTINGS["ScanDelay"]*60))
+	nextStart = time.strftime("%d %b %Y %H:%M:%S", time.localtime(time.time() + Settings.data["ScanDelay"]*60))
 	logger.warning('\n' + txt.END_BLOCK_LOG.format(time=nextStart) + '\n\n')
 
 

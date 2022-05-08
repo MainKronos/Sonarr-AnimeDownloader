@@ -30,15 +30,18 @@ CHAT_ID_CHECK_LOG = "✔️ 𝘾𝙃𝘼𝙏_𝙄𝘿: {chat_id}"
 BOT_TOKEN_ERROR_LOG = "✖️ Variabile d'ambinete '𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉' non inserita."
 BOT_TOKEN_CHECK_LOG = "✔️ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {bot_token}"
 
+SETTINGS_UPDATED_LOG = "✔️ impostazioni aggiornate correttamente."
 SETTINGS_SCAN_DELAY_LOG = "⚙️ Intervallo Scan: {delay} minuti."
 SETTINGS_RENAME_EPISODE_LOG = "⚙️ Rinomina Episodi: {status}."
 SETTINGS_MOVE_EPISODE_LOG = "⚙️ Sposta Episodi: {status}."
 SETTINGS_AUTO_BIND_LINK_LOG = "⚙️ Auto Ricerca Link: {status}."
 SETTINGS_LOG_LEVEL_LOG = "⚙️ Livello del Log: {level}."
 
+
 START_SERVER_LOG = "✔️ Server Avviato."
 
 DIVIDER_LOG = "\033[1;90m─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ \033[0m"
+SEPARATOR_LOG = "\033[1;90m──────────────────────────────────────────────────────────────────────────────────────────────\033[0m"
 START_BLOCK_LOG = "\033[90m╭───────────────────────────────────「{time}」───────────────────────────────────╮\033[0m"
 END_BLOCK_LOG = "\033[90m╰───────────────────────────────────「{time}」───────────────────────────────────╯\033[0m"
 

@@ -1,5 +1,5 @@
 {
-    "AutoBind": true,
+    "AutoBind": false,
     "LogLevel": "DEBUG",
     "MoveEp": true,
     "RenameEp": true,

@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 
-from importlib_metadata import version
 import schedule
 import time
 import threading
 import requests
 
-from logger import logger, telegram
-from constants import SONARR_URL, API_KEY, CHAT_ID, BOT_TOKEN, SETTINGS, VERSION
+from logger import logger, message
+from constants import SONARR_URL, API_KEY, CHAT_ID, BOT_TOKEN, VERSION
 import texts as txt
-
+from utility import Settings
 from anime_downloader import job
+
 from app import app
 
 
@@ -36,18 +36,43 @@ def main():
 
 	if None not in (SONARR_URL, API_KEY):
 
-		logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay=SETTINGS['ScanDelay']) + '\n')
-		logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if SETTINGS['MoveEp'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if SETTINGS['RenameEp'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if SETTINGS['AutoBind'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=SETTINGS['LogLevel']) + '\n')
+		logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay= Settings.data['ScanDelay']) + '\n')
+		logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if Settings.data['MoveEp'] else 'OFF') + '\n')
+		logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if Settings.data['RenameEp'] else 'OFF') + '\n')
+		logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if Settings.data['AutoBind'] else 'OFF') + '\n')
+		logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=Settings.data['LogLevel']) + '\n')
 
 		logger.info('\n' + txt.START_SERVER_LOG + '\n')
 		job_thread = threading.Thread(target=server)
 		job_thread.start()
 
-		job() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
-		schedule.every(SETTINGS['ScanDelay']).minutes.do(job)
+		Settings.refresh = refresh
+		schedule.every(Settings.data["ScanDelay"]).minutes.do(job).run() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
+
+
+@classmethod
+def refresh(self, silent=False):
+	"""
+	Aggiorna le impostazioni a livello globale.
+	"""
+	if not silent:
+		logger.info(txt.SEPARATOR_LOG + '\n')
+		logger.info(txt.SETTINGS_UPDATED_LOG + '\n')
+
+		logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay= Settings.data['ScanDelay']) + '\n')
+		logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if Settings.data['MoveEp'] else 'OFF') + '\n')
+		logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if Settings.data['RenameEp'] else 'OFF') + '\n')
+		logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if Settings.data['AutoBind'] else 'OFF') + '\n')
+		logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=Settings.data['LogLevel']) + '\n')
+
+		logger.info(txt.SEPARATOR_LOG + '\n')
+
+	logger.setLevel(Settings.data["LogLevel"])
+	message.setLevel(Settings.data["LogLevel"])
+	schedule.clear()
+	schedule.every(Settings.data["ScanDelay"]).minutes.do(job).run()
+
+
 
 
 def server():

@@ -1,6 +1,7 @@
 import logging.config
 
-from constants import SETTINGS, CHAT_ID, BOT_TOKEN
+from utility import Settings
+from constants import CHAT_ID, BOT_TOKEN
 from app import socketio
 import requests
 
@@ -63,16 +64,16 @@ logging.config.dictConfig({
     'loggers': {
         'mylogger': {
             'handlers': ['stream_handler','file_handler', 'socket_handler'],
-            'level': SETTINGS["LogLevel"],
+            'level': Settings.data["LogLevel"],
             'propagate': True
         },
-		'telegram': {
+		'message': {
 			'handlers': ['telegram_handler'],
-            'level': SETTINGS["LogLevel"],
+            'level': Settings.data["LogLevel"],
             'propagate': True
 		}
     }
 })
 
 logger = logging.getLogger('mylogger')
-telegram = logging.getLogger('telegram')
+message = logging.getLogger('message')

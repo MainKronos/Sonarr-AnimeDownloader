@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Union
+from typing import Callable, Dict, List, Optional, Union
 
 import json
 import os
@@ -12,6 +12,7 @@ class classproperty(object):
 
 class Settings:
 	file = "json/settings.json"
+	tmp = None # variabile temporanea contenente le impostazioni, in caso di cambiamenti ritorna a None
 
 	@classproperty
 	def data(self) -> Dict[str,str]:
@@ -28,6 +29,8 @@ class Settings:
 		}
 		```
 		"""
+
+		if self.tmp is not None: return self.tmp
 
 		data = {
 			"LogLevel": "DEBUG",
@@ -59,6 +62,8 @@ class Settings:
 		if update_fix:
 			self.write(settings)
 		
+		self.tmp = settings
+		
 		return settings
 
 	@classmethod
@@ -85,6 +90,9 @@ class Settings:
 
 		self.write(settings)
 
+		self.tmp = None # invalida il tmp
+		self.refresh()
+
 		return log
 	
 	@classmethod
@@ -110,6 +118,14 @@ class Settings:
 		if self.isValid(data):
 			with open(self.file, 'w') as f:
 				f.write(json.dumps(data, indent=4))
+	
+	@classmethod
+	def refresh(self, silent=False):
+		"""
+		Aggiorna le impostazioni a livello globale.
+		"""
+		# Funzione inizializzata nel main per problemi di circular import
+		pass
 
 
 class Table:
@@ -276,5 +292,6 @@ class Table:
 		if self.isValid(table):
 			with open(self.file, 'w') as f:
 				f.write(json.dumps(table, indent=4))
+
 
 
