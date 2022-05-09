@@ -16,6 +16,7 @@ from app import app
 
 def main():
 	logger.warning(txt.START_LOG.format(time=time.strftime('%d %b %Y %H:%M:%S'), version=VERSION) + '\n')
+	Settings.refresh = refresh # aggiornamento metodo di Settings per il refresh delle impostazioni
 
 	if SONARR_URL is None:
 		logger.warning(txt.SONARR_URL_ERROR_LOG + '\n')
@@ -46,7 +47,7 @@ def main():
 		job_thread = threading.Thread(target=server)
 		job_thread.start()
 
-		Settings.refresh = refresh
+		
 		schedule.every(Settings.data["ScanDelay"]).minutes.do(job).run() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
 
 
@@ -70,7 +71,7 @@ def refresh(self, silent=False):
 	logger.setLevel(Settings.data["LogLevel"])
 	message.setLevel(Settings.data["LogLevel"])
 	schedule.clear()
-	schedule.every(Settings.data["ScanDelay"]).minutes.do(job).run()
+	schedule.every(Settings.data["ScanDelay"]).minutes.do(job)
 
 
 
