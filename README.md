@@ -31,7 +31,7 @@ services:
   mainkronos:
     container_name: AnimeDownloader
     volumes:
-	  - '/path/to/data:/script/json/'
+      - '/path/to/data:/script/json/'
       - '/path/to/animeSeries:/tv'
       - '/path/to/downloads:/downloads'
     ports:
