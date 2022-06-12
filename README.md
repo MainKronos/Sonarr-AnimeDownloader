@@ -21,7 +21,34 @@ Le **FAQ** si trovano [qui](FAQ.md)
 
 ## Utilizzo
 
+Per avviare il container è possibile farlo attraverso _docker cli_ o tramite _docker-compose_.
+
+### docker-compose ([clicca qui per maggiori informazioni](https://docs.linuxserver.io/general/docker-compose))
+
+```yaml
+version: '3.9'
+services:
+  mainkronos:
+    container_name: AnimeDownloader
+    volumes:
+	  - '/path/to/data:/script/json/'
+      - '/path/to/animeSeries:/tv'
+      - '/path/to/downloads:/downloads'
+    ports:
+      - '{port}:5000'
+    environment:
+      - 'SONARR_URL=http://{url}:{port}'
+      - 'API_KEY=1234567890abcdefghijklmn'
+      - 'CHAT_ID=123456789'
+      - 'BOT_TOKEN=123456789:ABCDEFGHIJKLM-abc_AbCdEfGhI12345678'
+      - 'TZ=Europe/Rome'
+    image: 'ghcr.io/mainkronos/anime_downloader:latest'
 ```
+
+
+### docker cli ([clicca qui per maggiori informazioni](https://docs.docker.com/engine/reference/commandline/cli/))
+
+```bash
 docker run -d \
     --name=AnimeDownloader \
     -v /path/to/data:/script/json/ \
@@ -34,7 +61,6 @@ docker run -d \
     --env BOT_TOKEN='123456789:ABCDEFGHIJKLM-abc_AbCdEfGhI12345678' \
     --env TZ=Europe/Rome \
     ghcr.io/mainkronos/anime_downloader:latest
-
 ```
 
 ## Parametri
@@ -103,16 +129,19 @@ Ho caricato anche la **mia configurazione** che utilizzo, può essere trovata [q
 La struttura interna del Container è così strutturata:
 ```
 ...
-├── downloads  ### Cartella di download
-├── script
-│   ├── app    ### Pagina Web
-│   │   ├── ...
-│   │  ...
-│   ├── main.py    ### Programma principale
-│   └── json
-│       ├── settings.json    ### Impostazioni
-│       └── table.json    ### Tabella di conversione
-...        
+ ├── downloads                 ### Cartella di download
+ ├── script
+ │   ├── app                   ### Pagina Web
+ │   │   ├── ...
+ │   │  ...
+ │   ├── anime_downloader      ### Programma principale
+ │   │   ├── ...
+ │   │  ...
+ │   ├── json
+ │   │    ├── settings.json    ### Impostazioni
+ │   │    └── table.json       ### Tabella di conversione
+ │  ...                        ### Altri file utili
+... 
 ```
 
 ## Settings
@@ -141,3 +170,41 @@ Segnalatelo il prima possibile sotto la sezione _Issues_, in modo tale che possa
 
 ## FAQ
 Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
+
+## Sviluppo
+
+È possibile compilare l'immagine tramite [docker cli](https://www.docker.com/) o [Visual Studio Code](https://code.visualstudio.com/), se volete debuggure il codice consiglio la seconda.
+
+### Docker CLI
+Per cotruire il container:
+```bash
+docker build -t mainkronos/anime_downloader .
+```
+- ⚠️ Il flag `-t` indica il tag del container.
+- ⚠️ Il `.` NON è un errore di battitura, serve per indicare che il file `dockerfile` che contiene le istruzioni di compilazione si trova della directory corrente.
+
+Per avviare:
+```
+docker run -d \
+    --name=AnimeDownloader \
+    -v /path/to/data:/script/json/ \
+    -v /path/to/animeSeries:/tv \
+    -v /path/to/downloads:/downloads \
+    -p {port}:5000 \
+    --env SONARR_URL='http://{url}:{port}' \
+    --env API_KEY='1234567890abcdefghijklmn' \
+    --env CHAT_ID=123456789 \
+    --env BOT_TOKEN='123456789:ABCDEFGHIJKLM-abc_AbCdEfGhI12345678' \
+    --env TZ=Europe/Rome \
+    mainkronos/anime_downloader
+```
+- ⚠️ L'ultima riga deve COINCIDERE con il tag (inserito con il flag `-t`) usato al comando precedente.
+
+### Visual Studio Code
+Aprire la cartella del progetto in Visual Studio Code e modificate a vostro piacere il file [`tasks.json`](.vscode/tasks.json)
+
+- Per modificare i valori delle variabili d'ambiente cambiate [questi valori](.vscode/tasks.json#L14-L18)
+- Per modificare la porta esterna del container cambiate [questo valore](.vscode/tasks.json#L23)
+- Per modificare i volumi cambiate [questi valori](.vscode/tasks.json#L28-L29)
+
+E per avviare -> In Visual Studio Code -> `Esegui` -> `Avvia debug`.
