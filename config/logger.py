@@ -1,9 +1,10 @@
 import logging.config
 
-from utility import Settings
-from constants import CHAT_ID, BOT_TOKEN
+from utility import Settings, Connections
 from app import socketio
 import requests
+import time
+import os
 
 
 class MySocketHandler(logging.handlers.SocketHandler):
@@ -15,10 +16,13 @@ class MySocketHandler(logging.handlers.SocketHandler):
 	def emit(self, record):
 		socketio.emit("log", record.msg)
 
-class TelegramHandler(logging.handlers.HTTPHandler):
-	
+class ConnectionsHandler(logging.StreamHandler):	
 	def emit(self, record):
-		requests.get(self.host + self.url + record.msg)
+		for connection in Connections.data:
+			if connection["active"]:
+				script = os.path.join("connections", connection["script"])
+				if os.path.isfile(script):
+					os.system(f'{script} "{record.msg}"')
 
 logging.config.dictConfig({
     'version': 1,
@@ -52,12 +56,8 @@ logging.config.dictConfig({
 				'terminator': ''
 			}
 		},
-		'telegram_handler':{
-			'class': 'logger.TelegramHandler',
-			'formatter': 'default_formatter',
-			'host': 'https://api.telegram.org',
-			'url': f'/bot{BOT_TOKEN}/sendMessage?chat_id={CHAT_ID}&parse_mode=Markdown&text=',
-			'method': 'GET'
+		'connections_handler':{
+			'class': 'logger.ConnectionsHandler'
 		}
 
     },
@@ -68,7 +68,7 @@ logging.config.dictConfig({
             'propagate': True
         },
 		'message': {
-			'handlers': ['telegram_handler'],
+			'handlers': ['connections_handler'],
             'level': Settings.data["LogLevel"],
             'propagate': True
 		}

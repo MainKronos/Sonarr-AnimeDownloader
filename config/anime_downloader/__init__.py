@@ -6,7 +6,7 @@ import os
 
 import texts as txt
 from logger import logger, message
-from constants import CHAT_ID, BOT_TOKEN, DOWNLOAD_FOLDER, VERSION
+from constants import DOWNLOAD_FOLDER, VERSION
 from utility import Settings
 
 from .functions import converting, fixEps, movefile, downloadProgress, getLatestVersion
@@ -79,9 +79,8 @@ def job():
 												else:
 													logger.warning(txt.EPISODE_RENAME_ERROR_LOG + '\n')
 
-											if None not in (CHAT_ID, BOT_TOKEN):
-												logger.info(txt.SEND_TELEGRAM_MESSAGE_LOG + '\n')
-												message.warning(txt.TELEGRAM_MESSAGE.format(title=anime["title"], season=episode["season"], episode=episode["num"], episodeTitle=episode["title"]))
+											logger.info(txt.SEND_CONNECTION_MESSAGE_LOG + '\n')
+											message.warning(txt.CONNECTION_MESSAGE.format(title=anime["title"], season=episode["season"], episode=episode["num"], episodeTitle=episode["title"]))
 
 									break
 							else:

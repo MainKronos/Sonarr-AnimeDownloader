@@ -61,7 +61,7 @@ def converting(data:List[Dict]) -> List[Dict]:
 			logger.info(txt.NO_RESULT_LOG + '\n')
 		else:
 			logger.warning(txt.LINK_FOUND_LOG.format(anime=result['name'],link=result['link']) + '\n\n')
-			message.warning(txt.TELEGRAM_LINK_FOUND_LOG.format(sanime=title, sseason=season, anime=result['name'],link=result['link']))
+			message.warning(txt.CONNECTION_LINK_FOUND_LOG.format(sanime=title, sseason=season, anime=result['name'],link=result['link']))
 			Table.append({
 				"title": title,
 				"season": str(season),

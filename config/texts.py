@@ -24,12 +24,6 @@ SONARR_URL_CHECK_LOG = "✔️ 𝙎𝙊𝙉𝘼𝙍𝙍_𝙐𝙍𝙇: {sonar_url
 API_KEY_ERROR_LOG = "✖️ Variabile d'ambinete '𝘼𝙋𝙄_𝙆𝙀𝙔' non inserita."
 API_KEY_CHECK_LOG = "✔️ 𝘼𝙋𝙄_𝙆𝙀𝙔: {api_key}"
 
-CHAT_ID_ERROR_LOG = "✖️ Variabile d'ambinete '𝘾𝙃𝘼𝙏_𝙄𝘿' non inserita."
-CHAT_ID_CHECK_LOG = "✔️ 𝘾𝙃𝘼𝙏_𝙄𝘿: {chat_id}"
-
-BOT_TOKEN_ERROR_LOG = "✖️ Variabile d'ambinete '𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉' non inserita."
-BOT_TOKEN_CHECK_LOG = "✔️ 𝘽𝙊𝙏_𝙏𝙊𝙆𝙀𝙉: {bot_token}"
-
 SETTINGS_UPDATED_LOG = "✔️ impostazioni aggiornate correttamente."
 SETTINGS_SCAN_DELAY_LOG = "⚙️ Intervallo Scan: {delay} minuti."
 SETTINGS_RENAME_EPISODE_LOG = "⚙️ Rinomina Episodi: {status}."
@@ -67,7 +61,7 @@ ANIME_REFRESH_LOG = "⏳ Ricaricando la serie '{anime}'."
 EPISODE_RENAME_LOG = "⏳ Rinominando l'episodio."
 EPISODE_RENAME_DONE_LOG = "✔️ Episodio rinominato."
 EPISODE_RENAME_ERROR_LOG = "⚠️ NON è stato possibile rinominare l'episodio."
-SEND_TELEGRAM_MESSAGE_LOG = "✉️ Inviando il messaggio via telegram."
+SEND_CONNECTION_MESSAGE_LOG = "✉️ Inviando il messaggio tramite 𝗰𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻𝘀."
 NO_EPISODES = "Non c'è nessun episodio da cercare."
 
 AUTOMATIC_LINK_SEARCH_LOG = "⚠️ Ricerca automatica link di AnimeWorld per la 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {season} della 𝘴𝘦𝘳𝘪𝘦 '{anime}'."
@@ -76,7 +70,7 @@ SPECIAL_AUTOMATIC_LINK_SEARCH_ERROR_LOG = "⛔ La ricerca automatica link di Ani
 NO_RESULT_LOG = "⛔ Nessun risultato trovato."
 LINK_FOUND_LOG = """✳️ Risultato trovato: 
 - {anime} ({link})."""
-TELEGRAM_LINK_FOUND_LOG = """*Auto Ricerca Link*
+CONNECTION_LINK_FOUND_LOG = """*Auto Ricerca Link*
 Risultato trovato per _{sanime}_ _{sseason}_:
 - `{anime}` ({link})."""
 
@@ -85,7 +79,7 @@ ERROR_STATE_LOG = "\033[93m🆆🅰🆁🅽🅸🅽🅶: {error}\033[0m"
 CRITICAL_STATE_LOG = "\033[91m🅰🅻🅴🆁🆃: {critical}\033[0m"
 EXCEPTION_STATE_LOG = "\033[4;3;91m🅴🆁🆁🅾🆁: {exception}\033[0m"
 
-TELEGRAM_MESSAGE = """*Episode Downloaded*
+CONNECTION_MESSAGE = """*Episode Downloaded*
 {title} - {season}x{episode} - {episodeTitle}"""
 
 UPDATE_CONTAINER = """🎉 È disponibile una nuova versione del container ({version})!

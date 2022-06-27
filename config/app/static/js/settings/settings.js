@@ -62,7 +62,7 @@ for(let elem of document.querySelectorAll('input[name=LogLevel]')){
 	});
 }
 
-document.getElementById("import").addEventListener('change', function(){
+document.getElementById("importS").addEventListener('change', function(){
 	let json = this.files[0];
 	if(this.files[0] != null){
 		let formData = new FormData();
@@ -71,8 +71,249 @@ document.getElementById("import").addEventListener('change', function(){
 		.then(response => response.json())
 		.then((res)=>{
 			syncData();
-			document.getElementById("import").value  = null;
+			document.getElementById("importS").value  = null;
 			showToast(res["error"] ? res["error"] : "Impostazioni caricate con successo.")
 		})
 	}
 });
+
+
+// REACT /////////////////////////////
+
+class ConnectionsDiv extends React.Component {
+	constructor(props) {
+	  super(props);
+	  this.state = {
+		error: false,
+		is_loaded: false,
+		data: null,
+		file: ""
+	  };
+	  this.syncData = this.syncData.bind(this);
+	}
+  
+	componentDidMount() {
+	  this.syncData();
+	}
+  
+	syncData() {
+	  fetch("/api/connections").then(res => res.json()).then(res => {
+		this.setState({
+		  error: res.error,
+		  is_loaded: true,
+		  data: res.data
+		});
+	  }, error => {
+		this.setState({
+		  error: error,
+		  is_loaded: true,
+		  data: null
+		});
+	  });
+	}
+  
+	render() {
+	  const {
+		error,
+		is_loaded,
+		data
+	  } = this.state;
+  
+	  if (error) {
+		return /*#__PURE__*/React.createElement("div", null, "Error: ", error);
+	  } else if (!is_loaded) {
+		return /*#__PURE__*/React.createElement("div", null);
+	  } else {
+		return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+		  className: "card-title"
+		}, "Connections"), /*#__PURE__*/React.createElement(Connections, {
+		  syncData: this.syncData,
+		  data: data
+		}), /*#__PURE__*/React.createElement("section", {
+		  className: "bottom"
+		}, /*#__PURE__*/React.createElement("a", {
+		  className: "btn",
+		  href: "/ie/connections",
+		  target: "_blank"
+		}, "\uF090"), /*#__PURE__*/React.createElement("label", {
+		  htmlFor: "importC",
+		  className: "btn"
+		}, /*#__PURE__*/React.createElement("input", {
+		  id: "importC",
+		  type: "file",
+		  accept: ".json",
+		  value: this.state.file,
+		  onChange: event => {
+			let json = event.target.files[0];
+  
+			if (json != null) {
+			  let formData = new FormData();
+			  formData.append("file", json, json.name);
+			  fetch('/ie/connections', {
+				method: "POST",
+				body: formData
+			  }).then(response => response.json()).then(res => {
+				this.syncData();
+				this.setState({
+				  value: ""
+				});
+				showToast(res["error"] ? res["error"] : "Connections caricate con successo.");
+			  });
+			}
+		  }
+		}), "\uE2C6")));
+	  }
+	}
+  
+  }
+  
+  class Connections extends React.Component {
+	constructor(props) {
+	  super(props);
+	  this.toggle = this.toggle.bind(this);
+	  this.remove = this.remove.bind(this);
+	  this.add = this.add.bind(this);
+	}
+  
+	toggle(connection_name) {
+	  return fetch('/api/connections/toggle', {
+		method: 'POST',
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+		  name: connection_name
+		})
+	  }).then(response => response.json()).then(data => {
+		showToast(data.data);
+		this.props.syncData();
+	  });
+	}
+  
+	remove(connection_name) {
+	  return fetch('/api/connections/remove', {
+		method: 'POST',
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+		  name: connection_name
+		})
+	  }).then(response => response.json()).then(data => {
+		showToast(data.data);
+		this.props.syncData();
+	  });
+	}
+  
+	add(connection_name, script) {
+	  return fetch('/api/connections/add', {
+		method: 'POST',
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+		  name: connection_name,
+		  script: script,
+		  active: false
+		})
+	  }).then(response => response.json()).then(data => {
+		showToast(data.data);
+		this.props.syncData();
+	  });
+	}
+  
+	render() {
+	  return /*#__PURE__*/React.createElement("div", {
+		className: "card-content"
+	  }, this.props.data.map((conn, index) => /*#__PURE__*/React.createElement(Connection, {
+		name: conn.name,
+		script: conn.script,
+		active: conn.active,
+		valid: conn.valid,
+		key: conn.script + index,
+		onToggle: () => this.toggle(conn.name),
+		onRemove: () => this.remove(conn.name)
+	  })), /*#__PURE__*/React.createElement(AddConnections, {
+		onAdd: this.add
+	  }));
+	}
+  
+  }
+  
+  class AddConnections extends React.Component {
+	constructor(props) {
+	  super(props);
+	  this.state = {
+		active: false,
+		name: "",
+		script: ""
+	  };
+	}
+  
+	render() {
+	  if (this.state.active) {
+		return /*#__PURE__*/React.createElement("form", {
+		  className: "content",
+		  onSubmit: event => {
+			event.preventDefault();
+			this.props.onAdd(this.state.name, this.state.script);
+			this.setState({
+			  active: false
+			});
+		  },
+		  onKeyDown: event => {
+			if (event.key == 'Escape') this.setState({
+			  active: false
+			});
+		  }
+		}, /*#__PURE__*/React.createElement("input", {
+		  autoFocus: true,
+		  type: "text",
+		  placeholder: "Name",
+		  maxLength: "30",
+		  onChange: event => this.setState({
+			name: event.target.value
+		  }),
+		  required: true
+		}), /*#__PURE__*/React.createElement("input", {
+		  type: "text",
+		  placeholder: "script.sh",
+		  pattern: ".+\\.sh$",
+		  onChange: event => this.setState({
+			script: event.target.value
+		  }),
+		  required: true
+		}), /*#__PURE__*/React.createElement("button", {
+		  type: "submit",
+		  className: "confirm-connection btn"
+		}, "\ue163"));
+	  } else {
+		return /*#__PURE__*/React.createElement("div", {
+		  className: "content"
+		}, /*#__PURE__*/React.createElement("button", {
+		  className: "btn add-connection",
+		  onClick: () => this.setState({
+			active: true
+		  })
+		}, '\ue145'));
+	  }
+	}
+  
+  }
+  
+  function Connection(props) {
+	return /*#__PURE__*/React.createElement("div", {
+	  className: "content",
+	  onContextMenu: e => {
+		menu.show(e, ["Delete"], [props.onRemove]);
+	  }
+	}, /*#__PURE__*/React.createElement("h2", null, props.name), /*#__PURE__*/React.createElement("code", {
+	  className: props.valid ? '' : 'invalid'
+	}, props.script), /*#__PURE__*/React.createElement("span", {
+	  className: `status ${props.active ? 'active' : ''}`,
+	  onClick: props.onToggle
+	}, props.active ? "ON" : "OFF"));
+  }
+  
+  const connections = document.querySelector('#connections');
+  ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(ConnectionsDiv, null)), connections);

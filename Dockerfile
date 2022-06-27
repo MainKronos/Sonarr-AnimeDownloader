@@ -7,7 +7,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \
     apt-get -y upgrade; \
     apt-get -y install --no-install-recommends; \
-    apt-get -y install ffmpeg; \
+    apt-get -y install curl; \
     apt-get -y install tzdata; \
     apt-get -y install locales && locale-gen it_IT.UTF-8; \
     apt-get clean; \
@@ -44,10 +44,10 @@ ENV FLASK_ENV production
 
 USER dockeruser
 
-ENV VERSION "1.7.4"
+ENV VERSION "1.8.0"
 
 EXPOSE 5000
 
-VOLUME [ "/downloads", "/script/json" ]
+VOLUME [ "/downloads", "/script/json", "/script/connections" ]
 
 CMD ["python3","-u","/script/main.py"]

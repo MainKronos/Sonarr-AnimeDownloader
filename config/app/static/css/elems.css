@@ -46,24 +46,6 @@
 	opacity: 1;
 }
 
-
-#clear.btn, #submit.btn{
-	font-family: 'Roboto';
-	width: 200px;
-	margin: 15px 50px;
-	border: 2px solid var(--primary-color);
-	background-color: transparent;
-	border-radius: 4px;
-	color: var(--primary-color);
-	font-size: 18px;
-	padding: 10px;
-}
-
-#clear.btn:hover, #submit.btn:hover{
-	background-color: var(--primary-color);
-	color: rgba(255,255,255,0.7);
-}
-
 /* MENU */
 
 ul#menu{

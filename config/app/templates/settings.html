@@ -93,12 +93,16 @@
 				</div>
 			</div>
 			<section class="bottom">
-				<a class="btn" id="export" href="/ie/settings" target="_blank">&#xf090;</a>
-				<label for="import" class="btn">
-					<input id="import" type="file" accept=".json">&#xe2c6;
+				<a class="btn" href="/ie/settings" target="_blank">&#xf090;</a>
+				<label for="importS" class="btn">
+					<input id="importS" type="file" accept=".json">&#xe2c6;
 				</label>
 			</section>
 		</div>
+
+		<div class="card" id="connections">
+		</div>
+			
 		
 		<div class="card">
 			<div class="card-title">Variabili d'Ambiente</div>
@@ -111,14 +115,6 @@
 					<tr>
 						<th>API_KEY</th>
 						<td>{{ api_key }}</td>
-					</tr>
-					<tr>
-						<th>CHAT_ID</th>
-						<td>{{ chat_id }}</td>
-					</tr>
-					<tr>
-						<th>BOT_TOKEN</th>
-						<td>{{ bot_token }}</td>
 					</tr>
 					<tr>
 						<th>VERSION</th>

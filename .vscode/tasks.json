@@ -12,9 +12,7 @@
 				"image": "mainkronos/anime_downloader:latest",
 				"env": {
 					"SONARR_URL":"http://192.168.1.11:8989",
-					"API_KEY":"f10994e9f3494368a31a3088aba6b9fc",
-					"CHAT_ID":"123456789",
-					"BOT_TOKEN":"123456789:ABCDEFGHIJKLM-abc_AbCdEfGhI12345678",
+					"API_KEY":"f10994e94368a31a3088aba6b9fcffff",
 					"TZ":"Europe/Rome"
 				},
 				"ports": [
@@ -26,7 +24,11 @@
 				"volumes": [
 					{
 						"containerPath": "/script/json/",
-						"localPath": "${workspaceFolder}/documentation/examples"
+						"localPath": "${workspaceFolder}/documentation/examples/json"
+					},
+					{
+						"containerPath": "/script/connections/",
+						"localPath": "${workspaceFolder}/documentation/examples/connections"
 					}
 				]
 			},

@@ -317,6 +317,33 @@ summary input[type=text]{
 	margin-bottom: -2px;
 }
 
+.add-connection.btn{
+	border: 2px solid rgba(255,255,255,0.2);
+	color: rgba(255,255,255,0.2);
+	margin: 10px;
+	padding: 5px;
+	width: calc(100% - 20px);
+	height: calc(100% - 20px);
+	display: block;
+}
+.add-connection.btn:hover{
+	border: 2px solid var(--primary-color);
+}
+
+.confirm-connection.btn{
+	border: 2px solid rgba(255,255,255,0.2);
+	color: rgba(255,255,255,0.2);
+	margin: 0 10px;
+	padding: 5px;
+	width: calc(100% - 20px);
+	display: block;
+	font-size: 19px;
+
+}
+.confirm-connection.btn:hover{
+	border: 2px solid var(--primary-color);
+}
+
 .btn{
 	font-family: "Material Icons";
 	background-color: transparent;
@@ -334,4 +361,21 @@ summary input[type=text]{
 }
 .btn:hover{
 	color: var(--primary-color);
+}
+
+#clear.btn, #submit.btn{
+	font-family: 'Roboto';
+	width: 200px;
+	margin: 15px 50px;
+	border: 2px solid var(--primary-color);
+	background-color: transparent;
+	border-radius: 4px;
+	color: var(--primary-color);
+	font-size: 18px;
+	padding: 10px;
+}
+
+#clear.btn:hover, #submit.btn:hover{
+	background-color: var(--primary-color);
+	color: rgba(255,255,255,0.7);
 }
