@@ -5,6 +5,7 @@ import time
 from logger import logger
 from constants import SONARR_URL, API_KEY
 import texts as txt
+from .exceptions import UnauthorizedSonarr
 
 def getMissingEpisodes() -> List[Dict]:
 	"""
@@ -50,6 +51,9 @@ def getMissingEpisodes() -> List[Dict]:
 			page += 1
 			res = requests.get("{}/api/{}?apikey={}&sortKey=airDateUtc&page={}".format(SONARR_URL, endpoint, API_KEY, page))
 			result = res.json()
+
+			if "error" in result:
+				raise UnauthorizedSonarr(f"Errore Sonarr: {result['error']}")
 
 			if len(result["records"]) == 0: 
 				break

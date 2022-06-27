@@ -11,6 +11,7 @@ from utility import Settings
 
 from .functions import converting, fixEps, movefile, downloadProgress, getLatestVersion
 from . import sonarr
+from .exceptions import UnauthorizedSonarr
 
 def job():
 	"""
@@ -103,6 +104,8 @@ def job():
 
 	except requests.exceptions.RequestException as res_error:
 		logger.error(txt.CONNECTION_ERROR_LOG.format(res_error=res_error) + '\n')	
+	except UnauthorizedSonarr as e:
+		logger.error(str(e) + '\n')	
 	except Exception as error:
 		logger.exception(txt.EXCEPTION_STATE_LOG.format(exception=error) + '\n')
 

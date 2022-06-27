@@ -5,6 +5,7 @@ from app import socketio
 import requests
 import time
 import os
+import subprocess
 
 
 class MySocketHandler(logging.handlers.SocketHandler):
@@ -22,7 +23,7 @@ class ConnectionsHandler(logging.StreamHandler):
 			if connection["active"]:
 				script = os.path.join("connections", connection["script"])
 				if os.path.isfile(script):
-					os.system(f'{script} "{record.msg}"')
+					subprocess.check_call([script, record.msg], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 logging.config.dictConfig({
     'version': 1,
