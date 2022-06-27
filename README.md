@@ -34,7 +34,7 @@ services:
       - '/path/to/data:/script/json/'
       - '/path/to/animeSeries:/tv'
       - '/path/to/downloads:/downloads'
-	  - '/path/to/connections:/script/connections'
+      - '/path/to/connections:/script/connections'
     ports:
       - '{port}:5000'
     environment:
@@ -53,7 +53,7 @@ docker run -d \
     -v /path/to/data:/script/json/ \
     -v /path/to/animeSeries:/tv \
     -v /path/to/downloads:/downloads \
-	-v /path/to/connections:/script/connections \
+    -v /path/to/connections:/script/connections \
     -p {port}:5000 \
     --env SONARR_URL='http://{url}:{port}' \
     --env API_KEY='1234567890abcdefghijklmn' \
