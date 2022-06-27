@@ -15,6 +15,7 @@
 |[Uso Sonarr in ambiente Windows, come devo fare il mount?](#uso-sonarr-in-ambiente-windows-come-devo-fare-il-mount)|
 |[Cosa significa che la serie è stata scartata per mancanza di informazioni?](#cosa-significa-che-la-serie-è-stata-scartata-per-mancanza-di-informazioni)|
 |[La serie non compare nei log](#la-serie-non-compare-nei-log)|
+|[Come si usano le Connections?](#come-si-usano-le-connections)|
 ---
 
 ## Dove posso reperire la chiave api di sonarr?
@@ -155,3 +156,12 @@ Se il problema è ancora presente allora aprire un issue.
 
 Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/46).
 
+## Come si usano le Connections?
+
+![connection](/documentation/images/connections.png)
+
+Le connection sono Shell Script scritti in Bash che vengono eseguiti quando deve essere inviato un messaggio tramite un servizio esterno (tipo Telegram). Sono un po' meno user friendly ma altamente personalizzabili! Alcuni template possono essere trovati in questa [cartella](https://github.com/MainKronos/Sonarr-AnimeDownloader/tree/main/documentation/examples/connections).
+
+Per utilizzarle è necessario prima scrive lo script in modo tale che possa ricevere un parametro ($1) che identifica il messaggio da inviare, poi salvare con estensione .sh e posizionarlo nella cartella /script/connections. Infine accedere alla pagina web, nella sezioni impostazioni, aggiungerlo e attivarlo.
+
+![connection_howto](/documentation/images/connections_howto.gif)
