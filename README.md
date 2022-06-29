@@ -93,7 +93,7 @@ docker run -d \
   --restart unless-stopped \
   ghcr.io/linuxserver/sonarr
 ```
-
+Ad esempio se su Sonarr la cartella tv è mappata così: `-v /path/to/tvseries:/tv` allora su anime_downloader sarà `-v /path/to/animeSeries:/tv`, oppure se è `-v /path/to/tvseries:/miatv/perf/miacartella` diventerà `-v /path/to/animeSeries:/miatv/perf/miacartella`...
 ## Avvio
 
 ### table.json
