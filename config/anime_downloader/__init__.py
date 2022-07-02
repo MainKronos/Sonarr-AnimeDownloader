@@ -52,21 +52,6 @@ def job():
 
 									title = f'{anime["title"]} - S{episode["season"]}E{episode["num"]}'
 
-									file = ""
-
-									for server in ep.links:
-										try:
-											file = server.download(title, DOWNLOAD_FOLDER, downloadProgress)
-										except (requests.exceptions.RequestException, aw.ServerNotSupported) as ex:
-											pass
-										else:
-											break
-									else:
-										raise requests.exceptions.RequestException
-
-
-
-
 									file = ep.download(title, DOWNLOAD_FOLDER, downloadProgress)
 									if file: 
 										logger.info(txt.DOWNLOAD_COMPLETED_LOG + '\n')
