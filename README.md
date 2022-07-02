@@ -168,6 +168,11 @@ Segnalatelo il prima possibile sotto la sezione _Issues_, in modo tale che possa
 ## FAQ
 Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
 
+## Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=MainKronos/Sonarr-AnimeDownloader&type=Date)
+
+
 ## Sviluppo
 
 È possibile compilare l'immagine tramite [docker cli](https://www.docker.com/) o [Visual Studio Code](https://code.visualstudio.com/), se volete debuggure il codice consiglio la seconda.
