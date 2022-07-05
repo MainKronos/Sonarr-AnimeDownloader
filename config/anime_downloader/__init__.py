@@ -100,7 +100,7 @@ def job():
 						logger.warning('\n' + txt.DIVIDER_LOG + '\n\n')
 
 		else:
-			logger.info('\n' + txt.NO_EPISODES + '\n\n')
+			logger.info('\n' + txt.NO_EPISODES + '\n')
 
 	except requests.exceptions.RequestException as res_error:
 		logger.error(txt.CONNECTION_ERROR_LOG.format(res_error=res_error) + '\n')	
