@@ -17,7 +17,7 @@ Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documenta
 
 Le **FAQ** si trovano [qui](FAQ.md).
 
-Se vuoi dare un'occhiata al progetto c'è una demo disponibile [qui]().
+Se vuoi dare un'occhiata al progetto c'è una demo disponibile [qui](https://mainkronos.github.io/Sonarr-AnimeDownloader/).
 
 ![Presentazione](/documentation/images/Presentazione.gif)
 
