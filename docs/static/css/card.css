@@ -15,7 +15,7 @@ div.card{
 	padding: 1.3rem;
 	font-weight: 300;
 	font-size: 1.5rem;
-	background: no-repeat fixed url("/static/images/card-background.png");
+	background: no-repeat fixed url("../images/card-background.png");
 	background-size: cover;
 	border-bottom: 1px solid var(--background-color);
 	box-shadow: 0px 1px 2px -1px black;

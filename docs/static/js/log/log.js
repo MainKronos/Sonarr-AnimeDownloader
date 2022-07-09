@@ -30,7 +30,7 @@ class Log extends React.Component {
   }
   
   getLog() {
-    return fetch(`/static/log.log`).then((res)=>res.text()).then(res => {
+    return fetch(`static/log.log`).then((res)=>res.text()).then(res => {
 	  res = res.split('\n');
 
       this.setState({

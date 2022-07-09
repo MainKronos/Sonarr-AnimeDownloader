@@ -23,7 +23,7 @@ class Table extends React.Component {
   }
 
   syncData() {
-    return fetch("/static/json/table.json").then(res => res.json()).then(res => {
+    return fetch("static/json/table.json").then(res => res.json()).then(res => {
 	  this.setState({is_loaded: false});
       this.setState({
         error: false,

@@ -2,7 +2,7 @@
 
 function syncData(){
 
-	return fetch("/static/json/settings.json")
+	return fetch("static/json/settings.json")
 	.then(res => res.json())
 	.then((res) => {
 		document.getElementById('RenameEp').checked = res.RenameEp;
@@ -82,7 +82,7 @@ class ConnectionsDiv extends React.Component {
 	}
   
 	syncData() {
-	  fetch("/static/json/connections.json").then(res => res.json()).then(res => {
+	  fetch("static/json/connections.json").then(res => res.json()).then(res => {
 		this.setState({
 		  error: "",
 		  is_loaded: true,
@@ -118,7 +118,7 @@ class ConnectionsDiv extends React.Component {
 		  className: "bottom"
 		}, /*#__PURE__*/React.createElement("a", {
 		  className: "btn",
-		  href: "/static/json/connections.json",
+		  href: "static/json/connections.json",
 		  target: "_blank"
 		}, "\uF090"), /*#__PURE__*/React.createElement("label", {
 		  htmlFor: "importC",
