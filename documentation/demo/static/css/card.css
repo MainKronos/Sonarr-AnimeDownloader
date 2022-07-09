@@ -1,0 +1,33 @@
+div.card{
+	color: rgba(255,255,255,0.60);
+	background-color: rgba(255,255,255,0.06);
+	border-radius: 3px;
+	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+	margin: 50px 0;
+}
+
+.card h2{
+	font-weight: 300;
+}
+
+.card-title{
+	display: block;
+	padding: 1.3rem;
+	font-weight: 300;
+	font-size: 1.5rem;
+	background: no-repeat fixed url("/static/images/card-background.png");
+	background-size: cover;
+	border-bottom: 1px solid var(--background-color);
+	box-shadow: 0px 1px 2px -1px black;
+}
+
+.card-content{
+	padding: 24px;
+}
+
+.card > section.bottom{
+	width: 100%;
+	margin: 0;
+	background-color: transparent;
+	border-top: 1px solid var(--background-color);
+}

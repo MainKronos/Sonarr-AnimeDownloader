@@ -1,0 +1,43 @@
+
+ul#log{
+	font-family: monospace, monospace;
+	margin: auto;
+	white-space: pre-wrap;
+}
+ul#log > li {
+	list-style: none;
+    display: block;
+    min-height: 23px;
+    white-space: pre-wrap;
+}
+
+#download-info {
+	position: relative;
+	display: none;
+	
+	overflow: hidden;
+}
+#download-info.active{
+	display: block;
+}
+
+#download-info > div.card-content{
+	display: grid;
+	gap: 10px;
+	grid-template: 
+		"a . b" 1fr
+		"c c c" 24px
+		"d e f" 1fr / 33% 1fr 33%;
+}
+
+#filename,#downloaded,#elapsed,#speed,#eta{
+	text-align: center;
+	font-size: 1.1rem;
+	padding: 5px;
+}
+
+#filename{grid-area: a;}
+#downloaded{grid-area: b;}
+#elapsed{grid-area: d;}
+#speed{grid-area: e;}
+#eta{grid-area: f;}

@@ -1,0 +1,68 @@
+#settings{
+	display: grid;
+	gap: 10px;
+	grid-template-areas: "a b c" "a d e";
+}
+@media only screen and (max-width: 950px){#settings {grid-template-areas: "a a" "b c" "d e";}}
+@media only screen and (max-width: 490px){#settings {grid-template-areas: "a" "b" "c" "d" "e";}}
+
+#settings > .content, #connections .content{
+	background-color: rgba(255,255,255,0.02);
+	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+}
+
+#connections .content{
+	margin: 10px;
+	width: 180px;
+	height: 180px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	background-color: rgba(255,255,255,0.02);
+	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+}
+
+#connections > .card-content{
+	display: flex;
+	flex-wrap: wrap;
+}
+/* TelegramTelegramTelegramTelegramTelegramTel */
+#connections .content > h2{
+	margin-bottom: 0;
+	text-align: center;
+	word-break: break-all;
+}
+#connections .content > code::before{
+	content: "$ ";
+	color: var(--primary-color);
+	font-style: normal;
+	font-weight: 500;
+}
+#connections .content > code{
+	color: var(--primary-color);
+	font-size: 1rem;
+	font-style: italic;
+}
+#connections .content > code.invalid{
+	color: rgba(255,255,255,0.2);
+	text-decoration: line-through;
+}
+#connections .content > .status{
+	padding: 5px;
+
+	border: 2px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.2);
+
+	border-radius: 3px;
+	font-weight: 700;
+	width: calc(100% - 20px);
+	text-align: center;
+}
+#connections .content > .status:hover{
+	cursor: pointer;
+}
+#connections .content > .status.active{
+	border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}

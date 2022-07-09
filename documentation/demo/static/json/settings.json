@@ -1,0 +1,7 @@
+{
+    "AutoBind": false,
+    "LogLevel": "INFO",
+    "MoveEp": true,
+    "RenameEp": true,
+    "ScanDelay": 120
+}

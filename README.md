@@ -17,6 +17,8 @@ Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documenta
 
 Le **FAQ** si trovano [qui](FAQ.md)
 
+Una demo del programma è disponibile [qui]()
+
 ![Presentazione](/documentation/images/Presentazione.gif)
 
 ## Utilizzo

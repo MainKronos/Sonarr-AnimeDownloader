@@ -1,0 +1,79 @@
+details{
+	user-select: none;
+	background-color: rgba(255,255,255,0.06);
+	margin: 0 30px;
+	transition: margin 0.1s;
+}
+
+details[open]{
+	border-bottom: 1px solid var(--background-color);
+	margin: 30px 0;
+}
+summary{
+	cursor: pointer;
+	color: rgba(255,255,255,0.5);
+	font-size: 1rem;
+	font-weight: 400;
+	padding: 15px;
+	border-bottom: 1px solid var(--background-color);
+	transition: box-shadow 0.5s;
+}
+details[open] > summary{
+	box-shadow: 0px 1px 2px -1px black;
+}
+summary::marker{content: none;}
+
+summary{
+	color: rgba(255,255,255,0.5);
+	transition: color 0.2s;
+}
+summary:hover{
+	color: var(--primary-color);
+}
+summary::before{
+	font-family: "Material Icons";
+	content: "\e02c";
+	font-size: 1.5rem;
+	padding: 5px;
+	vertical-align: text-bottom;
+}
+
+
+
+/* blocco di tutte le tabs */
+.tabs{
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	margin: 0 auto;
+	border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+.tab{
+	color: rgba(255,255,255,0.5);
+	font-size: 16px;
+    padding: 10px 50px;
+    cursor: pointer;
+	border-bottom: 2px solid rgba(255,255,255,0);
+	margin: 0 0 -2px 0;
+	transition-property: color, border;
+	transition-duration: 0.3s;
+}
+.tab.active{
+	color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* blocco di tutti i contenuti delle tabs */
+.tabs-content{
+	/* padding: 10px; */
+}
+.tab-content{
+	display: none;
+}
+.tab-content.active{
+	display: block;
+}
+
+.tab-content > a{
+	display: block;
+}

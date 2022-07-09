@@ -1,0 +1,381 @@
+/* NUMBER AND TEXT */
+
+input[type=number],input[type=text]{
+	color: rgba(255,255,255,0.7);
+	background: none;
+	font-size: 18px;
+	padding: 10px;
+	width: calc(100% - 44px);
+	border: 2px solid rgba(255,255,255,0.2);
+	border-radius: 4px;
+	transition: border 0.3s;
+	display: block;
+	margin: 10px;
+}
+
+input[type=number]:disabled,input[type=text]:disabled{
+	border: 2px solid rgba(0,0,0,0.2);
+}
+
+input[type=number]::placeholder,input[type=text]::placeholder{
+	color: rgba(255,255,255,0.2);
+}
+input[type=number]:focus,input[type=text]:focus{
+	outline: none;
+	border: 2px solid var(--primary-color);
+}
+/* input[type=number]:focus:valid,input[type=text]:focus:valid{
+	border: 2px solid #4CAF50;
+} */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type=number] ~ label,input[type=text] ~ label{
+	padding: 0 10px;
+	color: rgba(255,255,255,0.7);
+	font-size: 14px;
+	font-weight: normal;
+	position: absolute;
+	top: 17px;
+	left: 35px;
+	background-color: var(--card-color);
+	margin: 0 0 55px;
+	user-select: none;
+}
+
+/* CHECKBOX */
+
+label.checkbox{
+  	position: relative;
+	padding: 0 20px;
+	font-size: 18px;
+	user-select: none;
+	cursor: pointer;
+	margin: 10px;
+	color: rgba(255,255,255,0.7);
+}
+
+label.checkbox > input {
+	opacity: 0;
+	height: 0;
+	width: 0;
+}
+
+label.checkbox > span {
+	position: absolute; 
+	top: 0;
+	left: 0; 
+	height: 18px;
+	width: 18px;
+	background-color: transparent;
+	border: 2px solid rgba(255,255,255,0.2);
+	border-radius: 4px;
+}
+
+label.checkbox > input[type=checkbox]:checked + span {
+	background-color: var(--primary-color);
+}
+
+label.checkbox > span::after {
+	font-family: "Material Icons";
+	content: "";
+	color: white;
+}
+
+label.checkbox > input[type=checkbox]:checked + span::after {
+	content: "\e5ca";
+}
+
+/* RADIO */
+
+label.radio{
+  	position: relative;
+	padding: 1px 20px;
+	font-size: 15px;
+	user-select: none;
+	cursor: pointer;
+	margin: 7px;
+	display: block;
+}
+
+label.radio > input {
+	opacity: 0;
+	height: 0;
+	width: 0;
+}
+
+label.radio > span {
+	position: absolute; 
+	top: 0;
+	left: 0; 
+	height: 15px;
+	width: 15px;
+	background-color: transparent;
+	border: 2px solid rgba(255,255,255,0.2);
+	border-radius: 50%;
+}
+
+label.radio > input[type=radio]:checked + span {
+	background-color: var(--primary-color);
+}
+
+label.radio > span:before {
+	content: " ";
+	background-color: transparent;
+	margin: 1px;
+	border: 2.5px solid var(--card-color);
+	height: 8px;
+	width: 8px;
+	border-radius: 50%;
+	display: block;
+}
+
+
+/* SWITCH */
+
+label.switch {
+	cursor: pointer;
+	user-select: none;
+}
+  
+
+label.switch > input[type=checkbox] {
+	opacity: 0;
+	width: 0;
+	height: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+label.switch > span {
+	content: "";
+    display: inline-block;
+    position: relative;
+    width: 36px;
+    height: 14px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 15px;
+    margin-right: 10px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    vertical-align: middle;
+    margin: 0 16px;
+}
+
+label.switch > span:before {
+	content: "";
+	position: absolute;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	left: 0;
+	top: -3px;
+	box-shadow: none;
+	transition: left 0.3s ease, background .3s ease, transform .1s ease;
+}
+
+label.switch > span:before{
+	background-color: var(--primary-color);
+	outline: 2px solid var(--card-color);
+}
+
+label.switch > input[type=checkbox]:checked + span:before{
+	left: 18px;	
+}
+
+label.switch > input[type=checkbox]:checked + span {
+	background-color: var(--primary-color);
+	box-shadow: inset 0 0 20px -5px var(--background-color);
+	
+}
+
+/* RANGE */
+
+input[type=range] {
+	vertical-align: middle;
+	-webkit-appearance: none;
+	/* width: 100%; */
+	height: 5px;
+	border-radius: 5px;
+	background: rgba(255,255,255,0.2);
+	outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: var(--primary-color);
+	cursor: pointer;
+	outline: 2px solid var(--card-color);
+}
+input[type=range]::-moz-range-thumb {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: var(--primary-color);
+	cursor: pointer;
+	outline: 2px solid var(--card-color);
+}
+
+
+/* FILE */
+
+input[type=file]{
+	opacity: 0;
+	width: 0;
+	height: 0;
+	visibility: hidden;
+}
+
+/* INPUT PARTICOLARI */
+
+
+
+input[type=number].add-tab{
+	color: rgba(255,255,255,0.5);
+	width: 89px;
+	height: 19px;
+	font-size: 16px;
+	margin: 4px 0 -2px 0;
+	text-align: center;
+	border: 0;
+	border-bottom: 2px solid rgba(255,255,255,0.3);
+	border-radius: 0px;
+	vertical-align: bottom;
+}
+input[type=number].add-tab:focus{
+	color: var(--primary-color);
+	border: 0;
+	border-bottom: 2px solid rgba(255,255,255,0.3);
+}
+
+
+
+#add-anime.btn{
+	display: inline;
+}
+
+summary input[type=text]{
+	display: inline;
+	width: calc(100% - 78px);
+	margin: 0 10px;
+}
+
+
+/* BUTTONS */
+
+#nav.btn{
+	/* float: left; */
+	position: absolute;
+	left: 0.67em;
+	top: 0.67em;
+}
+
+#donate.btn{
+	animation: HeartBeat 1.5s infinite;
+	position: absolute;
+	right: 0.67em;
+	top: 0.67em;
+	text-shadow: 0 0 10px var(--primary-color);
+}
+
+#add-anime.btn{
+	width: calc(100% - 60px);
+	margin: 0 30px;
+	padding: 15px;
+	border-bottom: 1px solid var(--background-color);
+	background-color: rgba(255,255,255,0.06);
+	/* color: rgba(255,255,255,0.5); */
+	border-radius: 4px 4px 0 0;
+}
+
+.add-link.btn{
+	border: 2px solid rgba(255,255,255,0.2);
+	color: rgba(255,255,255,0.2);
+	margin: 10px;
+	padding: 5px;
+	width: calc(100% - 20px);
+	display: block;
+}
+.add-link.btn:hover{
+	border: 2px solid var(--primary-color);
+}
+
+.add-tab.btn{
+	color: rgba(255,255,255,0.5);
+    padding: 5px 50px;
+    cursor: pointer;
+	margin-bottom: -2px;
+}
+
+.add-connection.btn{
+	border: 2px solid rgba(255,255,255,0.2);
+	color: rgba(255,255,255,0.2);
+	margin: 10px;
+	padding: 5px;
+	width: calc(100% - 20px);
+	height: calc(100% - 20px);
+	display: block;
+}
+.add-connection.btn:hover{
+	border: 2px solid var(--primary-color);
+}
+
+.confirm-connection.btn{
+	border: 2px solid rgba(255,255,255,0.2);
+	color: rgba(255,255,255,0.2);
+	margin: 0 10px;
+	padding: 5px;
+	width: calc(100% - 20px);
+	display: block;
+	font-size: 19px;
+
+}
+.confirm-connection.btn:hover{
+	border: 2px solid var(--primary-color);
+}
+
+.btn{
+	font-family: "Material Icons";
+	background-color: transparent;
+	border: 0;
+	border-radius: 4px;
+	color: rgba(255,255,255,0.60);
+	font-size: 1.5rem;
+	font-weight: 400;
+	padding: 10px;
+	transition: background-color, color 0.1s;
+	cursor: pointer;
+	user-select: none;
+	text-align: center;
+	margin: 0;
+}
+.btn:hover{
+	color: var(--primary-color);
+}
+
+#clear.btn, #submit.btn{
+	font-family: 'Roboto';
+	width: 200px;
+	margin: 15px 50px;
+	border: 2px solid var(--primary-color);
+	background-color: transparent;
+	border-radius: 4px;
+	color: var(--primary-color);
+	font-size: 18px;
+	padding: 10px;
+}
+
+#clear.btn:hover, #submit.btn:hover{
+	background-color: var(--primary-color);
+	color: rgba(255,255,255,0.7);
+}
