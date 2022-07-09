@@ -11,13 +11,13 @@ Questo Docker Container funziona come un'estenzione di [Sonarr](https://sonarr.t
 Il Container si interfaccia con Sonarr per avere informazini riguardante gli anime mancanti sull'hard-disk, viene poi fatta una ricerca se sono presenti sul sito [AnimeWorld](https://www.animeworld.tv/), e se ci sono li scarica e li posiziona nella cartella indicata da Sonarr.
 
 L'utilizzo di _**Sonarr**_ è necessario.
-Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com/linuxserver/docker-sonarr)
+Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com/linuxserver/docker-sonarr).
 
-Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documentazione è reperibile [qui](../../../AnimeWorld-API)
+Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documentazione è reperibile [qui](../../../AnimeWorld-API).
 
-Le **FAQ** si trovano [qui](FAQ.md)
+Le **FAQ** si trovano [qui](FAQ.md).
 
-Una demo del programma è disponibile [qui]()
+Se vuoi dare un'occhiata al progetto c'è una demo disponibile [qui]().
 
 ![Presentazione](/documentation/images/Presentazione.gif)
 
