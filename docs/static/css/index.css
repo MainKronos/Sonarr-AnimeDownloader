@@ -79,6 +79,9 @@ tr {
 th{
 	width: 30%;
 }
+td {
+	word-break: break-all;
+}
 td, th {
     padding: 15px 10px;
     text-align: left;

@@ -3,12 +3,14 @@ ul#log{
 	font-family: monospace, monospace;
 	margin: auto;
 	white-space: pre-wrap;
+	padding: 0;
 }
 ul#log > li {
 	list-style: none;
     display: block;
     min-height: 23px;
     white-space: pre-wrap;
+	word-wrap: break-word;
 }
 
 #download-info {

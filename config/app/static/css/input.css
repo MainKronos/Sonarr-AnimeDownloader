@@ -366,7 +366,7 @@ summary input[type=text]{
 #clear.btn, #submit.btn{
 	font-family: 'Roboto';
 	width: 200px;
-	margin: 15px 50px;
+	margin: 15px 50px; 
 	border: 2px solid var(--primary-color);
 	background-color: transparent;
 	border-radius: 4px;
@@ -378,4 +378,11 @@ summary input[type=text]{
 #clear.btn:hover, #submit.btn:hover{
 	background-color: var(--primary-color);
 	color: rgba(255,255,255,0.7);
+}
+
+@media only screen and (max-width: 700px){
+
+	#clear.btn, #submit.btn{
+		width: calc(100% - 50px);
+	}
 }
