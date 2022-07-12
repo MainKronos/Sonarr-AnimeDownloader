@@ -57,7 +57,8 @@ nav > .nav-content > a:hover{
 #toast {
 	visibility: hidden;
 	opacity: 0;
-	min-width: 250px; 
+	min-width: 150px;
+	max-width: 350px; 
 	background-color: var(--card-color); 
 	box-shadow: 0 0 10px var(--background-color);
 	border: 1px solid var(--background-color);
@@ -67,14 +68,22 @@ nav > .nav-content > a:hover{
 	padding: 16px; 
 	position: fixed; 
 	z-index: 1; 
-	right: 5%; 
+	right: 0; 
+	margin: 0 5%;
 	top: -53px;
 	user-select: none;
 	transition: all 0.5s;
 }
   
+@media only screen and (max-width: 600px){
+	#toast{
+		max-width:none;
+		width: calc(90% - 34px);
+	}
+}
+
 #toast.active {
 	opacity: 100;
-	top: 5%;
+	top: 25px;
 	visibility: visible; 
 }

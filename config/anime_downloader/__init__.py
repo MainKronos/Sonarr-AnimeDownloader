@@ -97,7 +97,7 @@ def job():
 					except aw.DeprecatedLibrary as dev:
 						logger.critical(txt.CRITICAL_STATE_LOG.format(critical=dev) + '\n')
 					finally:
-						logger.warning('\n' + txt.DIVIDER_LOG + '\n\n')
+						logger.warning('\n' + txt.DIVIDER_LOG + '\n')
 
 		else:
 			logger.info('\n' + txt.NO_EPISODES + '\n')

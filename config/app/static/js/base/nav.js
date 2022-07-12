@@ -16,6 +16,8 @@ function showToast(message){
 	let toast = document.createElement('div');
 	toast.id = 'toast';
 
+	time = message.split(" ").length * 300;
+
 	toast.appendChild(document.createTextNode(message));
 	document.body.appendChild(toast);
 
@@ -25,8 +27,8 @@ function showToast(message){
 			toast.classList.remove("active");
 			setTimeout(function(){
 				document.body.removeChild(toast);
-			}, 500);
-		},3000);
+			}, time+500);
+		},time);
 	}, 500);
 }
 
