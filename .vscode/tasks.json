@@ -9,11 +9,15 @@
 			"dependsOn": ["docker-build"],
 			"dockerRun": {
 				"containerName": "AnimeDownloader",
+				"remove": true,
+				"os": "Linux",
 				"image": "mainkronos/anime_downloader:latest",
 				"env": {
 					"SONARR_URL":"http://192.168.1.11:8989",
 					"API_KEY":"f10994e94368a31a3088aba6b9fcffff",
-					"TZ":"Europe/Rome"
+					"TZ":"Europe/Rome",
+					"PUID":"1000",
+					"PGID":"1000"
 				},
 				"ports": [
 					{

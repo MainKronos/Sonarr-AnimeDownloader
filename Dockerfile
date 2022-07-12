@@ -22,15 +22,15 @@ COPY requirements.txt /tmp/
 
 RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
 
-RUN groupadd --gid 1000 dockergroup
-RUN useradd --no-log-init -r -m --gid dockergroup --uid 1000 dockeruser 
+RUN groupadd --gid 1000 dockeruser
+RUN useradd --no-log-init -r -m --gid dockeruser --uid 1000 dockeruser 
 
-RUN mkdir /downloads && chown -R dockeruser /downloads
-RUN mkdir /script && chown -R dockeruser /script
+RUN mkdir /downloads
+RUN mkdir /script
 
 WORKDIR /script
 
-COPY --chown=dockeruser:dockergroup config/ /script/
+COPY config/ /script/
 
 RUN chmod 777 /downloads -R 
 RUN chmod 777 /script -R 
@@ -42,7 +42,7 @@ RUN sed -i -e 's/# it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/' /etc/locale.gen && \
 ENV WERKZEUG_RUN_MAIN true
 ENV FLASK_ENV production
 
-USER dockeruser
+# USER dockeruser
 
 ENV VERSION "1.8.0"
 
@@ -50,4 +50,4 @@ EXPOSE 5000
 
 VOLUME [ "/downloads", "/script/json", "/script/connections" ]
 
-CMD ["python3","-u","/script/main.py"]
+CMD ["/script/start.sh"]
