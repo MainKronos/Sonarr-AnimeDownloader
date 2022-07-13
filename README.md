@@ -215,7 +215,7 @@ docker run -d \
     -v /path/to/data:/script/json/ \
     -v /path/to/animeSeries:/tv \
     -v /path/to/downloads:/downloads \
-	-v /path/to/connections:/script/connections \
+    -v /path/to/connections:/script/connections \
     -p {port}:5000 \
     --env SONARR_URL='http://{url}:{port}' \
     --env API_KEY='1234567890abcdefghijklmn' \
@@ -229,8 +229,8 @@ docker run -d \
 ### Visual Studio Code
 Aprire la cartella del progetto in Visual Studio Code e modificate a vostro piacere il file [`tasks.json`](.vscode/tasks.json)
 
-- Per modificare i valori delle variabili d'ambiente cambiate [questi valori](.vscode/tasks.json#L14-L18)
-- Per modificare la porta esterna del container cambiate [questo valore](.vscode/tasks.json#L23)
-- Per modificare i volumi cambiate [questi valori](.vscode/tasks.json#L28-L29)
+- Per modificare i valori delle variabili d'ambiente cambiate [questi valori](.vscode/tasks.json#L16-L20)
+- Per modificare la porta esterna del container cambiate [questo valore](.vscode/tasks.json#L25)
+- Per modificare i volumi cambiate [questi valori](.vscode/tasks.json#L29-L36)
 
 E per avviare -> In Visual Studio Code -> `Esegui` -> `Avvia debug`.
