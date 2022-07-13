@@ -84,8 +84,8 @@ Parametro | Necessario | Funzione
 `--env SONARR_URL` | :heavy_check_mark: | Url di Sonarr es. http://localhost:8989
 `--env API_KEY` | :heavy_check_mark: | Api key di sonarr, vedi sotto per ulteriori informazioni
 `--env TZ` | :heavy_check_mark: | Specifica un fuso orario, è necessario per il corretto funzionamento del Container
-`--env PUID` | :heavy_check_mark: | Specifica UserID. Vedi sotto per maggiori informazioni
-`--env PGID` | :heavy_check_mark: | Specifica GroupID. Vedi sotto per maggiori informazioni
+`--env PUID` | :x: | Specifica UserID. Vedi sotto per maggiori informazioni
+`--env PGID` | :x: | Specifica GroupID. Vedi sotto per maggiori informazioni
 
 ### /tv
 È importante, per il corretto funzionamento del container, che il volume legato alla directory `/tv` sia identico a quello usato per la configurazione di **Sonarr**.
