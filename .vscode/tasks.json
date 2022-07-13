@@ -9,7 +9,7 @@
 			"dependsOn": ["docker-build"],
 			"dockerRun": {
 				"containerName": "AnimeDownloader",
-				"remove": true,
+				// "remove": true,
 				"os": "Linux",
 				"image": "mainkronos/anime_downloader:latest",
 				"env": {

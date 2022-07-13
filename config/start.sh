@@ -1,6 +1,6 @@
 #!/bin/sh
 
-USER_NAME="dockeruser"
+set -e
 
 PUID=${PUID:-1000}
 PGID=${PGID:-1000}
@@ -18,10 +18,12 @@ User gid:    $(id -g "$USER_NAME")
 -------------------------------------
 "
 
-chown "$USER_NAME":"$USER_NAME" /downloads -R
-chown "$USER_NAME":"$USER_NAME" /script -R
+touch /script/json/settings.json
+touch /script/json/table.json
 
-chmod 777 /downloads -R
+chown "$USER_NAME":"$USER_NAME" /script -R
 chmod 777 /script -R
+
+pip3 install --upgrade --no-cache-dir --disable-pip-version-check --quiet animeworld
 
 su $USER_NAME -c "python3 -u /script/main.py"

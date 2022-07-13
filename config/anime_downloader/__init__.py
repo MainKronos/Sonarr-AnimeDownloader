@@ -104,8 +104,8 @@ def job():
 
 	except requests.exceptions.RequestException as res_error:
 		logger.error(txt.CONNECTION_ERROR_LOG.format(res_error=res_error) + '\n')	
-	except UnauthorizedSonarr as e:
-		logger.error(str(e) + '\n')	
+	except UnauthorizedSonarr as error:
+		logger.error(txt.EXCEPTION_STATE_LOG.format(exception=error) + '\n')	
 	except Exception as error:
 		logger.exception(txt.EXCEPTION_STATE_LOG.format(exception=error) + '\n')
 

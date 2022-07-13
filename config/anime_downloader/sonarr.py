@@ -53,7 +53,7 @@ def getMissingEpisodes() -> List[Dict]:
 			result = res.json()
 
 			if "error" in result:
-				raise UnauthorizedSonarr(f"Errore Sonarr: {result['error']}")
+				raise UnauthorizedSonarr(f"Sonarr API KEY non valida, {result['error']}.")
 
 			if len(result["records"]) == 0: 
 				break
