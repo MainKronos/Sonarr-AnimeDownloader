@@ -45,6 +45,8 @@ services:
       - 'SONARR_URL=http://{url}:{port}'
       - 'API_KEY=1234567890abcdefghijklmn'
       - 'TZ=Europe/Rome'
+	  - 'PUID=1000'
+	  - 'PGID=1000'
     image: 'ghcr.io/mainkronos/anime_downloader:latest'
 ```
 
@@ -62,6 +64,8 @@ docker run -d \
     --env SONARR_URL='http://{url}:{port}' \
     --env API_KEY='1234567890abcdefghijklmn' \
     --env TZ=Europe/Rome \
+    --env PUID=1000 \
+    --env PGID=1000 \
     ghcr.io/mainkronos/anime_downloader:latest
 ```
 
@@ -80,6 +84,8 @@ Parametro | Necessario | Funzione
 `--env SONARR_URL` | :heavy_check_mark: | Url di Sonarr es. http://localhost:8989
 `--env API_KEY` | :heavy_check_mark: | Api key di sonarr, vedi sotto per ulteriori informazioni
 `--env TZ` | :heavy_check_mark: | Specifica un fuso orario, è necessario per il corretto funzionamento del Container
+`--env PUID` | :heavy_check_mark: | Specifica UserID. Vedi sotto per maggiori informazioni
+`--env PGID` | :heavy_check_mark: | Specifica GroupID. Vedi sotto per maggiori informazioni
 
 ### /tv
 È importante, per il corretto funzionamento del container, che il volume legato alla directory `/tv` sia identico a quello usato per la configurazione di **Sonarr**.
@@ -98,6 +104,18 @@ docker run -d \
   ghcr.io/linuxserver/sonarr
 ```
 Ad esempio se su Sonarr la cartella tv è mappata così: `-v /path/to/tvseries:/tv` allora su anime_downloader sarà `-v /path/to/animeSeries:/tv`, oppure se è `-v /path/to/tvseries:/miatv/perf/miacartella` diventerà `-v /path/to/animeSeries:/miatv/perf/miacartella`...
+
+### User / Group Identifiers
+Quando si utilizzano i volumi (-v flag) possono sorgere dei problemi di autorizzazione tra il sistema operativo host e il contenitore, il problema può essere evitato specificando il `PUID` utente e il `PGID` di gruppo.
+
+Assicurati che tutte le directory di volume sull'host siano di proprietà dello stesso utente che hai specificato e qualsiasi problema di autorizzazione svanirà come per magia.
+
+In questo caso `PUID=1000` e `PGID=1000`, per trovare il tuo usa `id user` come di seguito:
+```bash
+$ id username
+  uid=1000(dockeruser) gid=1000(dockeruser) groups=1000(dockeruser)
+```
+
 ## Avvio
 
 ### table.json
