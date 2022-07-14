@@ -28,9 +28,11 @@ class Log extends React.Component {
         }
       });
     });
-	socket.on('log', (data)=>{this.setState({
-		data: this.state.data.concat([data])
-	});});
+	socket.on('log', (data)=>{
+		this.setState({
+			data: this.state.data.concat([data])
+		});
+	});
   }
   
   getLog() {

@@ -2,7 +2,7 @@
 
 // Connection opened
 socket.on('connect', function() {
-	
+	socket.emit('connected', {data: 'ok'});
 });
 
 // Listen for messages
@@ -42,7 +42,4 @@ function unitConversion(n){
 			}else return `${Math.floor(n*100 / 2**20)/100} MB`;
 		}else return `${Math.floor(n*100 / 2**10)/100} KB`;
 	}else return `${n} B`;
-}
-function getData(){
-	socket.emit('start', {data: 'ok'});
 }

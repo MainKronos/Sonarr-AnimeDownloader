@@ -19,4 +19,7 @@ def settings():
 @app.route('/log')
 def log():
 	return render_template('log.html', version=VERSION)
-	
+
+@socketio.on('connected')
+def handler(data):
+    pass
