@@ -5,8 +5,7 @@ on:
 
   workflow_dispatch:
     inputs:
-      RELEASE_VERSION:
-        type: environment
+      version:
         description: 'Versione'
         required: false
 
@@ -32,7 +31,9 @@ jobs:
       - name: Set env
         if: github.event_name != 'workflow_dispatch'
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      
+      - name: Set env
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
       - name: Set env
         if: github.ref_name == 'dev'
         run: echo "RELEASE_VERSION=dev" >> $GITHUB_ENV
