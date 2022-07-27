@@ -14,7 +14,7 @@ env:
 
 jobs:
 
-  build_and_push:
+  dev:
   
     runs-on: ubuntu-latest
     permissions:
@@ -26,7 +26,7 @@ jobs:
       - name: Check Out Repo 
         uses: actions/checkout@v3
         with:
-          ref: ${github.ref_name}
+          ref: ${{ github.ref_name }}
         
       - name: Set env
         if: github.event_name != 'workflow_dispatch'
