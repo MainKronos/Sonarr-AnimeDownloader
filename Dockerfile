@@ -8,6 +8,8 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get -y upgrade; \
     apt-get -y install --no-install-recommends; \
     apt-get -y install curl; \
+	apt-get -y install ffmpeg; \
+	apt-get -y install rtmpdump; \
     apt-get -y install tzdata; \
     apt-get -y install locales && locale-gen it_IT.UTF-8; \
     apt-get clean; \
