@@ -3,8 +3,10 @@ from flask import request, Response
 import sys, os, json
 
 from .app import app
-from utility import Table, Settings, Connections
-from constants import SONARR_URL, API_KEY
+from utility.table import Table
+from utility.settings import Settings
+from utility.connections import Connections
+from other.constants import SONARR_URL, API_KEY
 
 
 @app.route('/api/table', methods=['GET'])

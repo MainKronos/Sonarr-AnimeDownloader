@@ -2,10 +2,10 @@ from typing import Dict, List
 import requests
 import time
 
-from logger import logger
-from constants import SONARR_URL, API_KEY
-import texts as txt
-from .exceptions import UnauthorizedSonarr
+from .logger import logger
+from other.constants import SONARR_URL, API_KEY
+import other.texts as txt
+from other.exceptions import UnauthorizedSonarr
 
 def getMissingEpisodes() -> List[Dict]:
 	"""

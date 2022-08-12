@@ -8,13 +8,14 @@ import shutil
 from datetime import datetime
 from typing import Dict, List
 
-from utility import Table
+
 from app import socketio
 
-from logger import logger, message
-from utility import Settings
-import texts as txt
-from .exceptions import TableFormattingError
+from .table import Table
+from .logger import logger, message
+from .settings import Settings
+import other.texts as txt
+from other.exceptions import TableFormattingError
 
 def converting(data:List[Dict]) -> List[Dict]:
 	"""

@@ -5,68 +5,68 @@ import time
 import threading
 import requests
 
-from logger import logger, message
-from constants import SONARR_URL, API_KEY, VERSION
-import texts as txt
-from utility import Settings
-from anime_downloader import job
+
+from other.constants import SONARR_URL, API_KEY, VERSION
+import other.texts as txt
+from utility.settings import Settings
+import utility.logger as log
+from job import job
 
 from app import app
 
 
 def main():
-	logger.warning(txt.START_LOG.format(time=time.strftime('%d %b %Y %H:%M:%S'), version=VERSION) + '\n')
+	log.logger.warning(txt.START_LOG.format(time=time.strftime('%d %b %Y %H:%M:%S'), version=VERSION) + '\n')
 	Settings.refresh = refresh # aggiornamento metodo di Settings per il refresh delle impostazioni
 
+
 	if SONARR_URL is None:
-		logger.warning(txt.SONARR_URL_ERROR_LOG + '\n')
+		log.logger.warning(txt.SONARR_URL_ERROR_LOG + '\n')
 	else:
-		logger.info(txt.SONARR_URL_CHECK_LOG.format(sonar_url=SONARR_URL) + '\n')
+		log.logger.info(txt.SONARR_URL_CHECK_LOG.format(sonar_url=SONARR_URL) + '\n')
 	if API_KEY is None:
-		logger.warning(txt.API_KEY_ERROR_LOG + '\n')
+		log.logger.warning(txt.API_KEY_ERROR_LOG + '\n')
 	else:
-		logger.info(txt.API_KEY_CHECK_LOG.format(api_key=API_KEY) + '\n')
+		log.logger.info(txt.API_KEY_CHECK_LOG.format(api_key=API_KEY) + '\n')
 
 	if None not in (SONARR_URL, API_KEY):
 
-		logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay= Settings.data['ScanDelay']) + '\n')
-		logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if Settings.data['MoveEp'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if Settings.data['RenameEp'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if Settings.data['AutoBind'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=Settings.data['LogLevel']) + '\n')
+		log.logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay= Settings.data['ScanDelay']) + '\n')
+		log.logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if Settings.data['MoveEp'] else 'OFF') + '\n')
+		log.logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if Settings.data['RenameEp'] else 'OFF') + '\n')
+		log.logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if Settings.data['AutoBind'] else 'OFF') + '\n')
+		log.logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=Settings.data['LogLevel']) + '\n')
 
-		logger.info('\n' + txt.START_SERVER_LOG + '\n')
+		log.logger.info('\n' + txt.START_SERVER_LOG + '\n')
 		job_thread = threading.Thread(target=server)
 		job_thread.start()
 
 		schedule.every(Settings.data["ScanDelay"]).minutes.do(job).run() # Fa una prima esecuzione e poi lo imposta per la ripetizione periodica
 
+# Refresh settings ###########################################
 
-	
-
-@classmethod
 def refresh(self, silent=False):
 	"""
 	Aggiorna le impostazioni a livello globale.
 	"""
 	if not silent:
-		logger.info(txt.SEPARATOR_LOG + '\n')
-		logger.info(txt.SETTINGS_UPDATED_LOG + '\n')
+		log.logger.info(txt.SEPARATOR_LOG + '\n')
+		log.logger.info(txt.SETTINGS_UPDATED_LOG + '\n')
 
-		logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay= Settings.data['ScanDelay']) + '\n')
-		logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if Settings.data['MoveEp'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if Settings.data['RenameEp'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if Settings.data['AutoBind'] else 'OFF') + '\n')
-		logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=Settings.data['LogLevel']) + '\n')
+		log.logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay= self.data['ScanDelay']) + '\n')
+		log.logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if self.data['MoveEp'] else 'OFF') + '\n')
+		log.logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if self.data['RenameEp'] else 'OFF') + '\n')
+		log.logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if self.data['AutoBind'] else 'OFF') + '\n')
+		log.logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=self.data['LogLevel']) + '\n')
 
-		logger.info(txt.SEPARATOR_LOG + '\n')
+		log.logger.info(txt.SEPARATOR_LOG + '\n')
 
-	logger.setLevel(Settings.data["LogLevel"])
-	message.setLevel(Settings.data["LogLevel"])
+	log.logger.setLevel(self.data["LogLevel"])
+	log.message.setLevel(self.data["LogLevel"])
 	schedule.clear()
-	schedule.every(Settings.data["ScanDelay"]).minutes.do(job)
-
-
+	schedule.every(self.data["ScanDelay"]).minutes.do(job)
+ 
+#############################################################################################
 
 
 def server():

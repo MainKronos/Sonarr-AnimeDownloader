@@ -4,14 +4,15 @@ import requests
 import animeworld as aw
 import os
 
-import texts as txt
-from logger import logger, message
-from constants import DOWNLOAD_FOLDER, VERSION
-from utility import Settings
+import other.texts as txt
+import utility.functions as fun
+from utility.logger import logger, message
+from utility.settings import Settings
+from utility import sonarr
+from other.constants import DOWNLOAD_FOLDER, VERSION
+from other.exceptions import UnauthorizedSonarr
 
-from .functions import converting, fixEps, movefile, downloadProgress, getLatestVersion
-from . import sonarr
-from .exceptions import UnauthorizedSonarr
+
 
 def job():
 	"""
@@ -19,7 +20,7 @@ def job():
 	"""
 	logger.warning('\n' + txt.START_BLOCK_LOG.format(time=time.strftime('%d %b %Y %H:%M:%S')) + '\n')
 
-	latest_version_container = getLatestVersion()
+	latest_version_container = fun.getLatestVersion()
 	if VERSION != latest_version_container:
 		logger.info('\n' + txt.UPDATE_CONTAINER.format(version=latest_version_container))
 
@@ -27,7 +28,7 @@ def job():
 	try:
 		raw_series = sonarr.getMissingEpisodes()
 		if len(raw_series)!=0:
-			series = converting(raw_series)
+			series = fun.converting(raw_series)
 
 			for anime in series:
 				for season in anime["seasons"]:
@@ -39,7 +40,7 @@ def job():
 
 						logger.info(txt.EPISODE_RESEARCH_LOG.format(episode=", ".join([x["num"] for x in season["episodes"]])) + '\n')
 
-						episodi = fixEps([x.getEpisodes() for x in results])
+						episodi = fun.fixEps([x.getEpisodes() for x in results])
 
 						for episode in season["episodes"]:
 							logger.info('\n' + txt.CHECK_EPISODE_AVAILABILITY_LOG.format(season=episode["season"], episode=episode["num"]) + '\n')
@@ -52,14 +53,14 @@ def job():
 
 									title = f'{anime["title"]} - S{episode["season"]}E{episode["num"]}'
 
-									file = ep.download(title, DOWNLOAD_FOLDER, downloadProgress)
+									file = ep.download(title, DOWNLOAD_FOLDER, fun.downloadProgress)
 									if file: 
 										logger.info(txt.DOWNLOAD_COMPLETED_LOG + '\n')
 
 
 										if Settings.data["MoveEp"]:
 											logger.info(txt.EPISODE_SHIFT_LOG.format(season=episode["season"], episode=episode["num"], folder=anime["path"]) + '\n')
-											if movefile(os.path.join(DOWNLOAD_FOLDER,file), anime["path"]): 
+											if fun.movefile(os.path.join(DOWNLOAD_FOLDER,file), anime["path"]): 
 												logger.info(txt.EPISODE_SHIFT_DONE_LOG + '\n')
 
 											logger.info(txt.ANIME_REFRESH_LOG.format(anime=anime["title"]) + '\n')
