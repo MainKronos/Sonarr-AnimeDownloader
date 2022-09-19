@@ -308,6 +308,15 @@
         "title": "Log Horizon"
     },
     {
+        "title": "Made in Abyss",
+        "seasons": {
+            "2": [
+                "https://www.animeworld.tv/play/made-in-abyss-2.T7h4U"
+            ]
+        },
+        "absolute": false
+    },
+    {
         "absolute": false,
         "seasons": {
             "1": [
@@ -367,7 +376,7 @@
         "absolute": true,
         "seasons": {
             "absolute": [
-                "https://www.animeworld.tv/play/one-piece-subita.sORn4"
+                "https://www.animeworld.tv/play/one-piece-subita.qzG-L"
             ]
         },
         "title": "One Piece"

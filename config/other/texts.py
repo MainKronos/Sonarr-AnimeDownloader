@@ -40,6 +40,7 @@ START_BLOCK_LOG = "\033[90m╭────────────────�
 END_BLOCK_LOG = "\033[90m╰───────────────────────────────────「{time}」───────────────────────────────────╯\033[0m"
 
 ANIME_REJECTED_LOG = "⁉️ Serie '{anime}' S{season} scartata per mancanza di informazioni."
+EPISODE_REJECTED_LOG = "⁉️ Episodio '{anime}' S{season}E{episode} scartato per mancanza di numerazione assoluta."
 
 CONNECTION_ERROR_LOG = "⚠️ Errore di connessione. ({res_error})"
 

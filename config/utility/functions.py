@@ -8,13 +8,14 @@ import shutil
 from datetime import datetime
 from typing import Dict, List
 
-from utility import Table
+
 from app import socketio
 
-from logger import logger, message
-from utility import Settings
-import texts as txt
-from .exceptions import TableFormattingError
+from .table import Table
+from .logger import logger, message
+from .settings import Settings
+import other.texts as txt
+from other.exceptions import TableFormattingError
 
 def converting(data:List[Dict]) -> List[Dict]:
 	"""
@@ -90,11 +91,17 @@ def converting(data:List[Dict]) -> List[Dict]:
 								except IndexError: # finche esistono
 									break				
 								else:
-									season_absolute["episodes"].extend(season["episodes"]) # compatta ogni episodio in un una stagione					
-							anime["seasons"].append(season_absolute)
+									for episode in season["episodes"]: # controlla che ogni episodio della stagione abbia la numerazione assoluta
+										if episode["abs"]:
+											season_absolute["episodes"].append(episode) # aggiunge ogni episodio nella stagione ABSOLUTE
+										else:
+											logger.debug(txt.EPISODE_REJECTED_LOG.format(anime=anime["title"], season=season["num"], episode=episode["num"]) + '\n')
+
+							if len(season_absolute["episodes"]) != 0:
+								anime["seasons"].append(season_absolute)
 							break
 						else:
-							# La serie risolta con ordinamento assoluto ma non esiste la stagione "absolute" nella tabella
+							# La serie risulta con ordinamento assoluto ma non esiste la stagione "absolute" nella tabella
 							logger.debug(txt.SEASON_INEXISTENT_LOG.format(season=", ".join([x["num"] for x in anime["seasons"]]), anime=anime["title"]) + '\n')
 
 							if Settings.data["AutoBind"]: # ricerca automatica links

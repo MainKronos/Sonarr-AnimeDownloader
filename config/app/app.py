@@ -1,11 +1,12 @@
+from distutils.log import debug
 from flask import *
 from flask_socketio import *
 
-from constants import VERSION, SONARR_URL, API_KEY
+from other.constants import VERSION, SONARR_URL, API_KEY
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, logger=False, async_handlers=False)
+socketio = SocketIO(app, logger=True, async_handlers=False)
 
 @app.route('/index')
 @app.route('/')

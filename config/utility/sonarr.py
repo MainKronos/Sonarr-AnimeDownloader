@@ -2,10 +2,10 @@ from typing import Dict, List
 import requests
 import time
 
-from logger import logger
-from constants import SONARR_URL, API_KEY
-import texts as txt
-from .exceptions import UnauthorizedSonarr
+from .logger import logger
+from other.constants import SONARR_URL, API_KEY
+import other.texts as txt
+from other.exceptions import UnauthorizedSonarr
 
 def getMissingEpisodes() -> List[Dict]:
 	"""
@@ -69,9 +69,10 @@ def getMissingEpisodes() -> List[Dict]:
 								if anime["ID"] == record["seriesId"]:
 									for season in anime["seasons"]:
 										if season["num"] == str(record["seasonNumber"]):
+
 											season["episodes"].append({
 												"num": str(record["episodeNumber"]),
-												"abs": str(record["absoluteEpisodeNumber"]),
+												"abs": str(record["absoluteEpisodeNumber"]) if "absoluteEpisodeNumber" in record else None,
 												"season": str(record["seasonNumber"]),
 												"title": record["title"],
 												"ID": record["id"]
