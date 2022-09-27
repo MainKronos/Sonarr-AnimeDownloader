@@ -21,6 +21,8 @@ User gid:    $(id -g "$USER_NAME")
 touch /script/json/settings.json
 touch /script/json/table.json
 
+sed -i -e 's/\r$//' connections/*.sh
+
 chown "$USER_NAME":"$USER_NAME" /script -R
 chmod 777 /script -R
 
