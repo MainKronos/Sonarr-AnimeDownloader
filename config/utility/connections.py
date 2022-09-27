@@ -12,13 +12,15 @@ class Connections:
 		"""
 		Lista di dizionari contenente tutte le informazioni.
 		"""
-		if not os.path.exists(self.file):
-			self.write([])
-			return []
-
-
-		with open(self.file, 'r') as f:
-			return json.loads(f.read())
+		if os.path.exists(self.file) and os.path.getsize(self.file) > 0:
+			try:
+				with open(self.file, 'r') as f:
+					return json.loads(f.read())
+			except json.JSONDecodeError:
+				pass
+		
+		self.write([])
+		return []
 
 	@classmethod
 	def toggle(self, connection_name:str):
