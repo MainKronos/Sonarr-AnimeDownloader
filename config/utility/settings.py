@@ -38,14 +38,20 @@ class Settings:
 
 		settings = {}
 
-		if os.path.exists(self.file):
-			with open(self.file, 'r') as f:
-				settings = json.loads(f.read())
+		if os.path.exists(self.file) and os.path.getsize(self.file) > 0:
+			try:
+				with open(self.file, 'r') as f:
+					settings = json.loads(f.read())
 
-			for info in data:
-				if info not in settings:
-					settings[info] = data[info]
-					update_fix = True
+			except json.JSONDecodeError:
+				settings = data
+				update_fix = True
+
+			else:
+				for info in data:
+					if info not in settings:
+						settings[info] = data[info]
+						update_fix = True
 
 			if settings["ScanDelay"] < 30 : settings["ScanDelay"] = 30
 
