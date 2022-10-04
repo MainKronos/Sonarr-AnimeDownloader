@@ -1,7 +1,7 @@
 ---
 name: Bug Report
 about: Template per gli errori
-title: "[BUG] "
+title: "[BUG] Nome Errore"
 labels: bug
 assignees: MainKronos
 
