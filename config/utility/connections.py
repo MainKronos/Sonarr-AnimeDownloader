@@ -12,6 +12,7 @@ class Connections:
 		"""
 		Lista di dizionari contenente tutte le informazioni.
 		"""
+
 		if os.path.exists(self.file) and os.path.getsize(self.file) > 0:
 			try:
 				with open(self.file, 'r') as f:
