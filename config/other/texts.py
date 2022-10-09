@@ -64,6 +64,7 @@ EPISODE_RENAME_DONE_LOG = "✔️ Episodio rinominato."
 EPISODE_RENAME_ERROR_LOG = "⚠️ NON è stato possibile rinominare l'episodio."
 SEND_CONNECTION_MESSAGE_LOG = "✉️ Inviando il messaggio tramite 𝗰𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻𝘀."
 NO_EPISODES = "Non c'è nessun episodio da cercare."
+EPISODE_ALREADY_IN_DOWNLOADING_LOG = "🔒 L'episodio è già in download su Sonarr."
 
 AUTOMATIC_LINK_SEARCH_LOG = "⚠️ Ricerca automatica link di AnimeWorld per la 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {season} della 𝘴𝘦𝘳𝘪𝘦 '{anime}'."
 ABSOLUTE_AUTOMATIC_LINK_SEARCH_ERROR_LOG = "⛔ La ricerca automatica link di AnimeWorld è incompatibile con le serie ad ordinamento assoluto."
