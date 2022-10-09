@@ -6,5 +6,6 @@ class TableFormattingError(Exception):
 		super().__init__(self.message)
 
 class UnauthorizedSonarr(Exception):
+	"""Errore accesso a Sonarr."""
 	def __init__(self, message):
 		super().__init__(message)
