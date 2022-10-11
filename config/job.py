@@ -45,8 +45,13 @@ def job():
 
 						for episode in season["episodes"]:
 							logger.info('\n' + txt.CHECK_EPISODE_AVAILABILITY_LOG.format(season=episode["season"], episode=episode["num"]) + '\n')
+							
+							if sonarr.inQueue(episode["ID"]): # Se il file è già in download su Sonarr
+								logger.info(txt.EPISODE_ALREADY_IN_DOWNLOADING_LOG + '\n')
+								continue
+
 							for ep in episodi:
-								
+
 								# episodio disponibile
 								if (str(ep.number) == str(episode["num"]) and not anime["absolute"]) or (str(ep.number) == str(episode["abs"]) and anime["absolute"]): 
 									logger.info(txt.EPISODE_AVAILABLE_LOG + '\n')
@@ -54,14 +59,21 @@ def job():
 
 									title = f'{anime["title"]} - S{episode["season"]}E{episode["num"]}'
 									
-									# thread args
-									opt = []
-									thargs = {"active": True, "epId": episode["ID"]}
+									### thread args ###
 
-									threading.Thread(target=fun.downloadControl, args=(thargs, opt)).start()
+									opt = [] # Array per le opzioni dinamiche
+									thargs = { # argomenti per la funzione fun.downloadControl
+										"active": True, # attiva il thread
+										"epId": episode["ID"] # ID dell'episodio su Sonarr
+									} 
+
+									####################
+
+									threading.Thread(target=fun.downloadControl, args=(thargs, opt)).start() # Lancio il thread di controllo
+
 									file = ep.download(title, DOWNLOAD_FOLDER, hook=fun.downloadProgress, opt=opt)
 
-									thargs['active'] = False
+									thargs['active'] = False # Disattivo il thread di controllo
 
 									if file: 
 										logger.info(txt.DOWNLOAD_COMPLETED_LOG + '\n')
