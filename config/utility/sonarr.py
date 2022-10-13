@@ -10,6 +10,8 @@ from other.exceptions import UnauthorizedSonarr
 # https://sonarr.tv/docs/api/
 # https://github.com/Sonarr/Sonarr/wiki/API (Legacy)
 
+# TODO: Creare una classe Sonarr al cui interno è implementato un metodo che verifica per ogni richiesta http che le credenziali siano corrette
+
 def getMissingEpisodes() -> List[Dict]:
 	"""
 	Ottiene tutte le informazioni riguardante gli episodi mancanti da Sonarr.
