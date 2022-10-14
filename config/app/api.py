@@ -6,6 +6,7 @@ from .app import app
 from utility.table import Table
 from utility.settings import Settings
 from utility.connections import Connections
+from utility.tags import Tags
 from other.constants import SONARR_URL, API_KEY
 
 
@@ -306,4 +307,19 @@ def ieConnections():
 				response=json.dumps({
 					"error": False if check else f"Connections invalide."
 				})
+	)
+
+	
+@app.route('/api/tags', methods=['GET'])
+def getTags():
+
+	tags = Tags.data
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": tags
+		})
 	)

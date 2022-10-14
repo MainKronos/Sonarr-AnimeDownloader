@@ -1,5 +1,30 @@
 // range
 
+class Switch extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			checked: false
+		};
+	}
+
+	render() {
+		const {
+			checked
+		} = this.state
+
+		return /*#__PURE__*/React.createElement("label", { for: this.id, className: "switch" },
+			"Off",
+	  		/*#__PURE__*/React.createElement("input", {
+				type: "checkbox", id: this.id, name: this.name, value: checked, onChange: this.onChange
+			}),
+	  		/*#__PURE__*/React.createElement("span", null),
+			"On"
+		)
+	}
+
+}
+
 function syncData(){
 
 	return fetch("/api/settings")
@@ -291,7 +316,7 @@ class ConnectionsDiv extends React.Component {
 		return /*#__PURE__*/React.createElement("div", {
 		  className: "content"
 		}, /*#__PURE__*/React.createElement("button", {
-		  className: "btn add-connection",
+		  className: "btn add-element",
 		  onClick: () => this.setState({
 			active: true
 		  })
@@ -317,3 +342,200 @@ class ConnectionsDiv extends React.Component {
   
   const connections = document.querySelector('#connections');
   ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(ConnectionsDiv, null)), connections);
+
+  class CustomTagsDiv extends React.Component {
+	constructor(props) {
+	  super(props);
+	  this.state = {
+		error: false,
+		is_loaded: false,
+		data: null,
+		file: "",
+		enabled: false
+	  };
+	}
+
+	syncData() {
+		fetch("/api/tags").then(res => res.json()).then(res => {
+		  this.setState({
+			error: res.error,
+			is_loaded: true,
+			data: res.data
+		  });
+		}, error => {
+		  this.setState({
+			error: error,
+			is_loaded: true,
+			data: null
+		  });
+		});
+	}
+  
+	componentDidMount() {
+		this.syncData()
+	}
+  
+	render() {
+	  const {
+		error,
+		is_loaded,
+		data,
+		enabled
+	  } = this.state;
+  
+	  if (error) {
+		return /*#__PURE__*/React.createElement("div", null, "Error: ", error);
+	  } else if (!is_loaded) {
+		return /*#__PURE__*/React.createElement("div", null);
+	  } else {
+		return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", { className: 'card-title' },"Tag Personalizzati | ",
+					/*#__PURE__*/React.createElement("label", { for: "CustomTagEnabled", className: "switch" }, 
+						"Off",
+						/*#__PURE__*/React.createElement("input", { type: "checkbox", id: "CustomTagEnabled", name: "CustomTagEnabled", value: enabled, onChange: evt => {
+								this.setState({
+									enabled: evt.target.checked
+								})
+							} 
+						} ),
+						/*#__PURE__*/React.createElement("span", null ),
+						"On"
+					)
+				),
+				/*#__PURE__*/React.createElement(CustomTags, {
+					  syncData: this.syncData,
+					  data: data,
+				})
+			
+			// , /*#__PURE__*/React.createElement("section", {
+			// className: "bottom"
+			// }, /*#__PURE__*/React.createElement("label", {
+			// htmlFor: "importC",
+			// className: "btn"
+			// }, "\uE2C6"))
+		)
+	  }
+	}
+  
+  }
+  
+  class CustomTags extends React.Component {
+	constructor(props) {
+	  super(props);
+	  this.toggle = this.toggle.bind(this);
+	  this.remove = this.remove.bind(this);
+	  this.add = this.add.bind(this);
+	}
+  
+	toggle(connection_name) {
+		return new Promise((res,rej)=>{
+			showToast("Non disponibile nella versione di test.");
+			// this.props.syncData();
+			res();
+		});
+	}
+  
+	remove(connection_name) {
+		return new Promise((res,rej)=>{
+			showToast("Non disponibile nella versione di test.");
+			// this.props.syncData();
+			res();
+		});
+	}
+  
+	add(connection_name, script) {
+		return new Promise((res,rej)=>{
+			showToast("Non disponibile nella versione di test.");
+			// this.props.syncData();
+			res();
+		});
+	}
+  
+	render() {
+	  return /*#__PURE__*/React.createElement("div", {
+		className: `card-content`
+	  }
+	  , this.props.data.map((conn, index) => /*#__PURE__*/React.createElement(CustomTag, {
+		label: tag.label,
+		script: tag.inclusive,
+		key: tag.label + index,
+		onToggle: () => this.toggle(tag.label),
+		onRemove: () => this.remove(tag.label)
+	  }))
+	  , /*#__PURE__*/React.createElement(AddCustomTag, {
+		onAdd: this.add
+	  })
+	);
+	}
+  
+  }
+  
+  class AddCustomTag extends React.Component {
+	constructor(props) {
+	  super(props);
+	  this.state = {
+		label: "",
+		inclusive: false
+	  };
+	}
+  
+	render() {
+	  if (this.state.active) {
+		return /*#__PURE__*/React.createElement("form", {
+		  className: "content",
+		  onSubmit: event => {
+			event.preventDefault();
+			this.props.onAdd(this.state.label, this.state.inclusive);
+		  },
+		  onKeyDown: event => {
+			if (event.key == 'Escape') this.setState({
+			  active: false
+			});
+		  }
+		}, /*#__PURE__*/React.createElement("input", {
+		  autoFocus: true,
+		  type: "text",
+		  placeholder: "Tag",
+		  maxLength: "30",
+		  onChange: event => this.setState({
+			name: event.target.value
+		  }),
+		  required: true
+		}), /*#__PURE__*/React.createElement(Switch, {
+		  onChange: event => this.setState({
+			inclusive: event.target.checked
+		  }),
+		}), /*#__PURE__*/React.createElement("button", {
+		  type: "submit",
+		  className: "confirm-tag btn"
+		}, "\ue163"));
+	  } else {
+		return /*#__PURE__*/React.createElement("div", {
+		  className: "content"
+		}, /*#__PURE__*/React.createElement("button", {
+		  className: "btn add-element",
+		  onClick: () => this.setState({
+			active: true
+		  })
+		}, '\ue145'));
+	  }
+	}
+  
+  }
+  
+  function CustomTag(props) {
+	return /*#__PURE__*/React.createElement("div", {
+	  className: "content",
+	  onContextMenu: e => {
+		menu.show(e, ["Delete"], [props.onRemove]);
+	  }
+	}, /*#__PURE__*/React.createElement("h2", null, props.name), /*#__PURE__*/React.createElement("code", {
+	  className: props.valid ? '' : 'invalid'
+	}, props.script), /*#__PURE__*/React.createElement("span", {
+	  className: `status ${props.active ? 'active' : ''}`,
+	  onClick: props.onToggle
+	}, props.active ? "ON" : "OFF"));
+  }
+  
+
+  const customTags = document.querySelector('#custom-tags');
+  ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(CustomTagsDiv, null)), customTags);

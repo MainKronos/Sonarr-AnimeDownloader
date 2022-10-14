@@ -2,6 +2,8 @@ from typing import Dict, List
 import requests
 import time
 
+from .settings import Settings
+
 from .logger import logger
 from other.constants import SONARR_URL, API_KEY
 import other.texts as txt
@@ -61,7 +63,7 @@ def getMissingEpisodes() -> List[Dict]:
 			for record in result["records"]:
 
 				try:
-					if record["series"]["seriesType"] != 'anime': continue # scarta gli episodi che non sono anime
+					if isEligibleSerie( record ) == False: continue # scarta gli episodi che non rispettano i criteri
 
 					def addData():
 						while True:
@@ -161,3 +163,32 @@ def getEpisodeFileID(epId): # Converte l'epId in epFileId
 	"""
 	data = getEpisode(epId)
 	return data["episodeFile"]["id"]
+
+def getSerieInfo(serieId:int):
+	"""
+	Recupera le informazioni per una serie specifica
+	"""
+	endpoint = "series/{serieId}"
+	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	return requests.get(url).json()
+
+
+def isEligibleSerie( record ) -> bool:
+	"""
+	Verifica se la serie restituita da Sonarr è idonea ad essere scaricata secondo le attuali impostazioni ( tag o tipologia serie anime )
+	"""
+	# Comportamento standard: la serie deve avere come tipologia ANIME su Sonarr
+	if record["series"]["seriesType"] != 'anime': return False
+
+	if Settings.data["CustomTags"]["enabled"] == True:
+		# Ho impostato dei tag da utilizzare
+		tags = Settings.data["CustomTags"]["items"]
+		serieId = record["seriesId"]
+		serie = getSerieInfo( serieId )
+
+		for tag in tags:
+			if tag["label"] in serie["tags"]:
+				return tag["inclusive"] == True
+
+	else:
+		return True

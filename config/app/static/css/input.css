@@ -317,7 +317,7 @@ summary input[type=text]{
 	margin-bottom: -2px;
 }
 
-.add-connection.btn{
+.add-element.btn{
 	border: 2px solid rgba(255,255,255,0.2);
 	color: rgba(255,255,255,0.2);
 	margin: 10px;
@@ -326,7 +326,7 @@ summary input[type=text]{
 	height: calc(100% - 20px);
 	display: block;
 }
-.add-connection.btn:hover{
+.add-element.btn:hover{
 	border: 2px solid var(--primary-color);
 }
 
