@@ -1,4 +1,3 @@
-from itertools import count
 from typing import Dict, List
 import requests
 import time
