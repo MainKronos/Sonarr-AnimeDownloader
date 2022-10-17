@@ -8,7 +8,6 @@ from .tags import Tags
 # TODO includere logger a livello globale in modo che sia utilizzabile ovunque(?)
 if "utility.logger" not in sys.modules:
 	from .logger import logger
-
 from other.constants import SONARR_URL, API_KEY
 import other.texts as txt
 from other.exceptions import UnauthorizedSonarr
@@ -47,7 +46,6 @@ def getMissingEpisodes() -> List[Dict]:
 	]
 	```
 	"""
-
 	# Prima di cercare gli episodi mancanti aggiorno la lista dei tag con quelli disponibili su Sonarr
 	Tags.updateAvailableSonarrTags( getTags() )
 
@@ -161,7 +159,7 @@ def renameEpisode(seriesId:int, epFileId:int):
 	}
 	requests.post(url, json=data)
 
-def getEpisodeFileID(epId): # Converte l'epId in epFileId
+def getEpisodeFileID(epId:int) -> int: # Converte l'epId in epFileId
 	"""
 	Trova l'ID del file (`epFileId`) partendo dall'ID dell'episodio (`epId`).
 
@@ -171,6 +169,14 @@ def getEpisodeFileID(epId): # Converte l'epId in epFileId
 	"""
 	data = getEpisode(epId)
 	return data["episodeFile"]["id"]
+	
+def inQueue(epId:int) -> bool:
+	"""
+	Controlla se l'episodio è in download da Sonarr.
+	"""
+	endpoint = "queue"
+	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	return epId in [x["episode"]["id"] for x in requests.get(url).json()]
 
 def getSerieInfo(serieId:int):
 	"""

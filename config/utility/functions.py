@@ -7,6 +7,7 @@ import json
 import shutil
 from datetime import datetime
 from typing import Dict, List
+import time
 
 
 from app import socketio
@@ -14,6 +15,7 @@ from app import socketio
 from .table import Table
 from .logger import logger, message
 from .settings import Settings
+from . import sonarr
 import other.texts as txt
 from other.exceptions import TableFormattingError
 
@@ -279,3 +281,19 @@ def downloadProgress(d):
 		downloadProgress.step = datetime.timestamp(datetime.now())
 
 downloadProgress.step = datetime.timestamp(datetime.now())
+
+def downloadControl(args: Dict[str,str], opt: List[str]):
+	"""
+	Controlla il download del file.
+	`opt`: opzioni da modificare.
+	`args`: {
+		active: bool
+		epId: int
+	}
+	"""
+
+	while args["active"]:
+		if sonarr.inQueue(args["epId"]):
+			opt.append('abort')
+			return
+		time.sleep(60)

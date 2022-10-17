@@ -1,3 +1,4 @@
+import threading
 import time
 
 import requests
@@ -52,11 +53,18 @@ def job():
 									logger.warning(txt.EPISODE_DOWNLOAD_LOG.format(season=episode["season"], episode=episode["num"]) + '\n')
 
 									title = f'{anime["title"]} - S{episode["season"]}E{episode["num"]}'
+									
+									# thread args
+									opt = []
+									thargs = {"active": True, "epId": episode["ID"]}
 
-									file = ep.download(title, DOWNLOAD_FOLDER, fun.downloadProgress)
+									threading.Thread(target=fun.downloadControl, args=(thargs, opt)).start()
+									file = ep.download(title, DOWNLOAD_FOLDER, hook=fun.downloadProgress, opt=opt)
+
+									thargs['active'] = False
+
 									if file: 
 										logger.info(txt.DOWNLOAD_COMPLETED_LOG + '\n')
-
 
 										if Settings.data["MoveEp"]:
 											logger.info(txt.EPISODE_SHIFT_LOG.format(season=episode["season"], episode=episode["num"], folder=anime["path"]) + '\n')
@@ -83,7 +91,9 @@ def job():
 
 											logger.info(txt.SEND_CONNECTION_MESSAGE_LOG + '\n')
 											message.warning(txt.CONNECTION_MESSAGE.format(title=anime["title"], season=episode["season"], episode=episode["num"], episodeTitle=episode["title"]))
-
+									else:
+										if 'abort' in opt: # Se il download è stato abortito
+											logger.info(txt.EPISODE_ALREADY_IN_DOWNLOADING_LOG + '\n')
 									break
 							else:
 								logger.info(txt.EPISODE_UNAVAILABLE_LOG + '\n')

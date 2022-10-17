@@ -48,7 +48,7 @@ ENV PIP_ROOT_USER_ACTION ignore
 # USER dockeruser
 ENV USER_NAME dockeruser
 
-ENV VERSION "1.8.3"
+ENV VERSION "1.8.4"
 
 EXPOSE 5000
 
