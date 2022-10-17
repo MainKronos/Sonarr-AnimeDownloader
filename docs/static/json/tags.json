@@ -2,7 +2,7 @@
     {
         "id": 1,
         "name": "Sonarr-AnimeDownloader",
-        "inclusive": false,
+        "inclusive": true,
         "active": true
     }
 ]

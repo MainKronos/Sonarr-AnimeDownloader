@@ -359,32 +359,16 @@ class TagsDiv extends React.Component {
 			enabled
 		} = this.state;
 
-		console.log(error, is_loaded, data, enabled )
-
 		if (error) {
 			return /*#__PURE__*/React.createElement("div", null, "Error: ", error);
 		} else if (!is_loaded) {
 			return /*#__PURE__*/React.createElement(Loading);
 		} else {
-			return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", { className: 'card-title' }, "Tag Personalizzati",
-				// 	/*#__PURE__*/React.createElement("label", { for: "CustomTagEnabled", className: "switch" },
-				// "Off",
-				// 		/*#__PURE__*/React.createElement("input", {
-				// 	type: "checkbox", id: "CustomTagEnabled", name: "CustomTagEnabled", value: enabled, onChange: evt => {
-				// 		this.setState({
-				// 			enabled: evt.target.checked
-				// 		})
-				// 	}
-				// }),
-				// 		/*#__PURE__*/React.createElement("span", null),
-				// "On"
-				// )
-				),
-				/*#__PURE__*/React.createElement(Tags, {
-				syncData: this.syncData,
-				data: data,
-			})
-
+			return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", { className: 'card-title' }, "Tag Personalizzati"),
+					/*#__PURE__*/React.createElement(Tags, {
+						syncData: this.syncData,
+						data: data,
+					})
 				// , /*#__PURE__*/React.createElement("section", {
 				// className: "bottom"
 				// }, /*#__PURE__*/React.createElement("label", {
@@ -454,8 +438,8 @@ class Tags extends React.Component {
 
 	render() {
 		return /*#__PURE__*/React.createElement("div", {
-			className: `card-content`
-		}
+				className: `card-content`
+			}
 			, this.props.data.map((tag, index) => /*#__PURE__*/React.createElement(Tag, {
 				name: tag.name,
 				inclusive: tag.inclusive,
