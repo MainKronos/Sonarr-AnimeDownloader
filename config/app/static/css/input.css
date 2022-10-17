@@ -37,7 +37,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-input[type=number] ~ label,input[type=text] ~ label{
+input[type=number] ~ label,input[type=text] ~ label, div.input-group ~ label{
 	padding: 0 10px;
 	color: rgba(255,255,255,0.7);
 	font-size: 14px;
@@ -258,6 +258,20 @@ input[type=number].add-tab:focus{
 	border-bottom: 2px solid rgba(255,255,255,0.3);
 }
 
+/*  INPUT RADIO GROUP  */
+div.radio-group{
+	color: rgba(255,255,255,0.7);
+	background: none;
+	font-size: 18px;
+	padding: 0px 10px;
+	width: calc(100% - 44px);
+	border: 2px solid rgba(255,255,255,0.2);
+	border-radius: 4px;
+	transition: border 0.3s;
+	display: block;
+	margin: 10px;
+}
+
 
 
 #add-anime.btn{
@@ -330,7 +344,7 @@ summary input[type=text]{
 	border: 2px solid var(--primary-color);
 }
 
-.confirm-connection.btn{
+.confirm-element.btn{
 	border: 2px solid rgba(255,255,255,0.2);
 	color: rgba(255,255,255,0.2);
 	margin: 0 10px;
@@ -340,7 +354,7 @@ summary input[type=text]{
 	font-size: 19px;
 
 }
-.confirm-connection.btn:hover{
+.confirm-element.btn:hover{
 	border: 2px solid var(--primary-color);
 }
 

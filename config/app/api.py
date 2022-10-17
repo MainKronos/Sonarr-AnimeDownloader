@@ -309,6 +309,7 @@ def ieConnections():
 				})
 	)
 
+#  TAGS
 	
 @app.route('/api/tags', methods=['GET'])
 def getTags():
@@ -321,5 +322,58 @@ def getTags():
 		response=json.dumps({
 			"error": False,
 			"data": tags
+		})
+	)
+	
+@app.route('/api/connections/toggle', methods=['POST'])
+def toggleTag():
+	data = request.json
+
+	label = data["label"]
+
+	log = Tags.toggle(label)
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
+		})
+	)
+
+@app.route('/api/connections/remove', methods=['POST'])
+def removeTag():
+	data = request.json
+
+	label = data["label"]
+
+	log = Tags.remove(label)
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
+		})
+	)
+
+@app.route('/api/connections/add', methods=['POST'])
+def addTag():
+	data = request.json
+
+	label = data["label"]
+	inclusive = data["inclusive"]
+	active = data["active"]
+
+	log = Tags.add(label, inclusive, active)
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
 		})
 	)

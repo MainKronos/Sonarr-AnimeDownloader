@@ -24,25 +24,25 @@ class Tags:
 		return []
 
 	@classmethod
-	def toggle(self, connection_name:str):
+	def toggle(self, tag_label:str):
 
-		log = f"La Connection {connection_name} è stata "
+		log = f"La Connection {tag_label} è stata "
 
-		connections = self.data
+		tags = self.data
 
-		for connection in connections:
-			if connection["name"] == connection_name:
-				file = os.path.join("connections", connection["script"])
-				if os.path.isfile(file) or connection["active"]:
-					log += "spenta." if connection["active"] else "accesa."
-					connection["active"] = not connection["active"]
+		for tag in tags:
+			if tag["label"] == tag_label:
+				file = os.path.join("connections", tag["script"])
+				if os.path.isfile(file) or tag["active"]:
+					log += "spenta." if tag["active"] else "accesa."
+					tag["active"] = not tag["active"]
 					break
 				else:
-					return f"Il file {connection_name} non esiste."
+					return f"Il file {tag_label} non esiste."
 		else:
-			return f"Non è stato trovato nessuna Connection con il nome {connection_name}."
+			return f"Non è stato trovato nessuna Tag con il nome {tag_label}."
 
-		self.write(connections)
+		self.write(tags)
 		return log
 	
 	@classmethod
