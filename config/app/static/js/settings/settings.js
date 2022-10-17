@@ -318,7 +318,7 @@ function Connection(props) {
 const connections = document.querySelector('#connections');
 ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(ConnectionsDiv, null)), connections);
 
-class CustomTagsDiv extends React.Component {
+class TagsDiv extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -328,6 +328,7 @@ class CustomTagsDiv extends React.Component {
 			file: "",
 			enabled: false
 		};
+		this.syncData = this.syncData.bind(this);
 	}
 
 	syncData() {
@@ -347,7 +348,7 @@ class CustomTagsDiv extends React.Component {
 	}
 
 	componentDidMount() {
-		// this.syncData()
+		this.syncData()
 	}
 
 	render() {
@@ -357,6 +358,8 @@ class CustomTagsDiv extends React.Component {
 			data,
 			enabled
 		} = this.state;
+
+		console.log(error, is_loaded, data, enabled )
 
 		if (error) {
 			return /*#__PURE__*/React.createElement("div", null, "Error: ", error);
@@ -375,9 +378,9 @@ class CustomTagsDiv extends React.Component {
 				// }),
 				// 		/*#__PURE__*/React.createElement("span", null),
 				// "On"
-			// )
-			),
-				/*#__PURE__*/React.createElement(CustomTags, {
+				// )
+				),
+				/*#__PURE__*/React.createElement(Tags, {
 				syncData: this.syncData,
 				data: data,
 			})
@@ -394,7 +397,7 @@ class CustomTagsDiv extends React.Component {
 
 }
 
-class CustomTags extends React.Component {
+class Tags extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggle = this.toggle.bind(this);
@@ -409,7 +412,7 @@ class CustomTags extends React.Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				label: tag
+				name: tag
 			})
 		}).then(response => response.json()).then(data => {
 			showToast(data.data);
@@ -439,8 +442,9 @@ class CustomTags extends React.Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				label: tag,
-				inclusive: inclusive
+				name: tag,
+				inclusive: inclusive,
+				active: true,
 			})
 		}).then(response => response.json()).then(data => {
 			showToast(data.data);
@@ -452,14 +456,15 @@ class CustomTags extends React.Component {
 		return /*#__PURE__*/React.createElement("div", {
 			className: `card-content`
 		}
-			, this.props.data.map((conn, index) => /*#__PURE__*/React.createElement(CustomTag, {
-				label: tag.label,
-				script: tag.inclusive,
-				key: tag.label + index,
-				onToggle: () => this.toggle(tag.label),
-				onRemove: () => this.remove(tag.label)
+			, this.props.data.map((tag, index) => /*#__PURE__*/React.createElement(Tag, {
+				name: tag.name,
+				inclusive: tag.inclusive,
+				active: tag.active,
+				key: tag.name + index,
+				onToggle: () => this.toggle(tag.name),
+				onRemove: () => this.remove(tag.name)
 			}))
-			, /*#__PURE__*/React.createElement(AddCustomTag, {
+			, /*#__PURE__*/React.createElement(AddTag, {
 				onAdd: this.add
 			})
 		);
@@ -467,19 +472,20 @@ class CustomTags extends React.Component {
 
 }
 
-class AddCustomTag extends React.Component {
+class AddTag extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			label: "",
-			inclusive: false
+			name: "",
+			inclusive: false,
+			active: false
 		};
 	}
 
 	render() {
 
 		const {
-			label,
+			name,
 			inclusive
 		} = this.state
 
@@ -488,7 +494,7 @@ class AddCustomTag extends React.Component {
 				className: "content",
 				onSubmit: event => {
 					event.preventDefault();
-					this.props.onAdd(this.state.label, this.state.inclusive);
+					this.props.onAdd(this.state.name, this.state.inclusive);
 				},
 				onKeyDown: event => {
 					if (event.key == 'Escape') this.setState({
@@ -542,20 +548,18 @@ class AddCustomTag extends React.Component {
 
 }
 
-function CustomTag(props) {
+function Tag(props) {
 	return /*#__PURE__*/React.createElement("div", {
 		className: "content",
 		onContextMenu: e => {
 			menu.show(e, ["Delete"], [props.onRemove]);
 		}
-	}, /*#__PURE__*/React.createElement("h2", null, props.name), /*#__PURE__*/React.createElement("code", {
-		className: props.valid ? '' : 'invalid'
-	}, props.script), /*#__PURE__*/React.createElement("span", {
+	}, /*#__PURE__*/React.createElement("h2", null, props.name), /*#__PURE__*/React.createElement("code", {}, props.inclusive ? "Inclusivo \u2713" : "Esclusivo \u2A02"), /*#__PURE__*/React.createElement("span", {
 		className: `status ${props.active ? 'active' : ''}`,
 		onClick: props.onToggle
 	}, props.active ? "ON" : "OFF"));
 }
 
 
-const customTags = document.querySelector('#custom-tags');
-ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(CustomTagsDiv, null)), customTags);
+const tags = document.querySelector('#tags');
+ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(TagsDiv, null)), tags);

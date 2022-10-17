@@ -7,6 +7,7 @@ from utility.table import Table
 from utility.settings import Settings
 from utility.connections import Connections
 from utility.tags import Tags
+from utility import sonarr
 from other.constants import SONARR_URL, API_KEY
 
 
@@ -325,13 +326,13 @@ def getTags():
 		})
 	)
 	
-@app.route('/api/connections/toggle', methods=['POST'])
+@app.route('/api/tags/toggle', methods=['POST'])
 def toggleTag():
 	data = request.json
 
-	label = data["label"]
+	name = data["name"]
 
-	log = Tags.toggle(label)
+	log = Tags.toggle(name)
 
 	return Response(
 		mimetype='application/json',
@@ -342,13 +343,13 @@ def toggleTag():
 		})
 	)
 
-@app.route('/api/connections/remove', methods=['POST'])
+@app.route('/api/tags/remove', methods=['POST'])
 def removeTag():
 	data = request.json
 
-	label = data["label"]
+	name = data["name"]
 
-	log = Tags.remove(label)
+	log = Tags.remove(name)
 
 	return Response(
 		mimetype='application/json',
@@ -359,15 +360,15 @@ def removeTag():
 		})
 	)
 
-@app.route('/api/connections/add', methods=['POST'])
+@app.route('/api/tags/add', methods=['POST'])
 def addTag():
 	data = request.json
 
-	label = data["label"]
+	name = data["name"]
 	inclusive = data["inclusive"]
 	active = data["active"]
 
-	log = Tags.add(label, inclusive, active)
+	log = Tags.add(name, inclusive, active, sonarr.getTags() )
 
 	return Response(
 		mimetype='application/json',

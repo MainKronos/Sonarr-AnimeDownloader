@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "id": 3,
+        "name": "sonarr2",
+        "inclusive": false,
+        "active": true
+    },
+    {
+        "id": 1,
+        "name": "torrents",
+        "inclusive": true,
+        "active": true
+    }
+]

@@ -24,83 +24,101 @@ class Tags:
 		return []
 
 	@classmethod
-	def toggle(self, tag_label:str):
+	def toggle(self, name:str):
 
-		log = f"La Connection {tag_label} è stata "
+		log = f"Il Tag {name} è stato "
 
 		tags = self.data
 
 		for tag in tags:
-			if tag["label"] == tag_label:
-				file = os.path.join("connections", tag["script"])
-				if os.path.isfile(file) or tag["active"]:
-					log += "spenta." if tag["active"] else "accesa."
-					tag["active"] = not tag["active"]
-					break
-				else:
-					return f"Il file {tag_label} non esiste."
+			if tag["name"] == name:
+				tag["active"] = not tag["active"]
+				log += "disabilitato." if tag["active"] else "attivato."
+				break
 		else:
-			return f"Non è stato trovato nessuna Tag con il nome {tag_label}."
+			return f"Non è stato trovato nessun Tag con il nome {name}."
 
 		self.write(tags)
 		return log
 	
 	@classmethod
-	def remove(self, connection_name:str):
+	def remove(self, name:str):
 		
-		conn = None
-		connections = self.data
+		deleting = None
+		tags = self.data
 
-		for connection in connections:
-			if connection["name"] == connection_name:
-				conn = connection
+		for tag in tags:
+			if tag["name"] == name:
+				deleting = tag
 				break
 		else:
-			return f"Non è stato trovato nessuna Connection con il nome {connection_name}."
+			return f"Non è stato trovato nessun Tag {name}."
 
-		connections.remove(conn)
+		tags.remove(deleting)
 
-		self.write(connections)
-		return f"La Connection {connection_name} è stata rimossa."
+		self.write(tags)
+		return f"Il Tag {name} è stato rimosso."
 	
 	@classmethod
-	def add(self, name:str, script:str, active:bool):
+	def add(self, name:str, inclusive:str, active:bool, availableTags:list):
 		if self.isValid(name):
-			connections = self.data
-			connections.append({
-				"name": name,
-				"script": script,
-				"active": active
-			})
-			self.write(connections)
-			return f"La Connection {name} è stata aggiunta."
+			tags = self.data
+
+			for tag in availableTags:
+				if tag["label"] == name: 
+					tags.append({
+						"id": tag["id"],
+						"name": name,
+						"inclusive": inclusive,
+						"active": active
+					})
+					self.write(tags)
+					return f"Il tag {name} è stato aggiunto."
+			else:
+				return f"Il Tag {name} non esiste su Sonarr."
+			
 		else:
-			return f"È gia presente una Connection con il nome {name}."
+				return f"È gia presente un Tag {name}."
 
 
 	@classmethod
-	def isValid(self, name:str):
-		for connection in self.data:
-			if connection["name"] == name:
+	def isValid(self, tag_name:str):
+		for tag in self.data:
+			if tag["name"] == tag_name:
 				return False
 		else:
 			return True
 
 	@classmethod
-	def write(self, connections:List):
+	def write(self, tags:List):
 		"""
 		Sovrascrive le Connections con le nuove informazioni.
 		"""
 
-		for i in range(len(connections)):
-			for j in range(len(connections)):
+		for i in range(len(tags)):
+			for j in range(len(tags)):
 				if i==j: continue
 
-				if connections[i]["name"] == connections[j]["name"]: return False
+				if tags[i]["name"] == tags[j]["name"]: return False
 
 		with open(self.file, 'w') as f:
-			f.write(json.dumps(connections, indent=4))
+			f.write(json.dumps(tags, indent=4))
 		
 		return True
 
+	@classmethod
+	def updateAvailableSonarrTags(self, availableTags):
+		"""
+		Aggiorno i tag attuali con quelli disponibili su Sonarr
+		"""
+
+		tags = Tags.data
+		for tag in tags:
+			for avTag in availableTags:
+				if tag["id"] == avTag["id"]: break
+			else:
+				tag["active"] = False
+
+		self.write(tags)
+		return True
 
