@@ -239,13 +239,13 @@ class ConnectionsDiv extends React.Component {
 		  required: true
 		}), /*#__PURE__*/React.createElement("button", {
 		  type: "submit",
-		  className: "confirm-connection btn"
+			className: "confirm-element btn"
 		}, "\ue163"));
 	  } else {
 		return /*#__PURE__*/React.createElement("div", {
 		  className: "content"
 		}, /*#__PURE__*/React.createElement("button", {
-		  className: "btn add-connection",
+				className: "btn add-element",
 		  onClick: () => this.setState({
 			active: true
 		  })
@@ -271,3 +271,210 @@ class ConnectionsDiv extends React.Component {
   
   const connections = document.querySelector('#connections');
   ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(ConnectionsDiv, null)), connections);
+
+  class TagsDiv extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			error: false,
+			is_loaded: false,
+			data: null,
+			file: "",
+			enabled: false
+		};
+		this.syncData = this.syncData.bind(this);
+	}
+
+	syncData() {
+		fetch("/api/tags").then(res => res.json()).then(res => {
+			this.setState({
+				error: res.error,
+				is_loaded: true,
+				data: res.data
+			});
+		}, error => {
+			this.setState({
+				error: error,
+				is_loaded: true,
+				data: null
+			});
+		});
+	}
+
+	componentDidMount() {
+		this.syncData()
+	}
+
+	render() {
+		const {
+			error,
+			is_loaded,
+			data,
+			enabled
+		} = this.state;
+
+		if (error) {
+			return /*#__PURE__*/React.createElement("div", null, "Error: ", error);
+		} else if (!is_loaded) {
+			return /*#__PURE__*/React.createElement(Loading);
+		} else {
+			return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", { className: 'card-title' }, "Tag Personalizzati"),
+					/*#__PURE__*/React.createElement(Tags, {
+						syncData: this.syncData,
+						data: data,
+					})
+				// , /*#__PURE__*/React.createElement("section", {
+				// className: "bottom"
+				// }, /*#__PURE__*/React.createElement("label", {
+				// htmlFor: "importC",
+				// className: "btn"
+				// }, "\uE2C6"))
+			)
+		}
+	}
+
+}
+
+class Tags extends React.Component {
+	constructor(props) {
+		super(props);
+		this.toggle = this.toggle.bind(this);
+		this.remove = this.remove.bind(this);
+		this.add = this.add.bind(this);
+	}
+
+	toggle(tag) {
+		return new Promise((res,rej)=>{
+			showToast("Non disponibile nella versione di test.");
+			this.props.syncData();
+			res();
+		});
+	}
+
+	remove(tag) {
+		return new Promise((res,rej)=>{
+			showToast("Non disponibile nella versione di test.");
+			this.props.syncData();
+			res();
+		});
+	}
+
+	add(tag, inclusive) {
+		return new Promise((res,rej)=>{
+			showToast("Non disponibile nella versione di test.");
+			this.props.syncData();
+			res();
+		});
+	}
+
+	render() {
+		return /*#__PURE__*/React.createElement("div", {
+				className: `card-content`
+			}
+			, this.props.data.map((tag, index) => /*#__PURE__*/React.createElement(Tag, {
+				name: tag.name,
+				inclusive: tag.inclusive,
+				active: tag.active,
+				key: tag.name + index,
+				onToggle: () => this.toggle(tag.name),
+				onRemove: () => this.remove(tag.name)
+			}))
+			, /*#__PURE__*/React.createElement(AddTag, {
+				onAdd: this.add
+			})
+		);
+	}
+
+}
+
+class AddTag extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			name: "",
+			inclusive: false,
+			active: false
+		};
+	}
+
+	render() {
+
+		const {
+			name,
+			inclusive
+		} = this.state
+
+		if (this.state.active) {
+			return /*#__PURE__*/React.createElement("form", {
+				className: "content",
+				onSubmit: event => {
+					event.preventDefault();
+					this.props.onAdd(this.state.name, this.state.inclusive);
+				},
+				onKeyDown: event => {
+					if (event.key == 'Escape') this.setState({
+						active: false
+					});
+				}
+			}, /*#__PURE__*/React.createElement("input", {
+				autoFocus: true,
+				type: "text",
+				placeholder: "Tag",
+				maxLength: "30",
+				onChange: event => this.setState({
+					name: event.target.value
+				}),
+				required: true
+			}),
+		/*#__PURE__*/React.createElement("div", { className: "radio-group" },
+			/*#__PURE__*/React.createElement("label", { for: this.id, className: "radio" },
+				React.createElement('input', {
+					type: "radio", id: this.id, name: `inclusive${this.id}`, value: true, checked: inclusive, onClick: () => {
+						this.setState({ inclusive: true })
+					}
+				}),
+				"Inclusivo",
+				React.createElement("span")
+			),
+			/*#__PURE__*/React.createElement("label", { for: this.id, className: "radio" },
+				React.createElement('input', {
+					type: "radio", id: this.id, name: `inclusive${this.id}`, value: false, checked: !inclusive, onClick: () => {
+						this.setState({ inclusive: false })
+					}
+				}),
+				"Esclusivo",
+				React.createElement("span")
+			),
+			), /*#__PURE__*/React.createElement("button", {
+				type: "submit",
+				className: "confirm-element btn"
+			}, "\ue163"));
+		} else {
+			return /*#__PURE__*/React.createElement("div", {
+				className: "content"
+			}, /*#__PURE__*/React.createElement("button", {
+				className: "btn add-element",
+				onClick: () => this.setState({
+					active: true
+				})
+			}, '\ue145'));
+		}
+	}
+
+}
+
+function Tag(props) {
+	return /*#__PURE__*/React.createElement("div", {
+		className: "content",
+		onContextMenu: e => {
+			menu.show(e, ["Delete"], [props.onRemove]);
+		}
+	}, /*#__PURE__*/React.createElement("h2", null, props.name), /*#__PURE__*/React.createElement("code", {}, props.inclusive ? "Inclusivo \u2713" : "Esclusivo \u2A02"), /*#__PURE__*/React.createElement("span", {
+		className: `status ${props.active ? 'active' : ''}`,
+		onClick: props.onToggle
+	}, props.active ? "ON" : "OFF"));
+}
+
+
+const tags = document.querySelector('#tags');
+ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(TagsDiv, null)), tags);

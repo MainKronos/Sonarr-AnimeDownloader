@@ -6,6 +6,8 @@ from .app import app
 from utility.table import Table
 from utility.settings import Settings
 from utility.connections import Connections
+from utility.tags import Tags
+from utility import sonarr
 from other.constants import SONARR_URL, API_KEY
 
 
@@ -306,4 +308,73 @@ def ieConnections():
 				response=json.dumps({
 					"error": False if check else f"Connections invalide."
 				})
+	)
+
+#  TAGS
+	
+@app.route('/api/tags', methods=['GET'])
+def getTags():
+
+	tags = Tags.data
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": tags
+		})
+	)
+	
+@app.route('/api/tags/toggle', methods=['POST'])
+def toggleTag():
+	data = request.json
+
+	name = data["name"]
+
+	log = Tags.toggle(name)
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
+		})
+	)
+
+@app.route('/api/tags/remove', methods=['POST'])
+def removeTag():
+	data = request.json
+
+	name = data["name"]
+
+	log = Tags.remove(name)
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
+		})
+	)
+
+@app.route('/api/tags/add', methods=['POST'])
+def addTag():
+	data = request.json
+
+	name = data["name"]
+	inclusive = data["inclusive"]
+	active = data["active"]
+
+	log = Tags.add(name, inclusive, active, sonarr.getTags() )
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
+		})
 	)

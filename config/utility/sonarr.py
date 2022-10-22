@@ -1,11 +1,18 @@
 from typing import Dict, List
 import requests
 import time
+import sys
 
-from .logger import logger
+from .tags import Tags
+
+# TODO includere logger a livello globale in modo che sia utilizzabile ovunque(?)
+if "utility.logger" not in sys.modules:
+	from .logger import logger
 from other.constants import SONARR_URL, API_KEY
 import other.texts as txt
 from other.exceptions import UnauthorizedSonarr
+
+
 
 # https://sonarr.tv/docs/api/
 # https://github.com/Sonarr/Sonarr/wiki/API (Legacy)
@@ -46,6 +53,9 @@ def getMissingEpisodes() -> List[Dict]:
 	]
 	```
 	"""
+	# Prima di cercare gli episodi mancanti aggiorno la lista dei tag con quelli disponibili su Sonarr
+	Tags.updateAvailableSonarrTags( getTags() )
+
 	data = []
 	endpoint = "wanted/missing"
 	page = 0
@@ -66,7 +76,7 @@ def getMissingEpisodes() -> List[Dict]:
 			for record in result["records"]:
 
 				try:
-					if record["series"]["seriesType"] != 'anime': continue # scarta gli episodi che non sono anime
+					if isEligibleSerie( record ) == False: continue # scarta gli episodi che non rispettano i criteri
 
 					def addData():
 						while True:
@@ -166,7 +176,7 @@ def getEpisodeFileID(epId:int) -> int: # Converte l'epId in epFileId
 	"""
 	data = getEpisode(epId)
 	return data["episodeFile"]["id"]
-
+	
 def inQueue(epId:int) -> bool:
 	"""
 	Controlla se l'episodio è in download da Sonarr.
@@ -174,3 +184,58 @@ def inQueue(epId:int) -> bool:
 	endpoint = "queue"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	return epId in [x["episode"]["id"] for x in requests.get(url).json()]
+
+def getSerieInfo(serieId:int):
+	"""
+	Recupera le informazioni per una serie specifica
+	"""
+	endpoint = f"series/{serieId}"
+	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	return requests.get(url).json()
+
+def getTags():
+	"""
+	Recupera la lista dei tag presenti su sonarr
+	"""
+	try:
+		endpoint = "tag"
+		url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+		return requests.get(url).json()
+	
+	except Exception:
+		return []
+
+def isEligibleSerie( record ) -> bool:
+	"""
+	Verifica se la serie restituita da Sonarr è idonea ad essere scaricata secondo le attuali impostazioni ( tag e tipologia serie anime )
+	"""
+	# Comportamento standard: la serie deve avere come tipologia ANIME su Sonarr
+	if record["series"]["seriesType"] != 'anime': return False
+
+	res = True
+
+	activeTags = [x for x in Tags.data if x["active"] == True] 
+
+	def tagInclusiveExists():
+		for tag in activeTags:
+			if tag["inclusive"] == True:
+				return True
+		else:
+			return False
+
+	# Se esistono dei tag li controllo
+	if len(activeTags):
+		# Se esiste un tag inclusivo tra i miei l'azione di default deve essere di escludere tutti gli anime e accettare solo quelli con tag inclusivo
+		res = tagInclusiveExists()
+
+		serieId = record["seriesId"]
+		serie = getSerieInfo( serieId )	
+
+		# Ordino prima quelli inclusivi, poi esclusivi
+		activeTags.sort(key=lambda x: x["inclusive"], reverse=True)
+
+		for tag in activeTags:
+			if tag["id"] in serie["tags"]:
+				res = tag["inclusive"] == True
+
+	return res

@@ -11,7 +11,7 @@
 	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
 }
 
-#connections .content{
+.settings-chessboard .content{
 	margin: 10px;
 	width: 180px;
 	height: 180px;
@@ -23,14 +23,14 @@
 	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
 }
 
-@media only screen and (max-width: 490px){#connections .content {width: 100%;}}
+@media only screen and (max-width: 490px){.settings-chessboard .content {width: 100%;}}
 
-#connections > .card-content{
+.settings-chessboard > .card-content{
 	display: flex;
 	flex-wrap: wrap;
 }
 /* TelegramTelegramTelegramTelegramTelegramTel */
-#connections .content > h2{
+.settings-chessboard .content > h2{
 	margin-bottom: 0;
 	text-align: center;
 	word-break: break-all;
@@ -41,16 +41,16 @@
 	font-style: normal;
 	font-weight: 500;
 }
-#connections .content > code{
+.settings-chessboard .content > code{
 	color: var(--primary-color);
 	font-size: 1rem;
 	font-style: italic;
 }
-#connections .content > code.invalid{
+.settings-chessboard .content > code.invalid{
 	color: rgba(255,255,255,0.2);
 	text-decoration: line-through;
 }
-#connections .content > .status{
+.settings-chessboard .content > .status{
 	padding: 5px;
 
 	border: 2px solid rgba(255,255,255,0.2);
@@ -61,10 +61,10 @@
 	width: calc(100% - 20px);
 	text-align: center;
 }
-#connections .content > .status:hover{
+.settings-chessboard .content > .status:hover{
 	cursor: pointer;
 }
-#connections .content > .status.active{
+.settings-chessboard .content > .status.active{
 	border: 2px solid var(--primary-color);
     color: var(--primary-color);
 }
