@@ -32,8 +32,8 @@ class Tags:
 
 		for tag in tags:
 			if tag["name"] == name:
-				tag["active"] = not tag["active"]
 				log += "disabilitato." if tag["active"] else "attivato."
+				tag["active"] = not tag["active"]
 				break
 		else:
 			return f"Non è stato trovato nessun Tag con il nome {name}."
@@ -76,9 +76,8 @@ class Tags:
 					return f"Il tag {name} è stato aggiunto."
 			else:
 				return f"Il Tag {name} non esiste su Sonarr."
-			
 		else:
-				return f"È gia presente un Tag {name}."
+			return f"È gia presente un Tag {name}."
 
 
 	@classmethod

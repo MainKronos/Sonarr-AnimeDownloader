@@ -122,7 +122,7 @@ class ConnectionsDiv extends React.Component {
 		if (error) {
 			return /*#__PURE__*/React.createElement("div", null, "Error: ", error);
 		} else if (!is_loaded) {
-			return /*#__PURE__*/React.createElement("div", null);
+			return /*#__PURE__*/React.createElement(Loading);
 		} else {
 			return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
 				className: "card-title"
@@ -428,7 +428,7 @@ class Tags extends React.Component {
 			body: JSON.stringify({
 				name: tag,
 				inclusive: inclusive,
-				active: true,
+				active: false,
 			})
 		}).then(response => response.json()).then(data => {
 			showToast(data.data);
@@ -468,10 +468,10 @@ class AddTag extends React.Component {
 
 	render() {
 
-		const {
-			name,
-			inclusive
-		} = this.state
+		// const {
+		// 	name,
+		// 	inclusive
+		// } = this.state
 
 		if (this.state.active) {
 			return /*#__PURE__*/React.createElement("form", {
@@ -479,6 +479,9 @@ class AddTag extends React.Component {
 				onSubmit: event => {
 					event.preventDefault();
 					this.props.onAdd(this.state.name, this.state.inclusive);
+					this.setState({
+						active: false
+					});
 				},
 				onKeyDown: event => {
 					if (event.key == 'Escape') this.setState({
@@ -495,10 +498,10 @@ class AddTag extends React.Component {
 				}),
 				required: true
 			}),
-		/*#__PURE__*/React.createElement("div", { className: "radio-group" },
+			/*#__PURE__*/React.createElement("div", { className: "radio-group" },
 			/*#__PURE__*/React.createElement("label", { for: this.id, className: "radio" },
 				React.createElement('input', {
-					type: "radio", id: this.id, name: `inclusive${this.id}`, value: true, checked: inclusive, onClick: () => {
+					type: "radio", id: this.id, name: `inclusive${this.id}`, value: true, checked: this.state.inclusive, onClick: () => {
 						this.setState({ inclusive: true })
 					}
 				}),
@@ -507,7 +510,7 @@ class AddTag extends React.Component {
 			),
 			/*#__PURE__*/React.createElement("label", { for: this.id, className: "radio" },
 				React.createElement('input', {
-					type: "radio", id: this.id, name: `inclusive${this.id}`, value: false, checked: !inclusive, onClick: () => {
+					type: "radio", id: this.id, name: `inclusive${this.id}`, value: false, checked: !this.state.inclusive, onClick: () => {
 						this.setState({ inclusive: false })
 					}
 				}),
@@ -538,7 +541,7 @@ function Tag(props) {
 		onContextMenu: e => {
 			menu.show(e, ["Delete"], [props.onRemove]);
 		}
-	}, /*#__PURE__*/React.createElement("h2", null, props.name), /*#__PURE__*/React.createElement("code", {}, props.inclusive ? "Inclusivo \u2713" : "Esclusivo \u2A02"), /*#__PURE__*/React.createElement("span", {
+	}, /*#__PURE__*/React.createElement("h2", null, props.name), /*#__PURE__*/React.createElement("code", {}, props.inclusive ? "Inclusivo" : "Esclusivo"), /*#__PURE__*/React.createElement("span", {
 		className: `status ${props.active ? 'active' : ''}`,
 		onClick: props.onToggle
 	}, props.active ? "ON" : "OFF"));
