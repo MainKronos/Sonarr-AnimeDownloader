@@ -16,6 +16,7 @@
 |[Cosa significa che la serie è stata scartata per mancanza di informazioni?](#cosa-significa-che-la-serie-è-stata-scartata-per-mancanza-di-informazioni)|
 |[La serie non compare nei log](#la-serie-non-compare-nei-log)|
 |[Come si usano le Connections?](#come-si-usano-le-connections)|
+|[Come si usano i Tag?](#come-si-usano-i-tag)|
 ---
 
 ## Dove posso reperire la chiave api di sonarr?
@@ -165,3 +166,11 @@ Le connection sono Shell Script scritti in Bash che vengono eseguiti quando deve
 Per utilizzarle è necessario prima scrive lo script in modo tale che possa ricevere un parametro ($1) che identifica il messaggio da inviare, poi salvare con estensione .sh e posizionarlo nella cartella /script/connections. Infine accedere alla pagina web, nella sezioni impostazioni, aggiungerlo e attivarlo.
 
 ![connection_howto](/documentation/images/connections_howto.gif)
+
+## Come si usano i Tag?
+
+![Tags](/documentation/images/tags.png)
+
+Per aggiungere un nuovo tag basta premere il pulsante `+` e aggiungere un nome di un tag **già presente** su Sonarr. \
+Per attivarne uno basta premere il pulsante in basso; se è visualizzato `ON` è attivo se invece è `OFF` è spento. \
+Se viene visualizzata la scritta `Invalido` significa che quel tag è stato rimosso da Sonarr e quindi non è più valido (non può essere attivato).

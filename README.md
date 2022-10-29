@@ -175,8 +175,10 @@ Parametro | Descrizione
 **Sposta Episodi** | Indica se gli episodi devono essere spostati nella cartella indicata da *Sonarr* oppure lasciarli nella cartella interna al container (`/downloads`).
 **Intervallo Scan** | Indica quanto tempo deve passare (in minuti) tra una ricerca degli episodi mancanti e un'altra, e in caso di risultati il download.
 **Auto Ricerca Link** | **!!!MODALITÀ SPERIMENTALE!!!** Ricerca automaticamente i link che non sono presenti nella tabella di conversione.
+Modalità Tag | Indica la modalità di gestione dei [tag](FAQ.md#come-si-usano-i-tag) associati agli anime su sonarr. Se è in moalità `BLACKLIST` le serie che hanno almeno un [tag](FAQ.md#come-si-usano-i-tag) attivo nella sezione **Tag Personalizzati** saranno escluse dalla ricerca; se è in modalità `WHITELIST` le serie che **NON** hanno almeno un [tag](FAQ.md#come-si-usano-i-tag) attivo nella sezione **Tag Personalizzati** saranno escluse. NOTA: Se è in modalità `WHITELIST` e non è stata aggiunto nessun [tag](FAQ.md#come-si-usano-i-tag) alla sezione **Tag Personalizzati** o nessuno è attivo allora **TUTTi** gli anime saranno esclusi.
 
 Le impostazioni si trovano in `http://localhost:5000/settings`
+
 
 ## Problemi
 In caso di problemi o errori controllare prima di tutto i log del Container, di solito lì è indicato il problema; altrimenti segnalarlo su GitHub in questo repository sotto la sezione _Issues_.
