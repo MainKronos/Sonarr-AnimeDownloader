@@ -127,52 +127,55 @@ class ConnectionsDiv extends React.Component {
 			data
 		} = this.state;
 
-		if (error) {
-			return /*#__PURE__*/React.createElement("div", null, "Error: ", error);
-		} else if (!is_loaded) {
-			return /*#__PURE__*/React.createElement(Loading);
+		if (!is_loaded) {
+			return React.createElement(Loading);
 		} else {
-			return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-				className: "card-title"
-			}, "Connections"), /*#__PURE__*/React.createElement(Connections, {
-				syncData: this.syncData,
-				data: data
-			}), /*#__PURE__*/React.createElement("section", {
-				className: "bottom"
-			}, /*#__PURE__*/React.createElement("a", {
-				className: "btn",
-				href: "/ie/connections",
-				target: "_blank"
-			}, "\uF090"), /*#__PURE__*/React.createElement("label", {
-				htmlFor: "importC",
-				className: "btn"
-			}, /*#__PURE__*/React.createElement("input", {
-				id: "importC",
-				type: "file",
-				accept: ".json",
-				value: this.state.file,
-				onChange: event => {
-					let json = event.target.files[0];
+			return React.createElement(React.Fragment, null, 
+				React.createElement("div", {className: "card-title"}, "Connections"), 
+				(error) ? React.createElement("div", {className: 'card-content'}, "Error: ", error) : (
+					React.createElement(Connections, {
+						syncData: this.syncData,
+						data: data
+					}), React.createElement("section", {className: "bottom"}, 
+						React.createElement("a", {
+							className: "btn",
+							href: "/ie/connections",
+							target: "_blank"
+						}, "\uF090"), 
+						React.createElement("label", {
+								htmlFor: "importC",
+								className: "btn"
+							}, 
+							React.createElement("input", {
+								id: "importC",
+								type: "file",
+								accept: ".json",
+								value: this.state.file,
+								onChange: event => {
+									let json = event.target.files[0];
 
-					if (json != null) {
-						let formData = new FormData();
-						formData.append("file", json, json.name);
-						fetch('/ie/connections', {
-							method: "POST",
-							body: formData
-						}).then(response => response.json()).then(res => {
-							this.syncData();
-							this.setState({
-								value: ""
-							});
-							showToast(res["error"] ? res["error"] : "Connections caricate con successo.");
-						});
-					}
-				}
-			}), "\uE2C6")));
+									if (json != null) {
+										let formData = new FormData();
+										formData.append("file", json, json.name);
+										fetch('/ie/connections', {
+											method: "POST",
+											body: formData
+										}).then(response => response.json()).then(res => {
+											this.syncData();
+											this.setState({
+												value: ""
+											});
+											showToast(res["error"] ? res["error"] : "Connections caricate con successo.");
+										});
+									}
+								}
+							}), "\uE2C6"
+						)
+					)
+				)
+			);
 		}
 	}
-
 }
 
 class Connections extends React.Component {
@@ -367,22 +370,55 @@ class TagsDiv extends React.Component {
 			enabled
 		} = this.state;
 
-		if (error) {
-			return /*#__PURE__*/React.createElement("div", null, "Error: ", error);
-		} else if (!is_loaded) {
+		;
+
+		if (!is_loaded) {
 			return /*#__PURE__*/React.createElement(Loading);
 		} else {
-			return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", { className: 'card-title' }, "Tag Personalizzati"),
-					/*#__PURE__*/React.createElement(Tags, {
+			return React.createElement(React.Fragment, null, 
+				React.createElement("div", { className: 'card-title' }, "Tag Personalizzati"),
+				(error) ? React.createElement("div", {className: 'card-content'}, "Error: ", error) : (
+					React.createElement(Tags, {
 						syncData: this.syncData,
 						data: data,
-					})
-				// , /*#__PURE__*/React.createElement("section", {
-				// className: "bottom"
-				// }, /*#__PURE__*/React.createElement("label", {
-				// htmlFor: "importC",
-				// className: "btn"
-				// }, "\uE2C6"))
+					}), 
+					React.createElement("section", { className: "bottom" }, 
+						React.createElement("a", {
+							className: "btn",
+							href: "/ie/tags",
+							target: "_blank"
+						}, "\uF090"), 
+						React.createElement("label", {
+								htmlFor: "importT",
+								className: "btn"
+							}, 
+							React.createElement("input", {
+								id: "importT",
+								type: "file",
+								accept: ".json",
+								value: this.state.file,
+								onChange: event => {
+									let json = event.target.files[0];
+				
+									if (json != null) {
+										let formData = new FormData();
+										formData.append("file", json, json.name);
+										fetch('/ie/tags', {
+											method: "POST",
+											body: formData
+										}).then(response => response.json()).then(res => {
+											this.syncData();
+											this.setState({
+												value: ""
+											});
+											showToast(res["error"] ? res["error"] : "Tag caricati con successo.");
+										});
+									}
+								}
+							}), "\uE2C6"
+						)
+					)
+				)
 			)
 		}
 	}

@@ -17,9 +17,7 @@ Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documenta
 
 Le **FAQ** si trovano [qui](FAQ.md).
 
-Se vuoi dare un'occhiata al progetto c'è una **DEMO** disponibile [_**qui**_](https://mainkronos.github.io/Sonarr-AnimeDownloader/). 👈(ﾟヮﾟ👈)
-
-Se il progetto ti è _**piaciuto**_ e ti è stato _**utile**_, metti una <a href="https://github.com/MainKronos/Sonarr-AnimeDownloader/stargazers" style="font-weight:700;color:#9FA8DA;text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 25px rgba(255,255,0,0.3);">**STELLA**</a>.
+Se il progetto ti è _**piaciuto**_ e ti è stato _**utile**_, metti una [**STELLA**](https://github.com/MainKronos/Sonarr-AnimeDownloader/stargazers). 👈(ﾟヮﾟ👈)
 
 ![Presentazione](/documentation/images/Presentazione.gif)
 

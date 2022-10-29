@@ -1,3 +1,4 @@
+from ast import While
 from typing import Dict, List
 import requests
 import time
@@ -20,6 +21,27 @@ from other.exceptions import UnauthorizedSonarr
 # https://github.com/Sonarr/Sonarr/wiki/API (Legacy)
 
 # TODO: Creare una classe Sonarr al cui interno è implementato un metodo che verifica per ogni richiesta http che le credenziali siano corrette
+
+
+def sonarrRequests(fun):
+	def wrapper(*args, **kwargs):
+		error_attempt = 0
+		while True:
+			try:
+				res = fun(*args, **kwargs).json()
+
+				# Controllo che le credenziali siano corrette
+				if "error" in res and res["error"] == "Unauthorized":
+					raise UnauthorizedSonarr(f"Sonarr API KEY non valida, {res['error']}.")
+				return res
+			except requests.exceptions.RequestException as res_error:
+
+				# In caso di errore di correzione riprovo per 3 volte
+				if error_attempt > 3: raise res_error
+				error_attempt += 1
+				log.logger.warning(txt.CONNECTION_ERROR_LOG.format(res_error=res_error) + '\n')
+				time.sleep(10)
+	return wrapper
 
 def getMissingEpisodes() -> List[Dict]:
 	"""
@@ -64,66 +86,56 @@ def getMissingEpisodes() -> List[Dict]:
 	error_attempt = 0
 
 	while True:
-		try:
-			page += 1
-			res = requests.get("{}/api/{}?apikey={}&sortKey=airDateUtc&page={}".format(SONARR_URL, endpoint, API_KEY, page))
-			result = res.json()
+		page += 1
+		result = sonarrRequests(requests.get)("{}/api/{}?apikey={}&sortKey=airDateUtc&page={}".format(SONARR_URL, endpoint, API_KEY, page))
 
-			if "error" in result:
-				raise UnauthorizedSonarr(f"Sonarr API KEY non valida, {result['error']}.")
+		if len(result["records"]) == 0: 
+			break
 
-			if len(result["records"]) == 0: 
-				break
+		for record in result["records"]:
 
-			for record in result["records"]:
+			try:
+				if record["series"]["seriesType"] != 'anime': continue # Comportamento standard: la serie deve avere come tipologia ANIME su Sonarr
 
-				try:
-					if record["series"]["seriesType"] != 'anime': continue # Comportamento standard: la serie deve avere come tipologia ANIME su Sonarr
+				if not isEligibleSerie( record ): 
+					log.logger.debug(txt.ANIME_EXCLUDED_LOG.format(anime=record["series"]["title"]) + "\n")
+					continue # scarta gli episodi che non rispettano i criteri
 
-					if not isEligibleSerie( record ): 
-						log.logger.debug(txt.ANIME_EXCLUDED_LOG.format(anime=record["series"]["title"]) + "\n")
-						continue # scarta gli episodi che non rispettano i criteri
+				def addData():
+					while True:
+						for anime in data:
+							if anime["ID"] == record["seriesId"]:
+								for season in anime["seasons"]:
+									if season["num"] == str(record["seasonNumber"]):
 
-					def addData():
-						while True:
-							for anime in data:
-								if anime["ID"] == record["seriesId"]:
-									for season in anime["seasons"]:
-										if season["num"] == str(record["seasonNumber"]):
-
-											season["episodes"].append({
-												"num": str(record["episodeNumber"]),
-												"abs": str(record["absoluteEpisodeNumber"]) if "absoluteEpisodeNumber" in record else None,
-												"season": str(record["seasonNumber"]),
-												"title": record["title"],
-												"ID": record["id"]
-											})
-											return
-									else:
-										anime["seasons"].append({
-											"num": str(record["seasonNumber"]),
-											"links": [],
-											"episodes": []
+										season["episodes"].append({
+											"num": str(record["episodeNumber"]),
+											"abs": str(record["absoluteEpisodeNumber"]) if "absoluteEpisodeNumber" in record else None,
+											"season": str(record["seasonNumber"]),
+											"title": record["title"],
+											"ID": record["id"]
 										})
-										break
-							else:
-								data.append({
-									"title": record["series"]["title"],
-									"ID": record["seriesId"],
-									"tvdbID": record["series"]["tvdbId"],
-									"path": record["series"]["path"],
-									"absolute": False,
-									"seasons": []
-								})
-					addData()
-				except KeyError:
-					data.pop()
-					log.logger.debug(txt.ANIME_REJECTED_LOG.format(anime=record["series"]["title"], season=record["seasonNumber"]) + '\n')
-		except requests.exceptions.RequestException as res_error:
-			if error_attempt > 3: raise res_error
-			error_attempt += 1
-			log.logger.warning(txt.CONNECTION_ERROR_LOG.format(res_error=res_error) + '\n')
-			time.sleep(10)
+										return
+								else:
+									anime["seasons"].append({
+										"num": str(record["seasonNumber"]),
+										"links": [],
+										"episodes": []
+									})
+									break
+						else:
+							data.append({
+								"title": record["series"]["title"],
+								"ID": record["seriesId"],
+								"tvdbID": record["series"]["tvdbId"],
+								"path": record["series"]["path"],
+								"absolute": False,
+								"seasons": []
+							})
+				addData()
+			except KeyError:
+				data.pop()
+				log.logger.debug(txt.ANIME_REJECTED_LOG.format(anime=record["series"]["title"], season=record["seasonNumber"]) + '\n')
 
 	return data
 
@@ -137,7 +149,7 @@ def rescanSerie(seriesId:int):
 		"name": "RescanSeries",
 		"seriesId": seriesId
 	}
-	requests.post(url, json=data)
+	sonarrRequests(requests.post)(url, json=data)
 
 def renameSerie(seriesId:int):
 	"""
@@ -149,7 +161,7 @@ def renameSerie(seriesId:int):
 		"name": "RenameSeries",
 		"seriesIds": [seriesId]
 	}
-	requests.post(url, json=data)
+	sonarrRequests(requests.post)(url, json=data)
 
 def getEpisode(epId:int) -> Dict:
 	"""
@@ -157,7 +169,7 @@ def getEpisode(epId:int) -> Dict:
 	"""
 	endpoint = f"episode/{epId}"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-	return requests.get(url).json()
+	return sonarrRequests(requests.get)(url)
 
 def renameEpisode(seriesId:int, epFileId:int):
 	"""
@@ -170,7 +182,7 @@ def renameEpisode(seriesId:int, epFileId:int):
 		"seriesId": seriesId,
 		"files": [epFileId]
 	}
-	requests.post(url, json=data)
+	sonarrRequests(requests.post)(url, json=data)
 
 def getEpisodeFileID(epId:int) -> int: # Converte l'epId in epFileId
 	"""
@@ -189,7 +201,7 @@ def inQueue(epId:int) -> bool:
 	"""
 	endpoint = "queue"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-	return epId in [x["episode"]["id"] for x in requests.get(url).json()]
+	return epId in [x["episode"]["id"] for x in sonarrRequests(requests.get)(url).json()]
 
 def getSerieInfo(serieId:int):
 	"""
@@ -197,7 +209,7 @@ def getSerieInfo(serieId:int):
 	"""
 	endpoint = f"series/{serieId}"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-	return requests.get(url).json()
+	return sonarrRequests(requests.get)(url).json()
 
 def getTags():
 	"""
@@ -205,7 +217,7 @@ def getTags():
 	"""
 	endpoint = "tag"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-	return requests.get(url).json()
+	return sonarrRequests(requests.get)(url).json()
 
 def isEligibleSerie( record:Dict ) -> bool:
 	"""
