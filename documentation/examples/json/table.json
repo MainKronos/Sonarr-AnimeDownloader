@@ -112,6 +112,15 @@
         "title": "Blue Period"
     },
     {
+        "title": "Bocchi the Rock!",
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/bocchi-the-rock.LRnn4"
+            ]
+        },
+        "absolute": false
+    },
+    {
         "absolute": false,
         "seasons": {
             "1": [
@@ -470,6 +479,15 @@
             ]
         },
         "title": "Requiem of the Rose King"
+    },
+    {
+        "title": "SPY x FAMILY",
+        "seasons": {
+            "1": [
+                "https://www.animeworld.tv/play/spy-x-family.iyICA"
+            ]
+        },
+        "absolute": false
     },
     {
         "absolute": false,

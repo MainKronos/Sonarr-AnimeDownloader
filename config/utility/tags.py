@@ -24,14 +24,17 @@ class Tags:
 		return []
 
 	@classmethod
-	def toggle(self, name:str):
+	def toggle(self, id:int, name:str, availableTags:list):
 
 		log = f"Il Tag {name} è stato "
 
 		tags = self.data
 
 		for tag in tags:
-			if tag["name"] == name:
+			if tag["name"] == name and tag["id"] == id:
+				if tag["id"] not in [x["id"] for x in availableTags]:
+					return f"Il Tag {name} non esiste su Sonarr."
+
 				log += "disabilitato." if tag["active"] else "attivato."
 				tag["active"] = not tag["active"]
 				break
@@ -42,13 +45,13 @@ class Tags:
 		return log
 	
 	@classmethod
-	def remove(self, name:str):
+	def remove(self, id:int, name:str):
 		
 		deleting = None
 		tags = self.data
 
 		for tag in tags:
-			if tag["name"] == name:
+			if tag["name"] == name and tag["id"] == id:
 				deleting = tag
 				break
 		else:
@@ -60,7 +63,7 @@ class Tags:
 		return f"Il Tag {name} è stato rimosso."
 	
 	@classmethod
-	def add(self, name:str, inclusive:str, active:bool, availableTags:list):
+	def add(self, name:str, active:bool, availableTags:list):
 		if self.isValid(name):
 			tags = self.data
 
@@ -69,7 +72,6 @@ class Tags:
 					tags.append({
 						"id": tag["id"],
 						"name": name,
-						"inclusive": inclusive,
 						"active": active
 					})
 					self.write(tags)

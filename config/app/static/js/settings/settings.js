@@ -1,31 +1,33 @@
 // range
 
-function syncData() {
+function syncData(){
 
 	return fetch("/api/settings")
-		.then(res => res.json())
-		.then((res) => {
-			document.getElementById('RenameEp').checked = res.data.RenameEp;
-			document.getElementById('MoveEp').checked = res.data.MoveEp;
-			document.getElementById('AutoBind').checked = res.data.AutoBind;
+	.then(res => res.json())
+	.then((res) => {
+		document.getElementById('RenameEp').checked = res.data.RenameEp;
+		document.getElementById('MoveEp').checked = res.data.MoveEp;
+		document.getElementById('AutoBind').checked = res.data.AutoBind;
 
-			document.getElementById('ScanDelay').value = res.data.ScanDelay;
-			document.querySelector("#ScanDelay + label").textContent = res.data.ScanDelay;
+		document.getElementById('ScanDelay').value = res.data.ScanDelay;
+		document.querySelector("#ScanDelay + label").textContent = res.data.ScanDelay;
 
-			for (let elem of document.querySelectorAll('input[name=LogLevel]')) {
-				elem.checked = elem.value == res.data.LogLevel;
-			}
+		for(let elem of document.querySelectorAll('input[name=LogLevel]')){
+			elem.checked = elem.value == res.data.LogLevel;
+		}
+		for(let elem of document.querySelectorAll('input[name=TagsMode]')){
+			elem.checked = elem.value == res.data.TagsMode;
+		}
 
-
-		});
+	});
 }
 syncData();
 
-document.getElementById('ScanDelay').addEventListener('input', function (event) {
+document.getElementById('ScanDelay').addEventListener('input', function(event){
 	document.querySelector("#ScanDelay + label").textContent = this.value;
 });
 
-function updateSettings(data) {
+function updateSettings(data){
 	return fetch('/api/settings', {
 		method: 'POST',
 		headers: {
@@ -36,44 +38,50 @@ function updateSettings(data) {
 			LogLevel: data.hasOwnProperty('LogLevel') ? data.LogLevel : null,
 			MoveEp: data.hasOwnProperty('MoveEp') ? data.MoveEp : null,
 			RenameEp: data.hasOwnProperty('RenameEp') ? data.RenameEp : null,
-			ScanDelay: data.hasOwnProperty('ScanDelay') ? data.ScanDelay : null
+			ScanDelay: data.hasOwnProperty('ScanDelay') ? data.ScanDelay : null,
+			TagsMode: data.hasOwnProperty('TagsMode') ? data.TagsMode : null
 		})
 	})
-		.then(response => response.json())
-		.then(data => {
-			showToast(data.data);
-		});
+	.then(response => response.json())
+	.then(data => {
+		showToast(data.data);
+	});
 }
-document.getElementById('ScanDelay').addEventListener('change', function (event) {
-	updateSettings({ ScanDelay: parseInt(this.value) });
+document.getElementById('ScanDelay').addEventListener('change', function(event){
+	updateSettings({ScanDelay: parseInt(this.value)});
 });
-document.getElementById('RenameEp').addEventListener('change', function (event) {
-	updateSettings({ RenameEp: this.checked });
+document.getElementById('RenameEp').addEventListener('change', function(event){
+	updateSettings({RenameEp: this.checked});
 });
-document.getElementById('MoveEp').addEventListener('change', function (event) {
-	updateSettings({ MoveEp: this.checked });
+document.getElementById('MoveEp').addEventListener('change', function(event){
+	updateSettings({MoveEp: this.checked});
 });
-document.getElementById('AutoBind').addEventListener('change', function (event) {
-	updateSettings({ AutoBind: this.checked });
+document.getElementById('AutoBind').addEventListener('change', function(event){
+	updateSettings({AutoBind: this.checked});
 });
-for (let elem of document.querySelectorAll('input[name=LogLevel]')) {
-	elem.addEventListener('change', function (event) {
-		if (this.checked) updateSettings({ LogLevel: this.value })
+for(let elem of document.querySelectorAll('input[name=LogLevel]')){
+	elem.addEventListener('change', function(event){
+		if(this.checked) updateSettings({LogLevel: this.value})
+	});
+}
+for(let elem of document.querySelectorAll('input[name=TagsMode]')){
+	elem.addEventListener('change', function(event){
+		if(this.checked) updateSettings({TagsMode: this.value})
 	});
 }
 
-document.getElementById("importS").addEventListener('change', function () {
+document.getElementById("importS").addEventListener('change', function(){
 	let json = this.files[0];
-	if (this.files[0] != null) {
+	if(this.files[0] != null){
 		let formData = new FormData();
 		formData.append("file", json, json.name);
-		fetch('/ie/settings', { method: "POST", body: formData })
-			.then(response => response.json())
-			.then((res) => {
-				syncData();
-				document.getElementById("importS").value = null;
-				showToast(res["error"] ? res["error"] : "Impostazioni caricate con successo.")
-			})
+		fetch('/ie/settings', {method: "POST", body: formData})
+		.then(response => response.json())
+		.then((res)=>{
+			syncData();
+			document.getElementById("importS").value  = null;
+			showToast(res["error"] ? res["error"] : "Impostazioni caricate con successo.")
+		})
 	}
 });
 
@@ -389,14 +397,15 @@ class Tags extends React.Component {
 		this.add = this.add.bind(this);
 	}
 
-	toggle(tag) {
+	toggle(id, name) {
 		return fetch('/api/tags/toggle', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				name: tag
+				id: id,
+				name: name
 			})
 		}).then(response => response.json()).then(data => {
 			showToast(data.data);
@@ -404,14 +413,15 @@ class Tags extends React.Component {
 		});
 	}
 
-	remove(tag) {
+	remove(id, name) {
 		return fetch('/api/tags/remove', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				name: tag
+				id: id,
+				name: name
 			})
 		}).then(response => response.json()).then(data => {
 			showToast(data.data);
@@ -419,7 +429,7 @@ class Tags extends React.Component {
 		});
 	}
 
-	add(tag, inclusive) {
+	add(tag) {
 		return fetch('/api/tags/add', {
 			method: 'POST',
 			headers: {
@@ -427,7 +437,6 @@ class Tags extends React.Component {
 			},
 			body: JSON.stringify({
 				name: tag,
-				inclusive: inclusive,
 				active: false,
 			})
 		}).then(response => response.json()).then(data => {
@@ -441,12 +450,13 @@ class Tags extends React.Component {
 				className: `card-content`
 			}
 			, this.props.data.map((tag, index) => /*#__PURE__*/React.createElement(Tag, {
+				id: tag.id, 
 				name: tag.name,
-				inclusive: tag.inclusive,
 				active: tag.active,
+				valid: tag.valid,
 				key: tag.name + index,
-				onToggle: () => this.toggle(tag.name),
-				onRemove: () => this.remove(tag.name)
+				onToggle: () => this.toggle(tag.id, tag.name),
+				onRemove: () => this.remove(tag.id, tag.name)
 			}))
 			, /*#__PURE__*/React.createElement(AddTag, {
 				onAdd: this.add
@@ -461,24 +471,18 @@ class AddTag extends React.Component {
 		super(props);
 		this.state = {
 			name: "",
-			inclusive: false,
 			active: false
 		};
 	}
 
 	render() {
 
-		// const {
-		// 	name,
-		// 	inclusive
-		// } = this.state
-
 		if (this.state.active) {
 			return /*#__PURE__*/React.createElement("form", {
 				className: "content",
 				onSubmit: event => {
 					event.preventDefault();
-					this.props.onAdd(this.state.name, this.state.inclusive);
+					this.props.onAdd(this.state.name);
 					this.setState({
 						active: false
 					});
@@ -498,26 +502,7 @@ class AddTag extends React.Component {
 				}),
 				required: true
 			}),
-			/*#__PURE__*/React.createElement("div", { className: "radio-group" },
-			/*#__PURE__*/React.createElement("label", { for: this.id, className: "radio" },
-				React.createElement('input', {
-					type: "radio", id: this.id, name: `inclusive${this.id}`, value: true, checked: this.state.inclusive, onClick: () => {
-						this.setState({ inclusive: true })
-					}
-				}),
-				"Inclusivo",
-				React.createElement("span")
-			),
-			/*#__PURE__*/React.createElement("label", { for: this.id, className: "radio" },
-				React.createElement('input', {
-					type: "radio", id: this.id, name: `inclusive${this.id}`, value: false, checked: !this.state.inclusive, onClick: () => {
-						this.setState({ inclusive: false })
-					}
-				}),
-				"Esclusivo",
-				React.createElement("span")
-			),
-			), /*#__PURE__*/React.createElement("button", {
+			/*#__PURE__*/React.createElement("button", {
 				type: "submit",
 				className: "confirm-element btn"
 			}, "\ue163"));
@@ -536,12 +521,15 @@ class AddTag extends React.Component {
 }
 
 function Tag(props) {
-	return /*#__PURE__*/React.createElement("div", {
+	return React.createElement("div", {
 		className: "content",
 		onContextMenu: e => {
 			menu.show(e, ["Delete"], [props.onRemove]);
 		}
-	}, /*#__PURE__*/React.createElement("h2", null, props.name), /*#__PURE__*/React.createElement("code", {}, props.inclusive ? "Inclusivo" : "Esclusivo"), /*#__PURE__*/React.createElement("span", {
+	}, 
+	React.createElement("h2", null, props.name), 
+	React.createElement("code", null, props.valid ? '' : 'Invalido'), 
+	React.createElement("span", {
 		className: `status ${props.active ? 'active' : ''}`,
 		onClick: props.onToggle
 	}, props.active ? "ON" : "OFF"));

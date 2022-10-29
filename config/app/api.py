@@ -111,8 +111,9 @@ def updateSettings():
 	MoveEp = data["MoveEp"]
 	RenameEp = data["RenameEp"]
 	ScanDelay = data["ScanDelay"]
+	TagsMode = data["TagsMode"]
 
-	log = Settings.update(AutoBind, LogLevel, MoveEp, RenameEp, ScanDelay)
+	log = Settings.update(AutoBind, LogLevel, MoveEp, RenameEp, ScanDelay, TagsMode)
 
 	return Response(
 		mimetype='application/json',
@@ -315,7 +316,18 @@ def ieConnections():
 @app.route('/api/tags', methods=['GET'])
 def getTags():
 
+	# Aggiorno la lista dei tag con quelli disponibili su Sonarr
+	
+	availableTags = sonarr.getTags()
+	Tags.updateAvailableSonarrTags( availableTags )
+
 	tags = Tags.data
+
+	for tag in tags:
+		if tag["id"] in [x["id"] for x in availableTags]:
+			tag["valid"] = True
+		else:
+			tag["valid"] = False
 
 	return Response(
 		mimetype='application/json',
@@ -330,9 +342,10 @@ def getTags():
 def toggleTag():
 	data = request.json
 
+	tag_id = data["id"]
 	name = data["name"]
 
-	log = Tags.toggle(name)
+	log = Tags.toggle(tag_id, name, sonarr.getTags())
 
 	return Response(
 		mimetype='application/json',
@@ -347,9 +360,10 @@ def toggleTag():
 def removeTag():
 	data = request.json
 
+	tag_id = data["id"]
 	name = data["name"]
 
-	log = Tags.remove(name)
+	log = Tags.remove(tag_id, name)
 
 	return Response(
 		mimetype='application/json',
@@ -365,10 +379,9 @@ def addTag():
 	data = request.json
 
 	name = data["name"]
-	inclusive = data["inclusive"]
 	active = data["active"]
 
-	log = Tags.add(name, inclusive, active, sonarr.getTags() )
+	log = Tags.add(name, active, sonarr.getTags() )
 
 	return Response(
 		mimetype='application/json',

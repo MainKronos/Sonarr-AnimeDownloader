@@ -1,8 +1,7 @@
 [
     {
-        "id": 1,
+        "id": 999,
         "name": "Sonarr-AnimeDownloader",
-        "inclusive": false,
-        "active": true
+        "active": false
     }
 ]

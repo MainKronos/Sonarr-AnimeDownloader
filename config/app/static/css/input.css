@@ -201,7 +201,7 @@ label.switch > input[type=checkbox]:checked + span {
 input[type=range] {
 	vertical-align: middle;
 	-webkit-appearance: none;
-	/* width: 100%; */
+	width: calc( 100% - 40px);
 	height: 5px;
 	border-radius: 5px;
 	background: rgba(255,255,255,0.2);

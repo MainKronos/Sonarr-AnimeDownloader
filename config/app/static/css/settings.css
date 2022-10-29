@@ -1,10 +1,10 @@
 #settings{
 	display: grid;
 	gap: 10px;
-	grid-template-areas: "a b c" "a d e";
+	grid-template-areas: "a b c d" "a e f f";
 }
-@media only screen and (max-width: 950px){#settings {grid-template-areas: "a a" "b c" "d e";}}
-@media only screen and (max-width: 490px){#settings {grid-template-areas: "a" "b" "c" "d" "e";}}
+@media only screen and (max-width: 1240px){#settings {grid-template-areas: "a b" "a e" "c d" "f f";}}
+@media only screen and (max-width: 460px){#settings {grid-template-areas: "a" "b" "c" "d" "e" "f";}}
 
 #settings > .content, .settings-chessboard .content{
 	background-color: rgba(255,255,255,0.02);

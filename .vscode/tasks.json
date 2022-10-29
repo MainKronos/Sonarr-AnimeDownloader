@@ -13,8 +13,8 @@
 				"os": "Linux",
 				"image": "mainkronos/anime_downloader:latest",
 				"env": {
-					"SONARR_URL":"http://192.168.1.10:8989",
-					"API_KEY":"89e46c5e21144ed58e7ea962bc5ef19d",
+					"SONARR_URL":"http://192.168.1.11:8989",
+					"API_KEY":"f10994e9f3494368a31a3088aba6bfff",
 					"TZ":"Europe/Rome",
 					"PUID":"1000",
 					"PGID":"1000"

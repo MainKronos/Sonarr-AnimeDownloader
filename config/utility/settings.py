@@ -19,7 +19,8 @@ class Settings:
 			"RenameEp": True,
 			"MoveEp": True,
 			"ScanDelay": 30,
-			"AutoBind": False
+			"AutoBind": False,
+			"TagsMode": "BLACKLIST"
 		}
 		```
 		"""
@@ -31,7 +32,8 @@ class Settings:
 			"RenameEp": True,
 			"MoveEp": True,
 			"ScanDelay": 30,
-			"AutoBind": False
+			"AutoBind": False,
+			"TagsMode": "BLACKLIST"
 		}
 
 		update_fix = False
@@ -53,7 +55,13 @@ class Settings:
 						settings[info] = data[info]
 						update_fix = True
 
-			if settings["ScanDelay"] < 30 : settings["ScanDelay"] = 30
+			if settings["ScanDelay"] < 30 : 
+				settings["ScanDelay"] = data["ScanDelay"] # applico l'impostazione di default
+				update_fix = True
+
+			if settings["TagsMode"] not in ("BLACKLIST", "WHITELIST"): 
+				settings["TagsMode"] = data["TagsMode"] # applico l'impostazione di default
+				update_fix = True
 
 		else:
 			settings = data
@@ -67,7 +75,7 @@ class Settings:
 		return settings
 
 	@classmethod
-	def update(self, AutoBind:Optional[bool], LogLevel:Optional[str], MoveEp:Optional[bool], RenameEp:Optional[bool], ScanDelay:Optional[int]) -> str:
+	def update(self, AutoBind:Optional[bool], LogLevel:Optional[str], MoveEp:Optional[bool], RenameEp:Optional[bool], ScanDelay:Optional[int], TagsMode:str) -> str:
 		settings = self.data
 
 		log = "Nessuna modifica avvenuta." # messaggio
@@ -87,6 +95,9 @@ class Settings:
 		if ScanDelay is not None:
 			settings["ScanDelay"] = ScanDelay
 			log = "Intervallo Scan aggiornato."
+		if TagsMode is not None:
+			settings["TagsMode"] = TagsMode
+			log = "Modalità tags aggiornata."
 
 		self.write(settings)
 
@@ -113,6 +124,7 @@ class Settings:
 		if "MoveEp" not in settings: return False
 		if "RenameEp" not in settings: return False
 		if "ScanDelay" not in settings: return False
+		if "TagsMode" not in settings: return False
 
 		return True
 

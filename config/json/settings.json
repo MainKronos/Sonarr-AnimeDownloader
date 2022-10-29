@@ -3,5 +3,6 @@
 	"MoveEp": true,
 	"RenameEp": true,
 	"AutoBind": false,
-	"ScanDelay": 30
+	"ScanDelay": 30,
+	"TagsMode": "BLACKLIST"
 }
