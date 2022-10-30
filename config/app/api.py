@@ -6,6 +6,10 @@ from .app import app
 from utility.table import Table
 from utility.settings import Settings
 from utility.connections import Connections
+from utility.tags import Tags
+from utility import sonarr
+from other import texts as txt
+from other.exceptions import UnauthorizedSonarr
 from other.constants import SONARR_URL, API_KEY
 
 
@@ -109,8 +113,9 @@ def updateSettings():
 	MoveEp = data["MoveEp"]
 	RenameEp = data["RenameEp"]
 	ScanDelay = data["ScanDelay"]
+	TagsMode = data["TagsMode"]
 
-	log = Settings.update(AutoBind, LogLevel, MoveEp, RenameEp, ScanDelay)
+	log = Settings.update(AutoBind, LogLevel, MoveEp, RenameEp, ScanDelay, TagsMode)
 
 	return Response(
 		mimetype='application/json',
@@ -202,6 +207,107 @@ def addConnection():
 	active = data["active"]
 
 	log = Connections.add(name, script, active)
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
+		})
+	)
+
+#  TAGS
+	
+@app.route('/api/tags', methods=['GET'])
+def getTags():
+
+	# Aggiorno la lista dei tag con quelli disponibili su Sonarr
+
+	try:
+		availableTags = sonarr.getTags()
+		Tags.updateAvailableSonarrTags( availableTags )
+
+		tags = Tags.data
+	except UnauthorizedSonarr as error:
+		return Response(
+			mimetype='application/json',
+			status=200,
+			response=json.dumps({"error": str(error)})
+		)
+
+	for tag in tags:
+		if tag["id"] in [x["id"] for x in availableTags]:
+			tag["valid"] = True
+		else:
+			tag["valid"] = False
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": tags
+		})
+	)
+	
+@app.route('/api/tags/toggle', methods=['POST'])
+def toggleTag():
+	data = request.json
+
+	tag_id = data["id"]
+	name = data["name"]
+
+	try:
+		log = Tags.toggle(tag_id, name, sonarr.getTags())
+	except UnauthorizedSonarr as error:
+		return Response(
+			mimetype='application/json',
+			status=200,
+			response=json.dumps({"error": str(error)})
+		)
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
+		})
+	)
+
+@app.route('/api/tags/remove', methods=['POST'])
+def removeTag():
+	data = request.json
+
+	tag_id = data["id"]
+	name = data["name"]
+
+	log = Tags.remove(tag_id, name)
+
+	return Response(
+		mimetype='application/json',
+		status=200,
+		response=json.dumps({
+			"error": False,
+			"data": log
+		})
+	)
+
+@app.route('/api/tags/add', methods=['POST'])
+def addTag():
+	data = request.json
+
+	name = data["name"]
+	active = data["active"]
+	try:
+		log = Tags.add(name, active, sonarr.getTags() )
+	except UnauthorizedSonarr as error:
+		return Response(
+			mimetype='application/json',
+			status=200,
+			response=json.dumps({"error": str(error)})
+		)
 
 	return Response(
 		mimetype='application/json',
@@ -305,5 +411,33 @@ def ieConnections():
 				status=200,
 				response=json.dumps({
 					"error": False if check else f"Connections invalide."
+				})
+	)
+
+@app.route('/ie/tags', methods=['GET', 'POST'])
+def ieTags():
+	if request.method == 'GET':
+		return Response(
+			json.dumps(Tags.data, indent=4),
+			mimetype="text/plain",
+			headers={"Content-disposition":"attachment; filename=tags.json"}
+		)
+	else:
+		uploaded_file = request.files['file']
+		if uploaded_file.filename != '':
+			data = uploaded_file.read()
+
+			check = True
+			try:
+				check = Tags.write(json.loads(data.decode('utf-8')))
+			except json.decoder.JSONDecodeError:
+				check = False
+
+			
+			return Response(
+				mimetype='application/json',
+				status=200,
+				response=json.dumps({
+					"error": False if check else f"Tag invalidi."
 				})
 	)
