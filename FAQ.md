@@ -152,6 +152,7 @@ Se la serie non compare nei log controllare:
 
 1) Che la tipologia della serie sia `anime`. ![serie_type](/documentation/images/serie_type.png)
 2) Che l'url e l'API Key di Sonarr siano corretti.
+3) Che la serie non sia stata esclusa a causa di qualche [tag](#come-si-usano-i-tag).
 
 Se il problema è ancora presente allora aprire un issue.
 
@@ -174,3 +175,5 @@ Per utilizzarle è necessario prima scrive lo script in modo tale che possa rice
 Per aggiungere un nuovo tag basta premere il pulsante `+` e aggiungere un nome di un tag **già presente** su Sonarr. \
 Per attivarne uno basta premere il pulsante in basso; se è visualizzato `ON` è attivo se invece è `OFF` è spento. \
 Se viene visualizzata la scritta `Invalido` significa che quel tag è stato rimosso da Sonarr e quindi non è più valido (non può essere attivato).
+
+Il funzionamento dei tag varia a seconda della modalità settata nelle impostazioni; può essere in modalità `BLACKLIST` (default) o `WHITELIST`, per maggiori informazioni gurdare nel README alla sezione [Settings](README.md#settings).

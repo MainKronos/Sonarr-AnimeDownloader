@@ -186,7 +186,7 @@ Se visualizzate questo tipo di errore:
 ```
 🅰🅻🅴🆁🆃: Il sito è cambiato, di conseguenza la libreria è DEPRECATA.
 ```
-Segnalatelo il prima possibile sotto la sezione _Issues_, in modo tale che possa risolverlo al più presto.
+Riguarda un problema della libreria [AnimeWorld-API](https://github.com/MainKronos/AnimeWorld-API), quindi segnalatelo il prima possibile sotto la sezione [_Issues_](https://github.com/MainKronos/AnimeWorld-API/issues) della libreria, in modo tale che possa risolverlo al più presto.
 
 ## FAQ
 Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
