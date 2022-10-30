@@ -31,11 +31,7 @@ def main():
 
 	if None not in (SONARR_URL, API_KEY):
 
-		log.logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay= Settings.data['ScanDelay']) + '\n')
-		log.logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if Settings.data['MoveEp'] else 'OFF') + '\n')
-		log.logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if Settings.data['RenameEp'] else 'OFF') + '\n')
-		log.logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if Settings.data['AutoBind'] else 'OFF') + '\n')
-		log.logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=Settings.data['LogLevel']) + '\n')
+		log.logger.info('\n' + Settings.toString() + '\n')
 
 		log.logger.info('\n' + txt.START_SERVER_LOG + '\n')
 		job_thread = threading.Thread(target=server)
@@ -53,11 +49,7 @@ def refresh(self, silent=False):
 		log.logger.info(txt.SEPARATOR_LOG + '\n')
 		log.logger.info(txt.SETTINGS_UPDATED_LOG + '\n')
 
-		log.logger.info('\n' + txt.SETTINGS_SCAN_DELAY_LOG.format(delay= self.data['ScanDelay']) + '\n')
-		log.logger.info(txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if self.data['MoveEp'] else 'OFF') + '\n')
-		log.logger.info(txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if self.data['RenameEp'] else 'OFF') + '\n')
-		log.logger.info(txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if self.data['AutoBind'] else 'OFF') + '\n')
-		log.logger.info(txt.SETTINGS_LOG_LEVEL_LOG.format(level=self.data['LogLevel']) + '\n')
+		log.logger.info('\n' + self.toString() + '\n')
 
 		log.logger.info(txt.SEPARATOR_LOG + '\n')
 

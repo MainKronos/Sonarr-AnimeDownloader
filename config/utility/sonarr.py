@@ -201,7 +201,7 @@ def inQueue(epId:int) -> bool:
 	"""
 	endpoint = "queue"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-	return epId in [x["episode"]["id"] for x in sonarrRequests(requests.get)(url).json()]
+	return epId in [x["episode"]["id"] for x in sonarrRequests(requests.get)(url)]
 
 def getSerieInfo(serieId:int):
 	"""
@@ -209,7 +209,7 @@ def getSerieInfo(serieId:int):
 	"""
 	endpoint = f"series/{serieId}"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-	return sonarrRequests(requests.get)(url).json()
+	return sonarrRequests(requests.get)(url)
 
 def getTags():
 	"""
@@ -217,7 +217,7 @@ def getTags():
 	"""
 	endpoint = "tag"
 	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-	return sonarrRequests(requests.get)(url).json()
+	return sonarrRequests(requests.get)(url)
 
 def isEligibleSerie( record:Dict ) -> bool:
 	"""

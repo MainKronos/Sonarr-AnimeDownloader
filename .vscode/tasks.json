@@ -14,7 +14,7 @@
 				"image": "mainkronos/anime_downloader:latest",
 				"env": {
 					"SONARR_URL":"http://192.168.1.11:8989",
-					"API_KEY":"f10994e9f3494368a31a3088aba6b9ff",
+					"API_KEY":"f10994e9f3494368a31a3088aba6b9fc",
 					"TZ":"Europe/Rome",
 					"PUID":"1000",
 					"PGID":"1000"

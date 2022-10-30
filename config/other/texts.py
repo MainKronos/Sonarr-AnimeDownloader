@@ -30,6 +30,7 @@ SETTINGS_RENAME_EPISODE_LOG = "⚙️ Rinomina Episodi: {status}."
 SETTINGS_MOVE_EPISODE_LOG = "⚙️ Sposta Episodi: {status}."
 SETTINGS_AUTO_BIND_LINK_LOG = "⚙️ Auto Ricerca Link: {status}."
 SETTINGS_LOG_LEVEL_LOG = "⚙️ Livello del Log: {level}."
+TAG_MODE_LOG = "⚙️ Modalità dei Tag: {mode}."
 
 
 START_SERVER_LOG = "✔️ Server Avviato."
@@ -64,7 +65,7 @@ EPISODE_RENAME_LOG = "⏳ Rinominando l'episodio."
 EPISODE_RENAME_DONE_LOG = "✔️ Episodio rinominato."
 EPISODE_RENAME_ERROR_LOG = "⚠️ NON è stato possibile rinominare l'episodio."
 SEND_CONNECTION_MESSAGE_LOG = "✉️ Inviando il messaggio tramite 𝗰𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻𝘀."
-NO_EPISODES = "Non c'è nessun episodio da cercare."
+NO_EPISODES = "💤 Nessun episodio da cercare."
 EPISODE_ALREADY_IN_DOWNLOADING_LOG = "🔒 L'episodio è già in download su Sonarr."
 
 AUTOMATIC_LINK_SEARCH_LOG = "⚠️ Ricerca automatica link di AnimeWorld per la 𝘴𝘵𝘢𝘨𝘪𝘰𝘯𝘦 {season} della 𝘴𝘦𝘳𝘪𝘦 '{anime}'."

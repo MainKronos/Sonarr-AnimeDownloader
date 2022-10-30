@@ -2,6 +2,8 @@ from typing import Dict, Optional
 import os
 import json
 
+from other import texts as txt
+
 from utility.classproperty import classproperty
 
 class Settings:
@@ -141,4 +143,15 @@ class Settings:
 		else:
 			return False
 	
-	
+	@classmethod
+	def toString(self):
+		"""
+		Rapresentazione in formato stringa della classe.
+		"""
+
+		return (txt.SETTINGS_SCAN_DELAY_LOG.format(delay= self.data['ScanDelay']) + '\n' +
+		txt.SETTINGS_MOVE_EPISODE_LOG.format(status='ON' if self.data['MoveEp'] else 'OFF') + '\n' +
+		txt.SETTINGS_RENAME_EPISODE_LOG.format(status='ON' if self.data['RenameEp'] else 'OFF') + '\n' +
+		txt.SETTINGS_AUTO_BIND_LINK_LOG.format(status='ON' if self.data['AutoBind'] else 'OFF') + '\n' +
+		txt.SETTINGS_LOG_LEVEL_LOG.format(level=self.data['LogLevel']) + '\n' +
+		txt.TAG_MODE_LOG.format(mode=self.data['TagsMode']) + '\n')
