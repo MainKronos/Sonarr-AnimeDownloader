@@ -44,7 +44,7 @@ services:
       - 'API_KEY=1234567890abcdefghijklmn'
       - 'TZ=Europe/Rome'
       - 'PUID=1000'
-      - 'PGID=1000
+      - 'PGID=1000'
     image: 'ghcr.io/mainkronos/anime_downloader:latest'
 ```
 

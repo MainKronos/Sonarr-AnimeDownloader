@@ -115,8 +115,8 @@ def job():
 						logger.warning(txt.CONNECTION_ERROR_LOG.format(res_error=res_error) + '\n')
 					except aw.AnimeNotAvailable as info:
 						logger.warning(txt.WARNING_STATE_LOG.format(warning=info) + '\n')
-					except aw.ServerNotSupported as warning:
-						logger.error(txt.ERROR_STATE_LOG.format(error=warning) + '\n')
+					except (aw.ServerNotSupported, aw.Error404) as error:
+						logger.error(txt.ERROR_STATE_LOG.format(error=error) + '\n')
 					except aw.DeprecatedLibrary as dev:
 						logger.critical(txt.CRITICAL_STATE_LOG.format(critical=dev) + '\n')
 					finally:
