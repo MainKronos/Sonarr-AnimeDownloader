@@ -235,7 +235,7 @@ def bindAnime(anime_name:str, season:int, thetvdb_id:int) -> Dict[str,str]:
 			})
 
 	# riordino per data di uscita
-	ret.sort(key=lambda elem: elem["release"])
+	ret.sort(key=lambda elem: (elem["release"] is None, elem["release"]))
 
 	# controllo se effettivamente esiste la stagione
 	if len(ret) < season: return None

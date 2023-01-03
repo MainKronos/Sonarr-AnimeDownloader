@@ -44,7 +44,7 @@ services:
       - 'API_KEY=1234567890abcdefghijklmn'
       - 'TZ=Europe/Rome'
       - 'PUID=1000'
-      - 'PGID=1000
+      - 'PGID=1000'
     image: 'ghcr.io/mainkronos/anime_downloader:latest'
 ```
 
@@ -96,7 +96,7 @@ docker run -d \
   -e TZ=Europe/London \
   -p 8989:8989 \
   -v /path/to/data:/config \
-  -v /path/to/tvseries:/tv \ <--------------------------------------------- IMPORTANTE
+  -v /path/to/tvseries:/tv \ <------------------------------- IMPORTANTE
   -v /path/to/downloadclient-downloads:/downloads \
   --restart unless-stopped \
   ghcr.io/linuxserver/sonarr
@@ -124,7 +124,7 @@ Il programma, per funzionare, necessita di un file che si chiama `table.json`, s
 ![Tabella Di Conversione](/documentation/images/add_anime.gif)
 
 In ogni caso la formattazione di come sono inserite le informazioni nel file `table.json` sono riportate quà sotto, sottoforma di esempio:
-```
+```json
 [
     ...
     {   
@@ -149,17 +149,24 @@ La struttura interna del Container è così strutturata:
 /
  ├── downloads                 ### Cartella di download
  ├── script
- │   ├── app                   ### Pagina Web
+ │   ├── app                   ### Interfaccia Web
  │   │   ├── ...
  │   │  ...
- │   ├── anime_downloader      ### Programma principale
- │   │   ├── ...
- │   │  ...
+ │   │
  │   ├── json
  │   │    ├── settings.json    ### Impostazioni
- │   │    └── table.json       ### Tabella di conversione
+ │   │    ├── table.json       ### Tabella di conversione
+ │   │    ├── connections.json ### Conections
+ │   │    └── tags.json        ### Tag
+ │   │                      
+ │   ├── connections
+ │   │    ├── telegram.sh      ### Connessione a Telegram
+ │   │   ...                   ### Altre Connessioni
+ │   │                     
+ │   ├── start.sh              ### Script di Avvio
+ │   │ 
  │  ...                        ### Altri file utili
-... 
+...  
 ```
 
 ## Settings
