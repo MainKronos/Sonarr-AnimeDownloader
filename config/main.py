@@ -4,6 +4,7 @@ import schedule
 import time
 import threading
 import requests
+import sys
 
 
 from other.constants import SONARR_URL, API_KEY, VERSION
@@ -62,7 +63,8 @@ def refresh(self, silent=False):
 
 
 def server():
-	app.run(debug=False, host='0.0.0.0', use_reloader=False)	
+	sys.modules['flask.cli'].show_server_banner = lambda *x: None
+	app.run(debug=False, host='0.0.0.0', use_reloader=False)
 
 if __name__ == '__main__':
 	main()

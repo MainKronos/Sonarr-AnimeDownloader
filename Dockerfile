@@ -11,6 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 	apt-get -y install ffmpeg; \
 	apt-get -y install rtmpdump; \
     apt-get -y install tzdata; \
+	apt-get -y install build-essential; \
     apt-get -y install locales && locale-gen it_IT.UTF-8; \
     apt-get clean; \
     apt-get autoclean; \
@@ -37,21 +38,26 @@ COPY config/ /script/
 RUN chmod 777 /downloads -R 
 RUN chmod 777 /script -R 
 
+RUN gcc /script/start.c -o /start.bin
+RUN rm /script/start.c
+RUN chown root:root /start.bin
+RUN chmod 6751 /start.bin
+
 RUN sed -i -e 's/# it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/' /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=it_IT.UTF-8
 
-ENV WERKZEUG_RUN_MAIN true
-ENV FLASK_ENV production
+ENV FLASK_DEBUG production
 ENV PIP_ROOT_USER_ACTION ignore
 
 # USER dockeruser
 ENV USER_NAME dockeruser
 
-ENV VERSION "1.9.1"
+ARG set_version="dev"
+ENV VERSION=$set_version
 
 EXPOSE 5000
 
 VOLUME [ "/downloads", "/script/json", "/script/connections" ]
 
-CMD ["/script/start.sh"]
+CMD ["/start.bin"]

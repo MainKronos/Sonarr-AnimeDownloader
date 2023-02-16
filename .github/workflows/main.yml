@@ -92,6 +92,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+          build-args: set_version=${{ env.RELEASE_VERSION }}
 
       - name: Image latest digest
         run: echo ${{ steps.docker_build_latest.outputs.digest }}
