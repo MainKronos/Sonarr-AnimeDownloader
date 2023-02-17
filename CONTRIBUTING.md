@@ -19,10 +19,8 @@ docker run -d \
     -v /path/to/downloads:/downloads \
     -v /path/to/connections:/script/connections \
     -p {port}:5000 \
-    --env SONARR_URL='http://{url}:{port}' \
-    --env API_KEY='1234567890abcdefghijklmn' \
-    --env CHAT_ID=123456789 \
-    --env BOT_TOKEN='123456789:ABCDEFGHIJKLM-abc_AbCdEfGhI12345678' \
+    --env SONARR_URL=http://{url}:{port} \
+    --env API_KEY=1234567890abcdefghijklmn \
     --env TZ=Europe/Rome \
     mainkronos/anime_downloader
 ```
