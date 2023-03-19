@@ -17,6 +17,7 @@
 |[La serie non compare nei log](#la-serie-non-compare-nei-log)|
 |[Come si usano le Connections?](#come-si-usano-le-connections)|
 |[Come si usano i Tag?](#come-si-usano-i-tag)|
+|[Non trovo nessuna soluzione al mio problema](#non-trovo-nessuna-soluzione-al-mio-problema)|
 ---
 
 ## Dove posso reperire la chiave api di sonarr?
@@ -30,7 +31,7 @@ Poi bisogna andare su questa 'pagina':
 ```
 https://api.telegram.org/bot<YourBOTToken>/getUpdates
 ```
-Lì ci saranno scritte un po' di informazioni tipo queste riportate sotto, la vostra Chat ID si trova lì da qualche parte :) :
+Lì ci saranno scritte un po' di informazioni tipo queste riportate sotto, la vostra Chat ID si trova lì da qualche parte:
 ```
 {
     "ok":true,
@@ -84,7 +85,14 @@ Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sareb
 ```
 
 **È altamente consigliato usare la _pagina web_ alla porta `5000` per l'inserimento di queste informazioni.**
-Per aggiungere un campo, in questo caso un nuovo link all'array, e sufficiente reinserire tutti i campi (come se si stesse riaggiungendo di nuovo lo stesso anime) e nel campo link inserire **soltanto** il secondo/terzo/ecc. link.
+Per aggiungere un campo, in questo caso un nuovo link all'array, è sufficiente selezionare la stagione a cui corrispondono su Sonarr gli episodi da scaricare, e aggiungere il link relativo alla seconda/terza/... parte.
+
+![Esempio](/documentation/images/add_2_link.png)
+
+> **Note**
+> Per ricordarti come configurare correttamente il programma in questi casi basta pensare che, il numero subito sotto il titolo dell'anime si riferisce alla stagione di Sonarr e i link sotto si riferiscono a dove si trovano gli episodi relativi a quella stagione.
+
+Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/93#issuecomment-1435927555).
 
 ## AnimeWorld Segue una numerazione Assoluta degli episodi 
 Se AnimeWorld segue una numerazione Assoluta degli episodi, come ad esempio 'One Piece', selezionare nella pagina web, nel Modal per l'aggiunta di un anime, la checkbox `absolute`. Di conseguenza il campo `Season` deve essere vuoto.
@@ -177,3 +185,9 @@ Per attivarne uno basta premere il pulsante in basso; se è visualizzato `ON` è
 Se viene visualizzata la scritta `Invalido` significa che quel tag è stato rimosso da Sonarr e quindi non è più valido (non può essere attivato).
 
 Il funzionamento dei tag varia a seconda della modalità settata nelle impostazioni; può essere in modalità `BLACKLIST` (default) o `WHITELIST`, per maggiori informazioni gurdare nel README alla sezione [Settings](README.md#settings).
+
+## Non trovo nessuna soluzione al mio problema
+
+Se non hai trovato nessuna soluzione pertinente tra le FAQ, allora è possibile cercare tra gli issue se il problema è già stato trattato (guardare [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues?q=is%3Aissue+label%3A%22help+wanted%22%2Cquestion%2Cdocumentation+-label%3A%22fixed+on+dev%22))
+
+Se ancora non hai trovato nessuna soluzione allora ti consiglio di aprire un issue (usare [questo template](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/new?assignees=MainKronos&labels=question&template=question.md&title=%5BQUESTION%5D+Titolo+domanda))
