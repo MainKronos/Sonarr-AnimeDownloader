@@ -277,7 +277,7 @@ def downloadProgress(d):
 	"""
 	
 	if int(datetime.timestamp(datetime.now()) - downloadProgress.step ) > 0 or d["percentage"] == 1:
-		socketio.emit("download_info", d, broadcast=True)
+		socketio.emit("download_info", d)
 		downloadProgress.step = datetime.timestamp(datetime.now())
 
 downloadProgress.step = datetime.timestamp(datetime.now())
