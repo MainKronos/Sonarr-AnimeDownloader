@@ -8,14 +8,10 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-int main(int argc, char *argv[])
-{
-	int status; /* Stato di uscita processo figlio */
-	struct passwd* res; /* Risultato valore getpwnam */
-	DIR* dir; /* Cartella */
-	struct dirent* dir_inf; 
-
-	int dbg = 0;
+int start(){
+	char command[500]; /* Buffer per i comandi system */
+	struct passwd* pwn; /* Risultato valore getpwnam */
+	int res; /* Risposta System */
 
 	char* PUID = getenv("PUID");
 	if(!PUID) PUID = "1000";
@@ -23,67 +19,76 @@ int main(int argc, char *argv[])
 	if(!PGID) PGID = "1000";
 	char* USER_NAME = getenv("USER_NAME");
 
-	if(fork()){
-		wait(&status);
-		if(fork()){
-			wait(&status);
+	sprintf(command, "usermod -o -u %s %s", PUID, USER_NAME);
+	res = system(command);
+	if(res) return res;
 
-			res = getpwnam(USER_NAME);
+	sprintf(command, "groupmod -o -g %s %s", PGID, USER_NAME);
+	res = system(command);
+	if(res) return res;
 
-			printf(
-				"\n\n-------------------------------------\n"
-				"GID/UID\n"
-				"-------------------------------------\n"
-				"User uid:\t%d\n"
-				"User gid:\t%d\n"
-				"-------------------------------------\n\n\n",
-				res->pw_uid, res->pw_gid
-			);
-			if(fork()){
-				wait(&status);
-				if(fork()){
-					wait(&status);
-					if(fork()){
-						wait(&status);
-						if(fork()){
-							wait(&status);
-							if(fork()){
-								wait(&status);
-								if(fork()){
-									wait(&status);
-									if(fork()){
-										wait(&status);
+	pwn = getpwnam(USER_NAME);
+	printf(
+		"\n\n-------------------------------------\n"
+		"GID/UID\n"
+		"-------------------------------------\n"
+		"User uid:\t%d\n"
+		"User gid:\t%d\n"
+		"-------------------------------------\n\n\n",
+		pwn->pw_uid, pwn->pw_gid
+	);
 
-										chdir("/script");
-										setuid(atoi(PUID));
+	strcpy(command, "touch /script/json/settings.json");
+	res = system(command);
+	if(res) return res;
 
-										return system("python3 -u /script/main.py");
-									} else {
-										char* tmp; /* buffer */
-										dir = opendir("/script/connections");
-										if(!dir) exit(0);
+	strcpy(command, "touch /script/json/table.json");
+	res = system(command);
+	if(res) return res;
 
-										while(1){
-											dir_inf = readdir(dir);
-											if(!dir_inf) exit(0);
+	sprintf(command, "chown %s:%s /script -R", USER_NAME, USER_NAME);
+	res = system(command);
+	if(res) return res;
 
-											if((tmp = strrchr(dir_inf->d_name, '.'))){
-												if(strcmp(".sh", tmp) == 0) break;
-											}
-										}
-										closedir(dir);
+	strcpy(command, "chmod 777 /script -R");
+	res = system(command);
+	if(res) return res;
 
-										execlp(NULL, "sed", "-i", "-e", "'s/\\r$//'", "/script/connections/*.sh", NULL);
-									}
-								} else execlp(NULL, "pip3", "install", "--upgrade", "--no-cache-dir", "--disable-pip-version-check", "--quiet", "animeworld", NULL);
-							} else execlp(NULL, "chmod", "777", "/script", "-R", NULL);
-						} else execlp(NULL, "chgrp", USER_NAME, "/script", "-R", NULL);
-					} else execlp(NULL, "chown", USER_NAME, "/script", "-R", NULL);
-				} else execlp(NULL, "touch", "/script/json/table.json", NULL);
-			} else execlp(NULL, "touch", "/script/json/settings.json", NULL);
-		} else execlp(NULL, "groupmod", "-o", "-g", PGID, USER_NAME, NULL);	
-	} else execlp(NULL, "usermod", "-o", "-u", PUID, USER_NAME, NULL);
+	strcpy(command, "pip3 install --upgrade --no-cache-dir --disable-pip-version-check --quiet animeworld");
+	res = system(command);
+	if(res) return res;
 
-	fprintf(stderr, "ERROR %d: %s", dbg, strerror(errno));
-	exit(EXIT_FAILURE);
+	char* tmp; /* buffer */
+	DIR* dir = opendir("/script/connections");
+	if(dir){
+		struct dirent* dir_inf; 
+
+		while(1){
+			dir_inf = readdir(dir);
+			if(!dir_inf) break;
+
+			if((tmp = strrchr(dir_inf->d_name, '.'))){
+				if(strcmp(".sh", tmp) == 0){
+					system("sed -i -e 's/\\r$//' /script/connections/*.sh");
+					break;
+				}
+			}
+		}
+		closedir(dir);
+	}
+
+	chdir("/script");
+	setuid(atoi(PUID));
+	
+	return system("python3 -u /script/main.py");
+}
+
+int main(int argc, char *argv[])
+{
+	int res = start();
+	if(res){
+		fprintf(stderr, "ERROR: %s", strerror(errno));
+		exit(EXIT_FAILURE);
+	}
+	return 0;
 }

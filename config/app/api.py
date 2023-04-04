@@ -21,7 +21,8 @@ def getTable():
 		response=json.dumps({
 			"error": False,
 			"data": Table.data
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/table/add', methods=['POST'])
@@ -45,7 +46,8 @@ def addData():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/table/remove', methods=['POST'])
@@ -67,7 +69,8 @@ def removeData():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/table/edit', methods=['POST'])
@@ -90,7 +93,8 @@ def editData():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/settings', methods=['GET'])
@@ -101,7 +105,8 @@ def getSettings():
 		response=json.dumps({
 			"error": False,
 			"data": Settings.data
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/settings', methods=['POST'])
@@ -123,7 +128,8 @@ def updateSettings():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/log', methods=['GET'])
@@ -141,7 +147,8 @@ def getLog(row:int=0):
 				x for x in (open("log.log", 'r', encoding='utf-8').readlines())
 			][ -(rows + row) :]
 			# ][ -100 :  - 1]
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 	
 @app.route('/api/connections', methods=['GET'])
@@ -161,7 +168,8 @@ def getConnections():
 		response=json.dumps({
 			"error": False,
 			"data": connections
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/connections/toggle', methods=['POST'])
@@ -178,7 +186,8 @@ def toggleConnection():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/connections/remove', methods=['POST'])
@@ -195,7 +204,8 @@ def removeConnection():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/connections/add', methods=['POST'])
@@ -214,7 +224,8 @@ def addConnection():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 #  TAGS
@@ -233,7 +244,8 @@ def getTags():
 		return Response(
 			mimetype='application/json',
 			status=200,
-			response=json.dumps({"error": str(error)})
+			response=json.dumps({"error": str(error)}),
+			headers={"Access-Control-Allow-Origin": "*"}
 		)
 
 	for tag in tags:
@@ -248,7 +260,8 @@ def getTags():
 		response=json.dumps({
 			"error": False,
 			"data": tags
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 	
 @app.route('/api/tags/toggle', methods=['POST'])
@@ -264,7 +277,8 @@ def toggleTag():
 		return Response(
 			mimetype='application/json',
 			status=200,
-			response=json.dumps({"error": str(error)})
+			response=json.dumps({"error": str(error)}),
+		headers={"Access-Control-Allow-Origin": "*"}
 		)
 
 	return Response(
@@ -273,7 +287,8 @@ def toggleTag():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/tags/remove', methods=['POST'])
@@ -291,7 +306,8 @@ def removeTag():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/api/tags/add', methods=['POST'])
@@ -306,7 +322,8 @@ def addTag():
 		return Response(
 			mimetype='application/json',
 			status=200,
-			response=json.dumps({"error": str(error)})
+			response=json.dumps({"error": str(error)}),
+			headers={"Access-Control-Allow-Origin": "*"}
 		)
 
 	return Response(
@@ -315,7 +332,8 @@ def addTag():
 		response=json.dumps({
 			"error": False,
 			"data": log
-		})
+		}),
+		headers={"Access-Control-Allow-Origin": "*"}
 	)
 
 
@@ -326,7 +344,7 @@ def ieTable():
 		return Response(
 			json.dumps(Table.data, indent=4),
 			mimetype="text/plain",
-			headers={"Content-disposition":"attachment; filename=table.json"}
+			headers={"Content-disposition":"attachment; filename=table.json", "Access-Control-Allow-Origin": "*"},
 		)
 	else:
 		uploaded_file = request.files['file']
@@ -344,7 +362,9 @@ def ieTable():
 				status=200,
 				response=json.dumps({
 					"error": False if check else f"Table invalida."
-				})
+				},
+				headers={"Access-Control-Allow-Origin": "*"}
+			)
 	)
 
 @app.route('/ie/settings', methods=['GET', 'POST'])
@@ -353,7 +373,7 @@ def ieSettings():
 		return Response(
 			json.dumps(Settings.data, indent=4),
 			mimetype="text/plain",
-			headers={"Content-disposition":"attachment; filename=settings.json"}
+			headers={"Content-disposition":"attachment; filename=settings.json", "Access-Control-Allow-Origin": "*"}
 		)
 	else:
 		uploaded_file = request.files['file']
@@ -371,7 +391,9 @@ def ieSettings():
 				status=200,
 				response=json.dumps({
 					"error": False if check else f"Settings invalide."
-				})
+				},
+				headers={"Access-Control-Allow-Origin": "*"}
+			)
 	)
 
 @app.route('/ie/log', methods=['GET'])
@@ -383,7 +405,7 @@ def ieLog():
 	return Response(
 		data,
 		mimetype="text/plain",
-		headers={"Content-disposition":"attachment; filename=log.log"}
+		headers={"Content-disposition":"attachment; filename=log.log", "Access-Control-Allow-Origin": "*"}
 	)
 
 @app.route('/ie/connections', methods=['GET', 'POST'])
@@ -392,7 +414,7 @@ def ieConnections():
 		return Response(
 			json.dumps(Connections.data, indent=4),
 			mimetype="text/plain",
-			headers={"Content-disposition":"attachment; filename=connections.json"}
+			headers={"Content-disposition":"attachment; filename=connections.json", "Access-Control-Allow-Origin": "*"}
 		)
 	else:
 		uploaded_file = request.files['file']
@@ -411,7 +433,9 @@ def ieConnections():
 				status=200,
 				response=json.dumps({
 					"error": False if check else f"Connections invalide."
-				})
+				},
+				headers={"Access-Control-Allow-Origin": "*"}
+			)
 	)
 
 @app.route('/ie/tags', methods=['GET', 'POST'])
@@ -420,7 +444,7 @@ def ieTags():
 		return Response(
 			json.dumps(Tags.data, indent=4),
 			mimetype="text/plain",
-			headers={"Content-disposition":"attachment; filename=tags.json"}
+			headers={"Content-disposition":"attachment; filename=tags.json", "Access-Control-Allow-Origin": "*"}
 		)
 	else:
 		uploaded_file = request.files['file']
@@ -439,5 +463,7 @@ def ieTags():
 				status=200,
 				response=json.dumps({
 					"error": False if check else f"Tag invalidi."
-				})
+				},
+				headers={"Access-Control-Allow-Origin": "*"}
+			)
 	)
