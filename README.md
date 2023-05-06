@@ -198,6 +198,13 @@ Riguarda un problema della libreria [AnimeWorld-API](https://github.com/MainKron
 ## FAQ
 Le _*frequently asked questions*_ si trovano [qui](FAQ.md).
 
+## Sponsor
+
+> **Grazie di cuore a tutti coloro che hanno donato** per questo progetto. \
+> Il vostro supporto mi ha permesso di raggiungere **risultati straordinari**. Senza di voi tutto questo non sarebbe stato possibile, e per questo vi sono **infinitamente grato**. 
+
+[![sponsors](https://raw.githubusercontent.com/MainKronos/MainKronos/main/res/sponsors.svg)](https://github.com/sponsors/MainKronos)
+
 ## Star History
 
 ![Star History Chart](https://api.star-history.com/svg?repos=MainKronos/Sonarr-AnimeDownloader&type=Date)
