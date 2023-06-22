@@ -1,5 +1,6 @@
-animeworld>=1.4.22
+animeworld>=1.6.0
 schedule>=0.6.0
 flask
 flask_socketio
 werkzeug==2.2.3
+requests
