@@ -8,7 +8,7 @@
 _This documentation is in **Italian** because this program downloads anime with italian subtitles only._
 
 Questo Docker Container funziona come un'estenzione di [Sonarr](https://sonarr.tv/); serve a scaricare in automatico tutti gli anime che non vengono condivisi tramite torrent.
-Il Container si interfaccia con Sonarr per avere informazini riguardante gli anime mancanti sull'hard-disk, viene poi fatta una ricerca se sono presenti sul sito [AnimeWorld](https://www.animeworld.tv/), e se ci sono li scarica e li posiziona nella cartella indicata da Sonarr.
+Il Container si interfaccia con Sonarr per avere informazini riguardante gli anime mancanti sull'hard-disk, viene poi fatta una ricerca se sono presenti sul sito [AnimeWorld](https://www.animeworld.so/), e se ci sono li scarica e li posiziona nella cartella indicata da Sonarr.
 
 L'utilizzo di _**Sonarr**_ è necessario.
 Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com/linuxserver/docker-sonarr).
@@ -132,10 +132,10 @@ In ogni caso la formattazione di come sono inserite le informazioni nel file `ta
         "title": "Sword Art Online",
         "seasons": {
             "1": [
-                "https://www.animeworld.tv/play/sword-art-online.N0onT"
+                "https://www.animeworld.so/play/sword-art-online.N0onT"
             ],
             "2": [
-                "https://www.animeworld.tv/play/sword-art-online-2._NcG6"
+                "https://www.animeworld.so/play/sword-art-online-2._NcG6"
             ]     
         }
     },

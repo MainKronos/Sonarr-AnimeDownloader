@@ -75,8 +75,8 @@ Per l'esempio mostrato nell'immagine la sua formattazione nel `table.json` sareb
         "title": "Ascendance of a Bookworm",
         "seasons": {
             "1": [
-                "https://www.animeworld.tv/play/ascendance-of-a-bookworm.paCPb",
-                "https://www.animeworld.tv/play/ascendance-of-a-bookworm-2.Q0Rrm"
+                "https://www.animeworld.so/play/ascendance-of-a-bookworm.paCPb",
+                "https://www.animeworld.so/play/ascendance-of-a-bookworm-2.Q0Rrm"
             ]
         }
     },
