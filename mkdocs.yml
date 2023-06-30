@@ -58,7 +58,6 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
 plugins:
-- autorefs
 - git-revision-date-localized:
     type: date 
     locale: it
