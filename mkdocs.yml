@@ -1,0 +1,66 @@
+site_name: Sonarr-AnimeDownloader
+site_description: Anime downloader from AnimeWorld
+site_url: https://github.com/MainKronos/Sonarr-AnimeDownloader
+
+theme:
+    name: 'material'
+    language: it
+    palette:
+      - scheme: 'default'
+        media: '(prefers-color-scheme: light)'
+        toggle:
+          icon: 'material/lightbulb'
+          name: "Switch to dark mode"
+      - scheme: 'slate'
+        media: '(prefers-color-scheme: dark)'
+        primary: 'blue'
+        toggle:
+          icon: 'material/lightbulb-outline'
+          name: 'Switch to light mode'
+    icon:
+      repo: fontawesome/brands/github
+    features:
+    - navigation.sections
+    - search.suggest
+    - content.code.annotate
+    - content.code.copy
+
+repo_name: MainKronos/Sonarr-AnimeDownloader
+repo_url: https://github.com/MainKronos/Sonarr-AnimeDownloader
+edit_uri: ""
+
+nav:
+  - Introduction: 'index.md'
+  - Usage:
+    - QuickStart: 'usage/quickstart.md'
+    - Advanced Usage: 'usage/advanced.md'
+    - FAQ: 'usage/faq.md'
+  - Community:
+    - Contributing: 'community/contributing.md'
+    - Code of Conduct: 'community/code-of-conduct.md'
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: ['.']
+      check_paths: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.keys
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+plugins:
+- autorefs
+- git-revision-date-localized:
+    type: date 
+    locale: it
+- search:
+    lang: it
