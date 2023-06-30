@@ -19,6 +19,14 @@ Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documenta
 
 La documentaszione con tutte le informazioni di installazione e configurazione sono disponibili [qui](https://mainkronos.github.io/Sonarr-AnimeDownloader).
 
+Per iniziare ad utilizzare il programma vai alla sezione [QuickStart](usage/quickstart.md).
+
+Se vuoi saperne di più sulle funzionalità avanzate vai alla sezione [Advanced Usage](usage/advanced.md).
+
+In caso di dubbi o problemi consolutare le [FAQ](usage/faq.md).
+
+Se vuoi contribuire al progetto dai un occhiata alla sezione [Contributing](community/contributing.md).
+
 Un esempio di interfaccia e funzionamento del programma:
 
 ![Presentazione](docs/static/img/Presentazione.gif)
