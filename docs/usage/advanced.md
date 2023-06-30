@@ -29,15 +29,13 @@ Modalità Tag | Indica la modalità di gestione dei [tag](#tag) associati agli a
 
 ## Connections
 
-Le connection sono Shell Script scritti in Bash che vengono eseguiti quando deve essere inviato un messaggio tramite un servizio esterno (tipo Telegram). Sono un po' meno user friendly ma altamente personalizzabili! Alcuni template possono essere trovati in questa [cartella](https://github.com/MainKronos/Sonarr-AnimeDownloader/tree/main/documentation/examples/connections).
+Le connection sono Shell Script scritti in Bash che vengono eseguiti quando deve essere inviato un messaggio tramite un servizio esterno (tipo Telegram). Sono un po' meno user friendly ma altamente personalizzabili! Alcuni template possono essere trovati in questa [cartella](https://github.com/MainKronos/Sonarr-AnimeDownloader/tree/main/docs/static/examples/connections).
 
 ![connection](../static/img/connections.png)
 
 Per utilizzarle è necessario prima scrive lo script in modo tale che possa ricevere un parametro (`$1`) che identifica il messaggio da inviare, poi salvare con estensione `.sh` e posizionarlo nella cartella `/script/connections`. Infine accedere alla pagina web, nella sezioni impostazioni, aggiungerlo e attivarlo.
 
 ![connection_howto](../static/img/connections_howto.gif)
-
-Ci sono alcuni script già pronti che possono essere utilizzati, dacci un'occhiata! Si trovano [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/tree/main/docs/stati/examples/connections).
 
 ## Tag
 
