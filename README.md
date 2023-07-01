@@ -15,6 +15,29 @@ Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com
 
 Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documentazione è reperibile [qui](../../../AnimeWorld-API).
 
+## Installazione
+
+```yaml
+version: '3.9'
+services:
+  mainkronos:
+    container_name: AnimeDownloader
+    volumes:
+      - '/path/to/data:/script/json/'
+      - '/path/to/animeSeries:/tv'
+      - '/path/to/downloads:/downloads'
+      - '/path/to/connections:/script/connections'
+    ports:
+      - 'port:5000'
+    environment:
+      - 'SONARR_URL=http://url:port'
+      - 'API_KEY=1234567890abcdefghijklmn'
+      - 'TZ=Europe/Rome'
+      - 'PUID=1000'
+      - 'PGID=1000'
+    image: 'ghcr.io/mainkronos/anime_downloader:latest'
+```
+
 ## [Documentazione](https://mainkronos.github.io/Sonarr-AnimeDownloader)
 
 La documentaszione con tutte le informazioni di installazione e configurazione sono disponibili [qui](https://mainkronos.github.io/Sonarr-AnimeDownloader).
