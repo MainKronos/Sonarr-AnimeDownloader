@@ -147,7 +147,8 @@ Se la serie non compare nei log controllare:
 
 Se il problema è ancora presente allora aprire un issue.
 
-Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/46).
+!!! Success
+    Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/46).
 
 ## Non trovo nessuna soluzione al mio problema
 
