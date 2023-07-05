@@ -44,7 +44,7 @@ La documentaszione con tutte le informazioni di installazione e configurazione s
 
 Per iniziare ad utilizzare il programma vai alla sezione [QuickStart](https://mainkronos.github.io/Sonarr-AnimeDownloader/usage/quickstart).
 
-Se vuoi saperne di più sulle funzionalità avanzate vai alla sezione [Advanced https://mainkronos.github.io/Sonarr-AnimeDownloader/Usage](https://mainkronos.github.io/Sonarr-AnimeDownloader/usage/advanced).
+Se vuoi saperne di più sulle funzionalità avanzate vai alla sezione [Advanced Usage](https://mainkronos.github.io/Sonarr-AnimeDownloader/usage/advanced).
 
 In caso di dubbi o problemi consolutare le [FAQ](https://mainkronos.github.io/Sonarr-AnimeDownloader/usage/faq).
 
