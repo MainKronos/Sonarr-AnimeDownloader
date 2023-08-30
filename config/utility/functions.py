@@ -214,7 +214,10 @@ def bindAnime(anime_name:str, season:int, thetvdb_id:int) -> Dict[str,str]:
 			"thetvdb_id": elem["thetvdb_id"], 
 			"mal_id": elem["mal_id"]
 		} 
-		for elem in db if "thetvdb_id" in elem and elem["thetvdb_id"] == thetvdb_id and elem["type"] == "TV"
+		for elem in db if "thetvdb_id" in elem and 
+      "mal_id" in elem and
+      elem["thetvdb_id"] == thetvdb_id and 
+      elem["type"] == "TV"
 	]
 
 	# ottengo tutti i risultati da animewolrd ricercando solamente con il nome dell'anime
