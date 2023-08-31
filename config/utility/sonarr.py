@@ -17,7 +17,7 @@ from other.exceptions import UnauthorizedSonarr
 
 
 
-# https://sonarr.tv/docs/api/
+# https://sonarr.tv/docs/api/v3/
 # https://github.com/Sonarr/Sonarr/wiki/API (Legacy)
 
 # TODO: Creare una classe Sonarr al cui interno è implementato un metodo che verifica per ogni richiesta http che le credenziali siano corrette
@@ -87,7 +87,7 @@ def getMissingEpisodes() -> List[Dict]:
 
 	while True:
 		page += 1
-		result = sonarrRequests(requests.get)("{}/api/{}?apikey={}&sortKey=airDateUtc&page={}".format(SONARR_URL, endpoint, API_KEY, page))
+		result = sonarrRequests(requests.get)("{}/api/v3/{}?apikey={}&sortKey=airDateUtc&page={}&includeSeries=true".format(SONARR_URL, endpoint, API_KEY, page))
 
 		if len(result["records"]) == 0: 
 			break
@@ -144,7 +144,7 @@ def rescanSerie(seriesId:int):
 	Esegue un rescan della serie `seriesId`.
 	"""
 	endpoint = "command"
-	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	url = "{}/api/v3/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	data = {
 		"name": "RescanSeries",
 		"seriesId": seriesId
@@ -156,7 +156,7 @@ def renameSerie(seriesId:int):
 	Rinomina tutti gli episodio che non seguono la formattazione di Sonarr per la serie `seriesId`.
 	"""
 	endpoint = "command"
-	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	url = "{}/api/v3/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	data = {
 		"name": "RenameSeries",
 		"seriesIds": [seriesId]
@@ -168,7 +168,7 @@ def getEpisode(epId:int) -> Dict:
 	Ottiene tutte le informazioni da Sonarr riguardante l'episodio `epId`.
 	"""
 	endpoint = f"episode/{epId}"
-	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	url = "{}/api/v3/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	return sonarrRequests(requests.get)(url)
 
 def renameEpisode(seriesId:int, epFileId:int):
@@ -176,7 +176,7 @@ def renameEpisode(seriesId:int, epFileId:int):
 	Rinomina lil file `epFileId` della serie `seriesId` seguendo la formattazione di Sonarr.
 	"""
 	endpoint = "command"
-	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	url = "{}/api/v3/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	data = {
 		"name": "RenameFiles",
 		"seriesId": seriesId,
@@ -200,15 +200,15 @@ def inQueue(epId:int) -> bool:
 	Controlla se l'episodio è in download da Sonarr.
 	"""
 	endpoint = "queue"
-	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
-	return epId in [x["episode"]["id"] for x in sonarrRequests(requests.get)(url)]
+	url = "{}/api/v3/{}?apikey={}&includeUnknownSeriesItems=true&includeSeries=true&includeEpisode=true".format(SONARR_URL, endpoint, API_KEY)
+	return epId in [x["episode"]["id"] for x in sonarrRequests(requests.get)(url)['records']]
 
 def getSerieInfo(serieId:int):
 	"""
 	Recupera le informazioni per una serie specifica
 	"""
 	endpoint = f"series/{serieId}"
-	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	url = "{}/api/v3/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	return sonarrRequests(requests.get)(url)
 
 def getTags():
@@ -216,7 +216,7 @@ def getTags():
 	Recupera la lista dei tag presenti su sonarr
 	"""
 	endpoint = "tag"
-	url = "{}/api/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
+	url = "{}/api/v3/{}?apikey={}".format(SONARR_URL, endpoint, API_KEY)
 	return sonarrRequests(requests.get)(url)
 
 def isEligibleSerie( record:Dict ) -> bool:
