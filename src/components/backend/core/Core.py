@@ -9,26 +9,31 @@ import sys
 
 class Core:
 
-	def __init__(self) -> None:
+	def __init__(self, *, settings:Settings=None, tags:Tags=None, table:Table=None, sonarr:Sonarr=None) -> None:
+		"""
+		Inizializzazione funzionalità di base.
 
-		### SETUP ###
-		self.__setupDatabase()
-		self.__setupConnection()
+		Args:
+		  settings: Override settings
+		  tags: Override tags
+		  table: Override table
+		  sonarr: Override sonarr
+		"""
+
+		### Setup database
+		self.settings = settings if settings else Settings(ctx.DATABASE_FOLDER.joinpath('settings.json'))
+		self.tags = tags if tags else Tags(ctx.DATABASE_FOLDER.joinpath('tags.json'))
+		self.table = table if table else Tags(ctx.DATABASE_FOLDER.joinpath('tags.json'))
+
+		### Setup logger ###
 		self.__setupLog()
+		self.log.setLevel(self.settings["LogLevel"])
+
+		### Setup Connection ###
+		self.sonarr = sonarr if sonarr else Sonarr(ctx.SONARR_URL, ctx.API_KEY)
+		self.processor = Processor(self)
 
 		self.log.debug('Core Inizialized.')
-
-	def __setupDatabase(self):
-		"""Configura le classi che gestiscono i database."""
-		self.settings = Settings(ctx.DATABASE_FOLDER.joinpath('settings.json'))
-		self.tags = Tags(ctx.DATABASE_FOLDER.joinpath('tags.json'))
-		self.table = Tags(ctx.DATABASE_FOLDER.joinpath('tags.json'))
-	
-	def __setupConnection(self):
-		"""Configura la parte di collegamento verso l'esterno."""
-
-		self.sonarr = Sonarr(ctx.SONARR_URL, ctx.API_KEY)
-		self.processor = Processor(self)
 
 	def __setupLog(self):
 		"""Configura la parte riguardante il logger."""
@@ -46,10 +51,12 @@ class Core:
 		logger = logging.getLogger(ctx.LOGGER)
 		logger.addHandler(stream_handler)
 		logger.addHandler(file_handler)
-		logger.setLevel(self.settings["LogLevel"])
 		logger.propagate = True
 
 		self.log = logger
 
 	def run(self):
+		"""Avvio del processo di ricerca episodi."""
+
+
 		self.log.debug('Run `1')
