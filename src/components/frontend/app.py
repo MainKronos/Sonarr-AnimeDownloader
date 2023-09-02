@@ -1,11 +1,9 @@
 from flask import *
-from flask_socketio import *
 
 from other.constants import VERSION, SONARR_URL, API_KEY
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, logger=True, async_handlers=False)
 
 @app.route('/index')
 @app.route('/')
@@ -19,7 +17,3 @@ def settings():
 @app.route('/log')
 def log():
 	return render_template('log.html', version=VERSION)
-
-@socketio.on('connected')
-def handler(data):
-    pass

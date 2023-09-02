@@ -1,0 +1,8 @@
+{
+    "AutoBind": true,
+    "LogLevel": "DEBUG",
+    "MoveEp": true,
+    "RenameEp": true,
+    "ScanDelay": 30,
+    "TagsMode": "WHITELIST"
+}

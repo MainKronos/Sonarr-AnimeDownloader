@@ -2,20 +2,19 @@ FROM python:3.9.5-slim
 
 LABEL maintainer="MainKronos"
 
-
 RUN export DEBIAN_FRONTEND=noninteractive; \
-    apt-get update; \
-    apt-get -y upgrade; \
-    apt-get -y install --no-install-recommends; \
-    apt-get -y install curl; \
+	apt-get update; \
+	apt-get -y upgrade; \
+	apt-get -y install --no-install-recommends; \
+	apt-get -y install curl; \
 	apt-get -y install ffmpeg; \
 	apt-get -y install rtmpdump; \
-    apt-get -y install tzdata; \
+	apt-get -y install tzdata; \
 	apt-get -y install build-essential; \
-    apt-get -y install locales && locale-gen it_IT.UTF-8; \
-    apt-get clean; \
-    apt-get autoclean; \
-    rm -rf /var/lib/apt/lists/*
+	apt-get -y install locales && locale-gen it_IT.UTF-8; \
+	apt-get clean; \
+	apt-get autoclean; \
+	rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid 1000 dockeruser
 RUN useradd --no-log-init -r -m --gid dockeruser --uid 1000 dockeruser 
@@ -44,8 +43,8 @@ RUN chown root:root /start.bin
 RUN chmod 6751 /start.bin
 
 RUN sed -i -e 's/# it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/' /etc/locale.gen && \
-    dpkg-reconfigure --frontend=noninteractive locales && \
-    update-locale LANG=it_IT.UTF-8
+	dpkg-reconfigure --frontend=noninteractive locales && \
+	update-locale LANG=it_IT.UTF-8
 
 ENV FLASK_DEBUG production
 ENV PIP_ROOT_USER_ACTION ignore
