@@ -8,7 +8,7 @@ class Database:
 		if not db.is_file(): raise FileNotFoundError()
 		self.db = db
 		self.fix()
-		self.__data = self.read()
+		self._data = self.read()
 	
 	def read(self):
 		"""Legge le informazioni contenute nel database."""
@@ -22,7 +22,7 @@ class Database:
 	
 	def sync(self) -> None:
 		"""Sincronizza il contenuto del db con quello in memoria."""
-		self.write(self.__data)
+		self.write(self._data)
 
 	def fix(self) -> None:
 		"""Controlla l'integrità del database e nel caso lo corregge."""

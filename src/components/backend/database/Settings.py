@@ -2,12 +2,12 @@ from .Database import Database
 
 class Settings(Database):
 	def __getitem__(self, key: str):
-		return self.__data[key]
+		return self._data[key]
 	
 	def __setitem__(self, key: str, value):
-		if key not in self.__data: raise KeyError(key)
+		if key not in self._data: raise KeyError(key)
 
-		self.__data[key] = value
+		self._data[key] = value
 		self.sync()
 	
 	def fix(self) -> None:

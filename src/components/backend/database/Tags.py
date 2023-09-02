@@ -17,12 +17,12 @@ class Tags(Database):
 
 		if isinstance(key, int):
 			# Ricerca per id
-			for tag in self.__data:
+			for tag in self._data:
 				if tag["id"] == key:
 					return tag
 		elif isinstance(key, str):
 			# Ricerca per nome
-			for tag in self.__data:
+			for tag in self._data:
 				if tag["name"] == key:
 					return tag
 		else:
@@ -42,7 +42,7 @@ class Tags(Database):
 		tag = self.__get(key)
 		if tag is None: raise KeyError(key)
 
-		self.__data.remove(tag)
+		self._data.remove(tag)
 		self.sync()
 	
 	def __setitem__(self, key: Union[str, int], value:bool) -> None:
@@ -59,7 +59,7 @@ class Tags(Database):
 		return self.__get(key) is not None
 	
 	def __len__(self) -> int:
-		return len(self.__data)
+		return len(self._data)
 	
 	def append(self, id:int, name:str, active:bool=False) -> None:
 		"""
@@ -76,7 +76,7 @@ class Tags(Database):
 		if name in self:
 			raise ValueError(f"Nome '{name}' già presente")
 		
-		self.__data.append({
+		self._data.append({
 			"id": id,
 			"name": name,
 			"active": active
