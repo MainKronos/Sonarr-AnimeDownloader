@@ -31,7 +31,7 @@ class Core:
 
 		### Setup Connection ###
 		self.sonarr = sonarr if sonarr else Sonarr(ctx.SONARR_URL, ctx.API_KEY)
-		self.processor = Processor(self)
+		self.processor = Processor(self.sonarr, settings=self.settings, table=self.table, tags=self.tags)
 
 		self.log.debug('Core Inizialized.')
 

@@ -3,8 +3,6 @@ import unittest
 from src.components.backend.core.Core import ctx, Core
 from src.components.backend.connection.Sonarr import Sonarr
 
-from mockup import TestSonarr
-
 import pathlib
 import sys, json
 
@@ -24,7 +22,7 @@ class TestGeneral(unittest.TestCase):
 
 	def testSonarr(self):
 		with open(DUMP_FOLDER.joinpath('wanted_missing.json'), 'w') as f:
-			json.dump(self.core.sonarr.wantedMissing(50).json(), f)
+			json.dump(self.core.sonarr.wantedMissing(2).json(), f)
 
 		with open(DUMP_FOLDER.joinpath('tags.json'), 'w') as f:
 			json.dump(self.core.sonarr.tags().json(), f)
@@ -40,6 +38,10 @@ class TestGeneral(unittest.TestCase):
 		
 		with open(DUMP_FOLDER.joinpath('system_status.json'), 'w') as f:
 			json.dump(self.core.sonarr.systemStatus().json(), f)
+	
+	def testProcessor(self):
+		with open(DUMP_FOLDER.joinpath('processor.json'), 'w') as f:
+			json.dump(self.core.processor.getData(), f)
 
 if __name__ == '__main__':
 	unittest.main(verbosity=2, buffer=True)

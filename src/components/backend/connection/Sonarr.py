@@ -23,12 +23,13 @@ class Sonarr:
 		url = f"{self.url}/api/v3/system/status"
 		return self.client.get(url)
 	
-	def wantedMissing(self, n:int=20) -> httpx.Response:
+	def wantedMissing(self, n:int=20, page:int=1) -> httpx.Response:
 		"""
 		Ottiene le informazioni riguardanti gli episodi mancanti.
 
 		Args:
 		  n: numero di episodi massimi richiesti
+		  page: pagina da scaricare
 		
 		Returns:
 		  La risposta HTTP
@@ -37,7 +38,7 @@ class Sonarr:
 		return self.client.get(url, params={
 			"includeSeries": True,
 			"pageSize": n,
-			"page": 1,
+			"page": page,
 			"sortKey": "airDateUtc"
 		})
 	
