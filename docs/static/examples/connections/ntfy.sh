@@ -4,7 +4,7 @@
 
 BASE_URL="http://ntfy.sh" # URL del servizio ntfy (può essere anche self-hosted)
 TOKEN="12345676890abcdefg" # Token del topic ntfy
-TOPIC="your-ntfy-token"
+TOPIC="your-ntfy-topic" # Nome del topic ntfy
 PRIORITA="low" # high, normal, low
 ICONA="http://path/to/icon.png" # URL di un'icona
 TAG="loudspeaker,anime,new-download" # I tuoi tags (la prima, secondo le specifiche, sarà l'emoji della notifica)
