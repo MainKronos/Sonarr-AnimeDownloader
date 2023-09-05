@@ -1,4 +1,4 @@
-import os
+import os, logging
 import pathlib
 
 SONARR_URL = os.getenv('SONARR_URL')
@@ -19,5 +19,5 @@ DATABASE_FOLDER = pathlib.Path("/src/database")
 SCRIPT_FOLDER = pathlib.Path("/src/script")
 """Cartella che contiene i vari script (Connections)"""
 
-LOGGER = "mylogger"
+LOGGER = logging.getLogger("mylogger")
 """Nome del logger"""

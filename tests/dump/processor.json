@@ -1,1 +1,144 @@
-[]
+[
+	{
+		"title": "Legend of the Galactic Heroes: Die Neue These",
+		"path": "/tv/Anime/Legend of the Galactic Heroes - Die Neue These",
+		"tvdbId": 343237,
+		"tvRageId": 0,
+		"tvMazeId": 35238,
+		"imdbId": "tt7407236",
+		"id": 343,
+		"seasons": [
+			{
+				"number": "absolute",
+				"episodes": [
+					{
+						"episodeNumber": 1,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 13,
+						"title": "Amritsar",
+						"id": 16778
+					},
+					{
+						"episodeNumber": 2,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 14,
+						"title": "Demise of the Emperor",
+						"id": 16779
+					},
+					{
+						"episodeNumber": 3,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 15,
+						"title": "Before the Storm",
+						"id": 16780
+					},
+					{
+						"episodeNumber": 4,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 16,
+						"title": "Ignition Point",
+						"id": 16781
+					},
+					{
+						"episodeNumber": 5,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 17,
+						"title": "The Yang Fleet Mobilizes",
+						"id": 16782
+					},
+					{
+						"episodeNumber": 6,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 18,
+						"title": "Bloodshed in Space",
+						"id": 16783
+					},
+					{
+						"episodeNumber": 7,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 19,
+						"title": "The Battle of the Doria Starzone",
+						"id": 16784
+					},
+					{
+						"episodeNumber": 8,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 20,
+						"title": "Tragedy",
+						"id": 16785
+					},
+					{
+						"episodeNumber": 9,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 21,
+						"title": "Victory for Whose Sake?",
+						"id": 16786
+					},
+					{
+						"episodeNumber": 10,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 22,
+						"title": "The Fall of Goldenbaum",
+						"id": 16787
+					},
+					{
+						"episodeNumber": 11,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 23,
+						"title": "Farewell to the Days of Old",
+						"id": 16788
+					},
+					{
+						"episodeNumber": 12,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 24,
+						"title": "My Dear Friend",
+						"id": 16789
+					},
+					{
+						"episodeNumber": 7,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 31,
+						"title": "What Was Lost",
+						"id": 16796
+					},
+					{
+						"episodeNumber": 8,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 32,
+						"title": "Inquiry",
+						"id": 16797
+					},
+					{
+						"episodeNumber": 9,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 33,
+						"title": "War Without Weapons",
+						"id": 16798
+					},
+					{
+						"episodeNumber": 10,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 34,
+						"title": "Fortress vs. Fortress Akt I: Cannon Fire",
+						"id": 16799
+					},
+					{
+						"episodeNumber": 11,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 35,
+						"title": "Fortress vs. Fortress Akt II: Fierce Fighting",
+						"id": 16800
+					},
+					{
+						"episodeNumber": 12,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 36,
+						"title": "Fortress vs. Fortress Akt III: The Return of the Magician",
+						"id": 16801
+					}
+				]
+			}
+		]
+	}
+]

@@ -39,7 +39,15 @@ class TestGeneral(unittest.TestCase):
 		with open(DUMP_FOLDER.joinpath('system_status.json'), 'w') as f:
 			json.dump(self.core.sonarr.systemStatus().json(), f)
 	
+	def testFlags(self):
+		with open(DUMP_FOLDER.joinpath('tags.txt'), 'w') as f:
+			for tag in self.core.tags:
+				json.dump(tag, f)	
+	
 	def testProcessor(self):
+		with open(DUMP_FOLDER.joinpath('getAllMissing.json'), 'w') as f:
+			json.dump(self.core.processor.getAllMissing(), f)
+		
 		with open(DUMP_FOLDER.joinpath('processor.json'), 'w') as f:
 			json.dump(self.core.processor.getData(), f)
 

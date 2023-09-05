@@ -38,19 +38,19 @@ class Core:
 	def __setupLog(self):
 		"""Configura la parte riguardante il logger."""
 
+		logger = ctx.LOGGER
 		default_formatter = logging.Formatter('%(message)s')
 
 		stream_handler = logging.StreamHandler(sys.stdout)
 		stream_handler.terminator = '\n'
 		stream_handler.setFormatter(default_formatter)
-
-		file_handler = logging.FileHandler(filename='log.log')
-		file_handler.terminator = '\n'
-		file_handler.setFormatter(default_formatter)
-
-		logger = logging.getLogger(ctx.LOGGER)
 		logger.addHandler(stream_handler)
-		logger.addHandler(file_handler)
+
+		# file_handler = logging.FileHandler(filename='log.log')
+		# file_handler.terminator = '\n'
+		# file_handler.setFormatter(default_formatter)
+		# logger.addHandler(file_handler)
+
 		logger.propagate = True
 
 		self.log = logger

@@ -1,6 +1,6 @@
 from .Database import Database
 
-from typing import Union, Any
+from typing import Union, Any, Generator
 
 class Tags(Database):
 
@@ -14,7 +14,6 @@ class Tags(Database):
 		Returns:
 		  Il Tag
 		"""
-
 		if isinstance(key, int):
 			# Ricerca per id
 			for tag in self._data:
@@ -26,33 +25,55 @@ class Tags(Database):
 				if tag["name"] == key:
 					return tag
 		else:
-			raise TypeError(str(type(key)))
+			raise TypeError(str(type(key)))	
 
-	def __getitem__(self, key: Union[str, int]) -> bool:
+	def __getitem__(self, key:Union[str, int]) -> Union[dict[str, Any], None]:
+		"""
+		Ritorna il dizionario con tutte le informazioni del Tag.
+
+		Args:
+		  key: Nome | id del tag
+
+		Returns:
+		  Il Tag
+		"""
+
+		value = self.__get(key)
+		if value is None: raise KeyError(key)
+		return value
+	
+	def isActive(self, key: Union[str, int]) -> bool:
 		"""Ritorna lo stato (attivo o non) di un tag."""
 
-		tag = self.__get(key)
+		tag = self[key]
 		if tag is None: raise KeyError(key)
 
 		return tag['active']
-	
+
+	def enable(self, key: Union[str, int]):
+		"""Attiva un tag."""
+
+		tag = self[key]
+		if tag is None: raise KeyError(key)
+
+		tag['active'] = True
+		self.sync()
+
+	def disable(self, key: Union[str, int]):
+		"""Disattiva un tag."""
+
+		tag = self[key]
+		if tag is None: raise KeyError(key)
+
+		tag['active'] = False
+		self.sync()
+
 	def __delitem__(self, key: Union[str, int]) -> None:
 		"""Rimuove un tag."""
 
-		tag = self.__get(key)
-		if tag is None: raise KeyError(key)
-
+		tag = self[key]
 		self._data.remove(tag)
-		self.sync()
-	
-	def __setitem__(self, key: Union[str, int], value:bool) -> None:
-		"""Attiva o disattiva un tag."""
-
-		tag = self.__get(key)
-		if tag is None: raise KeyError(key)
-
-		tag['active'] = value
-		self.sync()
+		self.sync()	
 	
 	def __contains__(self, key: Union[str, int]) -> bool:
 		"""Controlla se una tag esiste."""
@@ -60,6 +81,10 @@ class Tags(Database):
 	
 	def __len__(self) -> int:
 		return len(self._data)
+	
+	def __iter__(self) -> Generator[Any, Any, None]:
+		for tag in self._data:
+			yield tag
 	
 	def append(self, id:int, name:str, active:bool=False) -> None:
 		"""
