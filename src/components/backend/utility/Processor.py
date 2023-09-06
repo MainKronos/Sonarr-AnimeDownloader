@@ -1,28 +1,35 @@
 from ..core import Constant as ctx
-from ..connection import Sonarr
+from ..connection import Sonarr, ExternalDB
 from ..database import *
 
 import logging
-import functools
+from functools import reduce
 
 class Processor:
 	"""Processa i dati che provengono da Sonarr"""
 
-	def __init__(self, sonarr:Sonarr, *, settings:Settings=None, tags:Tags=None, table:Table=None) -> None:
+	def __init__(self, sonarr:Sonarr, *, settings:Settings, tags:Tags, table:Table, external:ExternalDB) -> None:
 		self.sonarr = sonarr
 		self.settings = settings
 		self.tags = tags
 		self.table = table
+		self.external = external
 		self.log = ctx.LOGGER
 	
 	def getData(self) -> list:
 		"""Restituisce i dati elaborati."""
 
+		# Raccolgo tutti gli episodi
 		missing = self.getAllMissing()
 
-		missing = functools.reduce(self.__reduce, missing, [])
+		# Riduco le informazioni a solo quelle indispensabili
+		missing = reduce(self.__reduce, missing, [])
 
-		missing = map(self.__bindUrl, missing)
+		# Aggiorno il database esterno
+		self.external.sync()
+
+		# Collego gli url per il download
+		missing = filter(self.__bindUrl, missing)
 
 		return list(missing)
 
@@ -47,6 +54,7 @@ class Processor:
 
 		return missing
 
+	### FUNCTIONS ###
 
 	def __filter(self, elem:dict) -> bool:
 		"""
@@ -99,6 +107,7 @@ class Processor:
 		else:
 			# altrimenti l'aggiungo
 			serie["seasons"].append(season)
+			season["urls"] = []
 			season["episodes"] = []
 
 		# Aggiungom l'episodio
@@ -118,17 +127,32 @@ class Processor:
 		  La serie con gli url aggiunti.
 		"""
 		title = elem["title"]
-		if title not in self.table: return False
+		if title not in self.table: return elem
 
 		table_entry = self.table[title]
 
 		if table_entry["absolute"]:
-			self.__convertToAbsolute(elem)
-			elem["seasons"][0]["urls"] = table_entry["seasons"]["absolute"]
+			# Se la serie è in formato 'absolute'
+			elem = self.__convertToAbsolute(elem)
+			elem["seasons"][0]["urls"].extend(list(table_entry["seasons"]["absolute"]))
 			return elem
 		else:
-			pass
-			# TODO: da completare il caso normale
+			for season in elem["seasons"]:
+				season_number = str(season["number"])
+				if season_number in table_entry["seasons"]:
+					# Se la stagione è presente nella tabella
+					season["urls"].extend(list(table_entry["seasons"][season_number]))
+				else:
+					# Se la stagione NON è presente in tabella
+					if self.settings["AutoBind"]:
+						# Se è attiva la ricerca automatica provo a trovare dei url
+						res = self.external.find(elem["title"], season["number"], elem["tvdbId"])
+						# Se non ho trovato nulla continuo
+						if res is None: continue
+						# Altrimenti aggiungo ciò che ho trovato
+						season["urls"].append(res["url"])
+
+			return elem
 	
 	def __convertToAbsolute(self, elem:dict) -> dict:
 		"""
@@ -150,6 +174,7 @@ class Processor:
 
 		return elem
 
+	### EXTRACTOR ###
 
 	def __extractSerie(self, elem:dict) -> dict:
 		"""

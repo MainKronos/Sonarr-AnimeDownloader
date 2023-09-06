@@ -1,4 +1,5 @@
 import httpx
+from ..core import Constant as ctx
 
 class Sonarr:
 	"""
@@ -9,6 +10,7 @@ class Sonarr:
 	def __init__(self, url:str, api_key:str) -> None:
 		self.client = httpx.Client(headers={'X-Api-Key':api_key})
 		self.url = url
+		self.log = ctx.LOGGER
 
 		# Controlla che il sito sia raggiungibile e che la api_key sia valida
 		self.systemStatus().raise_for_status()
