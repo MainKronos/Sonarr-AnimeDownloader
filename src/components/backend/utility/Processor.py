@@ -8,7 +8,7 @@ from functools import reduce
 class Processor:
 	"""Processa i dati che provengono da Sonarr"""
 
-	def __init__(self, sonarr:Sonarr, *, settings:Settings, tags:Tags, table:Table, external:ExternalDB) -> None:
+	def __init__(self, sonarr:Sonarr, *, settings:Settings, tags:Tags, table:Table, external:ExternalDB):
 		self.sonarr = sonarr
 		self.settings = settings
 		self.tags = tags
@@ -28,7 +28,7 @@ class Processor:
 		# Aggiorno il database esterno
 		self.external.sync()
 
-		# Collego gli url per il download
+		# Collego gli url per il download e rimuovo le stagioni che non fanno match
 		missing = filter(self.__bindUrl, missing)
 
 		return list(missing)
@@ -69,6 +69,9 @@ class Processor:
 
 		# Controllo che sia effettivamente un anime
 		if elem["series"]["seriesType"] != 'anime': return False
+
+		# Controllo che non siano episodi speciali
+		if elem["seasonNumber"] == 0: return False
 
 		# Controllo i tag
 		tag_active = any([self.tags.isActive(x) for x in elem["series"]["tags"] if x in self.tags])
@@ -116,18 +119,18 @@ class Processor:
 
 		return base
 	
-	def __bindUrl(self, elem:dict) -> dict:
+	def __bindUrl(self, elem:dict) -> bool:
 		"""
-		Collega l'url di download a tutte le stagioni contenute nella serie in elem.
+		Collega l'url di download a tutte le stagioni contenute nella serie in elem, se non trova nulla rimuove la stagione.
 
 		Args:
 		  elem: serie che contiene le stagioni a cui verranno aggiunti gli url di download
 
 		Returns:
-		  La serie con gli url aggiunti.
+		  True da prendere / False da scartare
 		"""
 		title = elem["title"]
-		if title not in self.table: return elem
+		if title not in self.table: return False
 
 		table_entry = self.table[title]
 
@@ -135,7 +138,6 @@ class Processor:
 			# Se la serie è in formato 'absolute'
 			elem = self.__convertToAbsolute(elem)
 			elem["seasons"][0]["urls"].extend(list(table_entry["seasons"]["absolute"]))
-			return elem
 		else:
 			for season in elem["seasons"]:
 				season_number = str(season["number"])
@@ -152,7 +154,11 @@ class Processor:
 						# Altrimenti aggiungo ciò che ho trovato
 						season["urls"].append(res["url"])
 
-			return elem
+		
+		# Filtro le stagioni senza url di download
+		elem = filter(lambda x: len(x["urls"]) > 0, elem["seasons"])
+
+		return len(elem["seasons"]) > 0
 	
 	def __convertToAbsolute(self, elem:dict) -> dict:
 		"""
