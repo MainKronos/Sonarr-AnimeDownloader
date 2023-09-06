@@ -1,1 +1,8 @@
-{"page": 1, "pageSize": 10, "sortKey": "timeleft", "sortDirection": "ascending", "totalRecords": 0, "records": []}
+{
+	"page": 1,
+	"pageSize": 10,
+	"sortKey": "timeleft",
+	"sortDirection": "ascending",
+	"totalRecords": 0,
+	"records": []
+}

@@ -8,9 +8,13 @@ class Sonarr:
 	"""
 
 	def __init__(self, url:str, api_key:str) -> None:
-		self.client = httpx.Client(headers={'X-Api-Key':api_key})
-		self.url = url
 		self.log = ctx.LOGGER
+		self.client = httpx.Client(
+			base_url=f"{self.url}/api/v3",
+			headers={
+				'X-Api-Key':api_key
+			}
+		)
 
 		# Controlla che il sito sia raggiungibile e che la api_key sia valida
 		self.systemStatus().raise_for_status()
@@ -22,8 +26,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		url = f"{self.url}/api/v3/system/status"
-		return self.client.get(url)
+		return self.client.get("/system/status")
 	
 	def wantedMissing(self, n:int=20, page:int=1) -> httpx.Response:
 		"""
@@ -36,8 +39,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		url = f"{self.url}/api/v3/wanted/missing"
-		return self.client.get(url, params={
+		return self.client.get("/wanted/missing", params={
 			"includeSeries": True,
 			"pageSize": n,
 			"page": page,
@@ -54,9 +56,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-
-		url = f"{self.url}/api/v3/episode/{epId}"
-		return self.client.get(url)
+		return self.client.get(f"/episode/{epId}")
 	
 	def queue(self) -> httpx.Response:
 		"""
@@ -65,8 +65,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		url = f"{self.url}/api/v3/queue"
-		return self.client.get(url, params={
+		return self.client.get("/queue", params={
 			"includeUnknownSeriesItems": True,
 			"includeSeries": True,
 			"includeEpisode": True
@@ -82,9 +81,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-
-		url = f"{self.url}/api/v3/series/{seriesId}"
-		return self.client.get(url)
+		return self.client.get(f"/series/{seriesId}")
 	
 	def tags(self) -> httpx.Response:
 		"""
@@ -93,8 +90,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		url = f"{self.url}/api/v3/tag"
-		return self.client.get(url)
+		return self.client.get("/tag")
 	
 	### COMMAND
 	
@@ -108,8 +104,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		url = f"{self.url}/api/v3/command"
-		return self.client.post(url, json={
+		return self.client.post("/command", json={
 			"name": "RescanSeries",
 			"seriesId": seriesId
 		})
@@ -124,8 +119,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		url = f"{self.url}/api/v3/command"
-		return self.client.post(url, json={
+		return self.client.post("/command", json={
 			"name": "RenameSeries",
 			"seriesIds": seriesIds
 		})
@@ -141,8 +135,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		url = f"{self.url}/api/v3/command"
-		return self.client.post(url, json={
+		return self.client.post("/command", json={
 			"name": "RenameFiles",
 			"seriesId": seriesId,
 			"files": files

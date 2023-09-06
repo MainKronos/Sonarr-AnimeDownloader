@@ -4,12 +4,19 @@ from ..database import *
 from ..connection import *
 
 import logging, logging.handlers
-import sys
+import sys, threading
+import time
 
+class Core(threading.Thread):
 
-class Core:
-
-	def __init__(self, *, settings:Settings=None, tags:Tags=None, table:Table=None, sonarr:Sonarr=None, external:ExternalDB=None) -> None:
+	def __init__(self, *, 
+		settings:Settings=None, 
+		tags:Tags=None, 
+		table:Table=None, 
+		sonarr:Sonarr=None,
+		github:GitHub=None,
+		external:ExternalDB=None
+	):
 		"""
 		Inizializzazione funzionalità di base.
 
@@ -18,8 +25,12 @@ class Core:
 		  tags: Override Tags
 		  table: Override Table
 		  sonarr: Override Sonarr
+		  github: Override GitHub
 		  external: Override ExternalDB
 		"""
+
+		### Setup Thread ###
+		super().__init__(name=self.__class__.__name__, daemon=True)
 
 		### Setup logger ###
 		self.__setupLog()
@@ -35,19 +46,20 @@ class Core:
 
 		### Setup Connection ###
 		self.sonarr = sonarr if sonarr else Sonarr(ctx.SONARR_URL, ctx.API_KEY)
+		self.github = github if github else GitHub()
 		self.processor = Processor(self.sonarr, settings=self.settings, table=self.table, tags=self.tags)
 
+		self.error = None
 		self.log.debug('Core Inizialized.')
 
 	def __setupLog(self):
 		"""Configura la parte riguardante il logger."""
 
 		logger = ctx.LOGGER
-		default_formatter = logging.Formatter('%(message)s')
 
 		stream_handler = logging.StreamHandler(sys.stdout)
 		stream_handler.terminator = '\n'
-		stream_handler.setFormatter(default_formatter)
+		stream_handler.setFormatter(logging.Formatter('%(levelname)-8s: %(message)s'))
 		logger.addHandler(stream_handler)
 
 		# file_handler = logging.FileHandler(filename='log.log')
@@ -61,6 +73,26 @@ class Core:
 
 	def run(self):
 		"""Avvio del processo di ricerca episodi."""
+		try:
+			while True:
+				start = time.time()
+				self.job()
+				next_run = self.settings['ScanDelay']*60 + start
+				wait = next_run - time.time()
+				if wait > 0: time.sleep(wait)
+		except Exception as e:
+			# Errore interno non recuperabile
+			self.error = e
+	
+	def job(self):
+		"""
+		Processo principale di ricerca e download.
+		"""
+		missing = self.processor.getData()
 
+		
 
-		self.log.debug('Run `1')
+	def join(self) -> None:
+		super().join()
+		# Se è stata sollevata un eccezione la propaga
+		if self.error: raise self.error
