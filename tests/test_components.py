@@ -51,6 +51,14 @@ class TestGeneral(unittest.TestCase):
 		
 		with open(DUMP_FOLDER.joinpath('processor.json'), 'w') as f:
 			json.dump(self.core.processor.getData(), f)
+	
+	def testCore(self):
+		# self.core.job = lambda: (_ for _ in ()).throw(Exception())
+		with self.assertRaises(Exception):
+			self.core.run()
+			self.core.join()
+			
+
 
 if __name__ == '__main__':
 	unittest.main(verbosity=2, buffer=True)

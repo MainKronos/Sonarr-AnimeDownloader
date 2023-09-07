@@ -38,7 +38,7 @@ class Core(threading.Thread):
 		### Setup database
 		self.settings = settings if settings else Settings(ctx.DATABASE_FOLDER.joinpath('settings.json'))
 		self.tags = tags if tags else Tags(ctx.DATABASE_FOLDER.joinpath('tags.json'))
-		self.table = table if table else Tags(ctx.DATABASE_FOLDER.joinpath('tags.json'))
+		self.table = table if table else Table(ctx.DATABASE_FOLDER.joinpath('table.json'))
 		self.external = external if external else ExternalDB()
 
 		### Fix log level
@@ -76,8 +76,15 @@ class Core(threading.Thread):
 				self.log.info(f"  ├── {setting} = {self.settings[setting]}")
 			else:
 				self.log.info(f"  └── {setting} = {self.settings[setting]}")
-		
-		self.log.debug('Core Inizialized.')
+		self.log.info("")
+		self.log.debug("Tags")
+		for index, tag in reversed(list(enumerate(self.tags))):
+			if index > 0:
+				self.log.debug(f"  ├── {tag['id']} - {tag['name']} ({'🟢' if tag['active'] else '🔴'})")
+			else:
+				self.log.debug(f"  └── {tag['id']} - {tag['name']} ({'🟢' if tag['active'] else '🔴'})")
+		self.log.debug("")
+
 
 	def __setupLog(self):
 		"""Configura la parte riguardante il logger."""
@@ -100,15 +107,25 @@ class Core(threading.Thread):
 
 	def run(self):
 		"""Avvio del processo di ricerca episodi."""
+		self.log.info("")
+		self.log.info("]────────────────────────────────────────────────────────────────────────────────────────────[")
+		self.log.info("")
+
 		try:
 			while True:
 				start = time.time()
+				self.log.info(f"╭───────────────────────────────────「{time.strftime('%d %b %Y %H:%M:%S')}」───────────────────────────────────╮")
+				self.log.info("")
 				self.job()
 				next_run = self.settings['ScanDelay']*60 + start
 				wait = next_run - time.time()
+				self.log.info("")
+				self.log.info(f"╰───────────────────────────────────「{time.strftime('%d %b %Y %H:%M:%S', time.localtime(next_run))}」───────────────────────────────────╯")
 				if wait > 0: time.sleep(wait)
 		except Exception as e:
 			# Errore interno non recuperabile
+			self.log.critical("]─────────────────────────────────────────[CRITICAL]─────────────────────────────────────────[")
+			self.log.exception(e)
 			self.error = e
 	
 	def job(self):
@@ -116,7 +133,7 @@ class Core(threading.Thread):
 		Processo principale di ricerca e download.
 		"""
 		missing = self.processor.getData()
-
+		
 		
 
 	def join(self) -> None:

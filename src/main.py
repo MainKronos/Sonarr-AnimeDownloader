@@ -3,7 +3,11 @@ from components import Core
 
 def main():
 	core = Core()
-	pass
+	
+	core.start()
+
+	core.join()
+
 
 if __name__ == '__main__':
 	main()

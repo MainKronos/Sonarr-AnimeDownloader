@@ -66,7 +66,7 @@ class ExternalDB:
 		res = aw.find(title)
 
 		# Filtro i risultati
-		res = filter(lambda x: x["malId"] in mal_ids, res)
+		res = list(filter(lambda x: x["malId"] in mal_ids, res))
 
 		# Se non ho trovato nulla ritorno None
 		if len(res) == 0: return

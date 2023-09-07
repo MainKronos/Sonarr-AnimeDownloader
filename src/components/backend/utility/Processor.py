@@ -22,20 +22,24 @@ class Processor:
 		# Raccolgo tutti gli episodi
 		missing = self.getAllMissing()
 
-		# Riduco le informazioni a solo quelle indispensabili
-		missing = reduce(self.__reduce, missing, [])
+		# Rimuovo le serie e stagioni non valide
+		missing = filter(self.__filter, missing)
 
 		# Aggiorno il database esterno
 		self.external.sync()
 
 		# Collego gli url per il download e rimuovo le stagioni che non fanno match
-		missing = filter(self.__bindUrl, missing)
+		missing = list(filter(self.__bindUrl, missing))
 
-		return list(missing)
+		self.log.info("")
+		self.log.info("──────────────────────────────────────────────────────────────────────────────────────────────")
+		self.log.info("")
+
+		return missing
 
 	def getAllMissing(self) -> list:
 		"""
-		Ottiene tutta la lista di episodi mancanti con la formattazione fornita da Sonarr.
+		Ottiene tutta la lista di episodi formattati.
 		
 		Returns:
 		  La lista di episodi mancanti.
@@ -50,7 +54,10 @@ class Processor:
 
 			if len(res["records"]) == 0: break
 
-			missing.extend(filter(self.__filter, res['records']))
+			missing.extend(res['records'])
+
+		# Riduco le informazioni a solo quelle indispensabili
+		missing = reduce(self.__reduce, missing, [])
 
 		return missing
 
@@ -58,24 +65,43 @@ class Processor:
 
 	def __filter(self, elem:dict) -> bool:
 		"""
-		Filtra gli episodi non richiesti.
+		Filtra le serie e stagioni non valide.
 
 		Args:
-		  elem: elemento da filtrare
+		  elem: serie da filtrare.
 		
 		Returns:
 		  True da prendere / False da scartare
 		"""
 
 		# Controllo che sia effettivamente un anime
-		if elem["series"]["seriesType"] != 'anime': return False
-
-		# Controllo che non siano episodi speciali
-		if elem["seasonNumber"] == 0: return False
+		if elem["type"] != 'anime': 
+			self.log.debug(f"❌ Serie '{elem['title']}' scartata perchè non è di tipo anime.")
+			return False
 
 		# Controllo i tag
-		tag_active = any([self.tags.isActive(x) for x in elem["series"]["tags"] if x in self.tags])
-		if tag_active and self.settings["TagsMode"] == "BLACKLIST" or not tag_active and self.settings["TagsMode"] == "WHITELIST": return False
+		active_tags = [x['id'] for x in self.tags if self.tags.isActive(x['id'])]
+		serie_tags = [x for x in elem["tags"] if x in active_tags]
+		if any(serie_tags) and self.settings["TagsMode"] == "BLACKLIST":
+			self.log.debug(f"❌ Serie '{elem['title']}' scartata perchè ha uno dei tag [{', '.join([self.tags(x)['name'] for x in serie_tags])}].")
+			return False
+		if not any(serie_tags) and self.settings["TagsMode"] == "WHITELIST":
+			self.log.debug(f"❌ Serie '{elem['title']}' scartata perchè non ha nessuno dei tag [{', '.join([self.tags(x)['name'] for x in active_tags])}].")
+			return False
+
+		def filterSeason(season:dict) -> bool:
+			"""Filtra le stagioni."""
+			# Controllo che non siano episodi speciali
+			if season["number"] == 0:
+				self.log.debug(f"❌ Stagione {season['number']} della serie '{elem['title']}' scartata perchè contiene episodi speciali.")
+				return False
+			return True
+
+		# Filtro le stagioni non valide
+		elem["seasons"] = list(filter(filterSeason,elem["seasons"]))
+
+		# Controllo che la serie contenga delle stagioni
+		if len(elem["seasons"]) == 0: return False
 
 		return True
 
@@ -129,35 +155,65 @@ class Processor:
 		Returns:
 		  True da prendere / False da scartare
 		"""
+
+		table_entry = None
 		title = elem["title"]
-		if title not in self.table: return False
-
-		table_entry = self.table[title]
-
-		if table_entry["absolute"]:
-			# Se la serie è in formato 'absolute'
-			elem = self.__convertToAbsolute(elem)
-			elem["seasons"][0]["urls"].extend(list(table_entry["seasons"]["absolute"]))
+		if title not in self.table: 
+			if not self.settings["AutoBind"]:
+				# Se non è attiva la ricerca automatica provo a trovare dei url
+				self.log.debug(f"❌ Serie '{title}' scartata perchè non è presente nella TABELLA DI CONVERSIONE.")
+				return False
 		else:
-			for season in elem["seasons"]:
-				season_number = str(season["number"])
-				if season_number in table_entry["seasons"]:
-					# Se la stagione è presente nella tabella
-					season["urls"].extend(list(table_entry["seasons"][season_number]))
+			table_entry = self.table[title]
+
+			if table_entry["absolute"]:
+				# Se la serie è in formato 'absolute'
+				elem = self.__convertToAbsolute(elem)
+
+
+		def filterSeason(season:dict) -> bool:
+			"""Filtra le stagioni."""
+			season_number = str(season["number"])
+			if table_entry and season_number in table_entry["seasons"]:
+				# Se la stagione è presente nella tabella
+				if len(table_entry["seasons"][season_number]) == 0:
+					# Se non sono presenti dei url
+					self.log.debug(f"❌ Stagione {season['number']} della serie '{title}' scartata per mancanza di url.")
+					return False
 				else:
-					# Se la stagione NON è presente in tabella
-					if self.settings["AutoBind"]:
-						# Se è attiva la ricerca automatica provo a trovare dei url
-						res = self.external.find(elem["title"], season["number"], elem["tvdbId"])
-						# Se non ho trovato nulla continuo
-						if res is None: continue
-						# Altrimenti aggiungo ciò che ho trovato
-						season["urls"].append(res["url"])
+					season["urls"].extend(list(table_entry["seasons"][season_number]))
+					return True
+			else:
+				# Se la stagione NON è presente in tabella
+				self.log.debug(f"⚠️ Stagione {season['number']} della serie '{title}' non è presente nella TABELLA DI CONVERSIONE.")
+				if not self.settings["AutoBind"]:
+					return False
+				else:
+					# Se è attiva la ricerca automatica provo a trovare dei url
+					if season['number'] == 'absolute':
+						# Se la stagione è di tipo absolute
+						self.debug(f"⛔ La ricerca automatica degli url di download è incompatibile con le serie ad ordinamento assoluto.")
+						return False
+					else:
+						res = self.external.find(title, season["number"], elem["tvdbId"])
+						if res is None:
+							# Se non ho trovato nulla
+							self.log.debug(f"🔴 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': nessun risultato trovato.")
+							return False
+						else:
+							self.log.warning(f"🟢 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': {res['url']}")
+							# Altrimenti aggiungo ciò che ho trovato
+							season["urls"].append(res["url"])
 
-		
-		# Filtro le stagioni senza url di download
-		elem = filter(lambda x: len(x["urls"]) > 0, elem["seasons"])
+							# Adesso devo aggiornare la tabella, aggiungendo l'url
+							self.table.appendUrl(title, season['number'], res["url"])
 
+							return True
+
+		# Aggiungo gli url alle stagioni
+		elem["seasons"] = list(filter(filterSeason, elem["seasons"]))
+
+		# Se ha almeno una stagione la prendo altrimenti la lascio
 		return len(elem["seasons"]) > 0
 	
 	def __convertToAbsolute(self, elem:dict) -> dict:
@@ -200,7 +256,9 @@ class Processor:
 			"tvRageId": elem["series"]["tvRageId"],
 			"tvMazeId": elem["series"]["tvMazeId"],
 			"imdbId": elem["series"]["imdbId"],
-			"id": elem["series"]["id"]
+			"id": elem["series"]["id"],
+			"type": elem["series"]["seriesType"],
+			"tags": elem["series"]["tags"]
 		}
 
 	def __extractSeason(self, elem:dict) -> dict:
@@ -232,7 +290,7 @@ class Processor:
 		return {
 			"episodeNumber": elem["episodeNumber"],
 			"seasonNumber": elem["seasonNumber"],
-			"absoluteEpisodeNumber": elem["absoluteEpisodeNumber"],
+			"absoluteEpisodeNumber": elem["absoluteEpisodeNumber"] if "absoluteEpisodeNumber" in elem else None,
 			"title": elem["title"],
 			"id": elem["id"]
 		}

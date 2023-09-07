@@ -1,8 +1,13 @@
+import pathlib
 from .Database import Database
 
 from typing import Union, Any, Generator
 
 class Table(Database):
+	def sync(self) -> None:
+		self._data.sort(key=lambda s: s["title"])
+		return super().sync()
+
 	def fix(self) -> None:
 		if not self.db.exists() or self.db.stat().st_size == 0:
 			self.write([])
@@ -44,13 +49,6 @@ class Table(Database):
 		if serie is None: raise KeyError(key)
 		return serie
 	
-	def __delitem__(self, key:str) -> None:
-		"Rimuove una serie."
-
-		serie = self[key]
-		self._data.remove(serie)
-		self.sync()
-	
 	def __contains__(self, key: str) -> bool:
 		"""Controlla se una serie esiste."""
 		return self.__get(key) is not None
@@ -58,3 +56,144 @@ class Table(Database):
 	def isAbsolute(self, title) -> bool:
 		"""Ritorna True se la serie è in formato absolute."""
 		return self[title]["absolute"]
+	
+	### REMOVE
+
+	def removeSerie(self, title:str) -> None:
+		"""
+		Rimuove una serie.
+
+		Args:
+		  title: il titolo della serie
+		"""
+
+		serie = self[title]
+		self._data.remove(serie)
+		self.sync()
+	
+	def removeSeason(self, title:str, season:Union[str,int]) -> None:
+		"""
+		Rimuove una stagione.
+
+		Args:
+		  title: il titolo della serie
+		  season: il numero della stagione (può essere anche 'absolute' come numero)
+		"""
+
+		# Per sicurezza
+		season = str(season)
+
+		serie = self[title]
+		serie["seasons"].pop(season)
+		self.sync()
+
+	def removeUrl(self, title:str, season:Union[str,int], url:str) -> None:
+		"""
+		Rimuove un url di download.
+
+		Args:
+		  title: il titolo della serie
+		  season: il numero della stagione (può essere anche 'absolute' come numero)
+		  url: l'url di download
+		"""
+
+		# Per sicurezza
+		season = str(season)
+
+		serie = self[title]
+		season = serie["seasons"]
+		season.remove(url)
+		self.sync()
+
+	### APPEND
+
+	def appendSerie(self, title:str, absolute:bool=False) -> bool:
+		"""
+		Aggiunge una nuova serie alla tabella.
+
+		Args:
+		  title: titolo della serie
+		  absolute: se è in formato assoluto
+		
+		Returns:
+		  True se è stata aggiunta, False altrimenti
+		"""
+
+		# Controllo se c'è già una serie con quel titolo
+		if title in self: return False
+
+		# Aggiungo la serie
+		self._data.append({
+			"title": title,
+			"absolute": absolute,
+			"seasons": {}
+		})
+		self.sync()
+		return True
+	
+	def appendSeason(self, title:str, season:Union[str,int]) -> bool:
+		"""
+		Aggiunge una nuova stagione alla serie, se la serie non esiste la crea.
+
+		Args:
+		  title: titolo della serie
+		  season: il numero della stagione (può essere anche 'absolute' come numero)
+		
+		Returns:
+		  True se è stata aggiunta, False altrimenti
+		"""
+
+		# Controllo se c'è una serie con quel titolo
+		if title not in self:
+			# Altrimenti la creo
+			if not self.appendSerie(title):
+				return False
+
+		serie = self[title]
+
+		# Se la serie è in formato assoluto e la stagione non si chiama "absolute"
+		# Oppure la serie non è in formato assoluto e la stagione si chiama "absolute"
+		if (serie["absolute"]) ^ (season == "absolute"): return False
+
+		# Se è già presente una stagione con uno stesso numero
+		if season in serie["seasons"]: return False
+
+		# Aggiungo la stagione
+		serie["seasons"][season] = []
+		self.sync()
+		return True
+	
+	def appendUrl(self, title:str, season:Union[str,int], url:str) -> bool:
+		"""
+		Aggiunge un nuovo url alla stagione, se la stagione non esiste la crea, se la serie non esiste la crea.
+
+		Args:
+		  title: titolo della serie
+		  season: il numero della stagione (può essere anche 'absolute' come numero)
+		  url: l'url di download
+		
+		Returns:
+		  True se è stata aggiunta, False altrimenti
+		"""
+
+		# Controllo se c'è una serie con quel titolo
+		if title not in self:
+			# Altrimenti la creo
+			if not self.appendSerie(title):
+				return False
+
+		serie = self[title]
+
+		# Controllo se c'è una stagione con quel numero
+		if season not in serie["seasons"]:
+			# Altrimenti la creo
+			if not self.appendSeason(title, season):
+				return False
+
+		# Controllo se c'è gia lo stesso url
+		if url in serie["seasons"][season]: return False
+
+		# Aggiungo il nuovo url
+		serie["seasons"][season].append(url)
+		self.sync()
+		return True
