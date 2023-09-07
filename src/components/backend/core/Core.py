@@ -1,5 +1,5 @@
 from . import Constant as ctx
-from ..utility import Processor
+from ..utility import Processor, ColoredString as cs
 from ..database import *
 from ..connection import *
 
@@ -47,9 +47,36 @@ class Core(threading.Thread):
 		### Setup Connection ###
 		self.sonarr = sonarr if sonarr else Sonarr(ctx.SONARR_URL, ctx.API_KEY)
 		self.github = github if github else GitHub()
-		self.processor = Processor(self.sonarr, settings=self.settings, table=self.table, tags=self.tags)
+		self.processor = Processor(self.sonarr, settings=self.settings, table=self.table, tags=self.tags, external=self.external)
 
 		self.error = None
+
+		### Welcome Message ###
+		self.log.info(cs.blue(f"┌───────────────────────────────────[{time.strftime('%d %b %Y %H:%M:%S')}]───────────────────────────────────┐"))
+		self.log.info(cs.blue(r"│                 _                _____                      _                 _            │"))
+		self.log.info(cs.blue(r"│     /\         (_)              |  __ \                    | |               | |           │"))
+		self.log.info(cs.blue(r"│    /  \   _ __  _ _ __ ___   ___| |  | | _____      ___ __ | | ___   __ _  __| | ___ _ __  │"))
+		self.log.info(cs.blue(r"│   / /\ \ | '_ \| | '_ ` _ \ / _ \ |  | |/ _ \ \ /\ / / '_ \| |/ _ \ / _` |/ _` |/ _ \ '__| │"))
+		self.log.info(cs.blue(r"│  / ____ \| | | | | | | | | |  __/ |__| | (_) \ V  V /| | | | | (_) | (_| | (_| |  __/ |    │"))
+		self.log.info(cs.blue(r"│ /_/    \_\_| |_|_|_| |_| |_|\___|_____/ \___/ \_/\_/ |_| |_|_|\___/ \__,_|\__,_|\___|_|    │"))
+		self.log.info(cs.blue(r"│                                                                                            │"))
+		self.log.info(cs.blue(f"└────────────────────────────────────{ctx.VERSION:─^20}────────────────────────────────────┘"))
+		self.log.info("")
+		self.log.info("Globals")
+		self.log.info(f"  ├── {ctx.SONARR_URL = :}")
+		self.log.info(f"  ├── {ctx.API_KEY = :}")
+		self.log.debug(f"  ├── {ctx.DOWNLOAD_FOLDER = :}")
+		self.log.debug(f"  ├── {ctx.DATABASE_FOLDER = :}")
+		self.log.debug(f"  ├── {ctx.SCRIPT_FOLDER = :}")
+		self.log.info(f"  └── {ctx.VERSION = :}")
+		self.log.info("")
+		self.log.info("Settings")
+		for index, setting in reversed(list(enumerate(self.settings))):
+			if index > 0:
+				self.log.info(f"  ├── {setting} = {self.settings[setting]}")
+			else:
+				self.log.info(f"  └── {setting} = {self.settings[setting]}")
+		
 		self.log.debug('Core Inizialized.')
 
 	def __setupLog(self):
@@ -59,7 +86,7 @@ class Core(threading.Thread):
 
 		stream_handler = logging.StreamHandler(sys.stdout)
 		stream_handler.terminator = '\n'
-		stream_handler.setFormatter(logging.Formatter('%(levelname)-8s: %(message)s'))
+		stream_handler.setFormatter(logging.Formatter('%(levelname)-8s %(message)s'))
 		logger.addHandler(stream_handler)
 
 		# file_handler = logging.FileHandler(filename='log.log')

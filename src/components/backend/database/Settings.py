@@ -22,3 +22,10 @@ class Settings(Database):
 				"ScanDelay": 30,
 				"TagsMode": "WHITELIST"
 			})
+	
+	def __iter__(self):
+		for key in self._data:
+			yield key
+	
+	def __len__(self) -> int:
+		return len(self._data)

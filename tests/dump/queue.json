@@ -3,6 +3,128 @@
 	"pageSize": 10,
 	"sortKey": "timeleft",
 	"sortDirection": "ascending",
-	"totalRecords": 0,
-	"records": []
+	"totalRecords": 1,
+	"records": [
+		{
+			"seriesId": 331,
+			"episodeId": 16259,
+			"series": {
+				"title": "My Happy Marriage",
+				"sortTitle": "my happy marriage",
+				"status": "continuing",
+				"ended": false,
+				"overview": "Born to a noble family, Miyo is raised by her abusive stepmother and married off to Kiyoka, a soldier so heartless his prior fianc\u00e9es fled within three days into their engagement. With no home to return to, Miyo slowly starts to open her heart to her cold and pale husband-to-be, despite their rocky introduction... This might just be her chance at finding true love and happiness.",
+				"network": "Tokyo MX",
+				"airTime": "23:30",
+				"images": [
+					{
+						"coverType": "poster",
+						"url": "https://artworks.thetvdb.com/banners/v4/series/418665/posters/64e73d177bba5.jpg"
+					},
+					{
+						"coverType": "fanart",
+						"url": "https://artworks.thetvdb.com/banners/v4/series/418665/backgrounds/64221c661419d.jpg"
+					},
+					{
+						"coverType": "unknown",
+						"url": "https://artworks.thetvdb.com/banners/v4/series/418665/clearlogo/64b2c0e6d072a.png"
+					}
+				],
+				"seasons": [
+					{
+						"seasonNumber": 0,
+						"monitored": false
+					},
+					{
+						"seasonNumber": 1,
+						"monitored": true
+					}
+				],
+				"year": 2023,
+				"path": "/tv/Anime/My Happy Marriage",
+				"qualityProfileId": 6,
+				"languageProfileId": 2,
+				"seasonFolder": true,
+				"monitored": true,
+				"useSceneNumbering": true,
+				"runtime": 24,
+				"tvdbId": 418665,
+				"tvRageId": 0,
+				"tvMazeId": 69124,
+				"firstAired": "2023-07-05T00:00:00Z",
+				"seriesType": "anime",
+				"cleanTitle": "myhappymarriage",
+				"imdbId": "tt19869172",
+				"titleSlug": "my-happy-marriage",
+				"certification": "TV-14",
+				"genres": [
+					"Animation",
+					"Anime",
+					"Drama",
+					"Fantasy",
+					"Romance"
+				],
+				"tags": [
+					6
+				],
+				"added": "2023-07-01T07:27:07.036092Z",
+				"ratings": {
+					"votes": 0,
+					"value": 0.0
+				},
+				"id": 331
+			},
+			"episode": {
+				"seriesId": 331,
+				"tvdbId": 9861547,
+				"episodeFileId": 0,
+				"seasonNumber": 1,
+				"episodeNumber": 10,
+				"title": "Summer Cherry Blossoms, and the Mistake",
+				"airDate": "2023-09-06",
+				"airDateUtc": "2023-09-06T14:30:00Z",
+				"overview": "Arata reveals his true identity and introduces Miyo to the grandfather she never knew. They claim they can cure her nightmares \u2014 on one condition.",
+				"hasFile": false,
+				"monitored": true,
+				"absoluteEpisodeNumber": 10,
+				"sceneAbsoluteEpisodeNumber": 10,
+				"sceneEpisodeNumber": 10,
+				"sceneSeasonNumber": 1,
+				"unverifiedSceneNumbering": false,
+				"id": 16259
+			},
+			"language": {
+				"id": 5,
+				"name": "Italian"
+			},
+			"quality": {
+				"quality": {
+					"id": 9,
+					"name": "HDTV-1080p",
+					"source": "television",
+					"resolution": 1080
+				},
+				"revision": {
+					"version": 1,
+					"real": 0,
+					"isRepack": false
+				}
+			},
+			"size": 1284415779.0,
+			"title": "[Erai-raws] Watashi no Shiawase na Kekkon - 10 [1080p][Multiple Subtitle] [ENG][POR-BR][SPA-LA][SPA][ARA][FRE][GER][ITA][JPN][POR][POL][DUT][NOB][FIN][TUR][SWE][GRE][HEB][RUM][IND][THA][KOR][DAN][CHI][VIE][UKR][HUN][CES][HRV][MAY][FIL]",
+			"sizeleft": 444981539.0,
+			"timeleft": "00:01:32",
+			"estimatedCompletionTime": "2023-09-06T21:22:28.118114Z",
+			"status": "downloading",
+			"trackedDownloadStatus": "ok",
+			"trackedDownloadState": "downloading",
+			"statusMessages": [],
+			"downloadId": "0AC9A48D01C45CB87E4C524ED3B2C2DFD0EB42DE",
+			"protocol": "torrent",
+			"downloadClient": "qBittorrent",
+			"indexer": "Nyaa.si (Prowlarr)",
+			"outputPath": "/downloads/[Erai-raws] Watashi no Shiawase na Kekkon - 10 [1080p][Multiple Subtitle][5D7EB6DA].mkv",
+			"id": 1052492520
+		}
+	]
 }

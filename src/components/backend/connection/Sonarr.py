@@ -10,7 +10,7 @@ class Sonarr:
 	def __init__(self, url:str, api_key:str) -> None:
 		self.log = ctx.LOGGER
 		self.client = httpx.Client(
-			base_url=f"{self.url}/api/v3",
+			base_url=f"{url}/api/v3",
 			headers={
 				'X-Api-Key':api_key
 			}
