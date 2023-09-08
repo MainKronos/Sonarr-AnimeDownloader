@@ -1,5 +1,4 @@
 animeworld>=1.6.0
-schedule>=0.6.0
 flask
 werkzeug==2.2.3
 httpx

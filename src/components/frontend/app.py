@@ -1,19 +1,30 @@
 from flask import *
 
-from other.constants import VERSION, SONARR_URL, API_KEY
+from ..backend import Core, LOGGER, VERSION
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
+def CreateFrontend(core:Core) -> Flask:
+	app = Flask(__name__)
+	app.config['SECRET_KEY'] = 'secret!'
+	app.config['CORE'] = core
 
-@app.route('/index')
-@app.route('/')
-def index():
-	return render_template('index.html', version=VERSION)
+	loadRoute(app)
 
-@app.route('/settings')
-def settings():
-	return render_template('settings.html', sonarr_url=SONARR_URL, api_key=API_KEY, version=VERSION)
+	return app
 
-@app.route('/log')
-def log():
-	return render_template('log.html', version=VERSION)
+
+def loadRoute(app:Flask):
+
+	core:Core = app.config['CORE']
+
+	@app.route('/index')
+	@app.route('/')
+	def index():
+		return render_template('index.html', version=VERSION)
+
+	@app.route('/settings')
+	def settings():
+		return render_template('settings.html', sonarr_url=core.sonarr.url, api_key=core.sonarr.api_key, version=VERSION)
+
+	@app.route('/log')
+	def log():
+		return render_template('log.html', version=VERSION)

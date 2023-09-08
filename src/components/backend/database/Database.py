@@ -1,5 +1,6 @@
 import pathlib
 import json
+from copy import deepcopy
 
 class Database:
 	"""Gestione file JSON"""
@@ -33,3 +34,7 @@ class Database:
 	def fix(self) -> None:
 		"""Controlla l'integrità del database e nel caso lo corregge."""
 		raise NotImplementedError()
+	
+	def getData(self):
+		"""Restituisce una copia di tutto il contenuto del database."""
+		return deepcopy(self._data)
