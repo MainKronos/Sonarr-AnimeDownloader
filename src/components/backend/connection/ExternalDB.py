@@ -1,7 +1,7 @@
 import httpx
 import animeworld as aw
 
-from ..core import Constant as ctx
+from ..core import LOGGER
 
 class ExternalDB:
 	"""
@@ -10,7 +10,7 @@ class ExternalDB:
 	"""
 
 	def __init__(self):
-		self.log = ctx.LOGGER
+		self.log = LOGGER
 		self.client = httpx.Client()
 		self._data = []
 	

@@ -1,6 +1,6 @@
 import httpx
 
-from ..core import Constant as ctx
+from ..core import LOGGER
 
 class GitHub:
 	"""
@@ -9,7 +9,7 @@ class GitHub:
 	"""
 
 	def __init__(self) -> None:
-		self.log = ctx.LOGGER
+		self.log = LOGGER
 		self.client = httpx.Client(
 			base_url="https://api.github.com",
 			headers={

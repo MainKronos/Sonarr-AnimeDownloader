@@ -1,4 +1,4 @@
-from ..core.Constant import LOGGER
+from ..core import LOGGER
 from ..connection import Sonarr, ExternalDB
 from ..database import *
 

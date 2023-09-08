@@ -1,5 +1,5 @@
 import httpx
-from ..core import Constant as ctx
+from ..core import LOGGER
 
 class Sonarr:
 	"""
@@ -8,7 +8,7 @@ class Sonarr:
 	"""
 
 	def __init__(self, url:str, api_key:str) -> None:
-		self.log = ctx.LOGGER
+		self.log = LOGGER
 		self.client = httpx.Client(
 			base_url=f"{url}/api/v3",
 			headers={

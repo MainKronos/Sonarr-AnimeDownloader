@@ -1,13 +1,14 @@
 from ..database import Settings
 from ..connection import ConnectionsManager, Sonarr
-from ..core.Constant import LOGGER
+from ..core import LOGGER
 from ..utility import ColoredString as cs
 
-import httpx, re, pathlib
+import httpx, re, pathlib, time
 import animeworld as aw
 from copy import deepcopy
 from functools import reduce
 from typing import Callable, Any
+
 
 class Downloader:
 	"""Gestisce il corretto download degli episodi."""
@@ -53,11 +54,11 @@ class Downloader:
 
 				episodes_str = ", ".join([str(x["episodeNumber"]) for x in season["episodes"]])
 				self.log.info(f"🔎 Ricerca episodio {episodes_str}.")
-				self.log.info("")
 
 				episodi = reduce(self.flattenEpisodes,[x.getEpisodes() for x in tmp], [])
 
 				for episode in season["episodes"]:
+					self.log.info("")
 					self.log.info(f"⚙️ Verifica se l'episodio S{episode['seasonNumber']}E{episode['episodeNumber']} è disponibile.")
 
 					# Controllo se è in download su Sonarr
@@ -89,11 +90,37 @@ class Downloader:
 					if not file:
 						self.log.warning(f"⚠️ Errore in fase di download.")
 						continue
+
+					file = self.folder.joinpath(file)
 					
 					self.log.info("✔️ Dowload Completato.")
 
+					if self.settings["MoveEp"]:
+						# Se l'episodio deve essere spostato
+					
+						destination = pathlib.Path(serie["path"])
+						self.log.warning(f"⏳ Spostamento episodio episodio S{episode['seasonNumber']}E{episode['episodeNumber']} in {destination}.")
+						if not self.__moveFile(file, destination):
+							self.log.error("✖️ Fallito spostamento episodio.")
+							continue
 
+						self.log.info("✔️ Episodio spostato.")
+						# Dopo aver spostato il file faccio scansionare a Sonarr la serie per trovarlo
+						self.log.info(f"⏳ Aggiornamento serie '{serie['title']}'.")
+						self.sonarr.commandRescanSeries(serie['id'])
 
+						if self.settings["RenameEp"]:
+							# Se l'episodio deve essere rinominato
+							self.log.info(f"⏳ Rinominando l'episodio.")
+
+							# Aspetto 2s che Sonarr abbia finito di ricaricare la serie
+							time.sleep(2)
+
+							self.log.info("✔️ Episodio rinominato.")
+					
+					# Invio una notifica tramite Connections
+					self.info('✉️ Inviando il messaggio tramite Connections.')
+					self.connections.send(f"*Episode Downloaded*\n{serie['title']} - {episode['seasonNumber']}x{episode['episodeNumber']} - {episode['title']}")
 
 			except aw.AnimeNotAvailable as e:
 				self.log.info(f'⚠️ {e}')
@@ -157,5 +184,45 @@ class Downloader:
 			if episodeId == record["episodeId"]: return True
 		return False
 	
-	def __moveFile(self, src:pathlib.Path, dest:pathlib.Path):
-		pass
+	def __moveFile(self, src:pathlib.Path, dest:pathlib.Path) -> pathlib.Path:
+		"""
+		Sposta il file da src a dest.
+
+		Args:
+		  src: file da spostare
+		  dest: cartella di destinazione
+		
+		Returns:
+		  La path che punta al file spostato.
+		"""
+
+		if not src.is_file():
+			raise FileNotFoundError(src)
+
+		# Controllo se la cartella di destinazione non sia una cartella windows
+		if isinstance(dest, pathlib.WindowsPath):
+			tmp = dest.as_posix()
+			tmp = re.sub(r"\w:","",tmp)
+			dest = pathlib.Path(tmp)
+		
+		if not dest.is_dir():
+			# Se la cartella non esiste viene creata
+			dest.mkdir(parents=True)
+			self.log.warning('⚠️ La cartella {dest} è stata creata.')
+		
+		dest = dest.joinpath(src.name)
+		return src.rename(dest)
+		
+	def __renameFile(self, episode_id:int, serie_id:int) -> None:
+		"""
+		Rinomina il file seguendo la formattazione definita su Sonarr.
+
+		Args:
+		  episode_id: id_episodio su Sonarr
+		  serie_id: id della serie su Sonarr
+		"""
+
+		res = self.sonarr.episode(episode_id)
+		res.raise_for_status()
+		file_id = res.json()["episodeFile"]["id"]
+		self.sonarr.commandRenameFiles(serie_id,[file_id])

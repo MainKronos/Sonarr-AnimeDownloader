@@ -1,1 +1,1 @@
-from .backend import Core, LOGGER
+from .backend import Core, LOGGER, VERSION
