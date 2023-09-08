@@ -2,6 +2,7 @@ import unittest
 
 from src.components.backend.core.Core import ctx, Core
 from src.components.backend.connection.Sonarr import Sonarr
+from src.components.frontend import Frontend
 
 import pathlib
 import sys, json
@@ -62,7 +63,10 @@ class TestGeneral(unittest.TestCase):
 		with self.assertRaises(Exception):
 			self.core.run()
 			self.core.join()
-			
+	
+	def testFrontend(self):
+		app = Frontend(self.core)
+		app.run(debug=True, host='0.0.0.0', use_reloader=True)
 
 
 if __name__ == '__main__':

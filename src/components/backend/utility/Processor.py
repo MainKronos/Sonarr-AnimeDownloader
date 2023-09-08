@@ -1,4 +1,4 @@
-from ..core import LOGGER
+from ..core.Constant import LOGGER
 from ..connection import Sonarr, ExternalDB
 from ..database import *
 
@@ -202,7 +202,7 @@ class Processor:
 							season["urls"].append(res["url"])
 
 							# Adesso devo aggiornare la tabella, aggiungendo l'url
-							self.table.appendUrl(title, season['number'], res["url"])
+							self.table.appendUrls(title, season['number'], [res["url"]])
 
 							return True
 

@@ -1,13 +1,26 @@
 from flask import *
 
+from .api import loadAPI
+
 from ..backend import Core, LOGGER, VERSION
 
-def CreateFrontend(core:Core) -> Flask:
+def Frontend(core:Core) -> Flask:
+	"""
+	Costruisce il frontend.
+
+	Args:
+	  core: il core del programma
+	
+	Returns:
+	  Il fronted
+	"""
+
 	app = Flask(__name__)
 	app.config['SECRET_KEY'] = 'secret!'
 	app.config['CORE'] = core
 
 	loadRoute(app)
+	loadAPI(app)
 
 	return app
 

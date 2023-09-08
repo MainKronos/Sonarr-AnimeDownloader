@@ -101,8 +101,8 @@ class Table(Database):
 		season = str(season)
 
 		serie = self[title]
-		season = serie["seasons"]
-		season.remove(url)
+		s = serie["seasons"][season]
+		s.remove(url)
 		self.sync()
 
 	### APPEND
@@ -163,14 +163,14 @@ class Table(Database):
 		self.sync()
 		return True
 	
-	def appendUrl(self, title:str, season:Union[str,int], url:str) -> bool:
+	def appendUrls(self, title:str, season:Union[str,int], urls:list[str]) -> bool:
 		"""
 		Aggiunge un nuovo url alla stagione, se la stagione non esiste la crea, se la serie non esiste la crea.
 
 		Args:
 		  title: titolo della serie
 		  season: il numero della stagione (può essere anche 'absolute' come numero)
-		  url: l'url di download
+		  urls: gli url di download
 		
 		Returns:
 		  True se è stata aggiunta, False altrimenti
@@ -191,9 +191,75 @@ class Table(Database):
 				return False
 
 		# Controllo se c'è gia lo stesso url
-		if url in serie["seasons"][season]: return False
+		urls = list(filter(lambda x: x not in serie["seasons"][season], urls))
+		if len(urls) == 0: return False
 
 		# Aggiungo il nuovo url
-		serie["seasons"][season].append(url)
+		serie["seasons"][season].extend(urls)
 		self.sync()
 		return True
+	
+	### RENAME
+
+	def renameSerie(self, title:str, new_title:str) -> None:
+		"""
+		Rinomina una serie.
+
+		Args:
+		  title: il titolo della serie
+		  new_title: il nuovo titolo
+		"""
+
+		# Controllo se c'è già un titolo `new_title`:
+		if new_title in self: return False
+
+		serie = self[title]
+		serie["title"] = new_title
+		self.sync()
+	
+	def renameSeason(self, title:str, season:Union[str,int], new_season:Union[str,int]) -> None:
+		"""
+		Rinomina una stagione.
+
+		Args:
+		  title: il titolo della serie
+		  season: il numero della stagione (può essere anche 'absolute' come numero)
+		  new_season: il nuovo numero della stagione (può essere anche 'absolute' come numero)
+		"""
+
+		# Per sicurezza
+		season = str(season)
+		new_season = str(new_season)
+
+		serie = self[title]
+
+		# Controllo se c'è gia la stagione `new_season`
+		if new_season in serie["seasons"]: return False
+
+		old = serie["seasons"].pop(season)
+		serie["seasons"][new_season] = old
+		self.sync()
+
+	def renameUrl(self, title:str, season:Union[str,int], url:str, new_url:str) -> None:
+		"""
+		Rimuove un url di download.
+
+		Args:
+		  title: il titolo della serie
+		  season: il numero della stagione (può essere anche 'absolute' come numero)
+		  url: l'url di download
+		  new_url: il nuovo url di download
+		"""
+
+		# Per sicurezza
+		season = str(season)
+
+		serie = self[title]
+		s = serie["seasons"][season]
+
+		# Controllo che non ci sia già un url uguale
+		if new_url in s: return False
+
+		index = s.index(url)
+		s[index] = new_url
+		self.sync()

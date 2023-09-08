@@ -1,6 +1,6 @@
 from ..database import Settings
 from ..connection import ConnectionsManager, Sonarr
-from ..core import LOGGER
+from ..core.Constant import LOGGER
 from ..utility import ColoredString as cs
 
 import httpx, re, pathlib, time

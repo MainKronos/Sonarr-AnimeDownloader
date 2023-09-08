@@ -1,2 +1,2 @@
 from .Core import Core
-from Constant import LOGGER, VERSION
+from .Constant import LOGGER, VERSION

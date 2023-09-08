@@ -82,6 +82,23 @@ class Tags(Database):
 		tag['active'] = False
 		self.sync()
 
+	def toggle(self, key: Union[str, int]) -> bool:
+		"""
+		Cambia lo stato del tag.
+		
+		Args:
+		  key: nome | id del tag
+		
+		Returns:
+		  Lo stato del tag.
+		"""
+
+		tag = self[key]
+
+		tag['active'] = not tag['active']
+		self.sync()
+		return tag['active']
+
 	def __delitem__(self, key: Union[str, int]) -> None:
 		"""
 		Rimuove un tag.

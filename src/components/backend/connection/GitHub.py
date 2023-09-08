@@ -1,6 +1,6 @@
 import httpx
 
-from ..core import LOGGER
+from ..core.Constant import LOGGER
 
 class GitHub:
 	"""

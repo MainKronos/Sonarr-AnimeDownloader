@@ -1,7 +1,7 @@
 import httpx
 import animeworld as aw
 
-from ..core import LOGGER
+from ..core.Constant import LOGGER
 
 class ExternalDB:
 	"""

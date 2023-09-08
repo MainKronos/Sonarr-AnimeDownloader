@@ -110,10 +110,10 @@ class Core(threading.Thread):
 		stream_handler.setFormatter(logging.Formatter('%(levelname)-8s %(message)s'))
 		logger.addHandler(stream_handler)
 
-		# file_handler = logging.FileHandler(filename='log.log')
-		# file_handler.terminator = '\n'
-		# file_handler.setFormatter(default_formatter)
-		# logger.addHandler(file_handler)
+		file_handler = logging.FileHandler(filename='log.log', encoding='utf-8')
+		file_handler.terminator = '\n'
+		file_handler.setFormatter(logging.Formatter('%(levelname)-8s %(message)s'))
+		logger.addHandler(file_handler)
 
 		logger.propagate = True
 

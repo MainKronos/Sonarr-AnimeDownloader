@@ -55,7 +55,7 @@ class ConnectionsDB(Database):
 		"""
 		return self.__get(key) is not None
 	
-	def __getitem__(self, key:Union[str, int]) -> Union[dict[str, Any], None]:
+	def __getitem__(self, key:str) -> Union[dict[str, Any], None]:
 		"""
 		Ritorna il dizionario con tutte le informazioni della Connection.
 
@@ -70,7 +70,7 @@ class ConnectionsDB(Database):
 		if value is None: raise KeyError(key)
 		return value
 	
-	def __delitem__(self, key: Union[str, int]) -> None:
+	def __delitem__(self, key:str) -> None:
 		"""
 		Rimuove una Connection.
 		
@@ -161,6 +161,22 @@ class ConnectionsDB(Database):
 
 		connection['active'] = False
 		self.sync()
+	
+	def toggle(self, name:str) -> bool:
+		"""
+		Cambia lo stato della Connection.
+		
+		Args:
+		  name: nome della connection
+		
+		Returns:
+		  Lo stato della Connections.
+		"""
+		connection = self[name]
+
+		connection['active'] = not connection['active']
+		self.sync()
+		return connection['active']
 
 	def fix(self) -> None:
 		if not self.db.exists() or self.db.stat().st_size == 0:

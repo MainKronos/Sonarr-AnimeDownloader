@@ -28,14 +28,10 @@ def loadAPI(app:Flask):
 		links = data["links"]
 		absolute = data["absolute"]
 
+		core.table.appendSerie(title, absolute)
+		core.table.appendUrls(title, season, links)
 
-
-		log = Table.append({
-			"title": title,
-			"season": season,
-			"absolute": absolute,
-			"links": links
-		})
+		log = "Informazioni aggiunte."
 
 		return Response(
 			mimetype='application/json',
@@ -54,11 +50,20 @@ def loadAPI(app:Flask):
 		season = data["season"] if "season" in data else None
 		link = data["link"] if "link" in data else None
 
-		log = Table.remove(
-			title,
-			season,
-			link
-		)
+		log = ""
+
+		try:
+			if link:
+				core.table.removeUrl(title, season, link)
+				log = "Url rimosso."
+			elif season:
+				core.table.removeSeason(title, season)
+				log = f"Stagione {season} rimossa."
+			else:
+				core.table.removeSerie(title)
+				log = f"Serie {title} rimossa."
+		except KeyError as e:
+			log = str(e)
 
 		return Response(
 			mimetype='application/json',
@@ -78,11 +83,25 @@ def loadAPI(app:Flask):
 		season = data["season"] if "season" in data else None
 		link = data["link"] if "link" in data else None
 
-		log = Table.edit(
-			title,
-			season,
-			link
-		)
+		log = ""
+		try:
+			if link:
+				if core.table.renameUrl(title, season, link[0], link[1]):
+					log = "Url modificato."
+				else:
+					log = "Errore nella modifica dell'url."
+			elif season:
+				if core.table.renameSeason(title, season[0], season[1]):
+					log = f"Stagione {season[0]} modificata."
+				else:
+					log = "Errore nella modifica della stagione."
+			else:
+				if core.table.renameSerie(title[0], title[1]):
+					log = f"Serie {title} modificata."
+				else:
+					log = "Errore nella modifica della serie." 
+		except KeyError as e:
+			log = str(e)
 
 		return Response(
 			mimetype='application/json',
@@ -162,10 +181,9 @@ def loadAPI(app:Flask):
 	@app.route('/api/connections', methods=['GET'])
 	def getConnections():
 
-		connections = Connections.data
+		connections = core.connections_db.getData()
 		for conn in connections:
-			file = os.path.join("connections", conn["script"])
-			if os.path.isfile(file):
+			if core.connections_db.getPath(conn['name']).isfile():
 				conn["valid"] = True
 			else:
 				conn["valid"] = False
@@ -184,9 +202,12 @@ def loadAPI(app:Flask):
 	def toggleConnection():
 		data = request.json
 
-		name = data["name"]
-
-		log = Connections.toggle(name)
+		log = ""
+		try:
+			res = core.connections_db.toggle(data["name"])
+			log = f"La Connection {data['name']} è stata {'attivata' if res else 'disattivata'}."
+		except KeyError:
+			log = f"Non è stato trovato nessuna Connection con il nome {data['name']}."
 
 		return Response(
 			mimetype='application/json',
@@ -202,9 +223,12 @@ def loadAPI(app:Flask):
 	def removeConnection():
 		data = request.json
 
-		name = data["name"]
-
-		log = Connections.remove(name)
+		log = ""
+		try:
+			del core.connections_db[data["name"]]
+			log = f"La Connection {data['name']} è stata rimossa."
+		except KeyError:
+			log = f"Non è stato trovato nessuna Connection con il nome {data['name']}."
 
 		return Response(
 			mimetype='application/json',
@@ -220,11 +244,14 @@ def loadAPI(app:Flask):
 	def addConnection():
 		data = request.json
 
-		name = data["name"]
-		script = data["script"]
-		active = data["active"]
-
-		log = Connections.add(name, script, active)
+		log = ""
+		try:
+			core.connections_db.append(data["name"], data["script"], data["active"])
+			log = f"La Connection {data['name']} è stata aggiunta."
+		except ValueError as e:
+			log = str(e)
+		except FileNotFoundError:
+			log = f"il file {data['script']} non esiste."
 
 		return Response(
 			mimetype='application/json',
@@ -240,27 +267,10 @@ def loadAPI(app:Flask):
 		
 	@app.route('/api/tags', methods=['GET'])
 	def getTags():
-
-		# Aggiorno la lista dei tag con quelli disponibili su Sonarr
-
-		try:
-			availableTags = sonarr.getTags()
-			Tags.updateAvailableSonarrTags( availableTags )
-
-			tags = Tags.data
-		except UnauthorizedSonarr as error:
-			return Response(
-				mimetype='application/json',
-				status=200,
-				response=json.dumps({"error": str(error)}),
-				headers={"Access-Control-Allow-Origin": "*"}
-			)
-
+		
+		tags = core.tags.getData()
 		for tag in tags:
-			if tag["id"] in [x["id"] for x in availableTags]:
-				tag["valid"] = True
-			else:
-				tag["valid"] = False
+			tag["valid"] = True
 
 		return Response(
 			mimetype='application/json',
@@ -277,17 +287,14 @@ def loadAPI(app:Flask):
 		data = request.json
 
 		tag_id = data["id"]
-		name = data["name"]
 
+		log = ""
 		try:
-			log = Tags.toggle(tag_id, name, sonarr.getTags())
-		except UnauthorizedSonarr as error:
-			return Response(
-				mimetype='application/json',
-				status=200,
-				response=json.dumps({"error": str(error)}),
-			headers={"Access-Control-Allow-Origin": "*"}
-			)
+			res = core.tags.toggle(data["name"])
+			log = f"Il tag {data['name']} è stato {'attivato' if res else 'disattivato'}."
+		except KeyError:
+			log = f"Non è stato trovato nessun Tag con il nome {data['name']}."
+
 
 		return Response(
 			mimetype='application/json',
@@ -306,7 +313,12 @@ def loadAPI(app:Flask):
 		tag_id = data["id"]
 		name = data["name"]
 
-		log = Tags.remove(tag_id, name)
+		log = ""
+		try:
+			del core.tags[name]
+			log = f"Il tag {data['name']} è stato rimosso."
+		except KeyError:
+			log = f"Non è stato trovato nessun Tag con il nome {data['name']}."
 
 		return Response(
 			mimetype='application/json',
@@ -324,15 +336,23 @@ def loadAPI(app:Flask):
 
 		name = data["name"]
 		active = data["active"]
-		try:
-			log = Tags.add(name, active, sonarr.getTags() )
-		except UnauthorizedSonarr as error:
-			return Response(
-				mimetype='application/json',
-				status=200,
-				response=json.dumps({"error": str(error)}),
-				headers={"Access-Control-Allow-Origin": "*"}
-			)
+
+		res = core.sonarr.tags()
+		res.raise_for_status()
+
+		sonarr_tag = next(filter(lambda x:x["label"] == name, res.json()), None)
+
+		log = ""
+		if sonarr_tag:
+			tag_id = sonarr_tag["id"]
+			try:
+				core.tags.append(tag_id, name, active)
+				log = f"Il tag {name} è stato aggiunto."
+			except ValueError as e:
+				log = str(e)
+		else:
+			log = f"Il Tag {name} non esiste su Sonarr."
+
 
 		return Response(
 			mimetype='application/json',
@@ -344,13 +364,12 @@ def loadAPI(app:Flask):
 			headers={"Access-Control-Allow-Origin": "*"}
 		)
 
-
 	# IMPORT / EXPORT 
 	@app.route('/ie/table', methods=['GET', 'POST'])
 	def ieTable():
 		if request.method == 'GET':
 			return Response(
-				json.dumps(Table.data, indent=4),
+				json.dumps(core.table.getData(), indent=4),
 				mimetype="text/plain",
 				headers={"Content-disposition":"attachment; filename=table.json", "Access-Control-Allow-Origin": "*"},
 			)
@@ -360,10 +379,9 @@ def loadAPI(app:Flask):
 				data = uploaded_file.read()
 				check = True
 				try:
-					check = Table.write(json.loads(data.decode('utf-8')))
+					check = core.table.setData(json.loads(data.decode('utf-8')))
 				except json.decoder.JSONDecodeError:
 					check = False
-				
 				
 				return Response(
 					mimetype='application/json',
@@ -379,7 +397,7 @@ def loadAPI(app:Flask):
 	def ieSettings():
 		if request.method == 'GET':
 			return Response(
-				json.dumps(Settings.data, indent=4),
+				json.dumps(core.settings.getData(), indent=4),
 				mimetype="text/plain",
 				headers={"Content-disposition":"attachment; filename=settings.json", "Access-Control-Allow-Origin": "*"}
 			)
@@ -389,7 +407,7 @@ def loadAPI(app:Flask):
 				data = uploaded_file.read()
 				check = True
 				try:
-					check = Settings.write(json.loads(data.decode('utf-8')))
+					check = core.settings.setData(json.loads(data.decode('utf-8')))
 				except json.decoder.JSONDecodeError:
 					check = False
 				
@@ -407,6 +425,9 @@ def loadAPI(app:Flask):
 	@app.route('/ie/log', methods=['GET'])
 	def ieLog():
 
+		SONARR_URL = core.sonarr.url
+		API_KEY = core.sonarr.api_key
+
 		data = open("log.log", 'r', encoding='utf-8').read()
 		data = data.replace(SONARR_URL, '█'*len(SONARR_URL)).replace(API_KEY, '█'*len(API_KEY))
 
@@ -420,7 +441,7 @@ def loadAPI(app:Flask):
 	def ieConnections():
 		if request.method == 'GET':
 			return Response(
-				json.dumps(Connections.data, indent=4),
+				json.dumps(core.connections_db.getData(), indent=4),
 				mimetype="text/plain",
 				headers={"Content-disposition":"attachment; filename=connections.json", "Access-Control-Allow-Origin": "*"}
 			)
@@ -431,7 +452,7 @@ def loadAPI(app:Flask):
 
 				check = True
 				try:
-					check = Connections.write(json.loads(data.decode('utf-8')))
+					check = core.connections_db.setData(json.loads(data.decode('utf-8')))
 				except json.decoder.JSONDecodeError:
 					check = False
 
@@ -450,7 +471,7 @@ def loadAPI(app:Flask):
 	def ieTags():
 		if request.method == 'GET':
 			return Response(
-				json.dumps(Tags.data, indent=4),
+				json.dumps(core.tags.getData(), indent=4),
 				mimetype="text/plain",
 				headers={"Content-disposition":"attachment; filename=tags.json", "Access-Control-Allow-Origin": "*"}
 			)
@@ -461,7 +482,7 @@ def loadAPI(app:Flask):
 
 				check = True
 				try:
-					check = Tags.write(json.loads(data.decode('utf-8')))
+					check = core.tags.setData(json.loads(data.decode('utf-8')))
 				except json.decoder.JSONDecodeError:
 					check = False
 
