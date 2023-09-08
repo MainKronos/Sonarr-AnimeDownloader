@@ -9,7 +9,7 @@ class Tags(Database):
 		Ritorna il dizionario con tutte le informazioni del Tag.
 
 		Args:
-		  key: Nome | id del tag
+		  key: nome | id del tag
 
 		Returns:
 		  Il Tag
@@ -32,10 +32,10 @@ class Tags(Database):
 		Ritorna il dizionario con tutte le informazioni del Tag.
 
 		Args:
-		  key: Nome | id del tag
+		  key: nome | id del tag
 
 		Returns:
-		  Il Tag
+		  Il Tag.
 		"""
 
 		value = self.__get(key)
@@ -43,43 +43,71 @@ class Tags(Database):
 		return value
 	
 	def isActive(self, key: Union[str, int]) -> bool:
-		"""Ritorna lo stato (attivo o non) di un tag."""
+		"""
+		Ritorna lo stato (attivo o non) di un tag.
+		
+		Args:
+		  key: nome | id del tag
+
+		Returns:
+		  True se attivo / False se non attivo.
+		"""
 
 		tag = self[key]
-		if tag is None: raise KeyError(key)
-
 		return tag['active']
 
 	def enable(self, key: Union[str, int]):
-		"""Attiva un tag."""
+		"""
+		Attiva un tag.
+		
+		Args:
+		  key: nome | id del tag
+		"""
 
 		tag = self[key]
-		if tag is None: raise KeyError(key)
 
 		tag['active'] = True
 		self.sync()
 
 	def disable(self, key: Union[str, int]):
-		"""Disattiva un tag."""
+		"""
+		Disattiva un tag.
+		
+		Args:
+		  key: nome | id del tag
+		"""
 
 		tag = self[key]
-		if tag is None: raise KeyError(key)
 
 		tag['active'] = False
 		self.sync()
 
 	def __delitem__(self, key: Union[str, int]) -> None:
-		"""Rimuove un tag."""
+		"""
+		Rimuove un tag.
+		
+		Args:
+		  key: nome | id del tag
+		"""
 
 		tag = self[key]
 		self._data.remove(tag)
 		self.sync()	
 	
 	def __contains__(self, key: Union[str, int]) -> bool:
-		"""Controlla se una tag esiste."""
+		"""
+		Controlla se una tag esiste.
+
+		Args:
+		  key: Nome | id del tag
+
+		Returns:
+		  True se l'id o il nome esiste altrimenti False.
+		"""
 		return self.__get(key) is not None
 	
 	def __len__(self) -> int:
+		"""Numero di tag presenti nel db."""
 		return len(self._data)
 	
 	def __iter__(self) -> Generator[Any, Any, None]:

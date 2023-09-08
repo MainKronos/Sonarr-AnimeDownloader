@@ -1,8 +1,7 @@
-from ..core import Constant as ctx
+from ..core.Constant import LOGGER
 from ..connection import Sonarr, ExternalDB
 from ..database import *
 
-import logging
 from functools import reduce
 
 class Processor:
@@ -14,7 +13,7 @@ class Processor:
 		self.tags = tags
 		self.table = table
 		self.external = external
-		self.log = ctx.LOGGER
+		self.log = LOGGER
 	
 	def getData(self) -> list:
 		"""Restituisce i dati elaborati."""
@@ -22,7 +21,7 @@ class Processor:
 		# Raccolgo tutti gli episodi
 		missing = self.getAllMissing()
 
-		# Rimuovo le serie e stagioni non valide
+		# Rimuovo le serie, stagioni non validi
 		missing = filter(self.__filter, missing)
 
 		# Aggiorno il database esterno
@@ -30,10 +29,6 @@ class Processor:
 
 		# Collego gli url per il download e rimuovo le stagioni che non fanno match
 		missing = list(filter(self.__bindUrl, missing))
-
-		self.log.info("")
-		self.log.info("──────────────────────────────────────────────────────────────────────────────────────────────")
-		self.log.info("")
 
 		return missing
 
@@ -95,6 +90,7 @@ class Processor:
 			if season["number"] == 0:
 				self.log.debug(f"❌ Stagione {season['number']} della serie '{elem['title']}' scartata perchè contiene episodi speciali.")
 				return False
+
 			return True
 
 		# Filtro le stagioni non valide
@@ -219,6 +215,7 @@ class Processor:
 	def __convertToAbsolute(self, elem:dict) -> dict:
 		"""
 		Converte una serie normale in una con formato 'absolute', cioè con una sola stagione di nome absolute.
+		Se ci sono degli episodi che non hanno la numerazione assoluta li scarta.
 
 		Args:
 		  elem: la serie da convertire.
@@ -229,8 +226,15 @@ class Processor:
 		absolute_season = elem["seasons"][0]
 		absolute_season["number"] = 'absolute'
 
+		def checkEpisode(episode:dict) -> bool:
+			"""Controlla se un episodio ha la numerazione assoluta."""
+			if not episode["absoluteEpisodeNumber"]:
+				self.log.debug(f"❌ Episodio E{episode['episodeNumber']}S{episode['seasonNumber']} della serie '{elem['title']}' scartato per mancanza di numerazione assoluta.")
+				return False
+			return True
+
 		for season in elem["seasons"][1:]:
-			absolute_season["episodes"].extend(season["episodes"])
+			absolute_season["episodes"].extend(filter(checkEpisode, season["episodes"]))
 		
 		del elem["seasons"][1:]
 

@@ -5,6 +5,12 @@ class Database:
 	"""Gestione file JSON"""
 
 	def __init__(self, db:pathlib.Path) -> None:
+		"""
+		Collega il database.
+
+		Args:
+		  db: il file del database
+		"""
 		if not db.is_file(): raise FileNotFoundError()
 		self.db = db
 		self.fix()

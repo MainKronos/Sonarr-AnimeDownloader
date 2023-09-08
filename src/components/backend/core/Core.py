@@ -1,5 +1,5 @@
 from . import Constant as ctx
-from ..utility import Processor, ColoredString as cs
+from ..utility import Processor, Downloader, ColoredString as cs
 from ..database import *
 from ..connection import *
 
@@ -15,6 +15,7 @@ class Core(threading.Thread):
 		table:Table=None, 
 		sonarr:Sonarr=None,
 		github:GitHub=None,
+		connections_db:ConnectionsDB=None,
 		external:ExternalDB=None
 	):
 		"""
@@ -26,6 +27,7 @@ class Core(threading.Thread):
 		  table: Override Table
 		  sonarr: Override Sonarr
 		  github: Override GitHub
+		  connections_db: Override ConnectionsDB
 		  external: Override ExternalDB
 		"""
 
@@ -35,19 +37,24 @@ class Core(threading.Thread):
 		### Setup logger ###
 		self.__setupLog()
 
-		### Setup database
+		### Setup database ###
 		self.settings = settings if settings else Settings(ctx.DATABASE_FOLDER.joinpath('settings.json'))
 		self.tags = tags if tags else Tags(ctx.DATABASE_FOLDER.joinpath('tags.json'))
 		self.table = table if table else Table(ctx.DATABASE_FOLDER.joinpath('table.json'))
+		self.connections_db = connections_db if connections_db else ConnectionsDB(ctx.DATABASE_FOLDER.joinpath('connections.json'), ctx.SCRIPT_FOLDER)
 		self.external = external if external else ExternalDB()
 
-		### Fix log level
+		### Fix log level ###
 		self.log.setLevel(self.settings["LogLevel"])
 
 		### Setup Connection ###
 		self.sonarr = sonarr if sonarr else Sonarr(ctx.SONARR_URL, ctx.API_KEY)
 		self.github = github if github else GitHub()
-		self.processor = Processor(self.sonarr, settings=self.settings, table=self.table, tags=self.tags, external=self.external)
+		self.connections = ConnectionsManager(self.connections_db)
+
+		### Setup Logic ###
+		self.processor = Processor(sonarr=self.sonarr, settings=self.settings, table=self.table, tags=self.tags, external=self.external)
+		self.downloader = Downloader(settings=self.settings, sonarr=self.sonarr, connections=self.connections, folder=ctx.DOWNLOAD_FOLDER)
 
 		self.error = None
 
@@ -84,6 +91,13 @@ class Core(threading.Thread):
 			else:
 				self.log.debug(f"  └── {tag['id']} - {tag['name']} ({'🟢' if tag['active'] else '🔴'})")
 		self.log.debug("")
+		self.log.debug("Connections")
+		for index, connection in reversed(list(enumerate(self.connections_db))):
+			if index > 0:
+				self.log.debug(f"  ├── {connection['name']} - {connection['script']} ({'🟢' if connection['active'] else '🔴'})")
+			else:
+				self.log.debug(f"  └── {connection['name']} - {connection['script']} ({'🟢' if connection['active'] else '🔴'})")
+		self.log.debug("")
 
 
 	def __setupLog(self):
@@ -115,11 +129,11 @@ class Core(threading.Thread):
 			while True:
 				start = time.time()
 				self.log.info(f"╭───────────────────────────────────「{time.strftime('%d %b %Y %H:%M:%S')}」───────────────────────────────────╮")
-				self.log.info("")
+
 				self.job()
+				
 				next_run = self.settings['ScanDelay']*60 + start
 				wait = next_run - time.time()
-				self.log.info("")
 				self.log.info(f"╰───────────────────────────────────「{time.strftime('%d %b %Y %H:%M:%S', time.localtime(next_run))}」───────────────────────────────────╯")
 				if wait > 0: time.sleep(wait)
 		except Exception as e:
@@ -132,9 +146,25 @@ class Core(threading.Thread):
 		"""
 		Processo principale di ricerca e download.
 		"""
+
+		self.log.info("")
+
 		missing = self.processor.getData()
+
+		self.log.info("")
+		self.log.info("──────────────────────────────────────────────────────────────────────────────────────────────")
+		self.log.info("")
 		
-		
+		for serie in missing:
+			self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
+			self.log.info("")
+
+			self.downloader.download(serie)			
+
+			self.log.info("")
+			self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
+			self.log.info("")
+				
 
 	def join(self) -> None:
 		super().join()

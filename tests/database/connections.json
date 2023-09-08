@@ -2,6 +2,6 @@
     {
         "name": "Telegram",
         "script": "telegram.sh",
-        "active": false
+        "active": true
     }
 ]

@@ -40,6 +40,11 @@ class TestGeneral(unittest.TestCase):
 		with open(DUMP_FOLDER.joinpath('system_status.json'), 'w') as f:
 			json.dump(self.core.sonarr.systemStatus().json(), f)
 	
+	@unittest.skipUnless(sys.platform.startswith("linux"), "requires linux")
+	def testConnections(self):
+		connections = self.core.connections
+		connections.send('test')
+
 	def testFlags(self):
 		with open(DUMP_FOLDER.joinpath('tags.txt'), 'w') as f:
 			for tag in self.core.tags:
