@@ -1,7 +1,1 @@
-[
-    {
-        "name": "Telegram",
-        "script": "telegram.sh",
-        "active": true
-    }
-]
+[{"name": "Telegram", "script": "telegram.sh", "active": true}]

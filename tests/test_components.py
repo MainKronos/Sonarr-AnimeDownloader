@@ -1,6 +1,7 @@
 import unittest
 
-from src.components.backend.core.Core import ctx, Core
+from src.components.backend.core import Core
+from src.components.backend.core import Constant as ctx
 from src.components.backend.connection.Sonarr import Sonarr
 from src.components.frontend import Frontend
 
@@ -66,7 +67,7 @@ class TestGeneral(unittest.TestCase):
 	
 	def testFrontend(self):
 		app = Frontend(self.core)
-		app.run(debug=True, host='0.0.0.0', use_reloader=True)
+		app.run(debug=False, host='0.0.0.0', use_reloader=False)
 
 
 if __name__ == '__main__':

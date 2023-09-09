@@ -1,2 +1,2 @@
-from .backend import Core, LOGGER, VERSION
+from .backend import Core
 from .frontend import Frontend

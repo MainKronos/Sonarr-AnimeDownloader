@@ -34,6 +34,8 @@ class Core(threading.Thread):
 		### Setup Thread ###
 		super().__init__(name=self.__class__.__name__, daemon=True)
 
+		self.version = ctx.VERSION
+
 		### Setup logger ###
 		self.__setupLog()
 

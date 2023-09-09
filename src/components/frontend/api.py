@@ -2,7 +2,7 @@ import time
 from flask import *
 import sys, os, json
 
-from ..backend import Core, LOGGER, VERSION
+from ..backend import Core
 
 def loadAPI(app:Flask):
 
@@ -183,7 +183,7 @@ def loadAPI(app:Flask):
 
 		connections = core.connections_db.getData()
 		for conn in connections:
-			if core.connections_db.getPath(conn['name']).isfile():
+			if core.connections_db.getPath(conn['name']).is_file():
 				conn["valid"] = True
 			else:
 				conn["valid"] = False

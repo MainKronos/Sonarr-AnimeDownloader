@@ -1,1 +1,1 @@
-from .core import Core, LOGGER, VERSION
+from .core import Core

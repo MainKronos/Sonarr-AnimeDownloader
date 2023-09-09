@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from components import Core, Frontend
-import sys, threading
+import threading
 
 def main():
 	# Carico il core
@@ -19,7 +19,6 @@ def main():
 	core.join()
 
 def server(app):
-	sys.modules['flask.cli'].show_server_banner = lambda *x: None
 	app.run(debug=False, host='0.0.0.0', use_reloader=False)
 
 if __name__ == '__main__':
