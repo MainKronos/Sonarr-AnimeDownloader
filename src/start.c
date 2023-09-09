@@ -38,19 +38,19 @@ int start(){
 		pwn->pw_uid, pwn->pw_gid
 	);
 
-	strcpy(command, "touch /script/json/settings.json");
+	strcpy(command, "touch /src/database/settings.json");
 	res = system(command);
 	if(res) return res;
 
-	strcpy(command, "touch /script/json/table.json");
+	strcpy(command, "touch /src/database/table.json");
 	res = system(command);
 	if(res) return res;
 
-	sprintf(command, "chown %s:%s /script -R", USER_NAME, USER_NAME);
+	sprintf(command, "chown %s:%s /src -R", USER_NAME, USER_NAME);
 	res = system(command);
 	if(res) return res;
 
-	strcpy(command, "chmod 777 /script -R");
+	strcpy(command, "chmod 777 /src -R");
 	res = system(command);
 	if(res) return res;
 
@@ -59,7 +59,7 @@ int start(){
 	if(res) return res;
 
 	char* tmp; /* buffer */
-	DIR* dir = opendir("/script/connections");
+	DIR* dir = opendir("/src/script");
 	if(dir){
 		struct dirent* dir_inf; 
 
@@ -69,7 +69,7 @@ int start(){
 
 			if((tmp = strrchr(dir_inf->d_name, '.'))){
 				if(strcmp(".sh", tmp) == 0){
-					system("sed -i -e 's/\\r$//' /script/connections/*.sh");
+					system("sed -i -e 's/\\r$//' /src/script/*.sh");
 					break;
 				}
 			}
@@ -77,10 +77,10 @@ int start(){
 		closedir(dir);
 	}
 
-	chdir("/script");
+	chdir("/src");
 	setuid(atoi(PUID));
 	
-	return system("python3 -u /script/main.py");
+	return system("python3 -u /src/main.py");
 }
 
 int main(int argc, char *argv[])
