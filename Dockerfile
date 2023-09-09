@@ -28,17 +28,17 @@ COPY requirements.txt /tmp/
 RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
 
 RUN mkdir /downloads
-RUN mkdir /script
+RUN mkdir /src
 
-WORKDIR /script
+WORKDIR /src
 
-COPY src/ /script/
+COPY src/ /src/
 
 RUN chmod 777 /downloads -R 
-RUN chmod 777 /script -R 
+RUN chmod 777 /src -R 
 
-RUN gcc /script/start.c -o /start.bin
-RUN rm /script/start.c
+RUN gcc /src/start.c -o /start.bin
+RUN rm /src/start.c
 RUN chown root:root /start.bin
 RUN chmod 6751 /start.bin
 
@@ -57,6 +57,6 @@ ENV VERSION=$set_version
 
 EXPOSE 5000
 
-VOLUME [ "/downloads", "/script/json", "/script/connections" ]
+VOLUME [ "/downloads", "/src/script", "/src/database" ]
 
 CMD ["/start.bin"]
