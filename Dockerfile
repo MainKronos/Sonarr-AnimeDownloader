@@ -32,7 +32,7 @@ RUN mkdir /script
 
 WORKDIR /script
 
-COPY config/ /script/
+COPY src/ /script/
 
 RUN chmod 777 /downloads -R 
 RUN chmod 777 /script -R 
