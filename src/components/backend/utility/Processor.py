@@ -78,10 +78,10 @@ class Processor:
 		active_tags = [x['id'] for x in self.tags if self.tags.isActive(x['id'])]
 		serie_tags = [x for x in elem["tags"] if x in active_tags]
 		if any(serie_tags) and self.settings["TagsMode"] == "BLACKLIST":
-			self.log.debug(f"❌ Serie '{elem['title']}' scartata perchè ha uno dei tag [{', '.join([self.tags(x)['name'] for x in serie_tags])}].")
+			self.log.debug(f"❌ Serie '{elem['title']}' scartata perchè ha uno dei tag [{', '.join([self.tags[x]['name'] for x in serie_tags])}].")
 			return False
 		if not any(serie_tags) and self.settings["TagsMode"] == "WHITELIST":
-			self.log.debug(f"❌ Serie '{elem['title']}' scartata perchè non ha nessuno dei tag [{', '.join([self.tags(x)['name'] for x in active_tags])}].")
+			self.log.debug(f"❌ Serie '{elem['title']}' scartata perchè non ha nessuno dei tag [{', '.join([self.tags[x]['name'] for x in active_tags])}].")
 			return False
 
 		def filterSeason(season:dict) -> bool:
