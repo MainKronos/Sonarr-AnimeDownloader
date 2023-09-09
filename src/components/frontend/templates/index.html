@@ -70,7 +70,7 @@
 		fetch('https://api.github.com/repos/MainKronos/Sonarr-AnimeDownloader/releases')
 		.then(response => response.json())
 		.then(data => {
-			if(data[0].name != '{{ version }}' && data[0].name != 'dev'){
+			if(data[0].name != '{{ version }}' && '{{ version }}' != 'dev'){
 				showToast(`È disponibile una nuova versione del container (${data[0].name})`);
 			}
 		});

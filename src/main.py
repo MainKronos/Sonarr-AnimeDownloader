@@ -10,7 +10,7 @@ def main():
 	app = Frontend(core)
 
 	# Avvio la pagina web
-	threading.Thread(target=server, args=[app])
+	threading.Thread(target=server, args=[app], daemon=True).start()
 
 	# Avvio il programma
 	core.start()
