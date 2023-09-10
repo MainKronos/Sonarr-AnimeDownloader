@@ -4,6 +4,7 @@ from ..core.Constant import LOGGER
 from ..utility import ColoredString as cs
 
 import httpx, re, pathlib, time
+import shutil
 import animeworld as aw
 from copy import deepcopy
 from functools import reduce
@@ -184,13 +185,13 @@ class Downloader:
 			if episodeId == record["episodeId"]: return True
 		return False
 	
-	def __moveFile(self, src:pathlib.Path, dest:pathlib.Path) -> pathlib.Path:
+	def __moveFile(self, src:pathlib.Path, dst:pathlib.Path) -> pathlib.Path:
 		"""
-		Sposta il file da src a dest.
+		Sposta il file da src a dst.
 
 		Args:
 		  src: file da spostare
-		  dest: cartella di destinazione
+		  dst: cartella di destinazione
 		
 		Returns:
 		  La path che punta al file spostato.
@@ -200,18 +201,18 @@ class Downloader:
 			raise FileNotFoundError(src)
 
 		# Controllo se la cartella di destinazione non sia una cartella windows
-		if isinstance(dest, pathlib.WindowsPath):
-			tmp = dest.as_posix()
+		if isinstance(dst, pathlib.WindowsPath):
+			tmp = dst.as_posix()
 			tmp = re.sub(r"\w:","",tmp)
-			dest = pathlib.Path(tmp)
+			dst = pathlib.Path(tmp)
 		
-		if not dest.is_dir():
+		if not dst.is_dir():
 			# Se la cartella non esiste viene creata
-			dest.mkdir(parents=True)
-			self.log.warning('⚠️ La cartella {dest} è stata creata.')
+			dst.mkdir(parents=True)
+			self.log.warning(f'⚠️ La cartella {dst} è stata creata.')
 		
-		dest = dest.joinpath(src.name)
-		return src.rename(dest)
+		dst = dst.joinpath(src.name)
+		return shutil.move(src,dst)
 		
 	def __renameFile(self, episode_id:int, serie_id:int) -> None:
 		"""
