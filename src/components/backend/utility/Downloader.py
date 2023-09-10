@@ -120,7 +120,7 @@ class Downloader:
 							self.log.info("✔️ Episodio rinominato.")
 					
 					# Invio una notifica tramite Connections
-					self.info('✉️ Inviando il messaggio tramite Connections.')
+					self.log.info('✉️ Inviando il messaggio tramite Connections.')
 					self.connections.send(f"*Episode Downloaded*\n{serie['title']} - {episode['seasonNumber']}x{episode['episodeNumber']} - {episode['title']}")
 
 			except aw.AnimeNotAvailable as e:
