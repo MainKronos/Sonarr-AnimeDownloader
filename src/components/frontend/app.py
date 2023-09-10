@@ -74,16 +74,17 @@ def setupLog(app:Flask, socketio:SocketIO):
 	socket_handler.setFormatter('%(levelname)-8s %(message)s')
 	core.log.addHandler(socket_handler)
 
-	step = datetime.timestamp(datetime.now())
+	
 	def downloadProgress(d):
 		"""
 		Stampa il progresso di download dell'episodio.
 		"""
 		
-		if int(datetime.timestamp(datetime.now()) - step ) > 0 or d["percentage"] == 1:
+		if int(datetime.timestamp(datetime.now()) - downloadProgress.step ) > 0 or d["percentage"] == 1:
 			socketio.emit("download_info", d)
-			step = datetime.timestamp(datetime.now())
+			downloadProgress.step = datetime.timestamp(datetime.now())
 
+	downloadProgress.step = datetime.timestamp(datetime.now())
 	core.downloader.connectHook(downloadProgress)
 
 def loadRoute(app:Flask):

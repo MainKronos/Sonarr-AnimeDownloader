@@ -168,7 +168,7 @@ class Core(threading.Thread):
 			self.log.info("")
 				
 
-	def join(self) -> None:
-		super().join()
-		# Se è stata sollevata un eccezione la propaga
-		if self.error: raise self.error
+	# def join(self) -> None:
+	# 	super().join()
+	# 	# Se è stata sollevata un eccezione la propaga
+	# 	if self.error: raise self.error
