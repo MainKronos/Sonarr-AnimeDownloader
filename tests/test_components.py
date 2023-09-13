@@ -8,7 +8,7 @@ from src.components.frontend import Frontend
 import pathlib
 import sys, json
 
-ctx.DOWNLOAD_FOLDER = pathlib.Path('./tests').absolute()
+ctx.DOWNLOAD_FOLDER = pathlib.Path('./tests/downloads').absolute()
 ctx.DATABASE_FOLDER = pathlib.Path("./tests/database").absolute()
 ctx.SCRIPT_FOLDER = pathlib.Path("./tests/script").absolute()
 ctx.SONARR_URL = "http://netvault:8989/"
