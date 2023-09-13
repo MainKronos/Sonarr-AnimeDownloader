@@ -137,6 +137,7 @@ class Core(threading.Thread):
 				next_run = self.settings['ScanDelay']*60 + start
 				wait = next_run - time.time()
 				self.log.info(f"╰───────────────────────────────────「{time.strftime('%d %b %Y %H:%M:%S', time.localtime(next_run))}」───────────────────────────────────╯")
+				self.log.info("")
 				if wait > 0: time.sleep(wait)
 		except Exception as e:
 			# Errore interno non recuperabile
