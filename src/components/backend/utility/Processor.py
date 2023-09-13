@@ -193,7 +193,7 @@ class Processor:
 					else:
 						if not elem["tvdbId"]:
 							# Se l'id non esiste tra le informazioni in mio possesso
-							self.log.debug(f'⛔ Non è possibile avviare la ricerca automatica perchè la serie \'{title}\' non ha lÍD di TVDB.')
+							self.log.debug(f'⛔ Non è possibile avviare la ricerca automatica perchè la serie \'{title}\' non ha l\'ID di TVDB.')
 							return False
 						else:
 							res = self.external.find(title, season["number"], elem["tvdbId"])
