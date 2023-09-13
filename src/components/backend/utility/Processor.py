@@ -181,7 +181,7 @@ class Processor:
 					return True
 			else:
 				# Se la stagione NON è presente in tabella
-				self.log.debug(f"⚠️ Stagione {season['number']} della serie '{title}' non è presente nella TABELLA DI CONVERSIONE.")
+				self.log.debug(f"❌ Stagione {season['number']} della serie '{title}' non è presente nella TABELLA DI CONVERSIONE.")
 				if not self.settings["AutoBind"]:
 					return False
 				else:
@@ -191,20 +191,25 @@ class Processor:
 						self.debug(f"⛔ La ricerca automatica degli url di download è incompatibile con le serie ad ordinamento assoluto.")
 						return False
 					else:
-						res = self.external.find(title, season["number"], elem["tvdbId"])
-						if res is None:
-							# Se non ho trovato nulla
-							self.log.debug(f"🔴 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': nessun risultato trovato.")
+						if not elem["tvdbId"]:
+							# Se l'id non esiste tra le informazioni in mio possesso
+							self.log.debug(f'⛔ Non è possibile avviare la ricerca automatica perchè la serie \'{title}\' non ha lÍD di TVDB.')
 							return False
 						else:
-							self.log.warning(f"🟢 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': {res['url']}")
-							# Altrimenti aggiungo ciò che ho trovato
-							season["urls"].append(res["url"])
+							res = self.external.find(title, season["number"], elem["tvdbId"])
+							if res is None:
+								# Se non ho trovato nulla
+								self.log.debug(f"🔴 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': nessun risultato trovato.")
+								return False
+							else:
+								self.log.warning(f"🟢 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': {res['url']}")
+								# Altrimenti aggiungo ciò che ho trovato
+								season["urls"].append(res["url"])
 
-							# Adesso devo aggiornare la tabella, aggiungendo l'url
-							self.table.appendUrls(title, season['number'], [res["url"]])
+								# Adesso devo aggiornare la tabella, aggiungendo l'url
+								self.table.appendUrls(title, season['number'], [res["url"]])
 
-							return True
+								return True
 
 		# Aggiungo gli url alle stagioni
 		elem["seasons"] = list(filter(filterSeason, elem["seasons"]))
@@ -256,10 +261,10 @@ class Processor:
 		return {
 			"title": elem["series"]["title"],
 			"path": elem["series"]["path"],
-			"tvdbId": elem["series"]["tvdbId"],
-			"tvRageId": elem["series"]["tvRageId"],
-			"tvMazeId": elem["series"]["tvMazeId"],
-			"imdbId": elem["series"]["imdbId"],
+			"tvdbId": elem["series"]["tvdbId"] if "tvdbId" in elem["series"] else None,
+			"tvRageId": elem["series"]["tvRageId"] if "tvRageId" in elem["series"] else None,
+			"tvMazeId": elem["series"]["tvMazeId"] if "tvMazeId" in elem["series"] else None,
+			"imdbId": elem["series"]["imdbId"] if "imdbId" in elem["series"] else None,
 			"id": elem["series"]["id"],
 			"type": elem["series"]["seriesType"],
 			"tags": elem["series"]["tags"]

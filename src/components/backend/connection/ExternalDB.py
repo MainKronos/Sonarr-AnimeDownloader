@@ -54,6 +54,7 @@ class ExternalDB:
 		for info in self._data:
 			if "thetvdb_id" not in info: continue
 			if "mal_id" not in info: continue
+			if "type" not in info: continue
 			if info["thetvdb_id"] != tvdb_id: continue
 			if info["type"] != "TV": continue
 
