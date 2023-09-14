@@ -62,15 +62,15 @@ class Sonarr:
 	
 	def queue(self) -> httpx.Response:
 		"""
-		Ottiene la lista di episodi che sono nella coda di download.
+		Ottiene la lista di elementi che sono nella coda di download.
 
 		Returns:
 		  La risposta HTTP
 		"""
 		return self.client.get("/queue", params={
-			"includeUnknownSeriesItems": True,
-			"includeSeries": True,
-			"includeEpisode": True
+			"includeUnknownSeriesItems": False,
+			"includeSeries": False,
+			"includeEpisode": False
 		})
 
 	def serie(self, seriesId:int) -> httpx.Response:
