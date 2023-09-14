@@ -1,10 +1,10 @@
 from .Database import Database
 
-from typing import Union, Any, Generator
+from typing import Union, Any, Generator, Optional
 
 class Tags(Database):
 
-	def __get(self, key:Union[str, int]) -> Union[dict[str, Any], None]:
+	def __get(self, key:Union[str, int]) -> Optional[dict[str, Any]]:
 		"""
 		Ritorna il dizionario con tutte le informazioni del Tag.
 
@@ -26,8 +26,10 @@ class Tags(Database):
 					return tag
 		else:
 			raise TypeError(str(type(key)))	
+		
+		return None
 
-	def __getitem__(self, key:Union[str, int]) -> Union[dict[str, Any], None]:
+	def __getitem__(self, key:Union[str, int]) -> dict[str, Any]:
 		"""
 		Ritorna il dizionario con tutte le informazioni del Tag.
 

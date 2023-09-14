@@ -1,7 +1,7 @@
 import pathlib
 from .Database import Database
 
-from typing import Any, Generator, Union
+from typing import Any, Generator, Union, Optional
 
 class ConnectionsDB(Database):
 	"""Gestisce il database delle Connections."""
@@ -29,7 +29,7 @@ class ConnectionsDB(Database):
 		for connection in self._data:
 			yield connection
 	
-	def __get(self, key:str) -> Union[dict[str, Any], None]:
+	def __get(self, key:str) -> Optional[dict[str, Any]]:
 		"""
 		Ritorna il dizionario con tutte le informazioni della Connection.
 
@@ -42,20 +42,22 @@ class ConnectionsDB(Database):
 		for connection in self._data:
 			if connection["name"] == key:
 				return connection
+		
+		return None
 
-	def __contains__(self, key: Union[str, int]) -> bool:
+	def __contains__(self, key: str) -> bool:
 		"""
 		Controlla se una tag esiste.
 
 		Args:
-		  key: Nome | id del tag
+		  key: Nome della Connection
 
 		Returns:
-		  True se l'id o il nome esiste altrimenti False.
+		  True se il nome esiste altrimenti False.
 		"""
 		return self.__get(key) is not None
 	
-	def __getitem__(self, key:str) -> Union[dict[str, Any], None]:
+	def __getitem__(self, key:str) -> dict[str, Any]:
 		"""
 		Ritorna il dizionario con tutte le informazioni della Connection.
 

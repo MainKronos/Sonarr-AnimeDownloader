@@ -1,7 +1,7 @@
 import pathlib
 from .Database import Database
 
-from typing import Union, Any, Generator
+from typing import Union, Any, Generator, Optional
 
 class Table(Database):
 	def sync(self) -> None:
@@ -19,7 +19,7 @@ class Table(Database):
 	def __len__(self) -> int:
 		return len(self._data)
 	
-	def __get(self, key:str) -> dict:
+	def __get(self, key:str) -> Optional[dict]:
 		"""
 		Ritorna la serie con il titolo richiesto.
 
@@ -33,6 +33,8 @@ class Table(Database):
 		for serie in self._data:
 			if serie["title"] == key:
 				return serie
+		
+		return None
 	
 	def __getitem__(self, key:str) -> dict:
 		"""
@@ -201,7 +203,7 @@ class Table(Database):
 	
 	### RENAME
 
-	def renameSerie(self, title:str, new_title:str) -> None:
+	def renameSerie(self, title:str, new_title:str) -> bool:
 		"""
 		Rinomina una serie.
 
@@ -216,8 +218,9 @@ class Table(Database):
 		serie = self[title]
 		serie["title"] = new_title
 		self.sync()
+		return True
 	
-	def renameSeason(self, title:str, season:Union[str,int], new_season:Union[str,int]) -> None:
+	def renameSeason(self, title:str, season:Union[str,int], new_season:Union[str,int]) -> bool:
 		"""
 		Rinomina una stagione.
 
@@ -239,8 +242,9 @@ class Table(Database):
 		old = serie["seasons"].pop(season)
 		serie["seasons"][new_season] = old
 		self.sync()
+		return True
 
-	def renameUrl(self, title:str, season:Union[str,int], url:str, new_url:str) -> None:
+	def renameUrl(self, title:str, season:Union[str,int], url:str, new_url:str) -> bool:
 		"""
 		Rimuove un url di download.
 
@@ -263,3 +267,4 @@ class Table(Database):
 		index = s.index(url)
 		s[index] = new_url
 		self.sync()
+		return True

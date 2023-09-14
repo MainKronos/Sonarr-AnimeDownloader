@@ -1,14 +1,14 @@
 from ..database import Settings
 from ..connection import ConnectionsManager, Sonarr
 from ..core.Constant import LOGGER
-from ..utility import ColoredString as cs
+from ..utility.ColoredString import ColoredString as cs
 
 import httpx, re, pathlib, time
 import shutil
 import animeworld as aw
 from copy import deepcopy
 from functools import reduce
-from typing import Callable, Any
+from typing import Callable, Any, List
 
 
 class Downloader:
@@ -56,7 +56,7 @@ class Downloader:
 				episodes_str = ", ".join([str(x["episodeNumber"]) for x in season["episodes"]])
 				self.log.info(f"🔎 Ricerca episodio {episodes_str}.")
 
-				episodi = reduce(self.flattenEpisodes,[x.getEpisodes() for x in tmp], [])
+				episodi:List[aw.Episodio] = reduce(self.flattenEpisodes,[x.getEpisodes() for x in tmp], [])
 
 				for episode in season["episodes"]:
 					self.log.info("")
@@ -143,7 +143,7 @@ class Downloader:
 		"""
 
 		# numero da aggiungere per rendere consecutivi gli episodi di varie stagioni
-		limit = 0 if len(base) == 0 else base[-1].number
+		limit = 0 if len(base) == 0 else int(base[-1].number)
 
 		for ep in elem:
 			if re.search(r'^\d+$', ep.number) is not None: 

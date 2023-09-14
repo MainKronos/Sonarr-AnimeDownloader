@@ -1,5 +1,6 @@
 import httpx
 import animeworld as aw
+from typing import Optional
 
 from ..core.Constant import LOGGER
 
@@ -36,7 +37,7 @@ class ExternalDB:
 		"""
 		return list(self._data)
 	
-	def find(self, title:str, season:int, tvdb_id:int) -> dict[str, str]:
+	def find(self, title:str, season:int, tvdb_id:int) -> Optional[dict[str, str]]:
 		"""
 		Cerca un url per il download.
 
@@ -61,7 +62,7 @@ class ExternalDB:
 			mal_ids.append(info["mal_id"])
 		
 		# Se non ho trovato nulla ritorno None
-		if len(mal_ids) == 0: return
+		if len(mal_ids) == 0: return None
 
 		# Ottengo tutti i risultati da animewolrd ricercando solamente con il nome dell'anime
 		res = aw.find(title)
@@ -70,13 +71,13 @@ class ExternalDB:
 		res = list(filter(lambda x: x["malId"] in mal_ids, res))
 
 		# Se non ho trovato nulla ritorno None
-		if len(res) == 0: return
+		if len(res) == 0: return None
 
 		# Riordino per data
 		res.sort(key=lambda x: (x["release"] is None, x["release"]))
 
 		# Controllo se esiste la stagione
-		if len(res) < season: return
+		if len(res) < season: return None
 
 		return {
 			"name": res[season-1]["name"],

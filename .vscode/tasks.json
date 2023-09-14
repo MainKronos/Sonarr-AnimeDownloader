@@ -49,6 +49,32 @@
 				"tag": "mainkronos/anime_downloader:latest",
 				// "customOptions": "--no-cache"
 			}
+		},
+		{
+			"label": "Type Check",
+			"type": "shell",
+			"command": "python -m mypy",
+			"args": [
+				"${workspaceFolder}/src",
+				"--show-column-numbers",
+				"--show-error-end",
+				"--no-incremental"
+			],
+			"problemMatcher": {
+				"owner": "mypy",
+				"fileLocation": ["relative", "${workspaceFolder}"],
+				"pattern": {
+				  "regexp": "^(.*?):(\\d+):(\\d+):(\\d+):(\\d+):\\s+(warning|error|note):\\s+(.*)$",
+				  "file": 1,
+				  "line": 2,
+				  "column": 3,
+				  "endLine": 4,
+				  "endColumn": 5,
+				  "severity": 6,
+				  "message": 7
+				}
+			},
+			"group": "build"
 		}
 	]
 }

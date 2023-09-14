@@ -2,6 +2,7 @@ from ..core.Constant import LOGGER
 from ..connection import Sonarr, ExternalDB
 from ..database import *
 
+from typing import Iterable, List
 from functools import reduce
 
 class Processor:
@@ -19,7 +20,7 @@ class Processor:
 		"""Restituisce i dati elaborati."""
 
 		# Raccolgo tutti gli episodi
-		missing = self.getAllMissing()
+		missing:Iterable = self.getAllMissing()
 
 		# Rimuovo le serie, stagioni non validi
 		missing = filter(self.__filter, missing)
@@ -45,11 +46,11 @@ class Processor:
 		for page in range(1,50):
 			res = self.sonarr.wantedMissing(page=page)
 			res.raise_for_status()
-			res = res.json()
+			data = res.json()
 
-			if len(res["records"]) == 0: break
+			if len(data["records"]) == 0: break
 
-			missing.extend(res['records'])
+			missing.extend(data['records'])
 
 		# Riduco le informazioni a solo quelle indispensabili
 		missing = reduce(self.__reduce, missing, [])
@@ -75,8 +76,8 @@ class Processor:
 			return False
 
 		# Controllo i tag
-		active_tags = [x['id'] for x in self.tags if self.tags.isActive(x['id'])]
-		serie_tags = [x for x in elem["tags"] if x in active_tags]
+		active_tags:List[int] = [x['id'] for x in self.tags if self.tags.isActive(x['id'])]
+		serie_tags:List[int] = [x for x in elem["tags"] if x in active_tags]
 		if any(serie_tags) and self.settings["TagsMode"] == "BLACKLIST":
 			self.log.debug(f"❌ Serie '{elem['title']}' scartata perchè ha uno dei tag [{', '.join([self.tags[x]['name'] for x in serie_tags])}].")
 			return False
@@ -188,7 +189,7 @@ class Processor:
 					# Se è attiva la ricerca automatica provo a trovare dei url
 					if season['number'] == 'absolute':
 						# Se la stagione è di tipo absolute
-						self.debug(f"⛔ La ricerca automatica degli url di download è incompatibile con le serie ad ordinamento assoluto.")
+						self.log.debug(f"⛔ La ricerca automatica degli url di download è incompatibile con le serie ad ordinamento assoluto.")
 						return False
 					else:
 						if not elem["tvdbId"]:

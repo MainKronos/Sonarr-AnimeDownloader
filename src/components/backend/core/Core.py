@@ -6,17 +6,18 @@ from ..connection import *
 import logging, logging.handlers
 import sys, threading
 import time
+from typing import Optional
 
 class Core(threading.Thread):
 
 	def __init__(self, *, 
-		settings:Settings=None, 
-		tags:Tags=None, 
-		table:Table=None, 
-		sonarr:Sonarr=None,
-		github:GitHub=None,
-		connections_db:ConnectionsDB=None,
-		external:ExternalDB=None
+		settings:Optional[Settings]=None, 
+		tags:Optional[Tags]=None, 
+		table:Optional[Table]=None, 
+		sonarr:Optional[Sonarr]=None,
+		github:Optional[GitHub]=None,
+		connections_db:Optional[ConnectionsDB]=None,
+		external:Optional[ExternalDB]=None
 	):
 		"""
 		Inizializzazione funzionalità di base.
