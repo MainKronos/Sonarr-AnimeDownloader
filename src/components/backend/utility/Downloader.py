@@ -117,6 +117,9 @@ class Downloader:
 							# Aspetto 2s che Sonarr abbia finito di ricaricare la serie
 							time.sleep(2)
 
+							# Chiedo a Sonarr di rinominare l'episodio scaricato
+							self.__renameFile(episode['id'], serie['id'])
+
 							self.log.info("✔️ Episodio rinominato.")
 					
 					# Invio una notifica tramite Connections
@@ -165,12 +168,12 @@ class Downloader:
 
 		return base
 	
-	def __isInQueue(self, episodeId:int) -> bool:
+	def __isInQueue(self, episode_id:int) -> bool:
 		"""
 		Controllo se un episodio è in download su Sonarr.
 
 		Args:
-		  episode: L'episodio.
+		  episode_id: L'ID dell'episodio.
 
 		Returns:
 		  True se è in download su Sonarr, altrimenti False.
@@ -182,7 +185,7 @@ class Downloader:
 		records = res.json()["records"]
 
 		for record in records:
-			if episodeId == record["episodeId"]: return True
+			if episode_id == record["episodeId"]: return True
 		return False
 	
 	def __moveFile(self, src:pathlib.Path, dst:pathlib.Path) -> pathlib.Path:

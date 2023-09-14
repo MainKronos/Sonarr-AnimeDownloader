@@ -1,1 +1,284 @@
-[{"title": "See", "path": "/tv/Other/See", "tvdbId": 361565, "tvRageId": 0, "tvMazeId": 34345, "imdbId": "tt7949218", "id": 142, "type": "standard", "tags": [], "seasons": [{"number": 2, "urls": [], "episodes": [{"episodeNumber": 5, "seasonNumber": 2, "absoluteEpisodeNumber": 13, "title": "The Dinner Party", "id": 9576}, {"episodeNumber": 6, "seasonNumber": 2, "absoluteEpisodeNumber": 14, "title": "The Truth About Unicorns", "id": 9577}, {"episodeNumber": 7, "seasonNumber": 2, "absoluteEpisodeNumber": 15, "title": "The Queen's Speech", "id": 9578}, {"episodeNumber": 8, "seasonNumber": 2, "absoluteEpisodeNumber": 16, "title": "Rock-a-Bye", "id": 9579}]}, {"number": 3, "urls": [], "episodes": [{"episodeNumber": 1, "seasonNumber": 3, "absoluteEpisodeNumber": 17, "title": "Heavy Hangs the Head", "id": 13255}, {"episodeNumber": 2, "seasonNumber": 3, "absoluteEpisodeNumber": 18, "title": "Watch Out for Wolves", "id": 13540}, {"episodeNumber": 3, "seasonNumber": 3, "absoluteEpisodeNumber": 19, "title": "This Land Is Your Land", "id": 13541}, {"episodeNumber": 4, "seasonNumber": 3, "absoluteEpisodeNumber": 20, "title": "The Storm", "id": 13542}, {"episodeNumber": 5, "seasonNumber": 3, "absoluteEpisodeNumber": 21, "title": "The House of Enlightenment", "id": 13543}, {"episodeNumber": 6, "seasonNumber": 3, "absoluteEpisodeNumber": 22, "title": "The Lowlands", "id": 13544}, {"episodeNumber": 7, "seasonNumber": 3, "absoluteEpisodeNumber": 23, "title": "God Thunder", "id": 13545}, {"episodeNumber": 8, "seasonNumber": 3, "absoluteEpisodeNumber": 24, "title": "I See You", "id": 13546}]}]}, {"title": "Severance", "path": "/tv/Other/Severance", "tvdbId": 371980, "tvRageId": 0, "tvMazeId": 44933, "imdbId": "tt11280740", "id": 279, "type": "standard", "tags": [], "seasons": [{"number": 1, "urls": [], "episodes": [{"episodeNumber": 1, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "Good News About Hell", "id": 13547}, {"episodeNumber": 2, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "Half Loop", "id": 13548}, {"episodeNumber": 3, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "In Perpetuity", "id": 13549}, {"episodeNumber": 4, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "The You You Are", "id": 13550}, {"episodeNumber": 5, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "The Grim Barbarity of Optics and Design", "id": 13551}, {"episodeNumber": 6, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "Hide and Seek", "id": 13552}, {"episodeNumber": 7, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "Defiant Jazz", "id": 13553}, {"episodeNumber": 8, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "What\u2019s for Dinner?", "id": 13554}, {"episodeNumber": 9, "seasonNumber": 1, "absoluteEpisodeNumber": null, "title": "The We We Are", "id": 13555}]}]}, {"title": "Legend of the Galactic Heroes: Die Neue These", "path": "/tv/Anime/Legend of the Galactic Heroes - Die Neue These", "tvdbId": 343237, "tvRageId": 0, "tvMazeId": 35238, "imdbId": "tt7407236", "id": 343, "type": "anime", "tags": [6], "seasons": [{"number": 3, "urls": [], "episodes": [{"episodeNumber": 7, "seasonNumber": 3, "absoluteEpisodeNumber": 31, "title": "What Was Lost", "id": 16796}, {"episodeNumber": 8, "seasonNumber": 3, "absoluteEpisodeNumber": 32, "title": "Inquiry", "id": 16797}, {"episodeNumber": 9, "seasonNumber": 3, "absoluteEpisodeNumber": 33, "title": "War Without Weapons", "id": 16798}, {"episodeNumber": 10, "seasonNumber": 3, "absoluteEpisodeNumber": 34, "title": "Fortress vs. Fortress Akt I: Cannon Fire", "id": 16799}, {"episodeNumber": 11, "seasonNumber": 3, "absoluteEpisodeNumber": 35, "title": "Fortress vs. Fortress Akt II: Fierce Fighting", "id": 16800}, {"episodeNumber": 12, "seasonNumber": 3, "absoluteEpisodeNumber": 36, "title": "Fortress vs. Fortress Akt III: The Return of the Magician", "id": 16801}]}]}, {"title": "My Happy Marriage", "path": "/tv/Anime/My Happy Marriage", "tvdbId": 418665, "tvRageId": 0, "tvMazeId": 69124, "imdbId": "tt19869172", "id": 331, "type": "anime", "tags": [6], "seasons": [{"number": 1, "urls": [], "episodes": [{"episodeNumber": 11, "seasonNumber": 1, "absoluteEpisodeNumber": 11, "title": "My Mother's Legacy", "id": 16260}]}]}]
+[
+	{
+		"title": "See",
+		"path": "/tv/Other/See",
+		"tvdbId": 361565,
+		"tvRageId": 0,
+		"tvMazeId": 34345,
+		"imdbId": "tt7949218",
+		"id": 142,
+		"type": "standard",
+		"tags": [],
+		"seasons": [
+			{
+				"number": 2,
+				"urls": [],
+				"episodes": [
+					{
+						"episodeNumber": 5,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 13,
+						"title": "The Dinner Party",
+						"id": 9576
+					},
+					{
+						"episodeNumber": 6,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 14,
+						"title": "The Truth About Unicorns",
+						"id": 9577
+					},
+					{
+						"episodeNumber": 7,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 15,
+						"title": "The Queen's Speech",
+						"id": 9578
+					},
+					{
+						"episodeNumber": 8,
+						"seasonNumber": 2,
+						"absoluteEpisodeNumber": 16,
+						"title": "Rock-a-Bye",
+						"id": 9579
+					}
+				]
+			},
+			{
+				"number": 3,
+				"urls": [],
+				"episodes": [
+					{
+						"episodeNumber": 1,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 17,
+						"title": "Heavy Hangs the Head",
+						"id": 13255
+					},
+					{
+						"episodeNumber": 2,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 18,
+						"title": "Watch Out for Wolves",
+						"id": 13540
+					},
+					{
+						"episodeNumber": 3,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 19,
+						"title": "This Land Is Your Land",
+						"id": 13541
+					},
+					{
+						"episodeNumber": 4,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 20,
+						"title": "The Storm",
+						"id": 13542
+					},
+					{
+						"episodeNumber": 5,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 21,
+						"title": "The House of Enlightenment",
+						"id": 13543
+					},
+					{
+						"episodeNumber": 6,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 22,
+						"title": "The Lowlands",
+						"id": 13544
+					},
+					{
+						"episodeNumber": 7,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 23,
+						"title": "God Thunder",
+						"id": 13545
+					},
+					{
+						"episodeNumber": 8,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 24,
+						"title": "I See You",
+						"id": 13546
+					}
+				]
+			}
+		]
+	},
+	{
+		"title": "Severance",
+		"path": "/tv/Other/Severance",
+		"tvdbId": 371980,
+		"tvRageId": 0,
+		"tvMazeId": 44933,
+		"imdbId": "tt11280740",
+		"id": 279,
+		"type": "standard",
+		"tags": [],
+		"seasons": [
+			{
+				"number": 1,
+				"urls": [],
+				"episodes": [
+					{
+						"episodeNumber": 1,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "Good News About Hell",
+						"id": 13547
+					},
+					{
+						"episodeNumber": 2,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "Half Loop",
+						"id": 13548
+					},
+					{
+						"episodeNumber": 3,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "In Perpetuity",
+						"id": 13549
+					},
+					{
+						"episodeNumber": 4,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "The You You Are",
+						"id": 13550
+					},
+					{
+						"episodeNumber": 5,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "The Grim Barbarity of Optics and Design",
+						"id": 13551
+					},
+					{
+						"episodeNumber": 6,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "Hide and Seek",
+						"id": 13552
+					},
+					{
+						"episodeNumber": 7,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "Defiant Jazz",
+						"id": 13553
+					},
+					{
+						"episodeNumber": 8,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "What\u2019s for Dinner?",
+						"id": 13554
+					},
+					{
+						"episodeNumber": 9,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": null,
+						"title": "The We We Are",
+						"id": 13555
+					}
+				]
+			}
+		]
+	},
+	{
+		"title": "Legend of the Galactic Heroes: Die Neue These",
+		"path": "/tv/Anime/Legend of the Galactic Heroes - Die Neue These",
+		"tvdbId": 343237,
+		"tvRageId": 0,
+		"tvMazeId": 35238,
+		"imdbId": "tt7407236",
+		"id": 343,
+		"type": "anime",
+		"tags": [
+			6
+		],
+		"seasons": [
+			{
+				"number": 3,
+				"urls": [],
+				"episodes": [
+					{
+						"episodeNumber": 7,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 31,
+						"title": "What Was Lost",
+						"id": 16796
+					},
+					{
+						"episodeNumber": 8,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 32,
+						"title": "Inquiry",
+						"id": 16797
+					},
+					{
+						"episodeNumber": 9,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 33,
+						"title": "War Without Weapons",
+						"id": 16798
+					},
+					{
+						"episodeNumber": 10,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 34,
+						"title": "Fortress vs. Fortress Akt I: Cannon Fire",
+						"id": 16799
+					},
+					{
+						"episodeNumber": 11,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 35,
+						"title": "Fortress vs. Fortress Akt II: Fierce Fighting",
+						"id": 16800
+					},
+					{
+						"episodeNumber": 12,
+						"seasonNumber": 3,
+						"absoluteEpisodeNumber": 36,
+						"title": "Fortress vs. Fortress Akt III: The Return of the Magician",
+						"id": 16801
+					}
+				]
+			}
+		]
+	},
+	{
+		"title": "My Happy Marriage",
+		"path": "/tv/Anime/My Happy Marriage",
+		"tvdbId": 418665,
+		"tvRageId": 0,
+		"tvMazeId": 69124,
+		"imdbId": "tt19869172",
+		"id": 331,
+		"type": "anime",
+		"tags": [
+			6
+		],
+		"seasons": [
+			{
+				"number": 1,
+				"urls": [],
+				"episodes": [
+					{
+						"episodeNumber": 11,
+						"seasonNumber": 1,
+						"absoluteEpisodeNumber": 11,
+						"title": "My Mother's Legacy",
+						"id": 16260
+					}
+				]
+			}
+		]
+	}
+]
