@@ -1,7 +1,9 @@
 from . import Constant as ctx
-from ..utility import Processor, Downloader, ColoredString as cs
+from ..utility import ColoredString as cs
 from ..database import *
 from ..connection import *
+from .Downloader import Downloader
+from .Processor import Processor
 
 import logging, logging.handlers
 import sys, threading

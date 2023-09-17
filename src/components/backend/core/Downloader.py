@@ -1,7 +1,7 @@
 from ..database import Settings
 from ..connection import ConnectionsManager, Sonarr
-from ..core.Constant import LOGGER
-from ..utility.ColoredString import ColoredString as cs
+from .Constant import LOGGER
+from ..utility import ColoredString as cs
 
 import httpx, re, pathlib, time
 import shutil
