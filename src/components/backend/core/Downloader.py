@@ -130,8 +130,6 @@ class Downloader:
 				self.log.info(f'⚠️ {e}')
 			except (aw.ServerNotSupported, aw.Error404) as e:
 				self.log.warning(cs.yellow(f"🆆🅰🆁🅽🅸🅽🅶: {e}"))
-			except (aw.DeprecatedLibrary, httpx.HTTPError) as e:
-				self.log.error(cs.red(f"🅴🆁🆁🅾🆁: {e}"))
 
 	def flattenEpisodes(self, base:list[aw.Episodio], elem:list[aw.Episodio]) -> list[aw.Episodio]:
 		"""

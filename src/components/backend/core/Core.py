@@ -9,6 +9,8 @@ import logging, logging.handlers
 import sys, threading
 import time
 from typing import Optional
+import httpx
+import animeworld as aw
 
 class Core(threading.Thread):
 
@@ -153,23 +155,26 @@ class Core(threading.Thread):
 		Processo principale di ricerca e download.
 		"""
 
-		self.log.info("")
-
-		missing = self.processor.getData()
-
-		self.log.info("")
-		self.log.info("──────────────────────────────────────────────────────────────────────────────────────────────")
-		self.log.info("")
-		
-		for serie in missing:
-			self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
+		try:
 			self.log.info("")
 
-			self.downloader.download(serie)			
+			missing = self.processor.getData()
 
 			self.log.info("")
-			self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
+			self.log.info("──────────────────────────────────────────────────────────────────────────────────────────────")
 			self.log.info("")
+			
+			for serie in missing:
+				self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
+				self.log.info("")
+
+				self.downloader.download(serie)			
+
+				self.log.info("")
+				self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
+				self.log.info("")
+		except (aw.DeprecatedLibrary, httpx.HTTPError) as e:
+			self.log.error(cs.red(f"🅴🆁🆁🅾🆁: {e}"))
 				
 
 	# def join(self) -> None:
