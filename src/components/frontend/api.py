@@ -1,5 +1,5 @@
 import time
-from flask import *
+from flask import Flask, Response, request
 import sys, os, json
 
 from ..backend import Core
@@ -388,10 +388,9 @@ def loadAPI(app:Flask):
 					status=200,
 					response=json.dumps({
 						"error": False if check else f"Table invalida."
-					},
+					}),
 					headers={"Access-Control-Allow-Origin": "*"}
 				)
-		)
 
 	@app.route('/ie/settings', methods=['GET', 'POST'])
 	def ieSettings():
@@ -411,16 +410,14 @@ def loadAPI(app:Flask):
 				except json.decoder.JSONDecodeError:
 					check = False
 				
-				
 				return Response(
 					mimetype='application/json',
 					status=200,
 					response=json.dumps({
 						"error": False if check else f"Settings invalide."
-					},
+					}),
 					headers={"Access-Control-Allow-Origin": "*"}
 				)
-		)
 
 	@app.route('/ie/log', methods=['GET'])
 	def ieLog():
@@ -455,17 +452,15 @@ def loadAPI(app:Flask):
 					check = core.connections_db.setData(json.loads(data.decode('utf-8')))
 				except json.decoder.JSONDecodeError:
 					check = False
-
 				
 				return Response(
 					mimetype='application/json',
 					status=200,
 					response=json.dumps({
 						"error": False if check else f"Connections invalide."
-					},
+					}),
 					headers={"Access-Control-Allow-Origin": "*"}
 				)
-		)
 
 	@app.route('/ie/tags', methods=['GET', 'POST'])
 	def ieTags():
@@ -485,14 +480,12 @@ def loadAPI(app:Flask):
 					check = core.tags.setData(json.loads(data.decode('utf-8')))
 				except json.decoder.JSONDecodeError:
 					check = False
-
 				
 				return Response(
 					mimetype='application/json',
 					status=200,
 					response=json.dumps({
 						"error": False if check else f"Tag invalidi."
-					},
+					}),
 					headers={"Access-Control-Allow-Origin": "*"}
 				)
-		)

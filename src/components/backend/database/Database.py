@@ -39,8 +39,9 @@ class Database:
 		"""Restituisce una copia di tutto il contenuto del database."""
 		return deepcopy(self._data)
 	
-	def setData(self, data):
+	def setData(self, data) -> bool:
 		"""Sovrascrive il contenuto del database."""
 
 		self._data = deepcopy(data)
 		self.sync()
+		return True

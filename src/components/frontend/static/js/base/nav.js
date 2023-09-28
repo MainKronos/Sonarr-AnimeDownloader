@@ -16,7 +16,7 @@ function showToast(message){
 	let toast = document.createElement('div');
 	toast.id = 'toast';
 
-	time = message.split(" ").length * 300;
+	time = 2000;
 
 	toast.appendChild(document.createTextNode(message));
 	document.body.appendChild(toast);
