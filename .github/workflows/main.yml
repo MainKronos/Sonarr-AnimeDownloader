@@ -68,7 +68,7 @@ jobs:
             ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}
             ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           flavor: |
-            latest=${{ github.event_name != 'workflow_dispatch' || github.ref_name != 'dev' }}
+            latest=${{ env.RELEASE_VERSION != 'dev' }}
           tags: |
             type=raw,enable=true,value=dev
             type=raw,enable=true,value=${{ env.RELEASE_VERSION }}

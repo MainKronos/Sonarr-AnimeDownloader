@@ -12,10 +12,10 @@ services:
   mainkronos:
     container_name: AnimeDownloader
     volumes:
-      - '/path/to/data:/script/json/'
+      - '/path/to/data:/src/database'
       - '/path/to/animeSeries:/tv'
       - '/path/to/downloads:/downloads'
-      - '/path/to/connections:/script/connections'
+      - '/path/to/connections:/src/script'
     ports:
       - 'port:5000'
     environment:
@@ -37,10 +37,10 @@ services:
 ```bash
 docker run -d \
     --name=AnimeDownloader \
-    -v /path/to/data:/script/json/ \
+    -v /path/to/data:/src/database \
     -v /path/to/animeSeries:/tv \
     -v /path/to/downloads:/downloads \
-    -v /path/to/connections:/script/connections \
+    -v /path/to/connections:/src/script \
     -p port:5000 \
     --env SONARR_URL='http://url:port' \
     --env API_KEY='1234567890abcdefghijklmn' \
@@ -55,15 +55,15 @@ docker run -d \
 Le immagini del Docker Container vengono configurate utilizzando i parametri passati in fase di esecuzione (come quelli sopra). Questi parametri sono separati da due punti e indicano rispettivamente `<esterno>:<interno>` al Container.
 
 ???+ Tip
-    Ad esempio, `-v /path/to/data:/script/json/` indica che la cartella nella posizione `/path/to/data` si trova in `/script/json/` all'interno del Container, quindi tutto il contento di `/path/to/data è anche` in `/script/json/` all'interno del Container.
+    Ad esempio, `-v /path/to/data:/src/database` indica che la cartella nella posizione `/path/to/data` si trova in `/src/database` all'interno del Container, quindi tutto il contento di `/path/to/data` è anche in `/src/database` all'interno del Container.
 
 Parametro | Necessario | Funzione
  :---: | :---: | :---
 `--name` | :material-close-thick: | Indica il nome del Container, può essere qualsiasi cosa
 `-v /tv` | :material-check-bold: | Posizione della libreria Anime su disco, vedi sotto per ulteriori informazioni
-`-v /script/json/` | :material-check-bold: | Contiene file di configurazione
+`-v /src/database` | :material-check-bold: | Contiene file di configurazione
 `-v /downloads` | :material-close-thick: | Cartella dove verranno scaricati tutti gli episodi (poi verranno spostati nella giusta cartella di destinazione)
-`-v /script/connections` | :material-close-thick: | Contiene file di configurazione per le [Connections](advanced.md#connections)
+`-v /src/script` | :material-close-thick: | Contiene file di configurazione per le [Connections](advanced.md#connections)
 `-p {port}:5000` | :material-check-bold: | La porta per la pagina web
 `--env SONARR_URL` | :material-check-bold: | Url di Sonarr es. http://localhost:8989
 `--env API_KEY` | :material-check-bold: | Api key di sonarr, vedi sotto per ulteriori informazioni
@@ -103,7 +103,7 @@ $ id username
 ## Avvio
 
 ### Tabella di Conversione
-Il programma, per funzionare, necessita di un file che si chiama `table.json`, si trova nella cartella `/script/json/` all'interno del Container. Questo file indica al programma a quale nome di AnimeWorld corrisponde il titolo della serie su Sonarr. 
+Il programma, per funzionare, necessita di un file che si chiama `table.json`, si trova nella cartella `/src/database` all'interno del Container. Questo file indica al programma a quale nome di AnimeWorld corrisponde il titolo della serie su Sonarr. 
 
 Per esempio abbiamo che il titolo del nostro anime su AnimeWorld è `Sword Art Online 3: Alicization`, mentre su Sonarr è indicato come stagione 3 di `Sword Art Online`, tale informazione deve essere formattata e inserita nel file `table.json` in modo tale che il programma riesca a capire dove andare a cercare gli episodi su AnimeWorld.
 
@@ -136,7 +136,7 @@ In ogni caso la formattazione di come sono inserite le informazioni nel file `ta
 ```
 
 !!! Tip
-    Ho caricato anche la **mia configurazione** che utilizzo, può essere trovata [qui](/documentation/examples/table.json). Questa `table.json` può essere usata come _esempio_ o come _prorio database_ da aggiornare poi personalmente con i propri **Anime**.
+    Ho caricato anche la **mia configurazione** che utilizzo, può essere trovata [qui](/docs/static/examples/json/table.json). Questa `table.json` può essere usata come _esempio_ o come _prorio database_ da aggiornare poi personalmente con i propri **Anime**.
 
 ### Struttura Interna
 
@@ -145,18 +145,18 @@ La struttura interna del Container è così strutturata:
 /
  ├── start.bin                 ### File di avvio
  ├── downloads                 ### Cartella di download
- ├── script
- │   ├── app                   ### Interfaccia Web
- │   │   ├── ...
- │   │  ...
+ ├── src
+ │   ├── components
+ │   │   ├── backend           ### Core del programma
+ │   │   └── frontend          ### Interfaccia Web
  │   │
- │   ├── json
+ │   ├── database
  │   │    ├── settings.json    ### Impostazioni
  │   │    ├── table.json       ### Tabella di conversione
  │   │    ├── connections.json ### Conections
  │   │    └── tags.json        ### Tag
  │   │                      
- │   ├── connections
+ │   ├── script
  │   │    ├── telegram.sh      ### Connessione a Telegram
  │   │   ...                   ### Altre Connessioni          
  │   │ 

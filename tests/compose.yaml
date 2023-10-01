@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  mainkronos:
+    container_name: AnimeDownloader
+    volumes:
+      - './database:/src/database'
+      - './script:/src/script'
+      - './downloads:/downloads'
+    ports:
+      - '8573:5000'
+    environment:
+      - 'SONARR_URL=http://192.168.1.11:8989'
+      - API_KEY=f10994e9f3494368a31a3088aba6b9fc
+      - TZ=Europe/Rome
+      - PUID:1000
+      - PGID:1000
+    image: 'anime_downloader:dev'
+    build: '../'
+    # user: "1000:1000"

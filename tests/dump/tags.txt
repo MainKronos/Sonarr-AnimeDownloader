@@ -1,0 +1,1 @@
+{"id": 999, "name": "Sonarr-AnimeDownloader", "active": false}{"id": 3, "name": "Test", "active": true}

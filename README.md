@@ -1,8 +1,6 @@
 
 # ![wallpaper](docs/static/img/wallpaper.png)
 
-<!-- [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)   [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)    -->
-
 [![Version](https://img.shields.io/github/v/release/MainKronos/Sonarr-AnimeDownloader?color=90caf9&style=for-the-badge)](../../releases)   [![Issues](https://img.shields.io/github/issues/MainKronos/Sonarr-AnimeDownloader?color=a5d6a7&style=for-the-badge)](../../issues)   [![License](https://img.shields.io/github/license/MainKronos/Sonarr-AnimeDownloader?color=ffcc80&style=for-the-badge)](/LICENSE)   [![Stars](https://img.shields.io/github/stars/MainKronos/Sonarr-AnimeDownloader?color=fff59d&style=for-the-badge)](../../stargazers)
 
 _This documentation is in **Italian** because this program downloads anime with italian subtitles only._
@@ -15,6 +13,12 @@ Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com
 
 Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documentazione è reperibile [qui](../../../AnimeWorld-API).
 
+> **WARNING**\
+> **Aggiornamento da `1.x.x` a `2.x.x`**\
+> Il volumi sono cambiati nel seguente modo:
+> - `/script/connections` -> `/src/script`
+> - `/script/json` -> `/src/database`
+
 ## Installazione
 
 ```yaml
@@ -23,10 +27,10 @@ services:
   mainkronos:
     container_name: AnimeDownloader
     volumes:
-      - '/path/to/data:/script/json/'
+      - '/path/to/data:/src/database'
       - '/path/to/animeSeries:/tv'
       - '/path/to/downloads:/downloads'
-      - '/path/to/connections:/script/connections'
+      - '/path/to/connections:/src/script'
     ports:
       - 'port:5000'
     environment:
