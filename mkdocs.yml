@@ -37,6 +37,7 @@ nav:
     - FAQ: 'usage/faq.md'
   - Community:
     - Contributing: 'community/contributing.md'
+    - Hacktoberfest: 'community/hacktoberfest.md'
     - Code of Conduct: 'community/code-of-conduct.md'
 
 markdown_extensions:

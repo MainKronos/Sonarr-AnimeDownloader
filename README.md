@@ -19,6 +19,11 @@ Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documenta
 > - `/script/connections` -> `/src/script`
 > - `/script/json` -> `/src/database`
 
+## ![Hacktoberfest 2023](https://hacktoberfest.com/_next/static/media/logo-hacktoberfest--horizontal.ebc5fdc8.svg)
+
+Per partecipare all'evento Hacktoberfest 2023 leggere la [documentazione](https://mainkronos.github.io/Sonarr-AnimeDownloader/community/hacktoberfest/).\
+**Per contribuire non è necessario saper programmare o mettere mano al codice sorgente del programma.**
+
 ## Installazione
 
 ```yaml
