@@ -23,7 +23,7 @@ RUN pip3 install --no-cache-dir --upgrade pip
 
 RUN pip3 install config --upgrade --no-cache-dir
 
-COPY requirements.txt /tmp/
+COPY src/requirements.txt /tmp/
 
 RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
 

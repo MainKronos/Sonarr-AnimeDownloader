@@ -39,6 +39,7 @@ class Core(threading.Thread):
 		### Setup Thread ###
 		super().__init__(name=self.__class__.__name__, daemon=True)
 
+		self.semaphore = threading.Condition()
 		self.version = ctx.VERSION
 
 		### Setup logger ###
@@ -143,7 +144,7 @@ class Core(threading.Thread):
 				wait = next_run - time.time()
 				self.log.info(f"╰───────────────────────────────────「{time.strftime('%d %b %Y %H:%M:%S', time.localtime(next_run))}」───────────────────────────────────╯")
 				self.log.info("")
-				if wait > 0: time.sleep(wait)
+				if wait > 0: self.semaphore.wait(timeout=wait)
 		except Exception as e:
 			# Errore interno non recuperabile
 			self.log.critical("]─────────────────────────────────────────[CRITICAL]─────────────────────────────────────────[")
@@ -176,6 +177,17 @@ class Core(threading.Thread):
 		except (aw.DeprecatedLibrary, httpx.HTTPError) as e:
 			self.log.error(cs.red(f"🅴🆁🆁🅾🆁: {e}"))
 				
+	def wakeUp(self) -> bool:
+		"""
+		Fa partire immediatamente il processo di ricerca e download.
+		"""
+		try:
+			self.semaphore.notify()
+		except RuntimeError:
+			return False
+		else:
+			return True
+
 
 	# def join(self) -> None:
 	# 	super().join()
