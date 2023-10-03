@@ -1,6 +1,7 @@
 import unittest
 
 from src.components.backend.core import Core
+from src.components.backend.connection import ExternalDB
 from src.components.backend.core import Constant as ctx
 from src.components.backend.connection.Sonarr import Sonarr
 from src.components.frontend import Frontend
@@ -68,6 +69,12 @@ class TestGeneral(unittest.TestCase):
 	def testFrontend(self):
 		app = Frontend(self.core)
 		app.run(debug=False, host='0.0.0.0', use_reloader=False)
+
+	def testExternalDB(self):
+		ex = ExternalDB()
+		ex.sync()
+		with open(DUMP_FOLDER.joinpath('ExternalDB.json'), 'w') as f:
+			json.dump(ex.find('Tokyo Revengers', 3, 393478), f)
 
 
 if __name__ == '__main__':

@@ -73,8 +73,21 @@ class ExternalDB:
 		# Se non ho trovato nulla ritorno None
 		if len(res) == 0: return None
 
+		# Converto le stagioni in numeri
+		def conv2num(x):
+			if x["season"] == 'winter':
+				x["season"] = 0
+			elif x["season"] == 'spring':
+				x["season"] = 1
+			elif x["season"] == 'summer':
+				x["season"] = 2
+			else:
+				x["season"] = 3
+			return x
+		res = list(map(conv2num, res))
+
 		# Riordino per data
-		res.sort(key=lambda x: (x["release"] is None, x["release"]))
+		res.sort(key=lambda x: (x["year"], x["season"]), reverse=True)
 
 		# Controllo se esiste la stagione
 		if len(res) < season: return None
