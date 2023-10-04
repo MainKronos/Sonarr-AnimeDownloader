@@ -39,7 +39,7 @@ class Core(threading.Thread):
 		### Setup Thread ###
 		super().__init__(name=self.__class__.__name__, daemon=True)
 
-		self.semaphore = threading.Condition()
+		self.semaphore = threading.Semaphore(0)
 		self.version = ctx.VERSION
 
 		### Setup logger ###
@@ -144,7 +144,7 @@ class Core(threading.Thread):
 				wait = next_run - time.time()
 				self.log.info(f"╰───────────────────────────────────「{time.strftime('%d %b %Y %H:%M:%S', time.localtime(next_run))}」───────────────────────────────────╯")
 				self.log.info("")
-				if wait > 0: self.semaphore.wait(timeout=wait)
+				if wait > 0: self.semaphore.acquire(timeout=wait)
 		except Exception as e:
 			# Errore interno non recuperabile
 			self.log.critical("]─────────────────────────────────────────[CRITICAL]─────────────────────────────────────────[")
@@ -182,7 +182,7 @@ class Core(threading.Thread):
 		Fa partire immediatamente il processo di ricerca e download.
 		"""
 		try:
-			self.semaphore.notify()
+			self.semaphore.release()
 		except RuntimeError:
 			return False
 		else:
