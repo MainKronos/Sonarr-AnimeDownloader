@@ -43,7 +43,7 @@ class Processor:
 
 		missing = []
 
-		for page in range(1,50):
+		for page in range(1,100):
 			res = self.sonarr.wantedMissing(page=page)
 			res.raise_for_status()
 			data = res.json()
