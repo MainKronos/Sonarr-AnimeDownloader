@@ -4,10 +4,11 @@ from src.components.backend.core import Core
 from src.components.backend.connection import ExternalDB
 from src.components.backend.core import Constant as ctx
 from src.components.backend.connection.Sonarr import Sonarr
-from src.components.frontend import Frontend
+from src.components.api import API
 
 import pathlib
 import sys, json
+import uvicorn
 
 ctx.DOWNLOAD_FOLDER = pathlib.Path('./tests/downloads').absolute()
 ctx.DATABASE_FOLDER = pathlib.Path("./tests/database").absolute()
@@ -67,8 +68,8 @@ class TestGeneral(unittest.TestCase):
 			self.core.join()
 	
 	def testFrontend(self):
-		app = Frontend(self.core)
-		app.run(debug=False, host='0.0.0.0', use_reloader=False)
+		app = API(self.core)
+		uvicorn.run(app, port=5000, host='0.0.0.0')
 
 	def testExternalDB(self):
 		ex = ExternalDB()

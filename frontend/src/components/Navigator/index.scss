@@ -1,0 +1,84 @@
+@use "sass:color";
+@use '@/styles/global' as *;
+
+nav {
+	height: 100%;
+	width: 0; 
+	position: fixed; 
+	z-index: 2; 
+	top: 0; 
+	left: 0;
+	background-color: color.adjust($background-color, $whiteness: 8%); 
+	overflow-x: hidden; 
+	padding-top: 60px; 
+	transition: 0.5s; 
+	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+
+	> div:nth-child(1) {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 0;
+		height: 100%;
+		background-color: rgba(0,0,0,0);
+		transition: background-color 0.5s; 
+	}
+
+	&.active {
+		width: 200px; 
+
+		> div:nth-child(1) {
+			width: 100%;
+			background-color: rgba(0,0,0,0.2);
+		}
+	}
+
+	> div:nth-child(2) {
+		position: relative;
+		top: 0;
+		left: 0;
+		padding: 10px;
+		text-align: center;
+
+		> a {
+			display: block;
+			color: rgba(255,255,255,0.5);
+			text-decoration: none;
+			width: max-content;
+			margin: 10px;
+			cursor: pointer;
+			padding: 5px;
+			border-bottom: 1.5px solid rgba(0,0,0,0.4);
+
+			&:active, &:visited {
+				color: rgba(255,255,255,0.5);
+			}
+
+			&:hover {
+				color: $base-color;
+			}
+		}
+	}
+
+	
+	+ button {
+		background-color: transparent;
+		border: 0;
+		margin: 10px;
+		color: rgba(255,255,255,0.60);
+		font-size: 1.5rem;
+		font-weight: 400;
+		padding: 0;
+		position: absolute;
+		top: 20px;
+		left: 20px;
+
+		cursor: pointer;
+
+		&:hover {
+			color: $base-color;
+		}
+	}
+
+	
+}

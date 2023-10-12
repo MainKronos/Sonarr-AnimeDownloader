@@ -1,0 +1,50 @@
+@use "sass:color";
+@use '@/styles/global' as *;
+
+header {
+	background-color: color.adjust($background-color, $whiteness: 8%);
+	padding: 15px 5vw;
+	margin-bottom: 5vh;
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+
+	> h1 {
+		text-align: center;
+		margin: 10px;
+	}
+}
+
+#donate{
+	@keyframes HeartBeat {
+		0% {
+			transform: scale(0.8);
+		}
+		5% {
+			transform: scale(0.9);
+		}
+		10% {
+			transform: scale(0.8);
+		}
+		15% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(0.8);
+		}
+		100% {
+			transform: scale(0.8);
+		}
+	}
+	
+	transition: background-color, color 0.1s;
+	animation: HeartBeat 1.5s infinite;
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	text-shadow: 0 0 10px $base-color;
+	text-decoration: none;
+
+	&:hover {
+		color: $base-color;
+	}
+
+}

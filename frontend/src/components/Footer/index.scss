@@ -1,0 +1,9 @@
+@use "sass:color";
+@use '@/styles/global' as *;
+
+footer {
+	background-color: color.adjust($background-color, $whiteness: 3%);
+	margin-top: 5vh;
+	text-align: center;
+	padding: 20px 50px;
+}
