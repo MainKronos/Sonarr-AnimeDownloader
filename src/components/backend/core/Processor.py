@@ -4,6 +4,7 @@ from ..database import *
 
 from typing import Iterable, List
 from functools import reduce
+from itertools import count
 
 class Processor:
 	"""Processa i dati che provengono da Sonarr"""
@@ -43,7 +44,7 @@ class Processor:
 
 		missing = []
 
-		for page in range(1,100):
+		for page in count(1):
 			res = self.sonarr.wantedMissing(page=page)
 			res.raise_for_status()
 			data = res.json()
