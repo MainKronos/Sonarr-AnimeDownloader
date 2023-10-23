@@ -5,6 +5,7 @@ from src.components.backend.connection import ExternalDB
 from src.components.backend.core import Constant as ctx
 from src.components.backend.connection.Sonarr import Sonarr
 from src.components.api import API
+from src.components.frontend_OLD import Frontend
 
 import pathlib
 import sys, json
@@ -24,6 +25,12 @@ class TestGeneral(unittest.TestCase):
 	def setUpClass(cls):
 		"""Inizializza il nucleo."""
 		cls.core = Core()
+	
+	def testApp(self):
+		app = Frontend(self.core)
+		self.core.start()
+		uvicorn.run(app, port=5000, host='0.0.0.0', log_level='critical')
+
 
 	def testSonarr(self):
 		with open(DUMP_FOLDER.joinpath('wanted_missing.json'), 'w') as f:
@@ -70,6 +77,11 @@ class TestGeneral(unittest.TestCase):
 	def testFrontend(self):
 		app = API(self.core)
 		uvicorn.run(app, port=5000, host='0.0.0.0')
+
+	def testFrontend_OLD(self):
+		app = Frontend(self.core)
+		app.run(debug=False, host='0.0.0.0', use_reloader=False)
+
 
 	def testExternalDB(self):
 		ex = ExternalDB()

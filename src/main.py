@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 from components import Core, API
+
+from components.frontend_OLD import Frontend
+
 import threading
 import uvicorn
 
@@ -8,7 +11,8 @@ def main():
 	core = Core()
 	
 	# Cario la pagina web
-	app = API(core)
+	# app = API(core)
+	app = Frontend(core) # DEPRECATO (DA RIMUOVERE)
 
 	# Avvio la pagina web
 	threading.Thread(target=server, args=[app], daemon=True).start()
@@ -20,7 +24,8 @@ def main():
 	core.join()
 
 def server(app):
-	uvicorn.run(app, port=5000, host='0.0.0.0', log_level='critical')
+	# uvicorn.run(app, port=5000, host='0.0.0.0', log_level='critical')
+	app.run(debug=False, host='0.0.0.0', use_reloader=False) # DEPRECATO (DA RIMUOVERE)
 
 if __name__ == '__main__':
 	main()
