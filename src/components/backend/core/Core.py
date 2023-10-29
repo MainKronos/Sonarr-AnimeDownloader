@@ -174,7 +174,7 @@ class Core(threading.Thread):
 				self.log.info("")
 				self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
 				self.log.info("")
-		except (aw.DeprecatedLibrary, httpx.HTTPError) as e:
+		except aw.DeprecatedLibrary as e:
 			self.log.error(cs.red(f"🅴🆁🆁🅾🆁: {e}"))
 				
 	def wakeUp(self) -> bool:
