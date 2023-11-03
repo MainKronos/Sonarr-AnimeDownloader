@@ -15,6 +15,7 @@ def Settings(core:Core) -> APIBlueprint:
 	@route.patch('/<setting>')
 	@route.input({'value': fields.Raw()})
 	def edit_settings(setting:str, json_data:dict):
+		"""Modifica un impostazione."""
 		
 		if setting not in core.settings:
 			abort(400, f"L'impostazione '{setting}' non esiste.")

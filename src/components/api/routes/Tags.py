@@ -23,5 +23,60 @@ def Tags(core:Core) -> APIBlueprint:
 			abort(400, str(e))
 
 		return {'message': f"Tag '{json_data['name']}' aggiunto."}
+	
+
+	@route.get('/<tag>')
+	def get_tag(tag:str|int):
+		"""Restituisce le informazioni di un tag."""
+
+		try: tag = int(tag)
+		except ValueError: pass
+
+		if tag not in core.tags:
+			abort(400, f"Il tag '{tag}' non esiste.")
+
+		return core.tags[tag]
+
+	@route.delete('/<tag>')
+	def del_tag(tag:str|int):
+		"""Aggiunge un tag."""
+		
+		try: tag = int(tag)
+		except ValueError: pass
+
+		if tag not in core.tags:
+			abort(400, f"Il tag '{tag}' non esiste.")
+		
+		del core.tags[tag]
+
+		return {'message': f"Tag '{tag}' eliminato."}
+	
+	@route.patch('/<tag>/enable')
+	def enable_tag(tag:str|int):
+		"""Attiva un tag."""
+
+		try: tag = int(tag)
+		except ValueError: pass
+
+		if tag not in core.tags:
+			abort(400, f"Il tag '{tag}' non esiste.")
+		
+		core.tags.enable(tag)
+		
+		return {'message': f"Tag '{tag}' attivato."}
+
+	@route.patch('/<tag>/disable')
+	def disable_tag(tag:str|int):
+		"""Disattiva un tag."""
+
+		try: tag = int(tag)
+		except ValueError: pass
+
+		if tag not in core.tags:
+			abort(400, f"Il tag '{tag}' non esiste.")
+		
+		core.tags.disable(tag)
+
+		return {'message': f"Tag '{tag}' disattivato."}
 
 	return route
