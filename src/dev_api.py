@@ -27,4 +27,4 @@ def main():
 	return app
 
 if __name__ == "__main__":
-    uvicorn.run("dev_api:main", port=5000, log_level="info", reload=True, factory=True)
+    main().run(debug=True, host='0.0.0.0', use_reloader=True)

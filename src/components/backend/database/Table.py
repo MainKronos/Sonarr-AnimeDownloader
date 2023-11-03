@@ -153,6 +153,9 @@ class Table(Database):
 
 		serie = self[title]
 
+		# Per sicurezza
+		season = str(season)
+
 		# Se la serie è in formato assoluto e la stagione non si chiama "absolute"
 		# Oppure la serie non è in formato assoluto e la stagione si chiama "absolute"
 		if (serie["absolute"]) ^ (season == "absolute"): return False
@@ -185,6 +188,9 @@ class Table(Database):
 				return False
 
 		serie = self[title]
+
+		# Per sicurezza
+		season = str(season)
 
 		# Controllo se c'è una stagione con quel numero
 		if season not in serie["seasons"]:
