@@ -1,13 +1,17 @@
-import "./index.scss"
+import { ReactNode } from 'react';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 
 interface FooterProps {
-	version: string
+	content:ReactNode
 }
 
-export function Footer({version}:FooterProps) {
+export function Footer({content}:FooterProps) {
 	return (
-		<footer>
-			<a href={`https://github.com/MainKronos/Sonarr-AnimeDownloader/releases/tag/${version}`} target="_blank">Ver. {version}</a>
-		</footer>
+		<Paper square elevation={1} sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '16px' }}>
+			<Typography variant="body1" noWrap sx={{flex: 1, display: 'flex', justifyContent: 'center'}}>
+				{content}
+			</Typography>
+		</Paper>
 	);
-}
+};

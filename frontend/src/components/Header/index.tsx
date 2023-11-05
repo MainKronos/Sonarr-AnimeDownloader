@@ -1,22 +1,24 @@
-import { ReactNode } from "react"
-import { Icon } from ".."
-import "./index.scss"
+import { ReactNode } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 interface HeaderProps {
 	title: string,
 	children?: ReactNode
 }
 
-export function Header(props: HeaderProps) {
+export function Header({ title, children }: HeaderProps) {
 	return (
-		<header>
-			<h1>{props.title}</h1>
+		<AppBar position="fixed">
+			<Toolbar sx={{ padding: "20px" }}>
+				{children}
 
-			<a id='donate' href="https://github.com/sponsors/MainKronos" target="_blank">
-				<Icon icon="favorite"/>
-			</a>
+				<Typography variant="h4" textAlign='center' sx={{ flex: 1, fontWeight: 500 }} component="h1">
+					{title}
+				</Typography>
 
-			{props.children}
-		</header>
-	)
-}
+			</Toolbar>
+		</AppBar>
+	);
+};

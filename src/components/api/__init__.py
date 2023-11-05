@@ -7,6 +7,8 @@ from .routes.Table import Table
 from .routes.Settings import Settings
 from .routes.Tags import Tags
 
+import time
+
 def API(core:Core) -> APIFlask:
 	app = APIFlask(
 		__name__,
@@ -29,6 +31,7 @@ def API(core:Core) -> APIFlask:
 		"""
 		Restituisce il numero di versione.
 		"""
+		# time.sleep(5)
 		return {"version": core.version}
 	
 	api.register_blueprint(Table(core))

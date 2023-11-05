@@ -1,7 +1,9 @@
+import type {SerieTableEntry} from './types';
+
 export class API {
 	backend: string;
-	constructor(backend:URL) {
-		this.backend = backend.origin + '/api';
+	constructor(backend:string) {
+		this.backend = backend + '/api';
 	}
 
 	async getVersion():Promise<string>{
@@ -10,7 +12,7 @@ export class API {
 		return data.version;
 	}
 
-	async getTable():Promise<any[]>{
+	async getTable():Promise<SerieTableEntry[]>{
 		const res = await fetch(this.backend + '/table');
 		return await res.json()
 	}
