@@ -1,7 +1,7 @@
 // import * from "react";
 import { useState, useEffect } from 'react';
 
-import { Header, Footer } from '@/components';
+import { Header, Footer, Navigator } from '@/components';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -9,14 +9,13 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import IconButton from '@mui/material/IconButton';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
+
 import Container from '@mui/material/Container';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Skeleton from '@mui/material/Skeleton';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -24,25 +23,31 @@ import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
-import SettingsIcon from '@mui/icons-material/Settings';
-import InboxIcon from '@mui/icons-material/Inbox';
-import ArticleIcon from '@mui/icons-material/Article';
+import MovieIcon from '@mui/icons-material/Movie';
+import AddIcon from '@mui/icons-material/Add';
+import DownloadIcon from '@mui/icons-material/Download';
+import UploadIcon from '@mui/icons-material/Upload';
 
 import { API } from '@/utils/API';
-
-import type {SerieTableEntry, SeasonsTableEntry} from '@/utils/types';
+import { theme } from '@/utils/globals'
+import type { SerieTableEntry, SeasonsTableEntry } from '@/utils/types';
 
 export default function App() {
 
-	const darkTheme = createTheme({ palette: { mode: 'dark' } });
-
-	const [drawerOpen, setDrawerOpen] = useState(false);
+	const [drawerState, setDrawerState] = useState(false);
 	const [version, setVersion] = useState('');
+
+	function openDrawer() { setDrawerState(true) }
 
 	const api = new API('http://127.0.0.1:5000');
 
@@ -51,48 +56,22 @@ export default function App() {
 	}, []);
 
 	return (
-		<ThemeProvider theme={darkTheme}>
+		<ThemeProvider theme={theme}>
 			<CssBaseline />
 
 			<Header title='Tabella Di Conversione'>
 				<IconButton
 					size="large"
 					sx={{ position: "absolute" }}
-					onClick={() => setDrawerOpen(true)}
+					onClick={openDrawer}
 				>
 					<MenuIcon fontSize='medium' />
 				</IconButton>
 			</Header>
 
-			<Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-				<Box sx={{ width: 250, paddingTop: 10 }}>
-					<List component="nav">
-						<ListItemButton selected={true}>
-							<ListItemIcon>
-								<InboxIcon />
-							</ListItemIcon>
-							<Link href="index.html" color="inherit" underline='none'>Index</Link>
-						</ListItemButton>
-						<ListItemButton>
-							<ListItemIcon>
-								<SettingsIcon />
-							</ListItemIcon>
-							<Link href="settings.html" color="inherit" underline='none'>Settings</Link>
-						</ListItemButton>
-						<ListItemButton>
-							<ListItemIcon>
-								<ArticleIcon />
-							</ListItemIcon>
-							<Link href="log.html" color="inherit" underline='none'>Logs</Link>
+			<Navigator drawerState={drawerState} setDrawerState={setDrawerState} />
 
-						</ListItemButton>
-					</List>
-				</Box>
-			</Drawer>
-
-			<Container maxWidth="md" sx={{ py: 20 }}>
-				<SerieTable api={api} />
-			</Container>
+			<SerieTable api={api} />
 
 			<Footer content={version ? "Ver. " + version : <Skeleton width="80px" />} />
 
@@ -108,19 +87,39 @@ function SerieTable({ api }: { api: API }) {
 		api.getTable().then(res => setData(res));
 	}, [])
 
-	return (<>
-		{data.map((serie, index) => (
-			<Accordion key={index} component="details">
-				<AccordionSummary component="summary">
-					<Typography>{serie.title}</Typography>
-				</AccordionSummary>
-				<Divider />
-				<AccordionDetails>
-					<SeasonTabs api={api} season={serie.seasons} />
-				</AccordionDetails>
-			</Accordion>
-		))}
-	</>);
+	return (
+		<Container maxWidth="md" sx={{ py: 20 }}>
+			<Paper>
+				<Button aria-label="add" size="large" variant="text" fullWidth={true}>
+					<AddIcon />
+				</Button>
+			</Paper>
+
+			{data.map((serie, index) => (
+				<Accordion key={index}>
+					<AccordionSummary expandIcon={<MovieIcon />}>
+						<Typography>{serie.title}</Typography> {serie.absolute && <Chip label="absolute" color="primary" size="small"/>}
+					</AccordionSummary>
+					<Divider />
+					<AccordionDetails>
+						<SeasonTabs api={api} season={serie.seasons} />
+					</AccordionDetails>
+				</Accordion>
+			))}
+
+			<Paper>
+				<Stack direction="row" >
+					<Button aria-label="download" size="large" variant="text" fullWidth={true}>
+						<DownloadIcon />
+					</Button>
+					<Button aria-label="upload" size="large" variant="text" fullWidth={true}>
+						<UploadIcon />
+					</Button>
+				</Stack>
+			</Paper>
+
+		</Container>
+	);
 }
 
 
@@ -128,13 +127,20 @@ function SeasonTabs({ api, season }: { api: API, season: SeasonsTableEntry }) {
 	const [tab, setTab] = useState(0);
 
 	return (<>
-		<Tabs value={tab} onChange={(_, val) => setTab(val)} aria-label="basic tabs example">
+		<Tabs value={tab} onChange={(_, val) => val && setTab(val)} aria-label="basic tabs example">
 			{Object.entries(season).map(([key, _]) => (
-				<Tab label={key} key={key}/>
+				<Tab label={key} key={key} />
 			))}
+			<Tab icon={<AddIcon />} aria-label="add" value={null}/>
 		</Tabs>
-		{Object.values(season)[tab].map((val:string) => (
-			<Link href="#" color="inherit" key={val}>{val}</Link>
-		))}
+		<List dense={true}>
+			{Object.values(season)[tab].map((val: string) => (
+				<ListItem key={val}>
+					<ListItemButton component="a" href={val} target="_blank">
+						<ListItemText primary={val} />
+					</ListItemButton>
+				</ListItem>
+			))}
+		</List>
 	</>);
 }
