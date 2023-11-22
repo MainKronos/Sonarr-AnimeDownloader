@@ -4,7 +4,7 @@ from .Constant import LOGGER
 from ..utility import ColoredString as cs
 
 import httpx, re, pathlib, time
-import shutil
+import shutil, tenacity
 import animeworld as aw
 from copy import deepcopy
 from functools import reduce
@@ -214,7 +214,8 @@ class Downloader:
 		
 		dst = dst.joinpath(src.name)
 		return shutil.move(src,dst)
-		
+	
+	@tenacity.retry(reraise=True, stop=tenacity.stop_after_attempt(3), wait=tenacity.wait_fixed(2))
 	def __renameFile(self, episode_id:int, serie_id:int) -> None:
 		"""
 		Rinomina il file seguendo la formattazione definita su Sonarr.
@@ -226,5 +227,9 @@ class Downloader:
 
 		res = self.sonarr.episode(episode_id)
 		res.raise_for_status()
-		file_id = res.json()["episodeFile"]["id"]
+		res = res.json()
+
+		if "episodeFile" not in res: raise Exception("Episodio Non trovato")
+
+		file_id = res["episodeFile"]["id"]
 		self.sonarr.commandRenameFiles(serie_id,[file_id])

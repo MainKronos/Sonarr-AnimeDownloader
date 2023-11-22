@@ -9,6 +9,9 @@ export const theme = createTheme({
 		secondary: {
 			main: '#9FA8DA',
 		},
+		text: {
+			primary: 'rgba(255,255,255,0.6)',
+		},
 	},
 	components: {
 		MuiAccordionSummary: {
@@ -21,6 +24,7 @@ export const theme = createTheme({
 				},
 				expandIconWrapper: {
 					marginRight: "10px",
+					color: 'rgba(255,255,255,0.6)'
 				},
 			}
 		},
