@@ -15,7 +15,8 @@ class Sonarr:
 			base_url=f"{url}/api/v3",
 			headers={
 				'X-Api-Key':api_key
-			}
+			},
+			timeout=5
 		)
 
 		# Controlla che il sito sia raggiungibile e che la api_key sia valida
