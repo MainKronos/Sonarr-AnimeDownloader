@@ -202,10 +202,9 @@ class Downloader:
 			raise FileNotFoundError(src)
 
 		# Controllo se la cartella di destinazione non sia una cartella windows
-		if isinstance(dst, pathlib.WindowsPath):
-			tmp = dst.as_posix()
-			tmp = re.sub(r"\w:","",tmp)
-			dst = pathlib.Path(tmp)
+		if re.match(r"\w:", str(dst)):
+			dst = pathlib.PureWindowsPath(dst).as_posix()
+			dst = pathlib.PosixPath(re.sub(r"\w:","",dst))
 		
 		if not dst.is_dir():
 			# Se la cartella non esiste viene creata
