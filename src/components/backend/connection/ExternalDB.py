@@ -68,13 +68,14 @@ class ExternalDB:
 		res = aw.find(title)
 
 		# Filtro i risultati
-		res = list(filter(lambda x: x["malId"] in mal_ids, res))
+		res = list(filter(lambda x: x["malId"] in mal_ids and x['language'] == 'jp', res))
 
 		# Se non ho trovato nulla ritorno None
 		if len(res) == 0: return None
 
 		# Converto le stagioni in numeri
-		def conv2num(x):
+		def convert(x):
+			x["year"] = int(x["year"])
 			if x["season"] == 'winter':
 				x["season"] = 0
 			elif x["season"] == 'spring':
@@ -84,10 +85,10 @@ class ExternalDB:
 			else:
 				x["season"] = 3
 			return x
-		res = list(map(conv2num, res))
+		res = list(map(convert, res))
 
 		# Riordino per data
-		res.sort(key=lambda x: (x["year"], x["season"]), reverse=True)
+		res.sort(key=lambda x: (x["year"], x["season"]))
 
 		# Controllo se esiste la stagione
 		if len(res) < season: return None
