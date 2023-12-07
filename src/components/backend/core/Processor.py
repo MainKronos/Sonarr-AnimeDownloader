@@ -30,7 +30,10 @@ class Processor:
 		self.external.sync()
 
 		# Collego gli url per il download e rimuovo le stagioni che non fanno match
-		missing = list(filter(self.__bindUrl, missing))
+		missing = filter(self.__bindUrl, missing)
+		
+		# Riodino le stagioni e gli episodi di ciascuna serie
+		missing = list(map(self.__sortSerie, missing))
 
 		return missing
 
@@ -59,6 +62,27 @@ class Processor:
 		return missing
 
 	### FUNCTIONS ###
+
+	def __sortSerie(self, elem:dict) -> dict:
+		"""
+		Riordina le stagione e gli episodi di una serie.
+
+		Args:
+		  elem: serie da ordinare.
+		
+		Returns:
+		  La serie ordinata
+		"""
+
+		# Ordino le stagioni
+		elem["seasons"].sort(key=lambda x: x["number"])
+
+		for season in elem["seasons"]:
+			# ordino gli episodi
+			season["episodes"].sort(key=lambda x: (x['seasonNumber'], x['episodeNumber']))
+
+		return elem
+
 
 	def __filter(self, elem:dict) -> bool:
 		"""
@@ -137,7 +161,7 @@ class Processor:
 			season["urls"] = []
 			season["episodes"] = []
 
-		# Aggiungom l'episodio
+		# Aggiungo l'episodio
 		episode = self.__extractEpisode(elem)
 		season["episodes"].append(episode)
 

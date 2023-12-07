@@ -45,8 +45,7 @@ class Sonarr:
 		return self.client.get("/wanted/missing", params={
 			"includeSeries": True,
 			"pageSize": n,
-			"page": page,
-			"sortKey": "airDateUtc"
+			"page": page
 		})
 	
 	def episode(self, epId:int) -> httpx.Response:
