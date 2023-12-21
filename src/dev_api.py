@@ -1,13 +1,7 @@
-import os
 import pathlib
-import sys
 
 from components.backend.core.Core import Core, ctx
 from components.api import API
-
-import pathlib
-import sys, json
-import uvicorn
 
 ctx.DOWNLOAD_FOLDER = pathlib.Path('./tests/downloads').absolute()
 ctx.DATABASE_FOLDER = pathlib.Path("./tests/database").absolute()
