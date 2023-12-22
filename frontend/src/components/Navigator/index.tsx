@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ReactNode } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './style.scss';
 
 interface NavigatorProps {
@@ -18,7 +17,7 @@ export function Navigator({children}:NavigatorProps) {
             <div>{children}</div>
         </nav>
         <button onClick={toggleDrawer}>
-            <FontAwesomeIcon icon="bars" size="lg"/>
+            <i>menu</i>
         </button>
     </>)
 }

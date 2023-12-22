@@ -1,5 +1,3 @@
-import type {SerieTableEntry} from './types';
-
 export class API {
 	backend: string;
 	constructor(backend:string) {
@@ -16,4 +14,14 @@ export class API {
 		const res = await fetch(this.backend + '/table');
 		return await res.json()
 	}
+}
+
+export interface SerieTableEntry {
+	title: string,
+	absolute: boolean,
+	seasons: SeasonsTableEntry
+}
+
+export interface SeasonsTableEntry {
+	[season:string]: string[]
 }

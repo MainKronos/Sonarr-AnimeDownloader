@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import './style.scss';
 
@@ -14,7 +13,7 @@ export function Container({title, version, children}:ContainerProps) {
         <header>
             <h1>{title}</h1>
             <a className="btn" id="donate" href="https://github.com/sponsors/MainKronos" target="_blank">
-                <FontAwesomeIcon icon="heart" size="2x"/>
+                <i>favorite</i>
             </a>
         </header>
 
