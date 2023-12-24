@@ -4,6 +4,13 @@ from apiflask import APIBlueprint, abort, fields
 
 def Table(core:Core) -> APIBlueprint:
 	route = APIBlueprint('table', __name__, url_prefix='/table', tag='Table')
+	
+	@route.after_request
+	def cors(res):
+		res.headers['Access-Control-Allow-Origin'] = '*'
+		res.headers['Access-Control-Allow-Headers'] = '*'
+		res.headers['Access-Control-Allow-Methods'] = '*'
+		return res
 
 	@route.get("/")
 	def get_table() -> list[dict]:

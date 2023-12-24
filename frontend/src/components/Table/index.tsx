@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Menu } from '@/helper';
+import { Menu, toast } from '@/helper';
 
 import type { ReactNode } from 'react';
 import type { API, SerieTableEntry } from '@/utils/API';
 
 import './style.scss';
-
-const MENU_ID = "CTX"
 
 interface TableProps {
     api: API
@@ -15,57 +13,143 @@ interface TableProps {
 export function Table({ api }: TableProps) {
 
     const [table, setTable] = useState([] as SerieTableEntry[]);
+    const [toSync, setToSync] = useState(true);
 
     // SYNC DATA
     useEffect(() => {
-        api.getTable().then(res => setTable(res));
-    }, []);
-
-    function test() { console.log('lo') }
-
-    function displayMenu(event: MouseEvent) {
-        Menu.show(event, {
-            'Copy': test,
-            'Edit': test,
-            'Delete': test
-        })
-    }
+        if(toSync){
+            api.getTable().then(res => setTable(res));
+            setToSync(false);
+        }
+    }, [toSync]);
 
     return (<>
 
-        {table.map(entry =>
-            <details key={entry.title} onContextMenu={displayMenu as any}>
-                <summary>
-                    <i>movie</i>{entry.title}
-                </summary>
-
-                <Tabs 
-                    labels={Object.keys(entry.seasons)}
-                    contents={Object.values(entry.seasons).map(season => 
-                        season.map(link => <a href={link} target="_blank" key={link}>{link}</a>)
-                    )}
-                />
-
-            </details>
+        {table.map(entry => 
+            <TableEntry 
+                api={api} 
+                entry={entry} 
+                onUpdate={() => setToSync(true)}
+                key={entry.title}
+            />
         )}
 
-
     </>);
+}
+
+interface TableEntryProps {
+    api: API,
+    entry: SerieTableEntry
+    onUpdate: () => void
+}
+
+function TableEntry({api, entry, onUpdate}: TableEntryProps) {
+    const [editTitle, setEditTitle] = useState(false);
+    const [editSeasons, setEditSasons] = useState(Object.keys(entry.seasons).map(() => false));
+
+    function setEditSasonByIndex(value:boolean, index:number){
+        setEditSasons(editSeasons.map((v,i) => i === index ? value : v))
+    }
+
+    return (
+        <details>
+            <summary
+                onContextMenu={e => Menu.show(e as any, {
+                    'Copy': () => navigator.clipboard.writeText(entry.title),
+                    'Edit': () => setEditTitle(true),
+                    'Delete': () => {
+                        api.deleteSerie(entry.title)
+                        .then(res => {
+                            toast.success(res.message);
+                            onUpdate();
+                        })
+                    }
+                })}
+            >
+                <i>movie</i>
+                <EditableNode
+                    type='text'
+                    defaultValue={entry.title}
+                    activeState={[editTitle, setEditTitle]}
+                    onSubmit={(content) => {
+                        api.editSerie(entry.title, content)
+                        .then(res => {
+                            toast.success(res.message);
+                            onUpdate();
+                        })
+                    }}
+                >
+                    {entry.title}
+                </EditableNode>
+            </summary>
+
+            <Tabs
+                labels={Object.keys(entry.seasons).map((season, index) =>
+                    <EditableNode
+                        type='text'
+                        defaultValue={season}
+                        activeState={[
+                            editSeasons[index], 
+                            (state:boolean) => setEditSasonByIndex(state, index)
+                        ]}
+                        onSubmit={(content) => {
+                            api.editSeason(entry.title, season, content)
+                            .then(res => {
+                                toast.success(res.message);
+                                onUpdate();
+                            })
+                        }}
+                    >
+                        <span
+                            onContextMenu={e => Menu.show(e as any, {
+                                'Copy': () => navigator.clipboard.writeText(season),
+                                'Edit': () => setEditSasonByIndex(true, index),
+                                'Delete': () => {
+                                    api.deleteSeason(entry.title, season)
+                                    .then(res => {
+                                        toast.success(res.message);
+                                        onUpdate();
+                                    })
+                                }
+                            })}
+                        >
+                            {season}
+                        </span>
+                    </EditableNode>
+                )}
+                contents={Object.values(entry.seasons).map(links =>
+                    links.map(link =>
+                        <a 
+                            href={link} 
+                            target="_blank" 
+                            key={link}
+                            onContextMenu={e => Menu.show(e as any, {
+                                'Copy': () => navigator.clipboard.writeText(link)
+                            })}
+                        >
+                            {link}
+                        </a>
+                    )
+                )}
+            />
+
+        </details>
+    )
 }
 
 interface TabsProps {
     labels: ReactNode[],
     contents: ReactNode[]
 }
-function Tabs({labels, contents}:TabsProps){
+function Tabs({ labels, contents }: TabsProps) {
 
     const [tab, setTab] = useState(0);
 
     return (<>
-        <ul>   
-            {labels.map((value, index) => 
-                <li 
-                    key={value as string} 
+        <ul>
+            {labels.map((value, index) =>
+                <li
+                    key={index}
                     onClick={() => setTab(index)}
                     className={tab == index ? 'active' : ''}
                 >{value}</li>
@@ -80,3 +164,45 @@ function Tabs({labels, contents}:TabsProps){
     </>);
 }
 
+interface EditableNodeProps<T extends string | number> {
+    type: string,
+    activeState: [boolean, (active: boolean) => void],
+    onSubmit: (content: T) => void,
+    defaultValue?: T,
+    placeholder?: string,
+    pattern?: string,
+    children: ReactNode
+}
+function EditableNode<T extends string | number>({ type, defaultValue, activeState, onSubmit, placeholder, pattern, children }: EditableNodeProps<T>) {
+    const [content, setContent] = useState(defaultValue ?? '' as T);
+    const [active, setActive] = activeState;
+
+    if (!active) {
+        return children;
+    } else {
+        return (
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    setActive(false);
+                    onSubmit(content);
+                }}
+            >
+                <input
+                    autoFocus={true}
+                    type={type}
+                    value={content}
+                    placeholder={placeholder}
+                    pattern={pattern}
+
+                    onChange={e => setContent(e.target.value as T)}
+
+                    onBlur={() => setActive(false)}
+                    onKeyDown={e => e.key == 'Escape' && setActive(false)}
+                />
+            </form>
+            
+        );
+    }
+
+}

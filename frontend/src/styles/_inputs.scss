@@ -1,0 +1,109 @@
+@use "sass:color";
+@use "./colors" as *;
+
+%input {
+	position: relative;
+
+
+	> input[type=text], > input[type=password], > input[type=email], > input[type=url], > input[type=number], > input[type=date], > input[type=datetime-local], > select {
+		appearance: textfield;
+		background: transparent;
+		font-size: 1rem;
+        font-weight: 400;
+		padding: 5px;
+		border: 2px solid darken($text-color, 30%);
+		color: $text-color;
+		border-radius: 4px;
+		width: calc(100% - 10px);
+		outline: none;
+
+		&:disabled{
+			border-color: darken($background-color, 3%);
+		}
+
+		&:invalid {
+			border-color: color.mix($text-color, red, 65%);
+		}
+
+		&::placeholder{
+			color: $text-color;
+		}
+
+		&:focus:not(:read-only){
+			border-color: $base-color;
+			+ label {color: $base-color;}
+		}
+
+		+ label {
+			position: absolute;
+			top: 0;
+			left: 20px;
+			padding: 0 10px;
+			background-color: $background-color;
+			font-size: 14px;
+		}
+	}
+
+	> select {
+		width: 100%;
+	}
+
+	> input[type=checkbox]{
+		opacity: 0;
+		width: 0;
+		height: 0;
+		margin: 0;
+
+		+ label {
+			user-select: none;
+			cursor: pointer;
+			font-size: 14px;
+
+			&::before {
+				font-weight: bold;
+				margin-right: 5px;
+				text-align: center;
+				font-size: 15px;
+				color: $base-color;
+				width: 20px;
+				height: 20px;
+				display: inline-block;
+				content: ' ';
+				vertical-align: middle;
+				border-radius: 4px;
+				border: 2px solid darken($text-color, 30%);
+			}
+		}
+
+		&:checked + label::before {content: '✓';}
+	}
+}
+
+fieldset {
+	border: 2px solid darken($text-color, 30%);
+	border-radius: 4px;
+
+	> legend {
+		padding: 0 10px;
+	}
+
+	> hr {
+		width: 100%;
+		border: 1px solid darken($text-color, 30%);
+	}
+}
+
+button {
+    padding: 5px;
+    cursor: pointer;
+    color: color.change($color: $text-color, $lightness: 40%);
+    margin: 0;
+    background-color: transparent;
+    border: 2px solid color.change($color: $text-color, $lightness: 40%);
+    border-radius: 4px;
+
+    &:hover {
+        color: $base-color;
+        border-color: $base-color;
+    }
+}

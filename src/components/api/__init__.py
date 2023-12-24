@@ -22,6 +22,8 @@ def API(core:Core) -> APIFlask:
 	@app.after_request
 	def cors(res):
 		res.headers['Access-Control-Allow-Origin'] = '*'
+		res.headers['Access-Control-Allow-Headers'] = '*'
+		res.headers['Access-Control-Allow-Methods'] = '*'
 		return res
 
 	api = APIBlueprint('api', __name__, url_prefix='/api', tag='General')

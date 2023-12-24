@@ -27,6 +27,8 @@ details {
         border-bottom: 1px solid $background-color;
         transition: box-shadow 0.5s;
         transition: color 0.2s;
+        display: flex;
+        align-items: center;
 
         >i {
             padding-right: 5px;
@@ -85,18 +87,9 @@ details {
         }
     }
 
-    button {
-        padding: 5px;
-        cursor: pointer;
-        color: color.change($color: $text-color, $lightness: 40%);
-        margin: 0;
-        background-color: transparent;
-        border: 2px solid color.change($color: $text-color, $lightness: 40%);
-        border-radius: 4px;
-
-        &:hover {
-            color: $base-color;
-            border-color: $base-color;
-        }
+    form {
+        display: inline;
+        flex-grow: 1;
+        @extend %input;
     }
 }

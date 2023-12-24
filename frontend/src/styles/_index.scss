@@ -1,15 +1,11 @@
 @use "sass:color";
 
-@font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: url(https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
-}
+@use "./colors" as *;
+@use "./fonts" as *;
 
-$base-color: #9FA8DA !default;
-$background-color: #121212 !default;
-$text-color: #bababa !default;
+@forward "./colors";
+@forward "./functions";
+@forward "./inputs";
 
 html {
     color: $text-color;
@@ -54,44 +50,3 @@ i {
     vertical-align:text-bottom;
 }
 
-@function elevation($level: 0) {
-    @if $level ==0 {
-        @return $background-color;
-    }
-
-    @else if $level ==1 {
-        @return color.scale($background-color, $lightness: 5%);
-    }
-
-    @else if $level ==2 {
-        @return color.scale($background-color, $lightness: 7%);
-    }
-
-    @else if $level ==3 {
-        @return color.scale($background-color, $lightness: 8%);
-    }
-
-    @else if 4 <=$level and $level <=5 {
-        @return color.scale($background-color, $lightness: 9%);
-    }
-
-    @else if 6 <=$level and $level <=7 {
-        @return color.scale($background-color, $lightness: 11%);
-    }
-
-    @else if 8 <=$level and $level <=11 {
-        @return color.scale($background-color, $lightness: 12%);
-    }
-
-    @else if 12 <=$level and $level <=15 {
-        @return color.scale($background-color, $lightness: 14%);
-    }
-
-    @else if 16 <=$level and $level <=23 {
-        @return color.scale($background-color, $lightness: 15%);
-    }
-
-    @else {
-        @return color.scale($background-color, $lightness: 16%);
-    }
-}

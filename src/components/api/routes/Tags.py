@@ -5,6 +5,13 @@ from apiflask import APIBlueprint, abort, fields
 def Tags(core:Core) -> APIBlueprint:
 
 	route = APIBlueprint('tags', __name__, url_prefix='/tags', tag='Tags')
+	
+	@route.after_request
+	def cors(res):
+		res.headers['Access-Control-Allow-Origin'] = '*'
+		res.headers['Access-Control-Allow-Headers'] = '*'
+		res.headers['Access-Control-Allow-Methods'] = '*'
+		return res
 
 	@route.get('/')
 	def get_tags():

@@ -5,6 +5,13 @@ from apiflask import APIBlueprint, abort, fields
 def Settings(core:Core) -> APIBlueprint:
 
 	route = APIBlueprint('settings', __name__, url_prefix='/settings', tag='Settings')
+	
+	@route.after_request
+	def cors(res):
+		res.headers['Access-Control-Allow-Origin'] = '*'
+		res.headers['Access-Control-Allow-Headers'] = '*'
+		res.headers['Access-Control-Allow-Methods'] = '*'
+		return res
 
 	@route.get('/')
 	def get_settings():

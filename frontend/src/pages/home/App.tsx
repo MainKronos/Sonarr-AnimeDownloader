@@ -10,6 +10,7 @@ import '@fontsource/roboto/700.css';
 
 import { API } from '@/utils/API';
 import { Table } from '@/components/Table';
+import { ToastContainer } from '@/helper';
 
 export default function App() {
 
@@ -34,6 +35,7 @@ export default function App() {
         >
             <Table api={api}/>
         </Container>
+        <ToastContainer/>
     </>);
 
 }
