@@ -45,11 +45,23 @@ interface TableEntryProps {
 
 function TableEntry({api, entry, onUpdate}: TableEntryProps) {
     const [editTitle, setEditTitle] = useState(false);
-    const [editSeasons, setEditSasons] = useState(Object.keys(entry.seasons).map(() => false));
-
-    function setEditSasonByIndex(value:boolean, index:number){
-        setEditSasons(editSeasons.map((v,i) => i === index ? value : v))
-    }
+    const [editSeasons, setEditSasons] = useState(
+        Object.fromEntries(
+            Object.keys(entry.seasons)
+            .map((season) => [season, false])
+        )
+    );
+    const [editLinks, setEditLinks] = useState(
+        Object.fromEntries(
+            Object.entries(entry.seasons)
+            .map(([season, links]) => [
+                season,
+                Object.fromEntries(
+                    links.map((link) => [link, false])
+                )
+            ])
+        )
+    );
 
     return (
         <details>
@@ -62,7 +74,7 @@ function TableEntry({api, entry, onUpdate}: TableEntryProps) {
                         .then(res => {
                             toast.success(res.message);
                             onUpdate();
-                        })
+                        });
                     }
                 })}
             >
@@ -76,7 +88,7 @@ function TableEntry({api, entry, onUpdate}: TableEntryProps) {
                         .then(res => {
                             toast.success(res.message);
                             onUpdate();
-                        })
+                        });
                     }}
                 >
                     {entry.title}
@@ -84,26 +96,26 @@ function TableEntry({api, entry, onUpdate}: TableEntryProps) {
             </summary>
 
             <Tabs
-                labels={Object.keys(entry.seasons).map((season, index) =>
+                labels={Object.keys(entry.seasons).map(season =>
                     <EditableNode
                         type='text'
                         defaultValue={season}
                         activeState={[
-                            editSeasons[index], 
-                            (state:boolean) => setEditSasonByIndex(state, index)
+                            editSeasons[season], 
+                            (state:boolean) => setEditSasons({...editSeasons, [season]:state})
                         ]}
                         onSubmit={(content) => {
                             api.editSeason(entry.title, season, content)
                             .then(res => {
                                 toast.success(res.message);
                                 onUpdate();
-                            })
+                            });
                         }}
                     >
                         <span
                             onContextMenu={e => Menu.show(e as any, {
                                 'Copy': () => navigator.clipboard.writeText(season),
-                                'Edit': () => setEditSasonByIndex(true, index),
+                                'Edit': () => setEditSasons({...editSeasons, [season]:true}),
                                 'Delete': () => {
                                     api.deleteSeason(entry.title, season)
                                     .then(res => {
@@ -117,18 +129,50 @@ function TableEntry({api, entry, onUpdate}: TableEntryProps) {
                         </span>
                     </EditableNode>
                 )}
-                contents={Object.values(entry.seasons).map(links =>
+                contents={Object.entries(entry.seasons).map(([season, links]) =>
                     links.map(link =>
-                        <a 
-                            href={link} 
-                            target="_blank" 
-                            key={link}
-                            onContextMenu={e => Menu.show(e as any, {
-                                'Copy': () => navigator.clipboard.writeText(link)
-                            })}
+                        <EditableNode
+                            type='text'
+                            defaultValue={link}
+                            activeState={[
+                                editLinks[season][link], 
+                                (state:boolean) => setEditLinks({
+                                    ...editLinks, [season]:{
+                                        ...editLinks[season], [link]: state
+                                    }
+                                })
+                            ]}
+                            onSubmit={(content) => {
+                                api.editLink(entry.title, season, link, content)
+                                .then(res => {
+                                    toast.success(res.message);
+                                    onUpdate();
+                                });
+                            }}
                         >
-                            {link}
-                        </a>
+                            <a 
+                                href={link} 
+                                target="_blank" 
+                                key={link}
+                                onContextMenu={e => Menu.show(e as any, {
+                                    'Copy': () => navigator.clipboard.writeText(link),
+                                    'Edit': () => setEditLinks({
+                                        ...editLinks, [season]:{
+                                            ...editLinks[season], [link]: true
+                                        }
+                                    }),
+                                    'Delete': () => {
+                                        api.deleteLink(entry.title, season, link)
+                                        .then(res => {
+                                            toast.success(res.message);
+                                            onUpdate();
+                                        });
+                                    }
+                                })}
+                            >
+                                {link}
+                            </a>
+                        </EditableNode>
                     )
                 )}
             />
