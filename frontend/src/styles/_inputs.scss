@@ -8,17 +8,17 @@
 	> input[type=text], > input[type=password], > input[type=email], > input[type=url], > input[type=number], > input[type=date], > input[type=datetime-local], > select {
 		appearance: textfield;
 		background: transparent;
-		font-size: 1rem;
+		font-size: 1em;
         font-weight: 400;
-		padding: 5px;
+		padding: 10px;
 		border: 2px solid darken($text-color, 30%);
 		color: $text-color;
 		border-radius: 4px;
-		width: calc(100% - 10px);
+		width: calc(100% - 20px);
 		outline: none;
 
 		&:disabled{
-			border-color: darken($background-color, 3%);
+			border-color: lighten($background-color, 5%);
 		}
 
 		&:invalid {
@@ -26,7 +26,7 @@
 		}
 
 		&::placeholder{
-			color: $text-color;
+			color: darken($text-color, 30%);
 		}
 
 		&:focus:not(:read-only){
@@ -36,10 +36,9 @@
 
 		+ label {
 			position: absolute;
-			top: 0;
+			top: -10px;
 			left: 20px;
 			padding: 0 10px;
-			background-color: $background-color;
 			font-size: 14px;
 		}
 	}
@@ -57,11 +56,11 @@
 		+ label {
 			user-select: none;
 			cursor: pointer;
-			font-size: 14px;
+			font-size: 1em;
 
 			&::before {
 				font-weight: bold;
-				margin-right: 5px;
+				margin-right: 10px;
 				text-align: center;
 				font-size: 15px;
 				color: $base-color;
@@ -69,7 +68,7 @@
 				height: 20px;
 				display: inline-block;
 				content: ' ';
-				vertical-align: middle;
+				vertical-align: text-bottom;
 				border-radius: 4px;
 				border: 2px solid darken($text-color, 30%);
 			}
@@ -101,6 +100,8 @@ button {
     background-color: transparent;
     border: 2px solid color.change($color: $text-color, $lightness: 40%);
     border-radius: 4px;
+    transition: color 200ms, border 200ms;
+    font-size: 1em;
 
     &:hover {
         color: $base-color;

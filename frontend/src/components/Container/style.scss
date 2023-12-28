@@ -54,6 +54,21 @@ header {
             }
         }
     }
+
+    > button {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        z-index: 2;
+        background: none;
+        border: none;
+        color: $text-color;
+        cursor: pointer;
+
+        &:hover {
+            color: $base-color;
+        }
+    }
 }
 
 main {

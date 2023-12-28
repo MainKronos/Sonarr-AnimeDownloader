@@ -25,8 +25,7 @@ details {
         font-weight: 400;
         padding: 15px;
         border-bottom: 1px solid $background-color;
-        transition: box-shadow 0.5s;
-        transition: color 0.2s;
+        transition: box-shadow 0.5s, color 0.2s;
         display: flex;
         align-items: center;
 
@@ -50,17 +49,17 @@ details {
         padding: 0;
         font-size: 16px;
         display: flex;
-	    justify-content: flex-start;
+        justify-content: flex-start;
         border-bottom: 2px solid color.change($color: $text-color, $lightness: 40%);
         list-style-type: none;
 
-        > li {
+        >li {
             padding: 10px 50px;
             cursor: pointer;
             border-bottom: 2px solid color.change($color: $text-color, $lightness: 40%);
             margin: 0 0 -2px 0;
-	        transition-property: color, border;
-	        transition-duration: 0.3s;
+            transition-property: color, border;
+            transition-duration: 0.3s;
             text-align: center;
 
             &:hover {
@@ -72,16 +71,28 @@ details {
                 border-bottom: 2px solid $base-color;
             }
 
-            >button{
+            >button {
                 padding: 0;
                 margin: -2px;
                 border: 0;
             }
+
+            >form {
+                >input[type=text] {
+                    text-align: center;
+                    border: 0;
+                    width: 108.98px;
+                    padding: 0;
+                    margin: 0 -50px
+                }
+            }
+
+
         }
 
-        + section>* {
+        +section>* {
             display: block;
-            
+
             margin: 20px;
             width: calc(100% - 40px);
         }
@@ -91,5 +102,41 @@ details {
         display: inline;
         flex-grow: 1;
         @extend %input;
+    }
+}
+
+div.modal {
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        >div {
+            @extend %input;
+            margin: 20px;
+            width: 30vw;
+
+            @media only screen and (max-width: 700px) {
+                width: 80vw;
+            }
+
+            font-size: 1em;
+
+            input {
+                + label {
+                    background-color: elevation(4);
+                }
+            }
+            
+            &:last-of-type {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                > button {
+                    width: 45%;
+                    padding: 10px;
+                }
+            }
+            
+        }
     }
 }
