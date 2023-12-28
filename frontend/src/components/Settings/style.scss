@@ -1,0 +1,55 @@
+@use "sass:color";
+@use '@/styles/index' as *;
+
+section#settings {
+    padding: 10px;
+    display: grid;
+	gap: 10px;
+
+    > *:nth-child(1) {grid-area: log_level;}
+	> *:nth-child(2) {grid-area: tag_mode;}
+	> *:nth-child(3) {grid-area: other;}
+	> *:nth-child(4) {grid-area: scan_interval;}
+	> *:nth-child(5) {grid-area: restart_btn;}
+
+    grid-template-areas: 
+		"log_level tag_mode other"
+		"restart_btn scan_interval other";
+
+    @media screen and (max-width: 1000px){
+        grid-template-areas: 
+		    "log_level tag_mode"
+            "scan_interval scan_interval"
+		    "other restart_btn";
+    }
+
+    @media screen and (max-width: 550px){
+        grid-template-areas: 
+		    "log_level"
+            "tag_mode"
+            "scan_interval"
+		    "other"
+            "restart_btn";
+    }
+
+    > button {
+        margin: 9px 2px 0 2px;
+        min-height: 50px;
+    }
+
+    > fieldset{
+        display: grid;
+        align-items: center;
+	    gap: 10px;
+
+        > div {
+            @extend %input;
+            // margin: 10px 0;
+        }
+        
+
+        > legend {
+            font-size: 1em;
+        }
+    }
+}

@@ -4,10 +4,11 @@
 %input {
 	position: relative;
 
+    > input {
+        background: transparent;
+    }
 
 	> input[type=text], > input[type=password], > input[type=email], > input[type=url], > input[type=number], > input[type=date], > input[type=datetime-local], > select {
-		appearance: textfield;
-		background: transparent;
 		font-size: 1em;
         font-weight: 400;
 		padding: 10px;
