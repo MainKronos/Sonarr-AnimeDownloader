@@ -35,7 +35,17 @@ def API(core:Core) -> APIFlask:
 		"""
 		# time.sleep(5)
 		return {"version": core.version}
-	
+		
+	@api.put("/wekeup")
+	def put_wekeup():
+		"""
+		Forza l'avvio di una nuova scansione.
+		"""
+		if core.wakeUp():
+			return {"message": "Scansione avviata."}
+		else:
+			return {"message": "Scansione in corso."}
+
 	api.register_blueprint(Table(core))
 	api.register_blueprint(Settings(core))
 	api.register_blueprint(Tags(core))

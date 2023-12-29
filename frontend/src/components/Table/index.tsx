@@ -87,7 +87,7 @@ function SerieAddModal({api, onUpdate}:SerieAddModalProps){
                     
                 </div>
                 <div>
-                    <input type="checkbox" id="absolute" name="absolute" value="false" onChange={(e) => setInfo({...info,absolute: e.target.checked})}/>
+                    <input type="checkbox" id="absolute" name="absolute" onChange={(e) => setInfo({...info,absolute: e.target.checked})}/>
                     <label htmlFor="absolute">Absolute</label>
                 </div>
                 <div>

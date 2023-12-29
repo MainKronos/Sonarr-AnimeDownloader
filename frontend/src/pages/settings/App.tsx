@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect } from 'react';
 
 import { Container, Navigator, Settings } from '@/components';
