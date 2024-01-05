@@ -33,6 +33,21 @@ export class API {
         return await res.json();
     }
 
+    async getTags(): Promise<TagValue[]> {
+        const res = await fetch(this.backend + '/tags');
+        return await res.json();
+    }
+
+    async editToggleTag(tag:string|number): Promise<ResponseMsg>{
+        const res = await fetch(encodeURI(this.backend + `/tags/${tag}/toggle`), {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return await res.json();
+    }
+
     async getTable(): Promise<SerieTableEntry[]> {
         const res = await fetch(this.backend + '/table/');
         return await res.json();
@@ -156,4 +171,10 @@ export interface SettingsOptions {
     RenameEp: boolean,
     ScanDelay: number,
     TagsMode: "BLACKLIST" | "WHITELIST"
+}
+
+export interface TagValue {
+    "id": number,
+    "name": string,
+    "active": boolean
 }

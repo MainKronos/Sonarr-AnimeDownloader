@@ -46,44 +46,57 @@ def Tags(core:Core) -> APIBlueprint:
 
 	@route.delete('/<tag>')
 	def del_tag(tag:str|int):
-		"""Aggiunge un tag."""
-		
-		try: tag = int(tag)
-		except ValueError: pass
+		"""Rimuove un tag."""
 
 		if tag not in core.tags:
 			abort(400, f"Il tag '{tag}' non esiste.")
 		
+		tagname = core.tags[tag]["name"]
+		
 		del core.tags[tag]
 
-		return {'message': f"Tag '{tag}' eliminato."}
+		return {'message': f"Tag '{tagname}' eliminato."}
 	
 	@route.patch('/<tag>/enable')
 	def enable_tag(tag:str|int):
 		"""Attiva un tag."""
 
-		try: tag = int(tag)
-		except ValueError: pass
-
 		if tag not in core.tags:
 			abort(400, f"Il tag '{tag}' non esiste.")
 		
+		tagname = core.tags[tag]["name"]
+		
 		core.tags.enable(tag)
 		
-		return {'message': f"Tag '{tag}' attivato."}
+		return {'message': f"Tag '{tagname}' attivato."}
 
 	@route.patch('/<tag>/disable')
 	def disable_tag(tag:str|int):
 		"""Disattiva un tag."""
 
-		try: tag = int(tag)
-		except ValueError: pass
+		if tag not in core.tags:
+			abort(400, f"Il tag '{tag}' non esiste.")
+		
+		tagname = core.tags[tag]["name"]
+		
+		core.tags.disable(tag)
+
+		return {'message': f"Tag '{tagname}' disattivato."}
+	
+	@route.patch('/<tag>/toggle')
+	def toggle_tag(tag:str|int):
+		"""Attiva/Disattiva un tag."""
 
 		if tag not in core.tags:
 			abort(400, f"Il tag '{tag}' non esiste.")
 		
-		core.tags.disable(tag)
-
-		return {'message': f"Tag '{tag}' disattivato."}
+		tagname = core.tags[tag]["name"]
+		
+		if core.tags.isActive(tag):
+			core.tags.disable(tag)
+			return {'message': f"Tag '{tagname}' disattivato."}
+		else:
+			core.tags.enable(tag)
+			return {'message': f"Tag '{tagname}' attivato."}
 
 	return route
