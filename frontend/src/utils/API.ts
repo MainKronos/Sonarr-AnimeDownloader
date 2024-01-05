@@ -38,9 +38,30 @@ export class API {
         return await res.json();
     }
 
+    async addTag(name:string, active:boolean) {
+        const res = await fetch(this.backend + '/tags/', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name: name, active: active })
+        });
+        return await res.json();
+    }
+
     async editToggleTag(tag:string|number): Promise<ResponseMsg>{
         const res = await fetch(encodeURI(this.backend + `/tags/${tag}/toggle`), {
             method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return await res.json();
+    }
+
+    async deleteTag(tag:string|number): Promise<ResponseMsg> {
+        const res = await fetch(encodeURI(this.backend + `/tags/${tag}`), {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             }

@@ -92,7 +92,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		return self.client.get("/tag")
+		return self.client.get("/tag", params='')
 	
 	### COMMAND
 	
