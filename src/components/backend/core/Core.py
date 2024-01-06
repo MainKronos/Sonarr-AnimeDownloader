@@ -39,6 +39,7 @@ class Core(threading.Thread):
 		### Setup Thread ###
 		super().__init__(name=self.__class__.__name__, daemon=True)
 
+		self.semaphore = threading.Condition()
 		self.version = ctx.VERSION
 
 		### Setup logger ###
@@ -132,6 +133,9 @@ class Core(threading.Thread):
 		self.log.info("]────────────────────────────────────────────────────────────────────────────────────────────[")
 		self.log.info("")
 
+		# Acquire lock
+		self.semaphore.acquire()
+
 		try:
 			while True:
 				start = time.time()
@@ -143,13 +147,31 @@ class Core(threading.Thread):
 				wait = next_run - time.time()
 				self.log.info(f"╰───────────────────────────────────「{time.strftime('%d %b %Y %H:%M:%S', time.localtime(next_run))}」───────────────────────────────────╯")
 				self.log.info("")
-				if wait > 0: time.sleep(wait)
+
+				# release lock and wait for next execution
+				self.semaphore.wait(timeout=wait)
 		except Exception as e:
 			# Errore interno non recuperabile
 			self.log.critical("]─────────────────────────────────────────[CRITICAL]─────────────────────────────────────────[")
 			self.log.exception(e)
 			self.error = e
-	
+
+	def wake(self) -> bool:
+		"""
+		Fa partire immediatamente il processo di ricerca e download.
+		"""
+		try:
+			# acquire lock
+			self.semaphore.acquire()
+			# resume thread
+			self.semaphore.notify()
+			# release lock
+			self.semaphore.release()
+		except RuntimeError as e:
+			return False
+		else:
+			return True
+
 	def job(self):
 		"""
 		Processo principale di ricerca e download.
