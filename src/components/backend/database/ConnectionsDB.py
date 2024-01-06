@@ -83,6 +83,25 @@ class ConnectionsDB(Database):
 		connection = self[key]
 		self._data.remove(connection)
 		self.sync()
+
+	def getByScript(self, script:str):
+		"""Restituisce la connection in base allo script."""
+
+		for connection in self._data:
+			if connection["script"] == script:
+				return connection
+		else:
+			raise KeyError(script)
+
+	
+	def deleteByScript(self, script:str):
+		"""Rimuove una connection."""
+
+		conn = self.getByScript(script)
+		
+		self._data.remove(conn)
+		self.sync()
+		
 	
 	def append(self, name:str, script:str, active:bool=False) -> None:
 		"""
@@ -97,18 +116,23 @@ class ConnectionsDB(Database):
 		if name in self:
 			raise ValueError(f"Nome {name} già presente.")
 		
-		if not script.endswith('.sh'):
-			raise ValueError(f"Il file {script} non è un file bash.")
+		try:
+			conn = self.getByScript()
+			raise ValueError(f"Script {conn['script']} già presente.")
+		except KeyError:
 		
-		if not self.scripts.joinpath(script).is_file():
-			raise FileNotFoundError(self.scripts.joinpath(script))
+			if not script.endswith('.sh'):
+				raise ValueError(f"Il file {script} non è un file bash.")
+			
+			if not self.scripts.joinpath(script).is_file():
+				raise FileNotFoundError(self.scripts.joinpath(script))
 
-		self._data.append({
-			"name": name,
-			"script": script,
-			"active": active
-		})
-		self.sync()
+			self._data.append({
+				"name": name,
+				"script": script,
+				"active": active
+			})
+			self.sync()
 	
 	def isActive(self, name:str) -> bool:
 		"""
@@ -175,6 +199,48 @@ class ConnectionsDB(Database):
 		  Lo stato della Connections.
 		"""
 		connection = self[name]
+
+		connection['active'] = not connection['active']
+		self.sync()
+		return connection['active']
+	
+	def enableByScript(self, script:str):
+		"""
+		Attiva una Connection.
+		
+		Args:
+		  script: script della connection
+		"""
+
+		connection = self.getByScript(script)
+
+		connection['active'] = True
+		self.sync()
+
+	def disableByScript(self, script:str):
+		"""
+		Disattiva una Connection.
+		
+		Args:
+		  script: script della connection
+		"""
+
+		connection = self.getByScript(script)
+
+		connection['active'] = False
+		self.sync()
+	
+	def toggleByScript(self, script:str) -> bool:
+		"""
+		Cambia lo stato della Connection.
+		
+		Args:
+		  script: script della connection
+		
+		Returns:
+		  Lo stato della Connections.
+		"""
+		connection = self.getByScript(script)
 
 		connection['active'] = not connection['active']
 		self.sync()

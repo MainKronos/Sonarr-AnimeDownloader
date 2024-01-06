@@ -6,6 +6,7 @@ from apiflask import APIFlask, APIBlueprint
 from .routes.Table import Table
 from .routes.Settings import Settings
 from .routes.Tags import Tags
+from .routes.Connections import Connections
 
 import time
 
@@ -49,5 +50,6 @@ def API(core:Core) -> APIFlask:
 	api.register_blueprint(Table(core))
 	api.register_blueprint(Settings(core))
 	api.register_blueprint(Tags(core))
+	api.register_blueprint(Connections(core))
 	app.register_blueprint(api)
 	return app

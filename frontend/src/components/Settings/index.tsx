@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Menu, toast } from '@/helper';
 import { Card } from '..';
 
-import type { API, SettingsOptions, TagValue } from '@/utils/API';
+import type { API, SettingsOptions, TagValue, ConnectionValue } from '@/utils/API';
 
 import './style.scss';
 
@@ -17,6 +17,8 @@ export function Settings({ api }: SettingsProps) {
         <SettingCard api={api} />
 
         <TagsCard api={api} />
+
+        <ConnectionCard api={api} />
     </>)
 }
 
@@ -126,45 +128,43 @@ function SettingCard({ api }: SettingsProps) {
         );
 }
 
-
-
 function TagsCard({ api }: SettingsProps) {
     const [tags, setTags] = useState<TagValue[]>();
     const [toSync, setToSync] = useState(true);
 
     useEffect(() => {
-        if(toSync) {
+        if (toSync) {
             api.getTags().then(res => setTags(res));
             setToSync(false);
         }
     }, [toSync]);
 
-    async function toggleTag(tag:TagValue) {
+    async function toggleTag(tag: TagValue) {
         let res = await api.editToggleTag(tag.id);
         toast.success(res.message);
         setToSync(true);
     }
 
-    async function deleteTag(tag:TagValue) {
+    async function deleteTag(tag: TagValue) {
         let res = await api.deleteTag(tag.id);
         toast.success(res.message);
         setToSync(true);
     }
 
-    async function addTag(name:string) {
+    async function addTag(name: string) {
         let res = await api.addTag(name, false);
         toast.info(res.message);
         setToSync(true);
     }
 
-    if(tags){
+    if (tags) {
         return (
             <Card>
                 <h2>Tags</h2>
                 <section id='tags'>
-                    {tags.map(tag => 
+                    {tags.map(tag =>
                         <Card key={tag.name} className={tag.active ? 'active' : ''}>
-                            <h3 
+                            <h3
                                 title={tag.id.toString()}
                                 onContextMenu={e => Menu.show(e as any, {
                                     'Copy': () => navigator.clipboard.writeText(tag.name),
@@ -179,7 +179,64 @@ function TagsCard({ api }: SettingsProps) {
                         </Card>
                     )}
 
-                    <AddCard onSubmit={addTag}/>
+                    <AddCard onSubmit={addTag} />
+                </section>
+            </Card>
+        );
+    }
+}
+
+function ConnectionCard({ api }: SettingsProps) {
+    const [connections, setConnections] = useState<ConnectionValue[]>();
+    const [toSync, setToSync] = useState(true);
+
+    useEffect(() => {
+        if (toSync) {
+            api.getConnections().then(res => setConnections(res));
+            setToSync(false);
+        }
+    }, [toSync]);
+
+    async function toggleConnection(connection: ConnectionValue) {
+        let res = await api.editToggleConnection(connection.script);
+        toast.success(res.message);
+        setToSync(true);
+    }
+
+    async function deleteConnection(connection: ConnectionValue) {
+        let res = await api.deleteConnection(connection.script);
+        toast.success(res.message);
+        setToSync(true);
+    }
+
+    async function addConnection(script: string) {
+        let res = await api.addConnection(script, false);
+        toast.info(res.message);
+        setToSync(true);
+    }
+
+    if (connections) {
+        return (
+            <Card>
+                <h2>Connections</h2>
+                <section id='connections'>
+                    {connections.map(connection =>
+                        <Card key={connection.script} className={connection.active ? 'active' : ''}>
+                            <h3
+                                onContextMenu={e => Menu.show(e as any, {
+                                    'Copy': () => navigator.clipboard.writeText(connection.script),
+                                    'Delete': () => deleteConnection(connection)
+                                })}
+                            >{connection.script}</h3>
+
+                            <button
+                                onClick={() => toggleConnection(connection)}
+                            >{connection.active ? "ON" : "OFF"}</button>
+
+                        </Card>
+                    )}
+
+                    <AddCard onSubmit={addConnection} />
                 </section>
             </Card>
         );
@@ -187,9 +244,9 @@ function TagsCard({ api }: SettingsProps) {
 }
 
 interface AddCardProps {
-    onSubmit: (content:string) => void
+    onSubmit: (content: string) => void
 }
-function AddCard({onSubmit}:AddCardProps) {
+function AddCard({ onSubmit }: AddCardProps) {
     const [active, setActive] = useState(false);
     const [content, setContent] = useState('');
 
@@ -198,24 +255,25 @@ function AddCard({onSubmit}:AddCardProps) {
         setActive(false);
     }
 
-    if(!active){
+    if (!active) {
         return (
             <Card>
                 <button type="button" onClick={() => setActive(true)}><i>add</i></button>
             </Card>
         )
-    }else {
+    } else {
         return (
             <form onSubmit={(e) => {
                 e.preventDefault();
-                if(content) onSubmit(content);
+                if (content) onSubmit(content);
                 reset();
-            }} 
+            }}
                 className='card'
                 onKeyDown={e => e.key == 'Escape' && reset()}
             >
                 <textarea autoFocus={true} onChange={e => setContent(e.target.value)}></textarea>
                 <button type='submit'>SUBMIT</button>
+                <button type='reset' onClick={() => reset()}>CANCEL</button>
             </form>
 
         )

@@ -169,6 +169,42 @@ export class API {
         });
         return await res.json();
     }
+
+    async getConnections(): Promise<ConnectionValue[]>{
+        const res = await fetch(this.backend + '/connections');
+        return await res.json();
+    }
+
+    async editToggleConnection(script:string): Promise<ResponseMsg>{
+        const res = await fetch(encodeURI(this.backend + `/connections/${script}/toggle`), {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return await res.json();
+    }
+
+    async deleteConnection(script:string): Promise<ResponseMsg> {
+        const res = await fetch(encodeURI(this.backend + `/connections/${script}`), {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return await res.json();
+    }
+
+    async addConnection(script:string, active:boolean) {
+        const res = await fetch(this.backend + '/connections/', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ script: script, active: active })
+        });
+        return await res.json();
+    }
 }
 
 export interface SerieTableEntry {
@@ -197,5 +233,11 @@ export interface SettingsOptions {
 export interface TagValue {
     "id": number,
     "name": string,
+    "active": boolean
+}
+
+export interface ConnectionValue {
+    "name": string,
+    "script": string,
     "active": boolean
 }
