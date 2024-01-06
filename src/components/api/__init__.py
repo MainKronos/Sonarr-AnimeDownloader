@@ -7,6 +7,7 @@ from .routes.Table import Table
 from .routes.Settings import Settings
 from .routes.Tags import Tags
 from .routes.Connections import Connections
+from .routes.Log import Log
 
 import time
 
@@ -51,5 +52,6 @@ def API(core:Core) -> APIFlask:
 	api.register_blueprint(Settings(core))
 	api.register_blueprint(Tags(core))
 	api.register_blueprint(Connections(core))
+	api.register_blueprint(Log(core))
 	app.register_blueprint(api)
 	return app
