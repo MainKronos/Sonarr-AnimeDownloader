@@ -8,6 +8,15 @@ document.querySelector(".nav-overlay").addEventListener('click', function(){
 	document.querySelector("nav").classList.remove('active');
 });
 
+document.querySelector('#rescan').addEventListener('click', function (e) {
+	e.preventDefault();
+	fetch("/api/rescan").then(res => res.json()).then(res => {
+      showToast(res.data);
+    }, error => {
+      showToast(error)
+    });
+});
+
 
 
 // TOAST //////////////////////////////////////////////////////

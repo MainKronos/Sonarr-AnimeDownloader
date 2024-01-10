@@ -8,6 +8,19 @@ def loadAPI(app:Flask):
 
 	core:Core = app.config['CORE']
 
+	@app.route('/api/rescan', methods=['GET'])
+	def rescan():
+		result = core.wakeUp()
+		return Response(
+			mimetype='application/json',
+			status=200,
+			response=json.dumps({
+				"error": result,
+				"data": "Rescan schedulato." if result else "Errore in fase di rescan"
+			}),
+			headers={"Access-Control-Allow-Origin": "*"}
+		)
+
 	@app.route('/api/table', methods=['GET'])
 	def getTable():
 		return Response(
