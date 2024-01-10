@@ -199,6 +199,7 @@ class Core(threading.Thread):
 			return True
 
 
+
 	# def join(self) -> None:
 	# 	super().join()
 	# 	# Se è stata sollevata un eccezione la propaga
