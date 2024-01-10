@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { Container, Navigator } from '@/components';
+import { Container, Navigator, LogViewer } from '@/components';
 
 import { API } from '@/utils/API';
 import { ToastContainer } from '@/helper';
@@ -12,7 +12,7 @@ export default function App() {
     const [version, setVersion] = useState('');
     const [navActive, setNavActive] = useState(false);
 
-    const api = new API('http://127.0.0.1:5000');
+    const api = new API(BACKEND);
 
     useEffect(() => {
         api.getVersion().then(res => setVersion(res));
@@ -26,14 +26,14 @@ export default function App() {
             <a href="settings.html">Settings</a>
             <a>Log</a>
         </Navigator>
-        
+
         <Container
             title='Settings'
             version={version}
             navigatorState={[navActive, setNavActive]}
         >
-           
+            <LogViewer api={api} />
         </Container>
-        <ToastContainer/>
+        <ToastContainer />
     </>);
 }

@@ -195,7 +195,7 @@ export class API {
         return await res.json();
     }
 
-    async addConnection(script:string, active:boolean) {
+    async addConnection(script:string, active:boolean): Promise<ResponseMsg> {
         const res = await fetch(this.backend + '/connections/', {
             method: "POST",
             headers: {
@@ -203,6 +203,11 @@ export class API {
             },
             body: JSON.stringify({ script: script, active: active })
         });
+        return await res.json();
+    }
+
+    async getLog(page:number=0): Promise<string[]> {
+        const res = await fetch(encodeURI(this.backend + `/log/${page}`));
         return await res.json();
     }
 }

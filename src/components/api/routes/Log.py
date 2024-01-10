@@ -15,12 +15,20 @@ def Log(core:Core) -> APIBlueprint:
 		return res
 	
 	@route.get('/')
-	def get_log():
+	@route.get('/<page>')
+	def get_log(page:int=0):
 		"""Restituisce il log."""
+		
+		page = int(page)
 
-		def generate():
-			for row in reversed(open("log.log", 'rb').readlines()):
-				yield row
-		return Response(generate(), mimetype='text/plain')
+		log = open("log.log", 'r', encoding='utf-8').readlines()
+		rows = len(log)
+
+		row_start = rows - ((page + 1) * 100)
+		if row_start < 0: row_start = 0
+		row_end = rows - (page * 100)
+		if row_end < 0: return []
+
+		return log[row_start:row_end]
 
 	return route
