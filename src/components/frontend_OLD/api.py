@@ -37,9 +37,9 @@ def loadAPI(app:Flask):
 	def addData():
 		data = request.json
 		title = data["title"]
-		season = data["season"]
-		links = data["links"]
 		absolute = data["absolute"]
+		season = "absolute" if absolute else data["season"]
+		links = data["links"]
 
 		core.table.appendSerie(title, absolute)
 		core.table.appendUrls(title, season, links)

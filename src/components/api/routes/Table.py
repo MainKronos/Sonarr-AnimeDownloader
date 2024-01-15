@@ -85,11 +85,15 @@ def Table(core:Core) -> APIBlueprint:
 		return {"message": f"Serie '{title}' aggiunta."}
 
 	@route.post('/<title>')
-	@route.input({'season':fields.Integer()})
+	@route.input({'season': fields.String()})
 	def add_season(title:str, json_data:dict):
 		"""Aggiunge una nuova stagione."""
 
-		season:int = json_data['season']
+		season:int | str = json_data['season']
+
+		try:
+			season = int(season)
+		except ValueError: pass
 
 		if not core.table.appendSeason(title, season):
 			abort(409, f"Conflitto stagione '{season}'.")
@@ -98,7 +102,7 @@ def Table(core:Core) -> APIBlueprint:
 	
 	@route.post('/<title>/<season>')
 	@route.input({'links':fields.List(fields.String())})
-	def add_links(title:str, season:int, json_data:dict):
+	def add_links(title:str, season:int|str, json_data:dict):
 		"""Aggiunge dei links a una stagione."""
 
 		links:list[str] = json_data['links']
@@ -124,8 +128,8 @@ def Table(core:Core) -> APIBlueprint:
 		return {"message": f"Serie '{new_title}' aggiornata."}
 	
 	@route.patch('/<title>/<season>')
-	@route.input({'season':fields.Integer()})
-	def edit_season(title:str, season:int, json_data:dict):
+	@route.input({'season':fields.String()})
+	def edit_season(title:str, season:str|int, json_data:dict):
 		"""Rinomina una stagione."""
 
 		season = str(season)
@@ -141,7 +145,7 @@ def Table(core:Core) -> APIBlueprint:
 	
 	@route.patch('/<title>/<season>/<path:link>')
 	@route.input({'link':fields.String()})
-	def edit_link(title:str, season:int, link:str, json_data:dict):
+	def edit_link(title:str, season:int|str, link:str, json_data:dict):
 		"""Rinomina un link."""
 
 		new_link:str = json_data['link']

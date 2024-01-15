@@ -54,7 +54,7 @@ function SerieAddModal({api, onUpdate}:SerieAddModalProps){
 
     const [info, setInfo] = useState({
         title: '',
-        season: NaN,
+        season: '' as (number | string),
         absolute: false,
         link: ''
     })
@@ -87,7 +87,7 @@ function SerieAddModal({api, onUpdate}:SerieAddModalProps){
                     
                 </div>
                 <div>
-                    <input type="checkbox" id="absolute" name="absolute" onChange={(e) => setInfo({...info,absolute: e.target.checked})}/>
+                    <input type="checkbox" id="absolute" name="absolute" onChange={(e) => setInfo({...info,absolute: e.target.checked, season: e.target.checked ? "absolute" : info.season})}/>
                     <label htmlFor="absolute">Absolute</label>
                 </div>
                 <div>
