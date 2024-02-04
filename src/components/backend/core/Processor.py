@@ -192,6 +192,18 @@ class Processor:
 				# Se la serie è in formato 'absolute'
 				elem = self.__convertToAbsolute(elem)
 
+		def extract_alternative_titles(anime_elem:dict) -> list:
+			if anime_elem["alternateTitles"] is None:
+				return []
+			return [anime_entry['title'] for anime_entry in anime_elem["alternateTitles"]]
+
+		def get_alternative_titles():
+			# avrò bisogno di effettuare chiamata alla specifica serie Sonarr
+			anime = self.sonarr.serie(elem['id'])
+			anime.raise_for_status()
+			anime_data = anime.json()
+			alternative_titles = extract_alternative_titles(anime_data)
+			return alternative_titles
 
 		def filterSeason(season:dict) -> bool:
 			"""Filtra le stagioni."""
@@ -224,7 +236,17 @@ class Processor:
 						else:
 							res = self.external.find(title, season["number"], elem["tvdbId"])
 							if res is None:
-								# Se non ho trovato nulla
+								# Se non ho trovato nulla provo con i titoli alternativi
+								alternative_titles = get_alternative_titles()
+								for alternative_title in alternative_titles:
+									res = self.external.find(alternative_title, season["number"], elem["tvdbId"])
+									if res is not None:
+										self.log.warning(f"🟢 Ricerca automatica url per la stagione {season['number']} della serie '{alternative_title}': {res['url']}")
+										season["urls"].append(res["url"])
+										self.table.appendUrls(title, season['number'], [res["url"]])
+										return True
+
+								# non ho trovato nulla
 								self.log.debug(f"🔴 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': nessun risultato trovato.")
 								return False
 							else:
