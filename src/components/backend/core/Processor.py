@@ -192,18 +192,21 @@ class Processor:
 				# Se la serie è in formato 'absolute'
 				elem = self.__convertToAbsolute(elem)
 
-		def extract_alternative_titles(anime_elem:dict) -> list:
-			if anime_elem["alternateTitles"] is None:
-				return []
-			return [anime_entry['title'] for anime_entry in anime_elem["alternateTitles"]]
-
-		def get_alternative_titles():
+		def getAlternativeTitles(seriesId:int, season_number:int):
+			"""Ottiene i titoli alternativi di una serie Sonarr"""
 			# avrò bisogno di effettuare chiamata alla specifica serie Sonarr
-			anime = self.sonarr.serie(elem['id'])
-			anime.raise_for_status()
-			anime_data = anime.json()
-			alternative_titles = extract_alternative_titles(anime_data)
-			return alternative_titles
+			res = self.sonarr.serie(seriesId)
+			res.raise_for_status()
+			data = res.json()
+
+			if data["alternateTitles"] is None:
+				return []
+
+			return [
+				x['title'] 
+				for x in data["alternateTitles"]
+				if x["sceneSeasonNumber"] == -1 or x["sceneSeasonNumber"] == season_number
+			]
 
 		def filterSeason(season:dict) -> bool:
 			"""Filtra le stagioni."""
@@ -237,7 +240,7 @@ class Processor:
 							res = self.external.find(title, season["number"], elem["tvdbId"])
 							if res is None:
 								# Se non ho trovato nulla provo con i titoli alternativi
-								alternative_titles = get_alternative_titles()
+								alternative_titles = getAlternativeTitles(elem['id'],season_number)
 								for alternative_title in alternative_titles:
 									res = self.external.find(alternative_title, season["number"], elem["tvdbId"])
 									if res is not None:
