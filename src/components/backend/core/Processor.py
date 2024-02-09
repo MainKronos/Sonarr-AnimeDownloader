@@ -205,9 +205,15 @@ class Processor:
 			return [
 				x['title'] 
 				for x in data["alternateTitles"]
-				if x['title'] and x["sceneSeasonNumber"] (
-					x["sceneSeasonNumber"] == -1 or x["sceneSeasonNumber"] == season_number
-				)
+				if 'title' in x and x['title'] and (
+                    ("sceneSeasonNumber" in x and (
+                        x["sceneSeasonNumber"] == -1 or x["sceneSeasonNumber"] == season_number
+                    ))
+					or
+					("seasonNumber" in x and (
+                        x["seasonNumber"] == -1 or x["seasonNumber"] == season_number
+                    ))
+                )
 			]
 
 		def filterSeason(season:dict) -> bool:
