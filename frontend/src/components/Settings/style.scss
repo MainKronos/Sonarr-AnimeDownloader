@@ -1,0 +1,139 @@
+@use "sass:color";
+@use '@/styles/index' as *;
+
+section#settings {
+    padding: 10px;
+    display: grid;
+    gap: 10px;
+
+    >*:nth-child(1) {
+        grid-area: log_level;
+    }
+
+    >*:nth-child(2) {
+        grid-area: tag_mode;
+    }
+
+    >*:nth-child(3) {
+        grid-area: other;
+    }
+
+    >*:nth-child(4) {
+        grid-area: scan_interval;
+    }
+
+    >*:nth-child(5) {
+        grid-area: restart_btn;
+    }
+
+    grid-template-areas: "log_level tag_mode other"
+    "restart_btn scan_interval other";
+
+    @media screen and (max-width: 1000px) {
+        grid-template-areas:
+            "log_level tag_mode"
+            "scan_interval scan_interval"
+            "other restart_btn";
+    }
+
+    @media screen and (max-width: 550px) {
+        grid-template-areas:
+            "log_level"
+            "tag_mode"
+            "scan_interval"
+            "other"
+            "restart_btn";
+    }
+
+    >button {
+        margin: 9px 2px 0 2px;
+        min-height: 50px;
+    }
+
+    >fieldset {
+        display: grid;
+        align-items: center;
+        gap: 10px;
+
+        >div {
+            @extend %input;
+            // margin: 10px 0;
+        }
+
+
+        >legend {
+            font-size: 1em;
+        }
+    }
+}
+
+section#tags, section#connections {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 15px;
+
+    >*.card {
+        margin: 0;
+        background-color: elevation(3);
+        height: 200px;
+        display: grid;
+        grid-template-rows: 70% auto;        
+
+        &.active {
+            >button {
+                border-color: $base-color;
+                color: $base-color;
+            }
+        }
+
+        >h3 {
+            text-align: center;
+            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex-direction: column;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        >button {
+            margin: 10px;
+        }
+
+        &:last-child {
+            textarea {
+                padding: 1.3rem;
+                resize: none;
+                outline: none;
+                font-family: 'Roboto';
+                font-weight: 400;
+                font-size: 1.17em;
+                color: $text-color;
+                text-align: center;
+                border: 0;
+                border-bottom: 1px solid $base-color;
+                background-color: elevation(1);
+                grid-column: span 2;
+
+                & ~ button {
+                    grid-row: 2;
+                    &:nth-of-type(1){
+                        grid-column: 1;
+                    }
+                    &:nth-of-type(1){
+                        grid-column: 2;
+                    }
+                }
+            }
+
+            > button {
+                grid-row: 1 / span 2;
+            }
+        }
+    }
+
+}

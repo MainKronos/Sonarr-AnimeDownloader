@@ -1,0 +1,92 @@
+@use "sass:color";
+@use '@/styles/index' as *;
+
+
+header {
+    overflow: hidden;
+    text-align: center;
+    background-color: elevation(1);
+    box-shadow: 0 0 10px black;
+    margin-bottom: 60px;
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    width: 100%;
+
+    >h1 {
+        color: rgba(255, 255, 255, 0.60);
+        font-weight: 400;
+        user-select: none;
+        padding: 0 60px;
+    }
+
+    >a#donate {
+        animation: HeartBeat 1.5s infinite;
+        position: absolute;
+        right: 0.5em;
+        top: 0.5em;
+        font-size: 1.5rem;
+        filter: drop-shadow(0 0 5px $base-color);
+
+        @keyframes HeartBeat {
+            0% {
+                transform: scale(0.8);
+            }
+
+            5% {
+                transform: scale(0.9);
+            }
+
+            10% {
+                transform: scale(0.8);
+            }
+
+            15% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.8);
+            }
+
+            100% {
+                transform: scale(0.8);
+            }
+        }
+    }
+
+    > button {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        z-index: 2;
+        background: none;
+        border: none;
+        color: $text-color;
+        cursor: pointer;
+
+        &:hover {
+            color: $base-color;
+        }
+    }
+}
+
+main {
+    margin: 180px auto 100px auto;
+    max-width: 1280px;
+    min-height: calc(100vh - 340px);
+    width: 70%;
+
+    @media only screen and (max-width: 700px) {
+        width: 100%;
+    }
+}
+
+footer {
+    overflow: hidden;
+    margin-top: 100px;
+    padding: 20px;
+    text-align: center;
+    background-color: elevation(1);
+    vertical-align: middle;
+}

@@ -1,0 +1,35 @@
+@use "sass:color";
+@use '@/styles/index' as *;
+
+ul#menu {
+	color: rgba(255, 255, 255, 0.7);
+	position: absolute;
+	background-color: elevation(2);
+	padding: 5px;
+	border-radius: 4px;
+	border: 1px solid rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+	user-select: none;
+	margin: 0;
+	display: none;
+	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+	z-index: 4;
+    min-width: 100px;
+
+    &.active {
+        display: block;
+    }
+
+    > li {
+        padding: 5px 10px;
+        list-style-type: none;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        &:hover {
+            color: $base-color;
+        }
+    }
+}

@@ -4,6 +4,7 @@ from ..database import *
 
 from typing import Iterable, List
 from functools import reduce
+from itertools import count
 
 class Processor:
 	"""Processa i dati che provengono da Sonarr"""
@@ -29,7 +30,10 @@ class Processor:
 		self.external.sync()
 
 		# Collego gli url per il download e rimuovo le stagioni che non fanno match
-		missing = list(filter(self.__bindUrl, missing))
+		missing = filter(self.__bindUrl, missing)
+		
+		# Riodino le stagioni e gli episodi di ciascuna serie
+		missing = list(map(self.__sortSerie, missing))
 
 		return missing
 
@@ -43,7 +47,7 @@ class Processor:
 
 		missing = []
 
-		for page in range(1,50):
+		for page in count(1):
 			res = self.sonarr.wantedMissing(page=page)
 			res.raise_for_status()
 			data = res.json()
@@ -58,6 +62,27 @@ class Processor:
 		return missing
 
 	### FUNCTIONS ###
+
+	def __sortSerie(self, elem:dict) -> dict:
+		"""
+		Riordina le stagione e gli episodi di una serie.
+
+		Args:
+		  elem: serie da ordinare.
+		
+		Returns:
+		  La serie ordinata
+		"""
+
+		# Ordino le stagioni
+		elem["seasons"].sort(key=lambda x: x["number"])
+
+		for season in elem["seasons"]:
+			# ordino gli episodi
+			season["episodes"].sort(key=lambda x: (x['seasonNumber'], x['episodeNumber']))
+
+		return elem
+
 
 	def __filter(self, elem:dict) -> bool:
 		"""
@@ -136,7 +161,7 @@ class Processor:
 			season["urls"] = []
 			season["episodes"] = []
 
-		# Aggiungom l'episodio
+		# Aggiungo l'episodio
 		episode = self.__extractEpisode(elem)
 		season["episodes"].append(episode)
 
@@ -167,6 +192,29 @@ class Processor:
 				# Se la serie è in formato 'absolute'
 				elem = self.__convertToAbsolute(elem)
 
+		def getAlternativeTitles(seriesId:int, season_number:int):
+			"""Ottiene i titoli alternativi di una serie Sonarr"""
+			# avrò bisogno di effettuare chiamata alla specifica serie Sonarr
+			res = self.sonarr.serie(seriesId)
+			res.raise_for_status()
+			data = res.json()
+
+			if data["alternateTitles"] is None:
+				return []
+
+			return [
+				x['title'] 
+				for x in data["alternateTitles"]
+				if 'title' in x and x['title'] and (
+                    ("sceneSeasonNumber" in x and (
+                        x["sceneSeasonNumber"] == -1 or x["sceneSeasonNumber"] == season_number
+                    ))
+					or
+					("seasonNumber" in x and (
+                        x["seasonNumber"] == -1 or x["seasonNumber"] == season_number
+                    ))
+                )
+			]
 
 		def filterSeason(season:dict) -> bool:
 			"""Filtra le stagioni."""
@@ -199,18 +247,26 @@ class Processor:
 						else:
 							res = self.external.find(title, season["number"], elem["tvdbId"])
 							if res is None:
-								# Se non ho trovato nulla
-								self.log.debug(f"🔴 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': nessun risultato trovato.")
-								return False
-							else:
-								self.log.warning(f"🟢 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': {res['url']}")
-								# Altrimenti aggiungo ciò che ho trovato
-								season["urls"].append(res["url"])
+								# Se non ho trovato nulla provo con i titoli alternativi
+								alt_titles = getAlternativeTitles(elem['id'],season_number)
 
-								# Adesso devo aggiornare la tabella, aggiungendo l'url
-								self.table.appendUrls(title, season['number'], [res["url"]])
+								for alt_title in alt_titles:
+									res = self.external.find(alt_title, season["number"], elem["tvdbId"])
+									if res is not None:
+										# Ho trovato un risultato usando un titolo alternativo
+										break
+								else:
+									# non ho trovato nulla
+									self.log.debug(f"🔴 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': nessun risultato trovato.")
+									return False
 
-								return True
+							self.log.warning(f"🟢 Ricerca automatica url per la stagione {season['number']} della serie '{elem['title']}': {res['url']}")
+							# aggiungo ciò che ho trovato
+							season["urls"].append(res["url"])
+
+							# Adesso devo aggiornare la tabella, aggiungendo l'url
+							self.table.appendUrls(title, season['number'], [res["url"]])
+							return True
 
 		# Aggiungo gli url alle stagioni
 		elem["seasons"] = list(filter(filterSeason, elem["seasons"]))

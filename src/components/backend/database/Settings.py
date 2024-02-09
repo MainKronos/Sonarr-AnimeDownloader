@@ -29,3 +29,8 @@ class Settings(Database):
 	
 	def __len__(self) -> int:
 		return len(self._data)
+	
+	def __contains__(self, key: str):
+		"""Controlla se un impostazione esiste."""
+
+		return key in self._data

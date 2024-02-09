@@ -1,0 +1,54 @@
+@use "sass:color";
+
+@use "./colors" as *;
+@use "./fonts" as *;
+
+@forward "./colors";
+@forward "./functions";
+@forward "./inputs";
+
+html {
+    color: $text-color;
+    background-color: $background-color;
+    font-size: 1em;
+    font-family: 'Roboto';
+}
+
+body {
+    margin: 0;
+    color-scheme: dark;
+}
+
+a {
+    color: $text-color;
+    text-decoration: none;
+    width: fit-content;
+    margin: 10px;
+
+    &:active,
+    &:visited {
+        color: $text-color;
+    }
+
+    &:hover {
+        color: $base-color;
+    }
+}
+
+i {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    vertical-align:text-bottom;
+}
+

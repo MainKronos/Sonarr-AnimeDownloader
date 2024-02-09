@@ -1,0 +1,13 @@
+@use "sass:color";
+@use '@/styles/index' as *;
+
+span.badge {
+    // float: right;
+    margin-left: auto;
+	background-color: $base-color;
+	padding: 3px;
+	border-radius: 3px;
+	color: white !important; 
+	font-weight: 300;
+    font-weight: bold;
+}

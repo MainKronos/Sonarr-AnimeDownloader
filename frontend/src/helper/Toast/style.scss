@@ -1,0 +1,14 @@
+@use "sass:color";
+@use '@/styles/index' as *;
+
+:root {
+    --toastify-font-family: 'Roboto';
+    --toastify-color-dark: #{elevation(4)};
+    --toastify-color-info: #{$base-color};
+    --toastify-color-success: #{$base-color};
+    --toastify-color-warning: #{$base-color};
+    --toastify-color-error: #{$base-color};
+    --toastify-spinner-color: #{$base-color};
+    --toastify-text-color-dark: #{$text-color};
+    --toastify-color-progress-dark: #{$base-color};
+}

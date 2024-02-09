@@ -15,7 +15,8 @@ class Sonarr:
 			base_url=f"{url}/api/v3",
 			headers={
 				'X-Api-Key':api_key
-			}
+			},
+			timeout=5
 		)
 
 		# Controlla che il sito sia raggiungibile e che la api_key sia valida
@@ -44,8 +45,7 @@ class Sonarr:
 		return self.client.get("/wanted/missing", params={
 			"includeSeries": True,
 			"pageSize": n,
-			"page": page,
-			"sortKey": "airDateUtc"
+			"page": page
 		})
 	
 	def episode(self, epId:int) -> httpx.Response:
@@ -92,7 +92,7 @@ class Sonarr:
 		Returns:
 		  La risposta HTTP
 		"""
-		return self.client.get("/tag")
+		return self.client.get("/tag", params='')
 	
 	### COMMAND
 	

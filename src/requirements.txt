@@ -1,0 +1,10 @@
+animeworld>=1.6.0
+fastapi==0.103.2
+uvicorn[standard]
+httpx
+apiflask
+tenacity
+
+flask
+flask_socketio
+werkzeug==2.2.3

@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-from components import Core, Frontend
+from components import Core, API
+
+from components.frontend_OLD import Frontend
+
 import threading
 
 def main():
@@ -7,7 +10,8 @@ def main():
 	core = Core()
 	
 	# Cario la pagina web
-	app = Frontend(core)
+	# app = API(core)
+	app = Frontend(core) # DEPRECATO (DA RIMUOVERE)
 
 	# Avvio la pagina web
 	threading.Thread(target=server, args=[app], daemon=True).start()

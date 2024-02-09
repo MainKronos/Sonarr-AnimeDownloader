@@ -1,0 +1,13 @@
+@use "sass:color";
+@use '@/styles/index' as *;
+
+button#add-anime {
+    background-color: elevation(1);
+    margin: 0 30px;
+    border-radius: 4px 4px 0 0;
+    border: 0;
+    border-bottom: 1px solid $background-color;
+    width: calc(100% - 60px);
+    display: block;
+    padding: 15px;
+}

@@ -1,0 +1,59 @@
+@use "sass:color";
+@use '@/styles/index' as *;
+
+nav {
+	height: 100%;
+	width: 0; 
+	position: fixed; 
+	z-index: 3; 
+	top: 0; 
+	left: 0;
+	background-color: elevation(2); 
+	overflow-x: hidden; 
+	padding-top: 60px; 
+	transition: 0.5s; 
+	box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+
+    /* overlay */
+    > div:nth-of-type(1) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-color: rgba(0,0,0,0);
+        transition: background-color, left 500ms;
+    }
+
+    /* content */
+    > div:nth-of-type(2) {
+        position: relative;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        text-align: center;
+
+        > * {
+            display: block;
+            border-bottom: 1.5px solid $text-color;
+            color: $text-color;
+            cursor: pointer;
+            padding: 5px;
+
+            &:hover {
+                color: $base-color;
+                border-bottom: 1.5px solid $base-color;
+            }
+        }
+    }
+
+    &.active {
+        width: 200px; 
+
+        > div:nth-of-type(1) {
+            left: 200px;
+            background-color: rgba(0,0,0,0.2);
+            width: 100%;
+        }
+    }
+}
