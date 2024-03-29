@@ -46,6 +46,14 @@ int start(){
 	res = system(command);
 	if(res) return res;
 
+	strcpy(command, "touch /src/database/connections.json");
+	res = system(command);
+	if(res) return res;
+
+	strcpy(command, "touch /src/database/tags.json");
+	res = system(command);
+	if(res) return res;
+
 	sprintf(command, "chown %s:%s /src -R", USER_NAME, USER_NAME);
 	res = system(command);
 	if(res) return res;
