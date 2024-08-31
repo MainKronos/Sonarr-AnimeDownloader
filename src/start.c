@@ -19,11 +19,11 @@ int start(){
 	if(!PGID) PGID = "1000";
 	char* USER_NAME = getenv("USER_NAME");
 
-	sprintf(command, "usermod -o -u %s %s", PUID, USER_NAME);
+	snprintf(command, sizeof(command), "usermod -o -u %s %s", PUID, USER_NAME);
 	res = system(command);
 	if(res) return res;
 
-	sprintf(command, "groupmod -o -g %s %s", PGID, USER_NAME);
+	snprintf(command, sizeof(command), "groupmod -o -g %s %s", PGID, USER_NAME);
 	res = system(command);
 	if(res) return res;
 
@@ -38,24 +38,26 @@ int start(){
 		pwn->pw_uid, pwn->pw_gid
 	);
 
-	strcpy(command, "touch /src/database/settings.json");
+	res = system("touch /src/database/settings.json");
+	if(res) return res;
+
+	res = system("touch /src/database/table.json");
+	if(res) return res;
+
+	res = system("touch /src/database/connections.json");
+	if(res) return res;
+
+	res = system("touch /src/database/tags.json");
+	if(res) return res;
+
+	snprintf(command, sizeof(command), "chown %s:%s /src -R", USER_NAME, USER_NAME);
 	res = system(command);
 	if(res) return res;
 
-	strcpy(command, "touch /src/database/table.json");
-	res = system(command);
+	res = system("chmod 777 /src -R");
 	if(res) return res;
 
-	sprintf(command, "chown %s:%s /src -R", USER_NAME, USER_NAME);
-	res = system(command);
-	if(res) return res;
-
-	strcpy(command, "chmod 777 /src -R");
-	res = system(command);
-	if(res) return res;
-
-	strcpy(command, "pip3 install --upgrade --no-cache-dir --disable-pip-version-check --quiet animeworld");
-	res = system(command);
+	res = system("pip3 install --upgrade --no-cache-dir --disable-pip-version-check --quiet animeworld");
 	if(res) return res;
 
 	char* tmp; /* buffer */
