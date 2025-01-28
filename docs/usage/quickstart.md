@@ -136,7 +136,7 @@ In ogni caso la formattazione di come sono inserite le informazioni nel file `ta
 ```
 
 !!! Tip
-    Ho caricato anche la **mia configurazione** che utilizzo, può essere trovata [qui](/docs/static/examples/json/table.json). Questa `table.json` può essere usata come _esempio_ o come _prorio database_ da aggiornare poi personalmente con i propri **Anime**.
+    Ho caricato anche la **mia configurazione** che utilizzo, può essere trovata [qui](../static/examples/json/table.json). Questa `table.json` può essere usata come _esempio_ o come _prorio database_ da aggiornare poi personalmente con i propri **Anime**.
 
 ### Struttura Interna
 
