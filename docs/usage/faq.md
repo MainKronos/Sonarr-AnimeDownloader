@@ -150,6 +150,16 @@ Se il problema è ancora presente allora aprire un issue.
 !!! Success
     Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/46).
 
+## Whitelist e Blacklist
+
+La sezione tag può avere due possibili valori `blacklist` o `whitelist`. Il funzionamento è il seguente:
+
+- `blacklist`: vengono ignorati tutti gli anime che possiedono i tag presenti nella lista del `tag.json`;
+- `whitelist`: vengono scaricati solo gli anime che possiedono i tag presenti nella lista del `tag.json`;
+
+!!! Tip
+    Se la lista dei tag è vuota usa la modalità `blacklist`, altrimenti tutti gli anime verranno scartati in modalità `whitelist` (problema trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/150))
+
 ## Non trovo nessuna soluzione al mio problema
 
 Se non hai trovato nessuna soluzione pertinente tra le FAQ, allora è possibile cercare tra gli issue se il problema è già stato trattato (guardare [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues?q=is%3Aissue+label%3A%22help+wanted%22%2Cquestion%2Cdocumentation+-label%3A%22fixed+on+dev%22))
