@@ -143,7 +143,7 @@ Se la serie non compare nei log controllare:
 
 1. Che la tipologia della serie sia `anime`. ![serie_type](../static/img/serie_type.png)
 2. Che l'url e l'API Key di Sonarr siano corretti.
-3. Che la serie non sia stata esclusa a causa di qualche [tag](advanced.md#tag).
+3. Che la serie non sia stata esclusa a causa di qualche [tag](advanced.md#tag) o che la [modalità dei tag](#whitelist-e-blacklist) sia configurata male.
 
 Se il problema è ancora presente allora aprire un issue.
 
@@ -152,13 +152,18 @@ Se il problema è ancora presente allora aprire un issue.
 
 ## Whitelist e Blacklist
 
-La sezione tag può avere due possibili valori `blacklist` o `whitelist`. Il funzionamento è il seguente:
+![Esempio](../static/img/tag_mode.png)
 
-- `blacklist`: vengono ignorati tutti gli anime che possiedono i tag presenti nella lista del `tag.json`;
-- `whitelist`: vengono scaricati solo gli anime che possiedono i tag presenti nella lista del `tag.json`;
+La modalità tag può avere due possibili valori `BLACKLIST` o `WHITELIST`. Il funzionamento è il seguente:
+
+- `BLACKLIST`: vengono **ignorati** tutti gli anime che hanno almeno un [tag](advanced.md#tag) attivo nella sezione [Tag Personalizzati](advanced.md#tag);
+- `WHITELIST`: vengono **scaricati** solo gli anime che hanno almeno un [tag](advanced.md#tag) attivo nella sezione [Tag Personalizzati](advanced.md#tag);
 
 !!! Tip
-    Se la lista dei tag è vuota usa la modalità `blacklist`, altrimenti tutti gli anime verranno scartati in modalità `whitelist` (problema trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/150))
+    Se la lista dei tag è vuota o nessun tag è attivo, usa la modalità `BLACKLIST`, altrimenti tutti gli anime verranno scartati in modalità `WHITELIST`, per maggiori informazioni consultare la sezione [Advanced Usage](advanced.md#settings)
+
+!!! Success
+    Il problema è stato trattato [qui](https://github.com/MainKronos/Sonarr-AnimeDownloader/issues/150).
 
 ## Non trovo nessuna soluzione al mio problema
 
