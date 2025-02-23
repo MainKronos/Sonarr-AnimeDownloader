@@ -117,7 +117,7 @@ class ConnectionsDB(Database):
 			raise ValueError(f"Nome {name} già presente.")
 		
 		try:
-			conn = self.getByScript()
+			conn = self.getByScript(script)
 			raise ValueError(f"Script {conn['script']} già presente.")
 		except KeyError:
 		
