@@ -1,10 +1,10 @@
 animeworld>=1.6.0
 fastapi==0.103.2
-uvicorn[standard]
-httpx
+uvicorn[standard]==0.34.0
+httpx==0.28.1
 apiflask
-tenacity
+tenacity==9.0.0
 
-flask
+flask==3.1.0
 flask_socketio
-werkzeug==3.0.6
+werkzeug>=3.0.6
