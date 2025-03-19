@@ -1,5 +1,3 @@
-![Hacktoberfest 2023](https://hacktoberfest.com/_next/static/media/logo-hacktoberfest--horizontal.ebc5fdc8.svg)
-
 > Hacktoberfest: a month-long celebration of open-source projects, their maintainers, and the entire community of contributors.
 
 La documentazione dell'evento è reperibile [qui](https://hacktoberfest.com/participation/)
