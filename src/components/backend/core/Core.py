@@ -61,6 +61,7 @@ class Core(threading.Thread):
 		self.connections = ConnectionsManager(self.connections_db)
 
 		### Setup Logic ###
+		aw.SES.base_url = ctx.ANIMEWORLD_URL
 		self.processor = Processor(sonarr=self.sonarr, settings=self.settings, table=self.table, tags=self.tags, external=self.external)
 		self.downloader = Downloader(settings=self.settings, sonarr=self.sonarr, connections=self.connections, folder=ctx.DOWNLOAD_FOLDER)
 
@@ -80,6 +81,7 @@ class Core(threading.Thread):
 		self.log.info("Globals")
 		self.log.info(f"  ├── {ctx.SONARR_URL = :}")
 		self.log.info(f"  ├── {ctx.API_KEY = :}")
+		self.log.debug(f"  ├── {ctx.ANIMEWORLD_URL = :}")
 		self.log.debug(f"  ├── {ctx.DOWNLOAD_FOLDER = :}")
 		self.log.debug(f"  ├── {ctx.DATABASE_FOLDER = :}")
 		self.log.debug(f"  ├── {ctx.SCRIPT_FOLDER = :}")
