@@ -13,12 +13,6 @@ Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com
 
 Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documentazione è reperibile [qui](../../../AnimeWorld-API).
 
-> **WARNING**\
-> **Aggiornamento da `1.x.x` a `2.x.x`**\
-> Il volumi sono cambiati nel seguente modo:
-> - `/script/connections` -> `/src/script`
-> - `/script/json` -> `/src/database`
-
 ## Hacktoberfest
 
 Per partecipare all'evento Hacktoberfest leggere la [documentazione](https://mainkronos.github.io/Sonarr-AnimeDownloader/community/hacktoberfest/).\
@@ -41,6 +35,7 @@ services:
     environment:
       - 'SONARR_URL=http://url:port'
       - 'API_KEY=1234567890abcdefghijklmn'
+      - 'ANIMEWORLD_URL=https://www.animeworld.ac'
       - 'TZ=Europe/Rome'
       - 'PUID=1000'
       - 'PGID=1000'

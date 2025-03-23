@@ -4,6 +4,9 @@ import pathlib
 SONARR_URL:str = os.getenv('SONARR_URL')
 """URL di Sonarr"""
 
+ANIMEWORLD_URL:str = os.getenv('ANIMEWORLD_URL', 'https://www.animeworld.ac/')
+"""URL di AnimeWorld"""
+
 API_KEY:str = os.getenv('API_KEY')
 """Chiave API di Sonarr"""
 
