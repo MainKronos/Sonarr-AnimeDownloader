@@ -20,6 +20,7 @@ services:
       - 'port:5000'
     environment:
       - 'SONARR_URL=http://url:port'
+      - 'ANIMEWORLD_URL=https://www.animeworld.ac'
       - 'API_KEY=1234567890abcdefghijklmn'
       - 'TZ=Europe/Rome'
       - 'PUID=1000'
@@ -43,6 +44,7 @@ docker run -d \
     -v /path/to/connections:/src/script \
     -p port:5000 \
     --env SONARR_URL='http://url:port' \
+    --env ANIMEWORLD_URL='https://www.animeworld.ac' \
     --env API_KEY='1234567890abcdefghijklmn' \
     --env TZ=Europe/Rome \
     --env PUID=1000 \
@@ -66,6 +68,7 @@ Parametro | Necessario | Funzione
 `-v /src/script` | :material-close-thick: | Contiene file di configurazione per le [Connections](advanced.md#connections)
 `-p {port}:5000` | :material-check-bold: | La porta per la pagina web
 `--env SONARR_URL` | :material-check-bold: | Url di Sonarr es. http://localhost:8989
+`--env ANIMEWORLD_URL` |:material-close-thick: | Url base di animeworld, se non definito il valore di default è `https://www.animeworld.ac`
 `--env API_KEY` | :material-check-bold: | Api key di sonarr, vedi sotto per ulteriori informazioni
 `--env TZ` | :material-check-bold: | Specifica un fuso orario, è necessario per il corretto funzionamento del Container
 `--env PUID` | :material-close-thick: | Specifica UserID. Vedi sotto per maggiori informazioni
