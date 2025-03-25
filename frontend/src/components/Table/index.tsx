@@ -91,7 +91,7 @@ function SerieAddModal({api, onUpdate}:SerieAddModalProps){
                     <label htmlFor="absolute">Absolute</label>
                 </div>
                 <div>
-                    <input type="text" name="link" id="link" placeholder="https://www.animeworld.so/play/sword-art-online.N0onT" pattern="^https:\/\/www\.animeworld\.(tv|so)\/play\/.+" required onChange={(e) => setInfo({...info, link: e.target.value})}/>
+                    <input type="text" name="link" id="link" placeholder="https://www.animeworld.so/play/sword-art-online.N0onT" pattern="^(https|http):\/\/.+" required onChange={(e) => setInfo({...info, link: e.target.value})}/>
                     <label htmlFor="link">Link</label>
                 </div>
                 <div>

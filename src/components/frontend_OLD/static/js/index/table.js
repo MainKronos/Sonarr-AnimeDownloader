@@ -321,7 +321,7 @@ class TabContentLink extends React.Component {
       type: "text",
       placeholder: this.props.link,
       value: this.state.value,
-      pattern: "^https:\\/\\/www\\.animeworld\\.(tv|so)\\/play\\/.+",
+      pattern: "^(https|http):\\/\\/.+",
       onChange: event => this.setState({
         value: event.target.value
       }),
@@ -372,7 +372,7 @@ class AddLinkButton extends React.Component {
       autoFocus: true,
       type: "text",
       placeholder: "https://www.animeworld.so/play/...",
-      pattern: "^https:\\/\\/www\\.animeworld\\.(tv|so)\\/play\\/.+",
+      pattern: "^(https|http):\\/\\/.+",
       value: this.state.value,
       onChange: event => this.setState({
         value: event.target.value
