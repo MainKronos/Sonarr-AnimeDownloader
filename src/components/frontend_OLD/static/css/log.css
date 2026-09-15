@@ -16,30 +16,42 @@ ul#log > li {
 #download-info {
 	position: relative;
 	display: none;
-	
+
 	overflow: hidden;
 }
 #download-info.active{
 	display: block;
 }
 
-#download-info > div.card-content{
+#download-list{
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.download-item{
 	display: grid;
 	gap: 10px;
-	grid-template: 
+	grid-template:
 		"a . b" 1fr
 		"c c c" 24px
 		"d e f" 1fr / 33% 1fr 33%;
 }
 
-#filename,#downloaded,#elapsed,#speed,#eta{
+.download-item:not(:last-child){
+	padding-bottom: 20px;
+	border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.download-item .filename,.download-item .downloaded,.download-item .elapsed,.download-item .speed,.download-item .eta{
 	text-align: center;
 	font-size: 1.1rem;
 	padding: 5px;
 }
 
-#filename{grid-area: a;}
-#downloaded{grid-area: b;}
-#elapsed{grid-area: d;}
-#speed{grid-area: e;}
-#eta{grid-area: f;}
+.download-item .filename{grid-area: a;}
+.download-item .downloaded{grid-area: b;}
+.download-item .progress{grid-area: c;}
+.download-item .elapsed{grid-area: d;}
+.download-item .speed{grid-area: e;}
+.download-item .eta{grid-area: f;}

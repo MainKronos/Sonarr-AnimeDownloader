@@ -78,13 +78,23 @@ def setupLog(app:Flask, socketio:SocketIO):
 	def downloadProgress(d):
 		"""
 		Stampa il progresso di download dell'episodio.
+		Il rate-limit è calcolato per singolo file (e non globalmente) in modo
+		che più download eseguiti in parallelo non si "rubino" a vicenda gli
+		aggiornamenti di stato inviati al frontend.
 		"""
-		
-		if int(datetime.timestamp(datetime.now()) - downloadProgress.step ) > 0 or d["percentage"] == 1:
-			socketio.emit("download_info", d)
-			downloadProgress.step = datetime.timestamp(datetime.now())
 
-	downloadProgress.step = datetime.timestamp(datetime.now())
+		now = datetime.timestamp(datetime.now())
+		last = downloadProgress.steps.get(d["filename"], 0)
+
+		if int(now - last) > 0 or d["percentage"] == 1:
+			socketio.emit("download_info", d)
+			downloadProgress.steps[d["filename"]] = now
+
+		if d["percentage"] == 1:
+			# Il download è terminato, non serve più tenerne traccia
+			downloadProgress.steps.pop(d["filename"], None)
+
+	downloadProgress.steps = {}
 	core.downloader.connectHook(downloadProgress)
 
 def loadRoute(app:Flask):
