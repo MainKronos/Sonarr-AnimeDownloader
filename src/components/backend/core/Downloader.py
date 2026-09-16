@@ -34,11 +34,20 @@ class Downloader:
 	def connectHook(self, hook:Callable[[dict[str,Any]], None]):
 		"""
 		Collega la funzione di hook che verrà richiamata svariate volte durante il download per monitorarne il progresso.
+		Un eventuale errore sollevato dall'hook viene loggato ma non interrompe mai il download in corso
+		(l'hook viene invocato dalla libreria animeworld nel mezzo della scrittura del file, quindi
+		un'eccezione qui impedirebbe alla libreria di completare e restituire correttamente il file scaricato).
 
 		Args:
 		  hook: funzione da richiamare durante il download
 		"""
-		self.hook = hook
+		def safe_hook(data:dict[str,Any]) -> None:
+			try:
+				hook(data)
+			except Exception as e:
+				self.log.debug(f"Errore nell'hook di download (ignorato): {e}")
+
+		self.hook = safe_hook
 
 	def download(self, series:List[dict]):
 		"""
@@ -129,6 +138,10 @@ class Downloader:
 		if not file:
 			self.log.warning(f"⚠️ Errore in fase di download di {title}.")
 			return
+
+		# L'evento 'finished' della libreria non include il filename, quindi non basta a
+		# far sparire la scheda di progresso corretta nell'interfaccia: ne inviamo uno noi.
+		self.hook({"filename": file, "percentage": 1, "status": "finished"})
 
 		file = self.folder.joinpath(file)
 
