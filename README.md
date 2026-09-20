@@ -43,7 +43,7 @@ services:
       - 'TZ=Europe/Rome'
       - 'PUID=1000'
       - 'PGID=1000'
-    image: 'ghcr.io/hooteo/anime_downloader:latest'
+    image: 'ghcr.io/mainkronos/anime_downloader:latest'
 ```
 
 ## [Documentazione](https://mainkronos.github.io/Sonarr-AnimeDownloader)
