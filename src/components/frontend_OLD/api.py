@@ -161,6 +161,9 @@ def loadAPI(app:Flask):
 		elif data["TagsMode"]:
 			core.settings["TagsMode"] = data["TagsMode"]
 			log = "Modalità tags aggiornata."
+		elif data["MaxConcurrentDownloads"]:
+			core.settings["MaxConcurrentDownloads"] = data["MaxConcurrentDownloads"]
+			log = "Download simultanei aggiornati."
 
 		return Response(
 			mimetype='application/json',

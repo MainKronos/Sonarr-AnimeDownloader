@@ -171,16 +171,12 @@ class Core(threading.Thread):
 			self.log.info("")
 			self.log.info("──────────────────────────────────────────────────────────────────────────────────────────────")
 			self.log.info("")
-			
-			for serie in missing:
-				self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
-				self.log.info("")
 
-				self.downloader.download(serie)			
+			self.downloader.download(missing)
 
-				self.log.info("")
-				self.log.info("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ")
-				self.log.info("")
+			self.log.info("")
+			self.log.info("──────────────────────────────────────────────────────────────────────────────────────────────")
+			self.log.info("")
 		except aw.DeprecatedLibrary as e:
 			self.log.error(cs.red(f"🅴🆁🆁🅾🆁: {e}"))
 				

@@ -1,35 +1,65 @@
 // per le informazione nella pagina log.html
+// Supporta la visualizzazione di più download in corso contemporaneamente,
+// distinguendoli tramite il loro filename.
 
 // Connection opened
 socket.on('connect', function() {
 	socket.emit('connected', {data: 'ok'});
 });
 
+const downloadItems = new Map();
+
+function makeDownloadItem(filename){
+	let item = document.createElement('div');
+	item.className = 'download-item';
+	item.innerHTML = `
+		<span class="filename"></span>
+		<span class="downloaded"></span>
+		<div class="progress">
+			<label class="percentage">0%</label>
+			<span></span>
+		</div>
+		<time class="elapsed">--:--:--</time>
+		<span class="speed">0</span>
+		<time class="eta">--:--:--</time>
+	`;
+	document.getElementById('download-list').appendChild(item);
+	downloadItems.set(filename, item);
+	document.getElementById('download-info').classList.add("active");
+	return item;
+}
+
+function removeDownloadItem(filename){
+	let item = downloadItems.get(filename);
+	if(!item) return;
+
+	item.remove();
+	downloadItems.delete(filename);
+
+	if(downloadItems.size === 0){
+		document.getElementById('download-info').classList.remove("active");
+	}
+}
+
 // Listen for messages
 socket.on('download_info', function (data) {
 
-	document.getElementById('download-info').classList.add("active");
+	let item = downloadItems.get(data.filename) || makeDownloadItem(data.filename);
 
-	let filename = document.querySelector("#filename");
-	let percentage = document.querySelector("div.progress > label#percentage");
-	let percentage_bar = document.querySelector("div.progress > span");
-	let downloaded = document.querySelector("#downloaded");
-	let elapsed = document.querySelector("#elapsed");
-	let speed = document.querySelector("#speed");
-	let eta = document.querySelector("#eta");
+	let percentage = item.querySelector(".percentage");
+	let percentage_bar = item.querySelector(".progress > span");
 
-
-	filename.textContent = data.filename;
+	item.querySelector(".filename").textContent = data.filename;
 	percentage.textContent = `${Math.round(data.percentage * 1000)/10}%`;
 	percentage_bar.style.width = `${data.percentage * 100}%`;
-	downloaded.textContent = `${unitConversion(data.downloaded_bytes)} / ${unitConversion(data.total_bytes)}`;
-	
-	elapsed.textContent = new Date(data.elapsed * 1000).toISOString().slice(11,-5);
-	eta.textContent = new Date(data.eta * 1000).toISOString().slice(11,-5);
-	speed.textContent = unitConversion(Math.round(data.speed)) + '/s';
+	item.querySelector(".downloaded").textContent = `${unitConversion(data.downloaded_bytes)} / ${unitConversion(data.total_bytes)}`;
+
+	item.querySelector(".elapsed").textContent = new Date(data.elapsed * 1000).toISOString().slice(11,-5);
+	item.querySelector(".eta").textContent = new Date(data.eta * 1000).toISOString().slice(11,-5);
+	item.querySelector(".speed").textContent = unitConversion(Math.round(data.speed)) + '/s';
 
 	if(data.percentage == 1){ // 1 = 100%
-		document.getElementById('download-info').classList.remove("active");
+		removeDownloadItem(data.filename);
 	}
 });
 

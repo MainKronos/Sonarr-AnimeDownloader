@@ -12,6 +12,9 @@ function syncData(){
 		document.getElementById('ScanDelay').value = res.data.ScanDelay;
 		document.querySelector("#ScanDelay + label").textContent = res.data.ScanDelay;
 
+		document.getElementById('MaxConcurrentDownloads').value = res.data.MaxConcurrentDownloads;
+		document.querySelector("#MaxConcurrentDownloads + label").textContent = res.data.MaxConcurrentDownloads;
+
 		for(let elem of document.querySelectorAll('input[name=LogLevel]')){
 			elem.checked = elem.value == res.data.LogLevel;
 		}
@@ -26,6 +29,9 @@ syncData();
 document.getElementById('ScanDelay').addEventListener('input', function(event){
 	document.querySelector("#ScanDelay + label").textContent = this.value;
 });
+document.getElementById('MaxConcurrentDownloads').addEventListener('input', function(event){
+	document.querySelector("#MaxConcurrentDownloads + label").textContent = this.value;
+});
 
 function updateSettings(data){
 	return fetch('/api/settings', {
@@ -39,7 +45,8 @@ function updateSettings(data){
 			MoveEp: data.hasOwnProperty('MoveEp') ? data.MoveEp : null,
 			RenameEp: data.hasOwnProperty('RenameEp') ? data.RenameEp : null,
 			ScanDelay: data.hasOwnProperty('ScanDelay') ? data.ScanDelay : null,
-			TagsMode: data.hasOwnProperty('TagsMode') ? data.TagsMode : null
+			TagsMode: data.hasOwnProperty('TagsMode') ? data.TagsMode : null,
+			MaxConcurrentDownloads: data.hasOwnProperty('MaxConcurrentDownloads') ? data.MaxConcurrentDownloads : null
 		})
 	})
 	.then(response => response.json())
@@ -49,6 +56,9 @@ function updateSettings(data){
 }
 document.getElementById('ScanDelay').addEventListener('change', function(event){
 	updateSettings({ScanDelay: parseInt(this.value)});
+});
+document.getElementById('MaxConcurrentDownloads').addEventListener('change', function(event){
+	updateSettings({MaxConcurrentDownloads: parseInt(this.value)});
 });
 document.getElementById('RenameEp').addEventListener('change', function(event){
 	updateSettings({RenameEp: this.checked});

@@ -4,5 +4,6 @@
 	"RenameEp": true,
 	"AutoBind": false,
 	"ScanDelay": 30,
-	"TagsMode": "BLACKLIST"
+	"TagsMode": "BLACKLIST",
+	"MaxConcurrentDownloads": 10
 }

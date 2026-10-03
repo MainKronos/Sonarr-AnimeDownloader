@@ -13,6 +13,10 @@ Il _Docker Container_ di **Sonarr** può essere trovato [qui](https://github.com
 
 Il progetto utilizza la libreria `animeworld`, il codice sorgente e la documentazione è reperibile [qui](../../../AnimeWorld-API).
 
+## Novità di questo fork
+
+- **Download simultanei**: gli episodi mancanti vengono ora scaricati in parallelo (fino a 10 download contemporanei per impostazione predefinita) invece che uno alla volta, velocizzando sensibilmente il recupero di grandi quantità di episodi arretrati. Il numero massimo di download simultanei è configurabile dalla pagina **Settings** dell'interfaccia web (parametro "Download Simultanei").
+
 ## Hacktoberfest
 
 Per partecipare all'evento Hacktoberfest leggere la [documentazione](https://mainkronos.github.io/Sonarr-AnimeDownloader/community/hacktoberfest/).\

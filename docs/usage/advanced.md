@@ -24,6 +24,7 @@ Tutte le impostazioni sono descritte nella tabella sottostante.
 |**Rinomina Episodi** | Indica se gli episodi devono essere rinominati secondo la formattazione impostata su *Sonarr* (`http://sonarr-url/settings/mediamanagement` in `Episode Naming`).|
 |**Sposta Episodi** | Indica se gli episodi devono essere spostati nella cartella indicata da *Sonarr* oppure lasciarli nella cartella interna al container (`/downloads`).|
 |**Intervallo Scan** | Indica quanto tempo deve passare (in minuti) tra una ricerca degli episodi e un'altra. (Il tempo minimo è 30 minuti)|
+|**Download Simultanei** | Indica quanti episodi possono essere scaricati contemporaneamente (default 10).|
 |**Auto Ricerca Link** | Ricerca automaticamente i link che non sono presenti nella tabella di conversione. In caso di successo verrà inviata una notifica tramite [connection](#connections).|
 |Modalità Tag | Indica la modalità di gestione dei [tag](#tag) associati agli anime su sonarr. Se è in moalità `BLACKLIST` le serie che hanno almeno un [tag](#tag) attivo nella sezione **Tag Personalizzati** saranno escluse dalla ricerca; se è in modalità `WHITELIST` le serie che **NON** hanno almeno un [tag](#tag) attivo nella sezione **Tag Personalizzati** saranno escluse.|
 
